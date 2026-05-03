@@ -8,19 +8,28 @@ CLAUDE_MD="${CLAUDE_DIR}/CLAUDE.md"
 
 echo "Installing pde-skills from ${REPO_DIR}"
 
-# 1. Symlink commands into ~/.claude/commands/pde
+# 1. Generate wrapper command files in ~/.claude/commands/pde/
+#    A directory symlink breaks @include resolution: Claude Code resolves @../../ against
+#    the virtual path through the symlink (~/.claude/commands/pde/../../ = ~/.claude/),
+#    not the real path. Generated wrappers use absolute @paths instead.
 mkdir -p "${COMMANDS_DIR}"
 
 if [ -L "${COMMANDS_DIR}/pde" ]; then
   echo "Removing existing symlink: ${COMMANDS_DIR}/pde"
   rm "${COMMANDS_DIR}/pde"
 elif [ -d "${COMMANDS_DIR}/pde" ]; then
-  echo "Removing existing directory: ${COMMANDS_DIR}/pde"
+  echo "Refreshing: ${COMMANDS_DIR}/pde"
   rm -rf "${COMMANDS_DIR}/pde"
 fi
 
-ln -s "${REPO_DIR}/.claude/commands" "${COMMANDS_DIR}/pde"
-echo "Linked: ${COMMANDS_DIR}/pde -> ${REPO_DIR}/.claude/commands"
+mkdir -p "${COMMANDS_DIR}/pde"
+
+for src in "${REPO_DIR}/.claude/commands/"*.md; do
+  fname="$(basename "$src")"
+  dest="${COMMANDS_DIR}/pde/${fname}"
+  sed "s|@../../|@${REPO_DIR}/|g" "$src" > "$dest"
+  echo "Generated: ${dest}"
+done
 
 # 2. Add rule file references to ~/.claude/CLAUDE.md if not already present
 RULE_REFS=(
