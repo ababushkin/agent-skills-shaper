@@ -37,6 +37,7 @@ Task arrives
     ├── Building or reviewing a roadmap?                   → roadmap-shape
     │       └── reads from idea bank (docs/idea-bank/)
     ├── Significant engineering work — how to build it?   → design-doc
+    ├── Have a plan/spec/design — should I trust it?       → plan-review
     ├── Have a design or spec — need implementable tasks?  → planning-and-task-breakdown
     ├── Ready to build?                                    → incremental-implementation
     │   └── KTLO bug fix (no design doc)?                 → incremental-implementation (Path 2)
@@ -106,6 +107,7 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
 | `planning-and-task-breakdown` | "Break this down into tasks", "What order should we build this in?", "Give me a task list" | Ordered task list with acceptance criteria |
 | `design-doc` | "How should we build X?", "Architecture for Y", "Technical approach to Z" | Accepted design doc |
+| `plan-review` | "Review this plan", "Before I approve", "What's missing here", "Should we go with this" | Review record with APPROVE / REVISE / KILL recommendation |
 | `incremental-implementation` | "Let's build this", "Start implementing", "Code this up" | Working slice committed to main |
 | `stop-the-line` | Fires on PR open/update — catches signal-suppression moves | Completion verified or halt raised |
 

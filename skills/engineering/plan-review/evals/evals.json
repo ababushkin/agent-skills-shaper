@@ -1,0 +1,45 @@
+{
+  "skill_name": "plan-review",
+  "evals": [
+    {
+      "id": 1,
+      "name": "roadmap-without-triage",
+      "prompt": "Review this plan before I approve it: shape next-quarter roadmap with three themes — shareable shortlist, push notifications, onboarding rewrite — allocated 60/30/10 across them. The shareable shortlist is highest priority because we keep getting requests. Push notifications because re-engagement is flat. Onboarding rewrite because the funnel is leaky. Approve?",
+      "expected_output": "Cynefin = Complex (multiple emergent dimensions). Full tier (quarter-long appetite, multiple themes). B1 PARTIAL — themes named but no problem statements with measurable outcomes. B2 SUSTAINED on 'shareable shortlist scope vague — no triage record exists at docs/idea-bank/'. Falsifying condition: 'no record exists for shareable-shortlist or push-notifications'. B3 SUSTAINED on assumed customer demand for push notifications, Confidence ≤2 (anecdotal). Recommendation: REVISE — run idea-triage on each theme before allocating capacity.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 2,
+      "name": "prizecategoryselector-vue-removal",
+      "prompt": "Review this plan: remove unused Vue components, starting with PrizeCategorySelector under app/javascript/components/. Should take about a day. Approve?",
+      "expected_output": "Cynefin = Complicated. Quick tier (1-day appetite, no one-way doors auto-fire). B2 SUSTAINED 'PrizeCategorySelector lives in competition/ code path — out-of-scope unstated'. Falsifying condition: 'grep PrizeCategorySelector returns hits under competition/ directory'. Recommendation: REVISE — confirm scope boundary before removal.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 3,
+      "name": "clean-gem-bump",
+      "prompt": "Review this plan: bump rubocop from 1.60 to 1.65 in Gemfile, run bundle update, run full test suite, commit. Should take 30 minutes. Approve?",
+      "expected_output": "Cynefin = Clear. Quick tier (sub-hour appetite, fully reversible). B1 OVERTURNED. B2 OVERTURNED — scope tight. B3 minimal assumptions, all OVERTURNED. B8 pre-mortem: 'rubocop rule changes break CI' — low likelihood, kill-switch = revert Gemfile. Recommendation: APPROVE.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 4,
+      "name": "schema-migration-no-rollback",
+      "prompt": "Review this plan: add NOT NULL column user_tier to users table (50M rows), backfill from subscription_status during deploy, ship in next release. Approve?",
+      "expected_output": "Cynefin = Complicated. Full tier (touches production data + schema migration is one-way door). B5 SUSTAINED 'no Alternatives section, no ADR for migration approach'. Falsifying condition: 'no docs/adr/*.md exists for this migration'. B6 SUSTAINED 'no rollback path named, no metrics for backfill progress, no capacity headroom analysis on a 50M-row backfill'. Recommendation: REVISE — demand ADR + rollback + metrics before approval.",
+      "files": [],
+      "assertions": []
+    },
+    {
+      "id": 5,
+      "name": "redis-cache-solutionism",
+      "prompt": "Review this plan: introduce Redis as a caching layer in front of Postgres for product catalog reads. We'll add a Redis cluster, write a thin client, add cache-invalidation on writes. Approve?",
+      "expected_output": "Cynefin = Complicated. Full tier (vendor introduction = one-way door). B1 SUSTAINED 'plan opens with solution (Redis) — no problem statement, no latency target, no current-pain measurement'. Falsifying condition: 'plan does not state a p95 latency target or current p95'. B6 SUSTAINED 'no success metric — what user-visible outcome confirms this worked?'. Recommendation: REVISE — demand problem statement with measurable target before approving any caching strategy.",
+      "files": [],
+      "assertions": []
+    }
+  ]
+}

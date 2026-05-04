@@ -76,12 +76,12 @@ Addy's pack has skills only. Most hooks and sub-agents are therefore `new` or `a
 | 11 | `roadmap-shape` | skill | product | define | 150–220 | `new` |
 | 12 | `small-batch` | hook | engineering | ship | 60–100 | `new` |
 | 13 | `evidence-claim` | hook | meta | verify | 60–100 | `new` |
-| 14 | `problem-first-reviewer` | sub-agent | engineering | define | 150–200 | `adjacent` |
+| 14 | `plan-review` (was `problem-first-reviewer`) | skill | engineering | define | 320–400 | `derivative` (predecessor: internal phase4-devils-advocate) — **in-progress** |
 | 15 | `prototype-to-validate` | skill | engineering | define (discovery) | 180–240 | `new` |
 | 16 | `spike` | skill | engineering | build (discovery) | 130–180 | `new` |
 | 17 | `deploy` | skill | engineering | ship | 200–280 | `derivative` |
 | 18 | `post-launch-impact-review` | skill | engineering | verify-outcome | 150–200 | `new` |
-| 19 | `roadmap-review` | skill | product | review | 180–230 | `new` |
+| 19 | `roadmap-review` | skill | product | review | 180–230 | `new` (partially absorbed by `plan-review` #14 — revisit after ≥5 plan-review uses against roadmaps) |
 
 Promotion criteria: capacity opens, item still earns its slot against current evidence at promotion time, no Now item displaces it. Hooks promote in order — `small-batch` and `evidence-claim` only after `stop-the-line` proves the failure-mode-detection pattern works. `problem-first-reviewer` promotes when `design-doc` has enough usage to know whether the embedded constraint catches problem-first violations on its own.
 
@@ -396,12 +396,12 @@ The pack's first principles (`idea-triage`, `roadmap-shape`) demand every accept
 | 11 | `roadmap-shape` | skill | 2 | cut from Now; bootstrapping argument weak; principle-only |
 | 12 | `small-batch` | hook | 4 | mechanical (PR size, branch age); promote after stop-the-line proves pattern |
 | 13 | `evidence-claim` | hook | 4 | mechanical (scan for evidence references); promote after stop-the-line |
-| 14 | `problem-first-reviewer` | sub-agent | 3 | first sub-agent; promote when design-doc usage shows need |
+| 14 | `plan-review` (was `problem-first-reviewer`) | skill | 5 | reframed from sub-agent to skill; predecessor `phase4-devils-advocate` already in real use; meta-reviewed against MECE + Nemeth findings before authoring |
 | 15 | `prototype-to-validate` | skill | 5 | recent personal usage; gap between idea-triage and design-doc |
 | 16 | `spike` | skill | 3 | principle-backed; informal personal usage |
 | 17 | `deploy` | skill | 3 | end-to-end coherence; partial personal practice |
 | 18 | `post-launch-impact-review` | skill | 1.5 | highest principle-weight, lowest personal evidence |
-| 19 | `roadmap-review` | skill | 1.5 | counterpart to post-launch-impact-review for product track |
+| 19 | `roadmap-review` | skill | 1 | partially absorbed by `plan-review`; revisit only if ≥5 plan-review runs against roadmaps yield <30% bucket hit rate (per plan-review Known Limits section) |
 
 Triage rationales (the prose justifications behind each row) are in `PROJECT_GOVERNANCE.md` §8.
 
