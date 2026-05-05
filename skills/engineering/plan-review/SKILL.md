@@ -143,6 +143,40 @@ Two tiers. The skill selects the tier from plan attributes; the owner can overri
 **Step 1 — Trigger check [GATE]**
 Confirm at least one trigger from the When-to-use section fires. State which one. If none holds, recommend skipping or downgrading to a read-and-acknowledge. Do not proceed past this gate.
 
+**Step 1a — Fast-track gate [GATE]**
+Before tier selection, check whether the plan qualifies for fast-track. The fast-track gate fires only when **all four** preconditions hold:
+
+1. **Class is KTLO/maintenance.** One of: dependency bump at minor or patch SemVer (any gem/npm/cargo/etc.); lint or format config change (rubocop.yml, eslint, prettier); doc-only change (README, comments, changelog); log/telemetry cleanup (removing unused log lines, renaming); test cleanup (deleting skipped/dead tests, fixture refresh).
+2. **Fully reversible.** One-commit revert restores prior state. No production data, schema, auth, or vendor topology touched.
+3. **Appetite ≤1 day.** If the owner has stated longer, fall through to normal flow.
+4. **No major-version anything.** Any major SemVer bump (1.x → 2.x), any breaking-API call-out, any "we'll need to absorb new features" framing → full flow. Major bumps need a problem statement (what features, why now, what we're absorbing) — they are not KTLO.
+
+If all four hold → emit the fast-track output template (below) and stop. Skip B0–B7 entirely; B8 is folded into the template as a one-liner. Length target 15–25 lines, hard cap 30. Token target ~15k vs ~55k for full Quick-tier flow.
+
+If any of the four fails → fall through to Step 2 (normal flow). Record one line on which precondition failed, so the owner sees why the gate did not fire.
+
+Rationale: this is the operational form of Universal Rule A5 (KTLO carve-out). On a fully-reversible KTLO change, the cost of acting on a flawed plan is bounded by the revert; the cost of running heavy review (and producing token waste plus REVISE-blocked APPROVEs on routine maintenance) exceeds the cost of the worst-case mistake. CI/CD is assumed present and is the runtime safety net for this class.
+
+### Fast-track output template
+
+```markdown
+# Plan review: <plan-slug>
+
+**Fast-track gate fired** — KTLO/minor-version class, fully reversible, ≤1 day. CI/CD is the runtime gate; this review is proportionate to that risk.
+
+## Verdict: APPROVE
+
+## Sanity checks
+- <check 1 — typically a scope-narrowing flag, e.g. `bundle update --conservative <gem>` not `bundle update`>
+- <check 2 — typically a post-change validation, e.g. run `bundle exec rubocop` after bump, not just the test suite>
+- <check 3 if applicable — e.g. confirm related ecosystem gems move in lockstep>
+
+## B8 — Pre-mortem (one line)
+Top failure mode: <named, specific>. Kill-switch: <revert | named precheck>.
+```
+
+If the gate fires and the produced review exceeds 30 lines, the gate misfired — re-evaluate against the four preconditions before emitting.
+
 **Step 2 — Tier selection**
 Apply the auto-select rules. State the chosen tier and the attribute that selected it. If the owner has supplied `--quick` or `--full`, honour the override and record it.
 
@@ -198,7 +232,14 @@ Issue **APPROVE**, **REVISE**, or **KILL** with named conditions.
 - **REVISE** — at least one SUSTAINED verdict that the owner must address before approval.
 - **KILL** — the plan's core premise fails (problem framing absent or false; reversibility cost unbearable; dependencies cannot be secured).
 
-APPROVE is blocked by any unresolved SUSTAINED verdict on a falsifying condition.
+APPROVE is blocked by any unresolved SUSTAINED verdict on a falsifying condition — **except** under the Quick-tier reversibility carve-out below. (When the Step 1a fast-track gate fires, this Step is bypassed entirely — fast-track output is APPROVE by construction.)
+
+**Quick-tier reversibility carve-out.** At Quick tier, when the plan is fully reversible (one-commit revert restores prior state, no production data touched, no schema/auth/vendor changes), SUSTAINED verdicts on B2 (scope) and B3 (assumptions) downgrade from "block APPROVE" to "**APPROVE with named recommendation**." The skill still surfaces the finding — the owner still sees the scope or assumption concern — but the recommendation rides alongside an APPROVE rather than triggering REVISE. Rationale: on a fully-reversible KTLO change (Universal Rule A5), the cost of acting on a flawed plan is bounded by the revert; the cost of REVISE-blocking such a plan exceeds the cost of the worst-case mistake. The carve-out does NOT apply to:
+- B5 (reversibility) SUSTAINED — by definition the plan is not fully reversible
+- B6 (operability) SUSTAINED — operability concerns survive revert
+- Full-tier plans — the auto-select attributes (one-way door, production data, >1wk appetite) already preclude reversibility
+
+When the carve-out applies, write the verdict as `APPROVE — recommend: <named action>` and record the SUSTAINED bucket finding under Conditions for visibility.
 
 **Step 13 — File review record**
 Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact template below. Include the inline summary in the conversation alongside.
@@ -268,6 +309,7 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 | "Pre-mortem is theatre." | Klein's prospective-hindsight literature shows pre-mortem reliably surfaces failure modes that forward critique misses. If the pre-mortem produces only generic reasons, it has been run badly — the rule is "name the specific failure mode," not "imagine generic difficulties." |
 | "I don't have time for the full mode." | The plan attributes — appetite, one-way doors, dependencies, production data — are exactly the conditions under which review is most expensive to skip. The 30-minute cap exists because past that point the plan itself needs simplification before it can be reviewed at all. |
 | "We can revise mid-execution if we hit issues." | Revising mid-execution is the failure mode this skill exists to prevent. The cost of a SUSTAINED B2 caught before execution is rewriting a plan; the same finding caught mid-execution is rewriting code, tests, and partial deployments. |
+| "But this is a 5-minute change, do I really need a review?" | If the Step 1a fast-track gate fires, the review is ~20 lines and runs in seconds. The gate is calibrated for exactly this case (KTLO, fully reversible, ≤1 day). If the gate doesn't fire on what you thought was a 5-minute change, the change is not what you think it is — read what the gate flagged as missing. |
 
 ## Red flags
 

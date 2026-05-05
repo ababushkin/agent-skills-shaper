@@ -7,7 +7,17 @@
       "prompt": "Review this plan before I approve it: shape next-quarter roadmap with three themes — shareable shortlist, push notifications, onboarding rewrite — allocated 60/30/10 across them. The shareable shortlist is highest priority because we keep getting requests. Push notifications because re-engagement is flat. Onboarding rewrite because the funnel is leaky. Approve?",
       "expected_output": "Cynefin = Complex (multiple emergent dimensions). Full tier (quarter-long appetite, multiple themes). B1 PARTIAL — themes named but no problem statements with measurable outcomes. B2 SUSTAINED on 'shareable shortlist scope vague — no triage record exists at docs/idea-bank/'. Falsifying condition: 'no record exists for shareable-shortlist or push-notifications'. B3 SUSTAINED on assumed customer demand for push notifications, Confidence ≤2 (anecdotal). Recommendation: REVISE — run idea-triage on each theme before allocating capacity.",
       "files": [],
-      "assertions": []
+      "assertions": [
+        {"text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)", "type": "qualitative"},
+        {"text": "Review selects Full tier (quarter-long appetite, multiple themes)", "type": "qualitative"},
+        {"text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes", "type": "qualitative"},
+        {"text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)", "type": "qualitative"},
+        {"text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal", "type": "qualitative"},
+        {"text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption", "type": "qualitative"},
+        {"text": "Final recommendation is REVISE", "type": "qualitative"},
+        {"text": "Review recommends running idea-triage on themes before allocation", "type": "qualitative"},
+        {"text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)", "type": "qualitative"}
+      ]
     },
     {
       "id": 2,
@@ -15,15 +25,29 @@
       "prompt": "Review this plan: remove unused Vue components, starting with PrizeCategorySelector under app/javascript/components/. Should take about a day. Approve?",
       "expected_output": "Cynefin = Complicated. Quick tier (1-day appetite, no one-way doors auto-fire). B2 SUSTAINED 'PrizeCategorySelector lives in competition/ code path — out-of-scope unstated'. Falsifying condition: 'grep PrizeCategorySelector returns hits under competition/ directory'. Recommendation: REVISE — confirm scope boundary before removal.",
       "files": [],
-      "assertions": []
+      "assertions": [
+        {"text": "Review names Cynefin domain as Complicated (or Clear — both defensible)", "type": "qualitative"},
+        {"text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)", "type": "qualitative"},
+        {"text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified", "type": "qualitative"},
+        {"text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)", "type": "qualitative"},
+        {"text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)", "type": "qualitative"},
+        {"text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)", "type": "qualitative"}
+      ]
     },
     {
       "id": 3,
       "name": "clean-gem-bump",
       "prompt": "Review this plan: bump rubocop from 1.60 to 1.65 in Gemfile, run bundle update, run full test suite, commit. Should take 30 minutes. Approve?",
-      "expected_output": "Cynefin = Clear. Quick tier (sub-hour appetite, fully reversible). B1 OVERTURNED. B2 OVERTURNED — scope tight. B3 minimal assumptions, all OVERTURNED. B8 pre-mortem: 'rubocop rule changes break CI' — low likelihood, kill-switch = revert Gemfile. Recommendation: APPROVE.",
+      "expected_output": "Cynefin = Clear. Quick tier (sub-hour appetite, fully reversible). B1 OVERTURNED. B2 may SUSTAIN on `bundle update` widening diff beyond rubocop — but Quick-tier reversibility carve-out applies (one-commit revert), so the finding becomes a recommendation attached to APPROVE, not a REVISE block. B3 minimal assumptions. B8 pre-mortem: 'rubocop rule changes break CI' — low likelihood, kill-switch = revert Gemfile. Recommendation: APPROVE — recommend `bundle update --conservative rubocop`.",
       "files": [],
-      "assertions": []
+      "assertions": [
+        {"text": "Review names Cynefin domain as Clear", "type": "qualitative"},
+        {"text": "Review selects Quick tier (sub-hour appetite, fully reversible)", "type": "qualitative"},
+        {"text": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out", "type": "qualitative"},
+        {"text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch", "type": "qualitative"},
+        {"text": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)", "type": "qualitative"},
+        {"text": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change", "type": "qualitative"}
+      ]
     },
     {
       "id": 4,
@@ -31,7 +55,16 @@
       "prompt": "Review this plan: add NOT NULL column user_tier to users table (50M rows), backfill from subscription_status during deploy, ship in next release. Approve?",
       "expected_output": "Cynefin = Complicated. Full tier (touches production data + schema migration is one-way door). B5 SUSTAINED 'no Alternatives section, no ADR for migration approach'. Falsifying condition: 'no docs/adr/*.md exists for this migration'. B6 SUSTAINED 'no rollback path named, no metrics for backfill progress, no capacity headroom analysis on a 50M-row backfill'. Recommendation: REVISE — demand ADR + rollback + metrics before approval.",
       "files": [],
-      "assertions": []
+      "assertions": [
+        {"text": "Review names Cynefin domain as Complicated", "type": "qualitative"},
+        {"text": "Review selects Full tier (production data + one-way door auto-fires)", "type": "qualitative"},
+        {"text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named", "type": "qualitative"},
+        {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom", "type": "qualitative"},
+        {"text": "Review explicitly names rollback path as missing", "type": "qualitative"},
+        {"text": "Review explicitly names backfill progress metrics as missing", "type": "qualitative"},
+        {"text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)", "type": "qualitative"},
+        {"text": "At least one bucket has a named falsifying condition", "type": "qualitative"}
+      ]
     },
     {
       "id": 5,
@@ -39,7 +72,15 @@
       "prompt": "Review this plan: introduce Redis as a caching layer in front of Postgres for product catalog reads. We'll add a Redis cluster, write a thin client, add cache-invalidation on writes. Approve?",
       "expected_output": "Cynefin = Complicated. Full tier (vendor introduction = one-way door). B1 SUSTAINED 'plan opens with solution (Redis) — no problem statement, no latency target, no current-pain measurement'. Falsifying condition: 'plan does not state a p95 latency target or current p95'. B6 SUSTAINED 'no success metric — what user-visible outcome confirms this worked?'. Recommendation: REVISE — demand problem statement with measurable target before approving any caching strategy.",
       "files": [],
-      "assertions": []
+      "assertions": [
+        {"text": "Review names Cynefin domain as Complicated", "type": "qualitative"},
+        {"text": "Review selects Full tier (vendor introduction = one-way door)", "type": "qualitative"},
+        {"text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target", "type": "qualitative"},
+        {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named", "type": "qualitative"},
+        {"text": "Review explicitly calls out solutionism (chose Redis before stating the problem)", "type": "qualitative"},
+        {"text": "Final recommendation is REVISE", "type": "qualitative"},
+        {"text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)", "type": "qualitative"}
+      ]
     }
   ]
 }
