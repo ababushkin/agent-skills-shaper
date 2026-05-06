@@ -164,6 +164,9 @@ Rationale: this is the operational form of Universal Rule A5 (KTLO carve-out). O
 
 **Fast-track gate fired** — KTLO/minor-version class, fully reversible, ≤1 day. CI/CD is the runtime gate; this review is proportionate to that risk.
 
+**Cynefin domain**: Clear
+**Tier**: Quick (fast-track sub-form)
+
 ## Verdict: APPROVE
 
 ## Sanity checks
