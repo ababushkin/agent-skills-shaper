@@ -177,9 +177,9 @@ The skill has run correctly when:
 
 ## References
 
-- `skills/engineering/eng-principles-universal.md` — P4 (name assumptions; test the risky ones before committing), Rule B3 (reversibility: prototypes are throwaway by design), Rule C5 (time-box; produce a written decision at expiry; adapted for product discovery), Rule D5 (kill is a celebrated outcome)
-- `skills/product/idea-triage/SKILL.md` — upstream: produces the validated hypothesis and confidence rating that may route here
-- `skills/engineering/design-doc/SKILL.md` — downstream: the target when the recommendation is proceed
+- `rules/eng-principles-universal.md` — P4 (name assumptions; test the risky ones before committing), Rule B3 (reversibility: prototypes are throwaway by design), Rule C5 (time-box; produce a written decision at expiry; adapted for product discovery), Rule D5 (kill is a celebrated outcome)
+- `skills/idea-triage/SKILL.md` — upstream: produces the validated hypothesis and confidence rating that may route here
+- `skills/design-doc/SKILL.md` — downstream: the target when the recommendation is proceed
 - Hunt, Thomas — "The Pragmatic Programmer" (tracer bullets; test risky assumptions before committing)
 - Ries, Eric — "The Lean Startup" (build-measure-learn loop; prototype as experiment)
 - Cagan, Marty — "Inspired" (product discovery vs. product delivery)

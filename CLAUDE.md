@@ -17,21 +17,31 @@ A Markdown-only skill pack — no build system, no tests, no CI. Every artefact 
 
 ---
 
+## Skill Development
+
+- Version-control all command/skill files in the repo (not `~/.claude/commands/`)
+- Always include proper frontmatter on new skill files on first pass
+- Reference skill-creator best practices before creating or reviewing skills
+
+---
+
 ## Repo structure
 
 ```
-skills/
-  product/          PRODUCT_RULES.md + skill subdirs (idea-triage/, roadmap-shape/)
-  engineering/      eng-principles-universal.md, eng-principles-agentic.md + skill subdirs
-  using-this-pack/  meta-skill
+skills/             Flat layout — one dir per skill, each with SKILL.md
+                    (matches Claude Code plugin auto-discovery convention)
+rules/              Persistently-loaded rule files (PRODUCT_RULES.md, eng-principles-*.md)
 hooks/
   stop-the-line/    HOOK.md
-references/         Six standalone reference files cited by skills
+references/         Standalone reference files cited by skills
 docs/               Anatomy specs and authoring guidance (skill-anatomy.md, hook-anatomy.md, …)
 _briefs/            Author briefs (input artefacts, not shipped)
+.claude-plugin/     plugin.json — manifest for marketplace install
 ```
 
-Skills live at `skills/<pack>/<name>/SKILL.md`. Hooks at `hooks/<name>/HOOK.md`. References at `references/<name>.md`. Root rules files (`PRODUCT_RULES.md`, `eng-principles-*.md`) are flat files, not subdirectories.
+Skills live at `skills/<name>/SKILL.md`. Hooks at `hooks/<name>/HOOK.md`. References at `references/<name>.md`. Rule files (`PRODUCT_RULES.md`, `eng-principles-*.md`) live at `rules/<name>.md`.
+
+The flat skills layout matches the convention used by every other Claude Code plugin (verified across `addyosmani/agent-skills`, `claude-plugins-official/skill-creator`, etc.) — the plugin loader scans `<plugin_root>/skills/<name>/SKILL.md` and does not recurse into category subdirs. Product/engineering taxonomy is preserved in README tables, not in the filesystem.
 
 ---
 
@@ -68,9 +78,25 @@ No `Co-Authored-By` trailers. Push directly to main — no PRs unless owner asks
 
 ---
 
+## Planning & Triage
+
+- Run formal triage (idea-triage skill) on items before shaping roadmaps — do not freelance prioritization
+- When handing off to Ultraplan, complete the draft plan first; do not leave drafts incomplete
+- Explain non-obvious terminology (e.g., 'size-the-work rubric', 'appetite') when first introducing it
+
+---
+
+## Deployment & Verification
+
+- Always verify changes locally (tests + browser when applicable) before deploying to production
+- For Rails projects, prefer `bundle exec` invocations; do not suggest kamal/runner commands without confirming the project's deploy stack
+- When tests fail due to flakes (Geocoder 403, network), stub them rather than skipping verification
+
+---
+
 ## Key constraints
 
 - No stack-prescriptive content in skill prose. Skills are stack-agnostic.
 - No verbatim copy from `addyosmani/agent-skills`. Every artefact must declare its predecessor relation in frontmatter.
 - Voice must match the existing skills — direct, principle-named, no generic AI filler. Read two existing SKILL.md files before authoring a new one.
-- `skills/engineering/eng-principles-universal.md` is the canonical source for principle IDs cited in engineering skills. Read it before referencing any principle.
+- `rules/eng-principles-universal.md` is the canonical source for principle IDs cited in engineering skills. Read it before referencing any principle.

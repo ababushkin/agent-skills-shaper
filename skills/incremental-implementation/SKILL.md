@@ -87,8 +87,8 @@ This skill takes an accepted design doc and builds it in thin vertical slices, s
 
 - Accepted design doc at `docs/design-docs/<name>/design-doc.md`
 - Relevant ADRs referenced by the design doc
-- `skills/engineering/eng-principles-universal.md` (Rules B1, B2, B3, C1, C4, C8)
-- `skills/engineering/eng-principles-agentic.md` (P1, P3, P6)
+- `rules/eng-principles-universal.md` (Rules B1, B2, B3, C1, C4, C8)
+- `rules/eng-principles-agentic.md` (P1, P3, P6)
 - A working build environment
 
 ## Outputs
@@ -191,10 +191,10 @@ Path 2 is complete when:
 
 ## References
 
-- `skills/engineering/eng-principles-universal.md` — P4, P5, P8, Rule B1, B2, B3, C1, C4, C8
-- `skills/engineering/eng-principles-agentic.md` — P1, P3, P6
+- `rules/eng-principles-universal.md` — P4, P5, P8, Rule B1, B2, B3, C1, C4, C8
+- `rules/eng-principles-agentic.md` — P1, P3, P6
 - `hooks/stop-the-line/HOOK.md` — fires on PR open/update; catches signal-suppression moves (type suppressions, test skips, lint suppressions, deleted assertions) that agents reach for when a build or test is failing (Agentic P6)
-- `skills/engineering/design-doc/SKILL.md` — required input for Path 1
+- `skills/design-doc/SKILL.md` — required input for Path 1
 - Cockburn, Alistair — walking skeleton (Rule B2 source)
 - Humble & Farley — "Continuous Delivery" (small batches, trunk-based development)
 - Reinertsen, Don — "Principles of Product Development Flow" (P8 source)

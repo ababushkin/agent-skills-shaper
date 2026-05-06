@@ -4,6 +4,6 @@ argument-hint: "[plan path or pasted plan text]"
 disable-model-invocation: true
 ---
 
-@../../skills/engineering/plan-review/SKILL.md
+@../../skills/plan-review/SKILL.md
 
 Run the plan-review skill against the following plan: $ARGUMENTS

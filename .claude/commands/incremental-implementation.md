@@ -4,6 +4,6 @@ argument-hint: "[what to build]"
 disable-model-invocation: true
 ---
 
-@../../skills/engineering/incremental-implementation/SKILL.md
+@../../skills/incremental-implementation/SKILL.md
 
 Run the incremental-implementation skill. $ARGUMENTS

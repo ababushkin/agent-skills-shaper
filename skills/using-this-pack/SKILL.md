@@ -113,10 +113,10 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 
 ## References
 
-- `skills/product/PRODUCT_RULES.md` — the ten product principles and operational rules; load for any product decision or roadmap work
-- `skills/engineering/eng-principles-universal.md` — universal engineering principles; load for any design or build work
-- `skills/engineering/eng-principles-agentic.md` — agent-specific principles; load alongside universal for any agent-driven implementation
-- `skills/product/idea-triage/SKILL.md` — first product skill; intake gate for new ideas
-- `skills/product/app-calibrate/SKILL.md` — creates/updates baseline metrics file; run before idea-triage on improvement-type ideas
-- `skills/engineering/design-doc/SKILL.md` — first engineering skill; required before non-trivial implementation
+- `rules/PRODUCT_RULES.md` — the ten product principles and operational rules; load for any product decision or roadmap work
+- `rules/eng-principles-universal.md` — universal engineering principles; load for any design or build work
+- `rules/eng-principles-agentic.md` — agent-specific principles; load alongside universal for any agent-driven implementation
+- `skills/idea-triage/SKILL.md` — first product skill; intake gate for new ideas
+- `skills/app-calibrate/SKILL.md` — creates/updates baseline metrics file; run before idea-triage on improvement-type ideas
+- `skills/design-doc/SKILL.md` — first engineering skill; required before non-trivial implementation
 - `hooks/stop-the-line/HOOK.md` — fires on every PR; no manual invocation required

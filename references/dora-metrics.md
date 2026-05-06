@@ -6,8 +6,8 @@ description: >
   "Accelerate" (2018). Used in post-launch impact review and deploy skills.
 type: reference
 cited_by:
-  - skills/engineering/post-launch-impact-review/SKILL.md
-  - skills/engineering/deploy/SKILL.md
+  - skills/post-launch-impact-review/SKILL.md
+  - skills/deploy/SKILL.md
 ---
 
 # DORA Metrics
@@ -85,4 +85,4 @@ These questions connect the specific release to the team's delivery system healt
 
 - Forsgren, Humble, Kim — "Accelerate: The Science of Lean Software and DevOps" (2018)
 - DORA State of DevOps Report (annual)
-- `skills/engineering/eng-principles-universal.md` — Rule D4 (technical quality measured, not discussed)
+- `rules/eng-principles-universal.md` — Rule D4 (technical quality measured, not discussed)

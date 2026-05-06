@@ -193,8 +193,8 @@ The skill has run correctly when:
 
 ## References
 
-- `skills/engineering/eng-principles-universal.md` — Rule A1 (design doc trigger), Rule B1 (YAGNI per slice), Rule B2 (walking skeleton first), Rule C4 (dependencies before commitment)
-- `skills/engineering/eng-principles-agentic.md` — P3 (no drift from design doc)
-- `skills/engineering/design-doc/SKILL.md` — the upstream output that this skill consumes
-- `skills/engineering/incremental-implementation/SKILL.md` — the downstream skill that consumes this skill's output
+- `rules/eng-principles-universal.md` — Rule A1 (design doc trigger), Rule B1 (YAGNI per slice), Rule B2 (walking skeleton first), Rule C4 (dependencies before commitment)
+- `rules/eng-principles-agentic.md` — P3 (no drift from design doc)
+- `skills/design-doc/SKILL.md` — the upstream output that this skill consumes
+- `skills/incremental-implementation/SKILL.md` — the downstream skill that consumes this skill's output
 - Ryan Singer — "Shape Up" (appetite and scope as planning primitives)

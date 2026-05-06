@@ -6,8 +6,8 @@ description: >
   measurable problem statement targets.
 type: reference
 cited_by:
-  - skills/product/app-calibrate/SKILL.md
-  - skills/product/idea-triage/SKILL.md
+  - skills/app-calibrate/SKILL.md
+  - skills/idea-triage/SKILL.md
 ---
 
 # App context schema
@@ -77,5 +77,5 @@ Neither manual nor MCP-automated data replaces experimental data. The Extension 
 
 ## Sources
 
-- `skills/product/app-calibrate/SKILL.md` — skill that creates and updates this file
-- `skills/product/idea-triage/SKILL.md` — skill that reads this file at evidence interrogation and ICE scoring steps
+- `skills/app-calibrate/SKILL.md` — skill that creates and updates this file
+- `skills/idea-triage/SKILL.md` — skill that reads this file at evidence interrogation and ICE scoring steps

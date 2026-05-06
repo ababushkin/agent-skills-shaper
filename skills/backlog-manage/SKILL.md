@@ -173,6 +173,6 @@ The skill has run correctly when:
 
 ## References
 
-- `skills/product/PRODUCT_RULES.md` — A5 (KTLO carve-out), A6 (no parking lot), B6 (validation slot lifecycle), D2 (killing is normal), D5 (learning fed back to idea bank)
+- `rules/PRODUCT_RULES.md` — A5 (KTLO carve-out), A6 (no parking lot), B6 (validation slot lifecycle), D2 (killing is normal), D5 (learning fed back to idea bank)
 - `references/confidence-meter.md` — Gilad's scale for evidence quality scoring
 - `references/ice-scoring.md` — ICE = Impact × Confidence × Ease mechanics

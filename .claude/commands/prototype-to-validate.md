@@ -4,6 +4,6 @@ argument-hint: "[question to answer]"
 disable-model-invocation: true
 ---
 
-@../../skills/engineering/prototype-to-validate/SKILL.md
+@../../skills/prototype-to-validate/SKILL.md
 
 Run the prototype-to-validate skill. $ARGUMENTS

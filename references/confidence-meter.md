@@ -5,8 +5,8 @@ description: >
   Source: Itamar Gilad.
 type: reference
 cited_by:
-  - skills/product/idea-triage/SKILL.md
-  - skills/product/PRODUCT_RULES.md
+  - skills/idea-triage/SKILL.md
+  - rules/PRODUCT_RULES.md
 ---
 
 # Confidence Meter
@@ -37,7 +37,7 @@ The Confidence score feeds directly into the ICE Confidence dimension. The Gilad
 
 ## Routing implication
 
-In idea-triage, the Gilad score drives the routing gate: below 5 routes to a validation slot; at or above 5 routes to the idea bank as a build candidate. This document does not encode the routing logic — see `skills/product/idea-triage/SKILL.md` for the full routing workflow.
+In idea-triage, the Gilad score drives the routing gate: below 5 routes to a validation slot; at or above 5 routes to the idea bank as a build candidate. This document does not encode the routing logic — see `skills/idea-triage/SKILL.md` for the full routing workflow.
 
 ## Sources
 

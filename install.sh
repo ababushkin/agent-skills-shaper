@@ -31,14 +31,31 @@ for src in "${REPO_DIR}/.claude/commands/"*.md; do
   echo "Generated: ${dest}"
 done
 
-# 2. Add rule file references to ~/.claude/CLAUDE.md if not already present
+# 2. Add rule file references to ~/.claude/CLAUDE.md if not already present.
+#    Also strips stale refs from the pre-flatten layout
+#    (skills/engineering/eng-principles-*.md, skills/product/PRODUCT_RULES.md)
+#    so re-runners don't end up with broken @-includes.
 RULE_REFS=(
+  "@${REPO_DIR}/rules/PRODUCT_RULES.md"
+  "@${REPO_DIR}/rules/eng-principles-universal.md"
+  "@${REPO_DIR}/rules/eng-principles-agentic.md"
+)
+
+touch "${CLAUDE_MD}"
+
+# Strip stale refs from pre-flatten layout.
+STALE_PATTERNS=(
   "@${REPO_DIR}/skills/product/PRODUCT_RULES.md"
   "@${REPO_DIR}/skills/engineering/eng-principles-universal.md"
   "@${REPO_DIR}/skills/engineering/eng-principles-agentic.md"
 )
-
-touch "${CLAUDE_MD}"
+for stale in "${STALE_PATTERNS[@]}"; do
+  if grep -qF "${stale}" "${CLAUDE_MD}"; then
+    # Use sed with | as delimiter since paths contain /
+    sed -i '' "\|^${stale}\$|d" "${CLAUDE_MD}"
+    echo "Removed stale ref: ${stale}"
+  fi
+done
 
 for ref in "${RULE_REFS[@]}"; do
   if grep -qF "${ref}" "${CLAUDE_MD}"; then
@@ -46,6 +63,42 @@ for ref in "${RULE_REFS[@]}"; do
   else
     echo "${ref}" >> "${CLAUDE_MD}"
     echo "Added: ${ref}"
+  fi
+done
+
+# 3. Symlink each skill dir into ~/.claude/skills/ as pde-<name>
+#    Enables Claude Code's auto-discovery of model-invocable Skills.
+#    Symlinks (not generated files) are correct here — SKILL.md is loaded by
+#    the runtime through the symlink and doesn't use the relative @../../
+#    pattern that broke the commands/ wrappers above.
+SKILLS_DIR="${CLAUDE_DIR}/skills"
+mkdir -p "${SKILLS_DIR}"
+
+# Prune stale pde-* symlinks (target removed/renamed in the repo).
+for link in "${SKILLS_DIR}"/pde-*; do
+  [ -L "${link}" ] || continue
+  if [ ! -e "${link}" ]; then
+    echo "Pruning stale symlink: ${link}"
+    rm "${link}"
+  fi
+done
+
+# Create/refresh symlinks for skill dirs containing a SKILL.md.
+# This filter excludes non-skill workspace dirs (e.g. plan-review-workspace).
+for skill_dir in "${REPO_DIR}/skills/"*/; do
+  [ -f "${skill_dir}SKILL.md" ] || continue
+  name="$(basename "${skill_dir}")"
+  link="${SKILLS_DIR}/pde-${name}"
+  if [ -e "${link}" ] && [ ! -L "${link}" ]; then
+    echo "WARNING: ${link} exists and is not a symlink — skipping"
+    continue
+  fi
+  target="${skill_dir%/}"
+  if [ -L "${link}" ] && [ "$(readlink "${link}")" = "${target}" ]; then
+    echo "Already linked: ${link}"
+  else
+    ln -sfn "${target}" "${link}"
+    echo "Linked: ${link} -> ${target}"
   fi
 done
 
@@ -62,6 +115,12 @@ echo "  /pde:incremental-implementation  Build in thin vertical slices"
 echo "  /pde:plan-review           Review a plan/spec/design before approval"
 echo "  /pde:stop-the-line         Scan a diff for quality red flags"
 echo "  /pde:backlog-manage        Review and curate the idea bank"
+echo ""
+echo "Auto-invocable skills (model-triggered, namespaced as pde-<name>):"
+for link in "${SKILLS_DIR}"/pde-*; do
+  [ -L "${link}" ] || continue
+  echo "  $(basename "${link}")"
+done
 echo ""
 echo "To install via Claude Code marketplace instead:"
 echo "  /plugin install github@ababushkin/pde-skills"

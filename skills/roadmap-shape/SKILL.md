@@ -292,7 +292,7 @@ The skill has run correctly when:
 
 ## References
 
-- `skills/product/PRODUCT_RULES.md` — A1 (time horizons), A2 (problem framing), A3 (success criteria), A4 (solutions held loosely), A6 (no parking lot), B1–B7 (prioritisation), C1 (appetite), C3 (explicit capacity allocation)
+- `rules/PRODUCT_RULES.md` — A1 (time horizons), A2 (problem framing), A3 (success criteria), A4 (solutions held loosely), A6 (no parking lot), B1–B7 (prioritisation), C1 (appetite), C3 (explicit capacity allocation)
 - `references/portfolio-themes.md` — Doshi's seven themes, capacity allocation patterns, anti-patterns
 - `references/confidence-meter.md` — Gilad's scale for evidence quality scoring
 - `references/ice-scoring.md` — ICE = Impact × Confidence × Ease mechanics

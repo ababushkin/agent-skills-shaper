@@ -349,9 +349,9 @@ The skill carries deliberate limitations. Each one has a measurable trigger that
 
 ## References
 
-- `skills/engineering/eng-principles-agentic.md` — P3, P4, P5, P6, P7
-- `skills/engineering/eng-principles-universal.md` — P2, P3, P4, P6, P9, Rule A2, Rule A6, Rule B3, Rule B7
-- `skills/product/PRODUCT_RULES.md` — P1, P4
+- `rules/eng-principles-agentic.md` — P3, P4, P5, P6, P7
+- `rules/eng-principles-universal.md` — P2, P3, P4, P6, P9, Rule A2, Rule A6, Rule B3, Rule B7
+- `rules/PRODUCT_RULES.md` — P1, P4
 - `references/confidence-meter.md` — Gilad scale used in B3
 - `phase4-devils-advocate` (internal/ai-thesis-research) — predecessor; verdict format and falsifying-condition discipline
 - Klein, Gary — "Performing a Project Premortem" (HBR 2007) — B8 source

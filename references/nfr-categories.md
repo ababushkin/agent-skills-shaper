@@ -6,7 +6,7 @@ description: >
   section of a design doc.
 type: reference
 cited_by:
-  - skills/engineering/design-doc/SKILL.md
+  - skills/design-doc/SKILL.md
 ---
 
 # NFR Categories
@@ -109,8 +109,8 @@ An NFR entry without a fitness function is incomplete — it names a target no o
 
 ## Sources
 
-- Rule A4 in `skills/engineering/eng-principles-universal.md` — NFRs specified up front as measurable targets
-- Rule A5 in `skills/engineering/eng-principles-universal.md` — fitness functions make A4 targets executable
+- Rule A4 in `rules/eng-principles-universal.md` — NFRs specified up front as measurable targets
+- Rule A5 in `rules/eng-principles-universal.md` — fitness functions make A4 targets executable
 - Ford, Parsons, Kua — "Building Evolutionary Architectures" (fitness functions)
 - Nygard, Michael — "Release It!" (operational NFRs; failure modes)
-- `skills/engineering/design-doc/SKILL.md` — Constraints section where NFRs are documented
+- `skills/design-doc/SKILL.md` — Constraints section where NFRs are documented

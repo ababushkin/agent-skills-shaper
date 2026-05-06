@@ -4,6 +4,6 @@ argument-hint: "[operation or context]"
 disable-model-invocation: true
 ---
 
-@../../skills/product/backlog-manage/SKILL.md
+@../../skills/backlog-manage/SKILL.md
 
 Run the backlog-manage skill. $ARGUMENTS

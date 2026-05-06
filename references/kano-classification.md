@@ -5,7 +5,7 @@ description: >
   Source: Noriaki Kano, 1984. Used in idea-triage to set scope expectations and detect delight traps.
 type: reference
 cited_by:
-  - skills/product/idea-triage/SKILL.md
+  - skills/idea-triage/SKILL.md
 ---
 
 # Kano Classification
@@ -44,4 +44,4 @@ Kano categories are not permanent. Excitement features decay to Performance as u
 
 - Noriaki Kano, "Attractive Quality and Must-Be Quality" (1984)
 - Marty Cagan, "Inspired: How to Create Tech Products Customers Love"
-- `skills/product/idea-triage/SKILL.md` — routing workflow that applies Kano categories at triage
+- `skills/idea-triage/SKILL.md` — routing workflow that applies Kano categories at triage

@@ -21,14 +21,14 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 
 | You're doing this | Use this |
 |---|---|
-| An idea arrives — worth pursuing? | [`idea-triage`](skills/product/idea-triage/SKILL.md) |
-| Idea bank needs curation — promote, kill, or update confidence | [`backlog-manage`](skills/product/backlog-manage/SKILL.md) |
-| Planning cycle — what to build next? | [`roadmap-shape`](skills/product/roadmap-shape/SKILL.md) |
-| Idea approved — does this feel right? | [`prototype-to-validate`](skills/engineering/prototype-to-validate/SKILL.md) |
-| Significant engineering work — how to build it? | [`design-doc`](skills/engineering/design-doc/SKILL.md) |
-| Have a design — break it into tasks | [`planning-and-task-breakdown`](skills/engineering/planning-and-task-breakdown/SKILL.md) |
-| Building anything non-trivial | [`incremental-implementation`](skills/engineering/incremental-implementation/SKILL.md) |
-| Fixing a bug | [`incremental-implementation`](skills/engineering/incremental-implementation/SKILL.md) bug-fix sub-workflow |
+| An idea arrives — worth pursuing? | [`idea-triage`](skills/idea-triage/SKILL.md) |
+| Idea bank needs curation — promote, kill, or update confidence | [`backlog-manage`](skills/backlog-manage/SKILL.md) |
+| Planning cycle — what to build next? | [`roadmap-shape`](skills/roadmap-shape/SKILL.md) |
+| Idea approved — does this feel right? | [`prototype-to-validate`](skills/prototype-to-validate/SKILL.md) |
+| Significant engineering work — how to build it? | [`design-doc`](skills/design-doc/SKILL.md) |
+| Have a design — break it into tasks | [`planning-and-task-breakdown`](skills/planning-and-task-breakdown/SKILL.md) |
+| Building anything non-trivial | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) |
+| Fixing a bug | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) bug-fix sub-workflow |
 | Agent says it's done | [`stop-the-line`](hooks/stop-the-line/HOOK.md) fires automatically |
 
 ---
@@ -39,21 +39,21 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 
 | Skill | What it does | Use when |
 |---|---|---|
-| [PRODUCT_RULES.md](skills/product/PRODUCT_RULES.md) | Rule set covering idea filtering (P2–P4), roadmap discipline (B1–B5), and capacity allocation (C1–C3). | Load persistently for product work |
-| [idea-triage](skills/product/idea-triage/SKILL.md) | Interrogates incoming ideas through confidence gates, ICE scoring, and Kano classification. Routes to idea bank (Confidence ≥ 5) or validation slot (Confidence < 5). | Any proposal arrives |
-| [backlog-manage](skills/product/backlog-manage/SKILL.md) | Maintains the idea bank between triage and planning. Promotes validated items, kills stale ones, updates confidence scores with new evidence, and tracks KTLO work. Run before `roadmap-shape` so it reads a clean input. | Idea bank needs curation; validation result arrived; adding KTLO work; feeding post-launch evidence back |
-| [roadmap-shape](skills/product/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
+| [PRODUCT_RULES.md](rules/PRODUCT_RULES.md) | Rule set covering idea filtering (P2–P4), roadmap discipline (B1–B5), and capacity allocation (C1–C3). | Load persistently for product work |
+| [idea-triage](skills/idea-triage/SKILL.md) | Interrogates incoming ideas through confidence gates, ICE scoring, and Kano classification. Routes to idea bank (Confidence ≥ 5) or validation slot (Confidence < 5). | Any proposal arrives |
+| [backlog-manage](skills/backlog-manage/SKILL.md) | Maintains the idea bank between triage and planning. Promotes validated items, kills stale ones, updates confidence scores with new evidence, and tracks KTLO work. Run before `roadmap-shape` so it reads a clean input. | Idea bank needs curation; validation result arrived; adding KTLO work; feeding post-launch evidence back |
+| [roadmap-shape](skills/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
 
 ### Engineering
 
 | Skill | What it does | Use when |
 |---|---|---|
-| [eng-principles-universal.md](skills/engineering/eng-principles-universal.md) | Rule set: design before build (A1–A5), small batch (B1), explicit contracts (C1–C3), technical quality (D1–D4). | Load persistently for engineering work |
-| [eng-principles-agentic.md](skills/engineering/eng-principles-agentic.md) | Agentic-specific constraints: scope discipline, no speculative refactoring, confirmation before destructive action. | Load alongside universal for agent-driven work |
-| [prototype-to-validate](skills/engineering/prototype-to-validate/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
-| [planning-and-task-breakdown](skills/engineering/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
-| [design-doc](skills/engineering/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
-| [incremental-implementation](skills/engineering/incremental-implementation/SKILL.md) | Thin vertical slices — implement, test, verify, commit. Walking skeleton first. Bug-fix sub-workflow for KTLO work. | Building anything touching more than one file |
+| [eng-principles-universal.md](rules/eng-principles-universal.md) | Rule set: design before build (A1–A5), small batch (B1), explicit contracts (C1–C3), technical quality (D1–D4). | Load persistently for engineering work |
+| [eng-principles-agentic.md](rules/eng-principles-agentic.md) | Agentic-specific constraints: scope discipline, no speculative refactoring, confirmation before destructive action. | Load alongside universal for agent-driven work |
+| [prototype-to-validate](skills/prototype-to-validate/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
+| [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
+| [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
+| [incremental-implementation](skills/incremental-implementation/SKILL.md) | Thin vertical slices — implement, test, verify, commit. Walking skeleton first. Bug-fix sub-workflow for KTLO work. | Building anything touching more than one file |
 
 ---
 
@@ -84,26 +84,50 @@ Short reference files cited by skills. Load on demand.
 
 ## How to install
 
-Skills are plain Markdown. Load them via `AGENTS.md`, `CLAUDE.md`, or your agent's system-prompt mechanism.
+### Claude Code — marketplace install (recommended)
 
-**Claude Code — add `@` references to your project's `AGENTS.md`:**
+Install the plugin directly from GitHub:
 
 ```
-# Rule files — load persistently
-@path/to/pde-skills/skills/product/PRODUCT_RULES.md
-@path/to/pde-skills/skills/engineering/eng-principles-universal.md
-@path/to/pde-skills/skills/engineering/eng-principles-agentic.md
-
-# Skills — load situationally
-# @path/to/pde-skills/skills/product/idea-triage/SKILL.md
-# @path/to/pde-skills/skills/engineering/design-doc/SKILL.md
+/plugin install github@ababushkin/pde-skills
 ```
 
-Load rule files persistently. Load skills situationally — only the ones relevant to the current session. Loading all skills at once wastes context.
+This gives you:
 
-**Cursor, Gemini CLI, Windsurf, other agents:**
+- The 9 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
+- The 10 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
 
-Paste the content of the relevant `SKILL.md` or rule file into your agent's rules/instructions file for the project.
+Restart Claude Code after install. To load the rule files persistently, add three `@` references to your `~/.claude/CLAUDE.md`:
+
+```
+@/path/to/pde-skills/rules/PRODUCT_RULES.md
+@/path/to/pde-skills/rules/eng-principles-universal.md
+@/path/to/pde-skills/rules/eng-principles-agentic.md
+```
+
+Where `/path/to/pde-skills` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
+
+### Claude Code — local-dev install (`install.sh`)
+
+If you've cloned the repo and want edits to propagate live without re-installing the plugin, run:
+
+```
+git clone https://github.com/ababushkin/pde-skills.git
+cd pde-skills
+./install.sh
+```
+
+The script:
+
+1. Generates wrapper command files in `~/.claude/commands/pde/` (slash commands).
+2. Symlinks each skill dir into `~/.claude/skills/pde-<name>` (auto-invocable Skills, edits propagate live).
+3. Appends `@`-refs for the three rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old layout refs are migrated automatically).
+
+Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
+
+### Other agents (Cursor, Gemini CLI, Windsurf, …)
+
+Skills are plain Markdown. Paste the content of the relevant `rules/*.md` or `skills/<name>/SKILL.md` into your agent's rules/instructions file for the project. Load rule files persistently; load skills situationally — loading all of them at once wastes context.
 
 ---
 

@@ -93,7 +93,7 @@ If a trigger is ambiguous, default to writing the doc. A short, fast doc costs l
 - Known constraints — functional and non-functional
 - A rough scope estimate that suggests at least one Rule A1 trigger fires
 - Prior design docs and ADRs for related capabilities (loaded per Agentic P1)
-- Access to `skills/engineering/eng-principles-universal.md` (Rules A1, A2, A4, A5, A6, B2, B3)
+- Access to `rules/eng-principles-universal.md` (Rules A1, A2, A4, A5, A6, B2, B3)
 
 ## Outputs
 
@@ -228,8 +228,8 @@ The design doc passes review when:
 
 ## References
 
-- `skills/engineering/eng-principles-universal.md` — P2, Rule A1, A2, A4, A5, A6, B2, B3
-- `skills/engineering/eng-principles-agentic.md` — P1, P3, P5
+- `rules/eng-principles-universal.md` — P2, Rule A1, A2, A4, A5, A6, B2, B3
+- `rules/eng-principles-agentic.md` — P1, P3, P5
 - Larson, Will — "Staff Engineer" (trigger conditions for design docs)
 - Nygard, Michael — "Release It!" (operability; ADR format)
 - Cockburn, Alistair — walking skeleton (Rule B2 source)

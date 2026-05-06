@@ -5,8 +5,8 @@ description: >
   Used for prioritising validated hypotheses.
 type: reference
 cited_by:
-  - skills/product/idea-triage/SKILL.md
-  - skills/product/PRODUCT_RULES.md
+  - skills/idea-triage/SKILL.md
+  - rules/PRODUCT_RULES.md
 ---
 
 # ICE scoring

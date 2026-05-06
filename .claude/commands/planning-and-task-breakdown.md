@@ -4,6 +4,6 @@ argument-hint: "[design doc or spec]"
 disable-model-invocation: true
 ---
 
-@../../skills/engineering/planning-and-task-breakdown/SKILL.md
+@../../skills/planning-and-task-breakdown/SKILL.md
 
 Run the planning-and-task-breakdown skill for the following: $ARGUMENTS

@@ -5,7 +5,7 @@ description: >
   Source: Shreyas Doshi. Used in roadmap-shape and capacity allocation under Rule B3.
 type: reference
 cited_by:
-  - skills/product/roadmap-shape/SKILL.md
+  - skills/roadmap-shape/SKILL.md
 ---
 
 # Portfolio Themes
@@ -49,5 +49,5 @@ At each planning cycle, the explicit commitment is: what percentage of capacity 
 ## Sources
 
 - Shreyas Doshi — portfolio themes framework
-- `skills/product/PRODUCT_RULES.md` — Rule B3 (classify items by portfolio theme; explicit allocation each cycle)
-- `skills/product/PRODUCT_RULES.md` — Rule C3 (capacity allocation explicit, not implicit)
+- `rules/PRODUCT_RULES.md` — Rule B3 (classify items by portfolio theme; explicit allocation each cycle)
+- `rules/PRODUCT_RULES.md` — Rule C3 (capacity allocation explicit, not implicit)

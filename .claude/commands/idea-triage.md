@@ -4,6 +4,6 @@ argument-hint: "[idea description]"
 disable-model-invocation: true
 ---
 
-@../../skills/product/idea-triage/SKILL.md
+@../../skills/idea-triage/SKILL.md
 
 Run the idea-triage skill on the following idea: $ARGUMENTS

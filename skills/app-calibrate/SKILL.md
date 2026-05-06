@@ -151,5 +151,5 @@ The skill has run correctly when:
 ## References
 
 - `references/app-context-schema.md` — schema definition, validity rules, and sourcing calibration
-- `skills/product/idea-triage/SKILL.md` — downstream consumer of this file
-- `skills/product/PRODUCT_RULES.md` — P4, B2, D5
+- `skills/idea-triage/SKILL.md` — downstream consumer of this file
+- `rules/PRODUCT_RULES.md` — P4, B2, D5

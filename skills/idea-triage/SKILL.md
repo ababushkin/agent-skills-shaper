@@ -210,11 +210,11 @@ The skill has run correctly when:
 
 ## References
 
-- `skills/product/PRODUCT_RULES.md` — P2, P3, P4, A2, A5, A6, B2, B6 (direct trace)
+- `rules/PRODUCT_RULES.md` — P2, P3, P4, A2, A5, A6, B2, B6 (direct trace)
 - `references/confidence-meter.md` — Gilad's Confidence Meter calibration scale
 - `references/ice-scoring.md` — ICE scoring mechanics and worked examples
 - `references/app-context-schema.md` — baseline data schema, validity rules, and sourcing calibration
-- `skills/product/app-calibrate/SKILL.md` — app context creation and refresh
+- `skills/app-calibrate/SKILL.md` — app context creation and refresh
 - Itamar Gilad, "GIST Planning" and "Confidence Meter" (external)
 - Marty Cagan, "Inspired" — problem-vs-solution framing, SVPG
 - Janna Bastow, Now-Next-Later roadmap — A6 idea bank / roadmap distinction
