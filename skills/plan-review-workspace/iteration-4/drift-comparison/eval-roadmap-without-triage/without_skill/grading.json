@@ -1,0 +1,19 @@
+{
+  "eval_id": 1,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)", "verdict": "PASS", "evidence": "Section 7: 'The problem space is \"complex,\" not \"complicated\"' and 'cause-and-effect is genuinely emergent'"},
+    {"text": "Review selects Full tier (quarter-long appetite, multiple themes)", "verdict": "FAIL", "evidence": "No explicit tier naming (Fast-track / Standard / Full) anywhere in the review."},
+    {"text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes", "verdict": "PASS", "evidence": "Section 1: 'Themes are framed as solutions, not problems'; Section 2: 'No measurable success criteria... None of the three themes has a target metric.'"},
+    {"text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)", "verdict": "PASS", "evidence": "Section 4: 'No triage / discovery work named'; 'A rewrite is an enormous appetite for an undiagnosed issue.'"},
+    {"text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal", "verdict": "PASS", "evidence": "Section 3: 'Shareable shortlist — confidence ~0.5. \"We keep getting requests\" is anecdotal.'"},
+    {"text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption", "verdict": "PASS", "evidence": "Section 3: 'Using a rough confidence scale (Gilad-style, 0.1 = opinion, 0.5 = anecdotal, 2-3 = survey/analytics, 5+ = experimental evidence)' with explicit ~0.5 scores assigned."},
+    {"text": "Final recommendation is REVISE", "verdict": "PASS", "evidence": "TL;DR: 'Recommendation: REVISE before approving.'"},
+    {"text": "Review recommends running idea-triage on themes before allocation", "verdict": "PASS", "evidence": "Line 79: 'Run formal triage on the three themes (problem framing, ICE/confidence scoring, kill criteria).'"},
+    {"text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)", "verdict": "PASS", "evidence": "Explicit 'Falsifying conditions' section: 'Shortlist: you have a written tally of >50 distinct requests, segmented, showing the same underlying job-to-be-done...'"}
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "score": "8/9"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "eval_id": 2,
+  "config": "without_skill",
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "met": true,
+      "evidence": "Review states 'This is a Complicated-tier change (in Cynefin terms)' and contrasts with Chaotic/Complex."
+    },
+    {
+      "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "met": true,
+      "evidence": "Review explicitly states 'this should be a Quick review, not a Full architectural review' and notes two-way door / reversibility."
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "met": true,
+      "evidence": "Review explicitly: 'Scope (B2): SUSTAINED. The unused claim is unverified.'"
+    },
+    {
+      "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "met": true,
+      "evidence": "Review provides explicit ripgrep command with PascalCase/kebab-case/snake_case variants, plus 6 additional concrete checks (Rails templates, registry, manifest, tests, runtime, git log)."
+    },
+    {
+      "text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "met": true,
+      "evidence": "Recommendation section: '**REVISE.**' with conditional approval pending verification step."
+    },
+    {
+      "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "met": true,
+      "evidence": "Closing 'What this review is NOT' section explicitly disclaims Full architectural review as over-review."
+    }
+  ],
+  "summary": {
+    "total": 6,
+    "met": 6,
+    "score_pct": 100,
+    "notes": "Baseline (no skill) review hit all six assertions. Vue/Rails framework specifics (global registration, Rails template mounting via data-component, dynamic imports) were addressed concretely. Risk: self-grade may be generous on assertion 1 (Cynefin term used but not deeply justified) and assertion 3 (used B2 label without skill context — coincidental match)."
+  }
+}

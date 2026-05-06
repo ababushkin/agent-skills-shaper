@@ -1,0 +1,14 @@
+{
+  "eval_id": 4,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "PASS", "evidence": "**Cynefin domain**: Complicated."},
+    {"text": "Review selects Full tier (production data + one-way door auto-fires)", "verdict": "PASS", "evidence": "**Tier**: Full — selected because the plan touches production data + schema migration (auto-select condition)."},
+    {"text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named", "verdict": "PASS", "evidence": "B5 table rows all SUSTAINED; 'No alternatives are named. No ADR.'"},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom", "verdict": "PASS", "evidence": "Metrics: absent... Rollback path: absent... Capacity headroom: absent... Operability absence on a Full-tier plan blocks APPROVE per Step 9."},
+    {"text": "Review explicitly names rollback path as missing", "verdict": "PASS", "evidence": "**Rollback path**: absent."},
+    {"text": "Review explicitly names backfill progress metrics as missing", "verdict": "PASS", "evidence": "No migration-progress metric, no backfill-rows-completed metric"},
+    {"text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)", "verdict": "PASS", "evidence": "**REVISE.**"},
+    {"text": "At least one bucket has a named falsifying condition", "verdict": "PASS", "evidence": "B1 Falsifying condition: owner produces a written problem statement..."}
+  ],
+  "summary": {"passed": 8, "total": 8, "score": "8/8"}
+}

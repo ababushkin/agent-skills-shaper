@@ -1,0 +1,16 @@
+{
+  "eval_id": 3,
+  "config": "without_skill",
+  "run": 1,
+  "assertions_total": 6,
+  "assertions_passed": 6,
+  "score_pct": 100,
+  "assertions": [
+    {"id": 1, "text": "Review names Cynefin domain as Clear", "pass": true, "evidence": "Cynefin section: 'Clear (Obvious)'"},
+    {"id": 2, "text": "Review selects Quick tier (sub-hour appetite, fully reversible)", "pass": true, "evidence": "Tier section: 'Quick. Sub-hour appetite, fully reversible'"},
+    {"id": 3, "text": "Review does not invent concerns; bundle update finding downgraded to recommendation under Quick-tier reversibility carve-out", "pass": true, "evidence": "bundle update --conservative listed in Recommendations (non-blocking), not as a blocker; explicit 'What I deliberately did not flag' section"},
+    {"id": 4, "text": "B8 pre-mortem names rubocop rule changes / CI breakage as low-likelihood failure mode with revert as kill-switch", "pass": true, "evidence": "Pre-mortem item 1: new cop rules → CI red, kill-switch: revert the bump"},
+    {"id": 5, "text": "Final recommendation is APPROVE (may include named recommendation like bundle update --conservative)", "pass": true, "evidence": "Verdict: APPROVE; recommendation includes 'bundle update rubocop --conservative'"},
+    {"id": 6, "text": "Review length is proportionate — does not bloat into Full-tier output", "pass": true, "evidence": "~55 lines, concise sections, no spec/ADR/observability bloat"}
+  ]
+}

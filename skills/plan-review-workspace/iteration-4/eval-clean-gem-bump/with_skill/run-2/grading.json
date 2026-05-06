@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Clear", "verdict": "FAIL", "evidence": "No explicit mention of 'Clear' or Cynefin domain. Only mentions 'Fast-track gate fired' and 'KTLO/minor-version class' but does not name Cynefin Clear explicitly."},
+    {"text": "Review selects Quick tier (sub-hour appetite, fully reversible)", "verdict": "FAIL", "evidence": "Says 'Fast-track gate fired' and notes 'fully reversible' and '≤1 day (stated 30 min)' but does not explicitly name 'Quick tier'."},
+    {"text": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding is downgraded to a recommendation under the Quick-tier reversibility carve-out", "verdict": "PASS", "evidence": "Review is proportionate — only sanity checks and B8. Findings about 'bundle update --conservative rubocop' are framed as recommendations/sanity checks, not blocking sustained findings. Verdict remains APPROVE."},
+    {"text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch", "verdict": "PASS", "evidence": "'Top failure mode: rubocop 1.65 introduces new default cops or stricter rules that flag existing code, blocking subsequent commits via the lint gate. Kill-switch: `git revert` the bump commit'."},
+    {"text": "Final recommendation is APPROVE", "verdict": "PASS", "evidence": "'## Verdict: APPROVE' explicitly stated, with named recommendation 'bundle update --conservative rubocop'."},
+    {"text": "Review length is proportionate — does not bloat into Full-tier output", "verdict": "PASS", "evidence": "Review is ~14 lines total — verdict, 3 sanity checks, and a one-line pre-mortem. No Full-tier bucket-by-bucket walk."}
+  ],
+  "summary": {"passed": 4, "total": 6, "score": "4/6"}
+}

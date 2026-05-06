@@ -1,0 +1,10 @@
+{
+  "reviews": [
+    {
+      "run_id": "eval-clean-gem-bump-with_skill-run-1",
+      "feedback": "basic KTLO that's low risk and easily reversible doesn't need a problem statement up front, most of these will also be automated so this should be added to the skill set as an initial skip so that it doesn't do heavy evaluation and waste unnecessary tokens",
+      "timestamp": "2026-05-05T02:57:00.576Z"
+    }
+  ],
+  "status": "in_progress"
+}

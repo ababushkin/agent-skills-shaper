@@ -1,0 +1,15 @@
+{
+  "eval_id": 1,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)", "verdict": "FAIL", "evidence": "No mention of Cynefin or 'Complex' domain anywhere in the review."},
+    {"text": "Review selects Full tier (quarter-long appetite, multiple themes)", "verdict": "FAIL", "evidence": "No tier selection (Full/Fast-track/etc.) is named in the review."},
+    {"text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes", "verdict": "FAIL", "evidence": "Section 1 critiques framing but no explicit bucket label or SUSTAINED/PARTIAL verdict given."},
+    {"text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)", "verdict": "FAIL", "evidence": "No explicit B2 bucket verdict; triage record not cited."},
+    {"text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal", "verdict": "FAIL", "evidence": "Section 2 discusses thin evidence but no explicit B3 bucket verdict."},
+    {"text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption", "verdict": "FAIL", "evidence": "No numeric confidence score (0.1-10) appears in the review."},
+    {"text": "Final recommendation is REVISE", "verdict": "PASS", "evidence": "'Recommendation: Do not approve as-is.' and 'A 30-minute reshape on the items above will produce a plan worth committing to' — equivalent to REVISE."},
+    {"text": "Review recommends running idea-triage on themes before allocation", "verdict": "FAIL", "evidence": "No mention of 'idea-triage' skill or running triage before allocation."},
+    {"text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)", "verdict": "FAIL", "evidence": "No bucket-labeled falsifying conditions; kill conditions are listed as questions but not tied to a bucket verdict."}
+  ],
+  "summary": {"passed": 1, "total": 9, "score": "1/9"}
+}

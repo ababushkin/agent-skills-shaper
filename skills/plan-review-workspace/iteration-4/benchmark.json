@@ -1,0 +1,341 @@
+{
+  "iteration": 4,
+  "model": "claude-opus-4-7",
+  "n_per_cell": 3,
+  "grader": "isolated agent, blinded to condition, strict bucket-evidence rules",
+  "summary": {
+    "with_skill": {
+      "pass_rate_mean": 0.9074074074074074,
+      "pass_rate_sd": 0.006415002990995819,
+      "run_means": [
+        0.9111111111111111,
+        0.9,
+        0.9111111111111111
+      ]
+    },
+    "without_skill": {
+      "pass_rate_mean": 0.36441798941798936,
+      "pass_rate_sd": 0.04206598774666869,
+      "run_means": [
+        0.31626984126984126,
+        0.39404761904761904,
+        0.3829365079365079
+      ]
+    },
+    "delta": 0.5429894179894181
+  },
+  "per_eval": [
+    {
+      "eval": "eval-roadmap-without-triage",
+      "with_skill": {
+        "mean": 0.9259259259259259,
+        "sd": 0.06415002990995845
+      },
+      "without_skill": {
+        "mean": 0.07407407407407407,
+        "sd": 0.06415002990995841
+      }
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "with_skill": {
+        "mean": 0.888888888888889,
+        "sd": 0.0962250448649376
+      },
+      "without_skill": {
+        "mean": 0.4444444444444444,
+        "sd": 0.09622504486493764
+      }
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "with_skill": {
+        "mean": 0.7222222222222222,
+        "sd": 0.09622504486493767
+      },
+      "without_skill": {
+        "mean": 0.5,
+        "sd": 0.28867513459481287
+      }
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "with_skill": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "without_skill": {
+        "mean": 0.375,
+        "sd": 0.0
+      }
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "with_skill": {
+        "mean": 1.0,
+        "sd": 0.0
+      },
+      "without_skill": {
+        "mean": 0.42857142857142855,
+        "sd": 0.0
+      }
+    }
+  ],
+  "drift_comparison": {
+    "with_skill": {
+      "iter3_self_grade_mean": 1.0,
+      "iter4_isolated_grade_mean": 1.0,
+      "drift": 0.0
+    },
+    "without_skill": {
+      "iter3_self_grade_mean": 0.9206349206349206,
+      "iter4_isolated_grade_mean": 0.8634920634920634,
+      "drift": -0.05714285714285716
+    },
+    "iter3_self_graded_delta": 0.07936507936507942,
+    "iter3_isolated_graded_delta": 0.13650793650793658,
+    "iter4_isolated_graded_delta": 0.5429894179894181
+  },
+  "raw_iter4": [
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "with_skill",
+      "run": 1,
+      "passed": 8,
+      "total": 9,
+      "pass_rate": 0.8888888888888888
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "with_skill",
+      "run": 2,
+      "passed": 9,
+      "total": 9,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "with_skill",
+      "run": 3,
+      "passed": 8,
+      "total": 9,
+      "pass_rate": 0.8888888888888888
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "without_skill",
+      "run": 1,
+      "passed": 1,
+      "total": 9,
+      "pass_rate": 0.1111111111111111
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "without_skill",
+      "run": 2,
+      "passed": 0,
+      "total": 9,
+      "pass_rate": 0.0
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "without_skill",
+      "run": 3,
+      "passed": 1,
+      "total": 9,
+      "pass_rate": 0.1111111111111111
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "with_skill",
+      "run": 1,
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "with_skill",
+      "run": 2,
+      "passed": 5,
+      "total": 6,
+      "pass_rate": 0.8333333333333334
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "with_skill",
+      "run": 3,
+      "passed": 5,
+      "total": 6,
+      "pass_rate": 0.8333333333333334
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "without_skill",
+      "run": 1,
+      "passed": 3,
+      "total": 6,
+      "pass_rate": 0.5
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "without_skill",
+      "run": 2,
+      "passed": 3,
+      "total": 6,
+      "pass_rate": 0.5
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "without_skill",
+      "run": 3,
+      "passed": 2,
+      "total": 6,
+      "pass_rate": 0.3333333333333333
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "with_skill",
+      "run": 1,
+      "passed": 4,
+      "total": 6,
+      "pass_rate": 0.6666666666666666
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "with_skill",
+      "run": 2,
+      "passed": 4,
+      "total": 6,
+      "pass_rate": 0.6666666666666666
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "with_skill",
+      "run": 3,
+      "passed": 5,
+      "total": 6,
+      "pass_rate": 0.8333333333333334
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "without_skill",
+      "run": 1,
+      "passed": 1,
+      "total": 6,
+      "pass_rate": 0.16666666666666666
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "without_skill",
+      "run": 2,
+      "passed": 4,
+      "total": 6,
+      "pass_rate": 0.6666666666666666
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "without_skill",
+      "run": 3,
+      "passed": 4,
+      "total": 6,
+      "pass_rate": 0.6666666666666666
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "with_skill",
+      "run": 1,
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "with_skill",
+      "run": 2,
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "with_skill",
+      "run": 3,
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "without_skill",
+      "run": 1,
+      "passed": 3,
+      "total": 8,
+      "pass_rate": 0.375
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "without_skill",
+      "run": 2,
+      "passed": 3,
+      "total": 8,
+      "pass_rate": 0.375
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "without_skill",
+      "run": 3,
+      "passed": 3,
+      "total": 8,
+      "pass_rate": 0.375
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "with_skill",
+      "run": 1,
+      "passed": 7,
+      "total": 7,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "with_skill",
+      "run": 2,
+      "passed": 7,
+      "total": 7,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "with_skill",
+      "run": 3,
+      "passed": 7,
+      "total": 7,
+      "pass_rate": 1.0
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "without_skill",
+      "run": 1,
+      "passed": 3,
+      "total": 7,
+      "pass_rate": 0.42857142857142855
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "without_skill",
+      "run": 2,
+      "passed": 3,
+      "total": 7,
+      "pass_rate": 0.42857142857142855
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "without_skill",
+      "run": 3,
+      "passed": 3,
+      "total": 7,
+      "pass_rate": 0.42857142857142855
+    }
+  ]
+}

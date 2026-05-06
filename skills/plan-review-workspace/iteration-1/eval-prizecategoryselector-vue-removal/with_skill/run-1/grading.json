@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "passed": true,
+      "evidence": "'Cynefin domain: Complicated. Removing dead code is a knowable-with-expertise problem...'"
+    },
+    {
+      "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "passed": true,
+      "evidence": "'Tier: Quick — selected because appetite is ≤1 week, no explicit one-way doors flagged...Quick runs B0, B1, B2, B3, and a short B8.'"
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "passed": true,
+      "evidence": "B2 table contains six rows, five SUSTAINED and one PARTIAL, including: 'Scope of unused — is it (a) zero imports... SUSTAINED' — directly attacks the unverified 'unused' claim."
+    },
+    {
+      "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "passed": true,
+      "evidence": "'rg \"PrizeCategorySelector\" --type-add tmpl:*.{erb,slim,haml} -t js -t ts -t vue -t tmpl -t rb' and 'grep -r PrizeCategorySelector app/views/ app/components/ app/helpers/'"
+    },
+    {
+      "text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "passed": true,
+      "evidence": "'Recommendation: REVISE — the plan is solution-led, scope-vague, and rests on an unevidenced \"unused\" claim.'"
+    },
+    {
+      "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "passed": true,
+      "evidence": "B4, B5, B6, B7 all marked 'Skipped — Quick tier' with brief notes only; tier remains Quick throughout."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 0,
+    "total": 6,
+    "pass_rate": 1.0
+  }
+}

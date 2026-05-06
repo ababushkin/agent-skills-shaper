@@ -1,0 +1,119 @@
+{
+  "iteration": 3,
+  "model": "claude-opus-4-7",
+  "summary": {
+    "with_skill": {
+      "pass_rate_mean": 1.0,
+      "pass_rate_sd": 0.0,
+      "tokens_mean": 56135.8,
+      "tokens_sd": 1774.4715269623234,
+      "wall_seconds_mean": 107.6558,
+      "wall_seconds_sd": 29.813061712947228
+    },
+    "without_skill": {
+      "pass_rate_mean": 0.9206349206349206,
+      "pass_rate_sd": 0.12498425196844144,
+      "tokens_mean": 44449.6,
+      "tokens_sd": 720.7127028157614,
+      "wall_seconds_mean": 72.1556,
+      "wall_seconds_sd": 9.431827012832668
+    },
+    "delta": {
+      "pass_rate": 0.07936507936507942,
+      "tokens": 11686.200000000004,
+      "wall_seconds": 35.50019999999999
+    }
+  },
+  "per_eval": [
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "with_skill",
+      "passed": 9,
+      "total": 9,
+      "pass_rate": 1.0,
+      "tokens": 58030,
+      "duration_ms": 128243
+    },
+    {
+      "eval": "eval-roadmap-without-triage",
+      "config": "without_skill",
+      "passed": 8,
+      "total": 9,
+      "pass_rate": 0.8888888888888888,
+      "tokens": 45181,
+      "duration_ms": 75920
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "with_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0,
+      "tokens": 55036,
+      "duration_ms": 91995
+    },
+    {
+      "eval": "eval-prizecategoryselector-vue-removal",
+      "config": "without_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0,
+      "tokens": 44207,
+      "duration_ms": 63272
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "with_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0,
+      "tokens": 53622,
+      "duration_ms": 62541
+    },
+    {
+      "eval": "eval-clean-gem-bump",
+      "config": "without_skill",
+      "passed": 6,
+      "total": 6,
+      "pass_rate": 1.0,
+      "tokens": 43515,
+      "duration_ms": 62296
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "with_skill",
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 1.0,
+      "tokens": 57002,
+      "duration_ms": 123098
+    },
+    {
+      "eval": "eval-schema-migration-no-rollback",
+      "config": "without_skill",
+      "passed": 8,
+      "total": 8,
+      "pass_rate": 1.0,
+      "tokens": 45178,
+      "duration_ms": 84810
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "with_skill",
+      "passed": 7,
+      "total": 7,
+      "pass_rate": 1.0,
+      "tokens": 56989,
+      "duration_ms": 132402
+    },
+    {
+      "eval": "eval-redis-cache-solutionism",
+      "config": "without_skill",
+      "passed": 5,
+      "total": 7,
+      "pass_rate": 0.7142857142857143,
+      "tokens": 44167,
+      "duration_ms": 74480
+    }
+  ]
+}

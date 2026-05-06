@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "config": "without_skill",
+  "expectations": [
+    {"text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)", "passed": true, "evidence": "Section 7 says: 'The problem space is complex, not complicated... cause-and-effect is genuinely emergent — you can't reason your way to the right answer; you have to probe, sense, respond.'"},
+    {"text": "Review selects Full tier (quarter-long appetite, multiple themes)", "passed": false, "evidence": "Review does not explicitly select a tier or name the framework's tier system; it does treat the plan with full quarter-scale review depth implicitly but does not name the choice."},
+    {"text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes", "passed": true, "evidence": "Section 1 explicitly identifies all three themes as solutions not problems and section 2 calls out missing measurable success criteria."},
+    {"text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)", "passed": true, "evidence": "Section 4 explicitly says 'No triage / discovery work named' and the suggested next step calls for formal triage on the three themes."},
+    {"text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal", "passed": true, "evidence": "Section 3 flags shareable shortlist as anecdotal ('We keep getting requests is anecdotal') and rates it confidence ~0.5."},
+    {"text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption", "passed": true, "evidence": "Section 3 explicitly invokes 'Gilad-style' confidence and assigns numeric scores: shortlist ~0.5, push ~0.5–1, onboarding ~0.5 or 2–3."},
+    {"text": "Final recommendation is REVISE", "passed": true, "evidence": "TL;DR: 'Recommendation: REVISE before approving.'"},
+    {"text": "Review recommends running idea-triage on themes before allocation", "passed": true, "evidence": "Suggested next step says 'Run formal triage on the three themes (problem framing, ICE/confidence scoring, kill criteria)' and section 4 recommends discovery/validation slots before build."},
+    {"text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)", "passed": true, "evidence": "'Falsifying conditions' section names concrete reversal criteria for each theme: e.g., 'written tally of >50 distinct requests, segmented, showing the same underlying job-to-be-done; OR a prior smoke test'."}
+  ],
+  "summary": {"passed": 8, "failed": 1, "total": 9, "pass_rate": 0.888888888888889}
+}

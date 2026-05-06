@@ -1,0 +1,13 @@
+{
+  "eval_id": 5,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "PASS", "evidence": "'Cynefin domain: Complicated — known cause-effect with expertise required' and B0 section: 'Complicated.'"},
+    {"text": "Review selects Full tier (vendor introduction = one-way door)", "verdict": "PASS", "evidence": "'Tier: **Full** — selected because the plan contains multiple one-way-door decisions (vendor topology / Redis cluster...)'"},
+    {"text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target", "verdict": "PASS", "evidence": "'Verdict: SUSTAINED. The plan opens with a solution (\"introduce Redis as a caching layer\") not a problem. There is no stated user or business outcome, no measured baseline, no target metric.'"},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named", "verdict": "PASS", "evidence": "'User-visible outcome metric: Absent. The plan names no observable user outcome... \"Redis cluster deployed\" is an output, not an outcome.' and 'Absence on either half of B6 blocks APPROVE. Both halves are absent.'"},
+    {"text": "Review explicitly calls out solutionism (chose Redis before stating the problem)", "verdict": "PASS", "evidence": "'design starts with the stack, not the problem' and 'the act of approving an intent locks in a solution before the problem is understood'"},
+    {"text": "Final recommendation is REVISE", "verdict": "PASS", "evidence": "'**REVISE** — the plan is solution-first with no problem statement...'"},
+    {"text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)", "verdict": "PASS", "evidence": "'Produce a problem statement with measured baseline (current p50/p95/p99 catalog read latency, Postgres CPU/IO, throughput) and a target metric.'"}
+  ],
+  "summary": {"passed": 7, "total": 7, "score": "7/7"}
+}

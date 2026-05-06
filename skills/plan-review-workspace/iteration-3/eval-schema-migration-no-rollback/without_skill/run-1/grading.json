@@ -1,0 +1,18 @@
+{
+  "eval_id": 4,
+  "config": "without_skill",
+  "run": 1,
+  "assertions": [
+    {"id": 1, "text": "Review names Cynefin domain as Complicated", "pass": true, "evidence": "Cynefin domain section: 'This sits in the Complicated domain.'"},
+    {"id": 2, "text": "Review selects Full tier (production data + one-way door auto-fires)", "pass": true, "evidence": "'A change of this profile demands the Full review tier: production data, central table, one-way door auto-fires.'"},
+    {"id": 3, "text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named", "pass": true, "evidence": "B5 SUSTAINED with explicit 'No Alternatives section. No ADR named. No reversibility analysis.'"},
+    {"id": 4, "text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom", "pass": true, "evidence": "B6 SUSTAINED with bullets for rollback, progress metrics, capacity headroom, SLO impact, monitoring."},
+    {"id": 5, "text": "Review explicitly names rollback path as missing", "pass": true, "evidence": "B6: 'No rollback path named.'"},
+    {"id": 6, "text": "Review explicitly names backfill progress metrics as missing", "pass": true, "evidence": "B6: 'No backfill progress metrics named.'"},
+    {"id": 7, "text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)", "pass": true, "evidence": "'Recommendation: REVISE.' with KILL alternative named."},
+    {"id": 8, "text": "At least one bucket has a named falsifying condition", "pass": true, "evidence": "B1 includes explicit 'Falsifying condition:' clause."}
+  ],
+  "pass_count": 8,
+  "total": 8,
+  "score": 1.0
+}

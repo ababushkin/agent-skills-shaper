@@ -1,0 +1,14 @@
+{
+  "eval_id": 4,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "PASS", "evidence": "Cynefin domain: Complicated — known cause-effect (schema migration on a large table is a well-understood class of problem)"},
+    {"text": "Review selects Full tier (production data + one-way door auto-fires)", "verdict": "PASS", "evidence": "Tier: Full — selected because plan touches production data AND contains a schema migration (one-way door). Both auto-select attributes hold."},
+    {"text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named", "verdict": "PASS", "evidence": "B5 table all rows SUSTAINED, 'No — plan names a single approach', 'No ADR named or committed'; 'SUSTAINED on the headline reversibility check.'"},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom", "verdict": "PASS", "evidence": "B6: 'Metrics: absent', 'Rollback path: absent', 'Capacity headroom: absent', 'SUSTAINED on both halves.'"},
+    {"text": "Review explicitly names rollback path as missing", "verdict": "PASS", "evidence": "Rollback path: absent. Plan does not describe how to roll back if the migration stalls or fails partway through."},
+    {"text": "Review explicitly names backfill progress metrics as missing", "verdict": "PASS", "evidence": "Metrics: absent. Plan names no metrics for the migration itself (rows backfilled per second, lag from start, error rate on inserts during backfill)."},
+    {"text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)", "verdict": "PASS", "evidence": "REVISE — multiple unresolved SUSTAINED verdicts across B1, B2, B3, B4, B5, and B6."},
+    {"text": "At least one bucket has a named falsifying condition", "verdict": "PASS", "evidence": "B1 Falsifying condition explicitly named; B2 table has Falsifying condition column with explicit per-row conditions."}
+  ],
+  "summary": {"passed": 8, "total": 8, "score": "8/8"}
+}

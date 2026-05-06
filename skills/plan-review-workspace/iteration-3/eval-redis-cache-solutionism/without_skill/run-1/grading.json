@@ -1,0 +1,17 @@
+{
+  "eval_id": 5,
+  "config": "without_skill",
+  "assertions": [
+    {"id": 1, "text": "Review names Cynefin domain as Complicated", "pass": false, "note": "Cynefin vocabulary not used; review is principle-based not framework-tagged"},
+    {"id": 2, "text": "Review selects Full tier (vendor introduction = one-way door)", "pass": false, "note": "Did not use 'Full tier' vocabulary, though one-way door framing is explicitly invoked in section 4"},
+    {"id": 3, "text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target", "pass": true, "note": "Section 1 'Problem statement' explicitly raises all three: solution-first, no problem, no latency target"},
+    {"id": 4, "text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named", "pass": true, "note": "Section 2 'Success metric' and section 6 'Operability' both raised"},
+    {"id": 5, "text": "Review explicitly calls out solutionism (chose Redis before stating the problem)", "pass": true, "note": "'Redis is an answer in search of a question'; 'starts from the problem, not the technology'"},
+    {"id": 6, "text": "Final recommendation is REVISE", "pass": true, "note": "Verdict line: 'REVISE — do not approve as written'"},
+    {"id": 7, "text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)", "pass": true, "note": "Explicit example target: 'p95 catalog read latency on the PDP from 380ms to <80ms'"}
+  ],
+  "passed": 5,
+  "total": 7,
+  "score": 0.714,
+  "notes": "Without skill, review is substantively strong on engineering content (problem framing, alternatives, one-way door, invalidation, operability, cost) but does not use the skill's framework vocabulary (Cynefin domain, tier selection). Bucket-equivalent reasoning is present but unlabeled."
+}

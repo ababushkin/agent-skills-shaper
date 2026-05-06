@@ -1,0 +1,40 @@
+{
+  "eval_id": 2,
+  "assertions": [
+    {
+      "text": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "verdict": "FAIL",
+      "evidence": "No explicit Cynefin domain naming (Clear/Complicated/Complex/Chaotic) anywhere in the review."
+    },
+    {
+      "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "verdict": "FAIL",
+      "evidence": "No tier (Quick/Standard/Full) is named explicitly in the review."
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "verdict": "FAIL",
+      "evidence": "Concern about 'unused' being unverified is raised ('approving deletion on the basis of an unverified claim'), but no explicit B2 bucket label or SUSTAINED verdict is given."
+    },
+    {
+      "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "verdict": "PASS",
+      "evidence": "'A grep for PrizeCategorySelector across .js, .ts, .vue files alone is insufficient. The search must also cover .erb, .haml, .html, .rb (for render or string references), and the kebab-case form (prize-category-selector).'"
+    },
+    {
+      "text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "verdict": "PASS",
+      "evidence": "'Verdict: Do not approve as written. Reshape first.' and 'Reshape, then approve.'"
+    },
+    {
+      "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "verdict": "PASS",
+      "evidence": "Review remains scoped to verification, reversibility, and observation for the single-component scope; recommendation is reshape (one component per PR), not a full architectural review."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "total": 6,
+    "score": "3/6"
+  }
+}

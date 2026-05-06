@@ -1,0 +1,52 @@
+{
+  "eval_id": 4,
+  "config": "without_skill",
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated",
+      "passed": false,
+      "evidence": "No Cynefin classification"
+    },
+    {
+      "text": "Review selects Full tier (production data + one-way door auto-fires)",
+      "passed": false,
+      "evidence": "No tier framework"
+    },
+    {
+      "text": "B5 (reversibility/ADR) verdict is SUSTAINED \u2014 no Alternatives section, no ADR named",
+      "passed": false,
+      "evidence": "No B5 bucket; mentions ADR/design-doc requirement in 'approvable plan' section but no structured verdict"
+    },
+    {
+      "text": "B6 (operability/success metrics) verdict is SUSTAINED \u2014 no rollback path, no metrics, no capacity headroom",
+      "passed": false,
+      "evidence": "No B6 bucket; identifies operability gaps in section 4 + 6 but no structured verdict"
+    },
+    {
+      "text": "Review explicitly names rollback path as missing",
+      "passed": true,
+      "evidence": "Section 4: 'No rollback plan'"
+    },
+    {
+      "text": "Review explicitly names backfill progress metrics as missing",
+      "passed": true,
+      "evidence": "Section 6: 'How do we know the backfill is progressing? (rows/sec, ETA, lag) \u2014 None of these are mentioned'"
+    },
+    {
+      "text": "Final recommendation is REVISE (or KILL \u2014 both defensible given missing one-way-door safeguards)",
+      "passed": true,
+      "evidence": "'Reject the plan in its current form' = REVISE"
+    },
+    {
+      "text": "At least one bucket has a named falsifying condition",
+      "passed": false,
+      "evidence": "No falsifying-condition discipline"
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 5,
+    "total": 8,
+    "pass_rate": 0.375
+  }
+}

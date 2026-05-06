@@ -1,0 +1,607 @@
+{
+  "metadata": {
+    "skill_name": "plan-review",
+    "skill_path": "/Users/anton/src/pde-skills/skills/engineering/plan-review",
+    "executor_model": "<model-name>",
+    "analyzer_model": "<model-name>",
+    "timestamp": "2026-05-04T05:49:33Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "runs_per_configuration": 3
+  },
+  "runs": [
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.33,
+        "passed": 2,
+        "failed": 4,
+        "total": 6,
+        "time_seconds": 65.6,
+        "tokens": 50986,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Clear",
+          "passed": true,
+          "evidence": "'Cynefin domain: Clear \u2014 bump a dev-time linter version, run an existing test suite, observe pass/fail. Known cause-effect.'"
+        },
+        {
+          "text": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+          "passed": true,
+          "evidence": "'Tier: Quick \u2014 selected because appetite is well under 1 week, no one-way-door decision ... reversal is reverting the Gemfile line and re-running bundle install ... None of the Full auto-select rules fire.'"
+        },
+        {
+          "text": "Most buckets OVERTURNED (review does not invent concerns to look thorough)",
+          "passed": false,
+          "evidence": "Review SUSTAINS B2 (twice) and B3 (three times) and treats B1 as PARTIAL. Only one explicit OVERTURN appears (Gemfile.lock note). Final paragraph mentions 'B4, B5, B6, B7 do not apply at this tier' but these are not exercised as OVERTURN entries. The substantive bucket judgements lean SUSTAIN, not OVERTURN."
+        },
+        {
+          "text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+          "passed": false,
+          "evidence": "B8 names a different top failure mode \u2014 'bundle update silently bumps several other gems alongside rubocop' leading to a behavioural regression \u2014 not rubocop rule changes / CI breakage. Kill-switch is 'git diff Gemfile.lock before commit', not revert."
+        },
+        {
+          "text": "Final recommendation is APPROVE",
+          "passed": false,
+          "evidence": "'REVISE \u2014 The plan is small but contains two real defects ... Conditions for APPROVE: 1. Replace bundle update ... 2. Confirm ... rubocop ... 3. Add an explicit branch ... 4. State in one line whether this is routine upkeep ...'"
+        },
+        {
+          "text": "Review length is proportionate \u2014 does not bloat into Full-tier output for a 30-min reversible change",
+          "passed": false,
+          "evidence": "Review runs ~65 lines with a full B1/B2/B3/B8 treatment, three-column assumption tables, three-column scope tables, and a four-condition APPROVE list. This is heavier than a Quick-tier review should be for a 30-minute reversible KTLO bump."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 6,
+        "failed": 0,
+        "total": 6,
+        "time_seconds": 97.1,
+        "tokens": 52585,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated (or Clear \u2014 both defensible)",
+          "passed": true,
+          "evidence": "'Cynefin domain: Complicated. Removing dead code is a knowable-with-expertise problem...'"
+        },
+        {
+          "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+          "passed": true,
+          "evidence": "'Tier: Quick \u2014 selected because appetite is \u22641 week, no explicit one-way doors flagged...Quick runs B0, B1, B2, B3, and a short B8.'"
+        },
+        {
+          "text": "B2 (scope) verdict is SUSTAINED \u2014 concern that 'unused' is unverified",
+          "passed": true,
+          "evidence": "B2 table contains six rows, five SUSTAINED and one PARTIAL, including: 'Scope of unused \u2014 is it (a) zero imports... SUSTAINED' \u2014 directly attacks the unverified 'unused' claim."
+        },
+        {
+          "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+          "passed": true,
+          "evidence": "'rg \"PrizeCategorySelector\" --type-add tmpl:*.{erb,slim,haml} -t js -t ts -t vue -t tmpl -t rb' and 'grep -r PrizeCategorySelector app/views/ app/components/ app/helpers/'"
+        },
+        {
+          "text": "Final recommendation is REVISE (not APPROVE \u2014 scope claim unverified)",
+          "passed": true,
+          "evidence": "'Recommendation: REVISE \u2014 the plan is solution-led, scope-vague, and rests on an unevidenced \"unused\" claim.'"
+        },
+        {
+          "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+          "passed": true,
+          "evidence": "B4, B5, B6, B7 all marked 'Skipped \u2014 Quick tier' with brief notes only; tier remains Quick throughout."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 115.0,
+        "tokens": 53741,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated",
+          "passed": true,
+          "evidence": "'**Cynefin domain**: Complicated. Caching is a knowable problem-space with well-understood expert practice...'"
+        },
+        {
+          "text": "Review selects Full tier (vendor introduction = one-way door)",
+          "passed": true,
+          "evidence": "'**Tier**: **Full** \u2014 selected because the plan introduces a one-way-door decision (new vendor / new datastore in production: Redis cluster). Auto-select rule fires on \"\u22651 one-way-door decision\"...'"
+        },
+        {
+          "text": "B1 (problem framing) verdict is SUSTAINED \u2014 solution-first framing, no problem statement, no latency target",
+          "passed": true,
+          "evidence": "B1 section: 'Verdict: SUSTAINED.' followed by 'The plan opens with a solution (\"introduce Redis as a caching layer\"), not a problem' and notes absence of measurable target."
+        },
+        {
+          "text": "B6 (operability/success metrics) verdict is SUSTAINED \u2014 no user-visible outcome metric named",
+          "passed": true,
+          "evidence": "B6 section: 'User-visible outcome metric: absent...' and 'Verdict: SUSTAINED.'"
+        },
+        {
+          "text": "Review explicitly calls out solutionism (chose Redis before stating the problem)",
+          "passed": true,
+          "evidence": "'The plan as written is a stack choice in search of a problem.' and 'Per Universal P2, design starts with the problem, not the stack.'"
+        },
+        {
+          "text": "Final recommendation is REVISE",
+          "passed": true,
+          "evidence": "'**REVISE** \u2014 strong tendency toward **KILL-as-currently-framed**.'"
+        },
+        {
+          "text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)",
+          "passed": true,
+          "evidence": "Condition 1: 'Problem statement (B1): who, what outcome, current number, target number, business reason.' Plus B1 examples like 'p95 catalog read < 50ms'."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 9,
+        "failed": 0,
+        "total": 9,
+        "time_seconds": 107.7,
+        "tokens": 53606,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+          "passed": true,
+          "evidence": "B0 names 'Complicated' explicitly and adds: 'Flagging that without per-theme discovery evidence, this drifts toward Complex \u2014 at which point deterministic milestones like 60/30/10 allocation are themselves a defect.' Multiple emergent dimensions noted."
+        },
+        {
+          "text": "Review selects Full tier (quarter-long appetite, multiple themes)",
+          "passed": true,
+          "evidence": "Inputs section: 'Tier: Full \u2014 selected because plan appetite > 1 week (a full quarter), and the plan implies cross-team dependencies ... that warrant B4\u2013B7.'"
+        },
+        {
+          "text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL \u2014 themes named without measurable outcomes",
+          "passed": true,
+          "evidence": "B1 ends with 'Verdict: SUSTAINED.' and notes 'None of the three themes are framed this way' (referring to A2 problem-statement format)."
+        },
+        {
+          "text": "B2 (scope) verdict is SUSTAINED \u2014 at least one theme has scope-vague concern (no triage record cited)",
+          "passed": true,
+          "evidence": "B2 table has all six rows marked SUSTAINED, including 'Onboarding rewrite \u2014 likely touches auth, signup, identity, marketing copy, analytics events ... None named.' Concludes 'Six SUSTAINED in B2.'"
+        },
+        {
+          "text": "B3 (assumptions) verdict is SUSTAINED \u2014 at least one assumption flagged as low-confidence/anecdotal",
+          "passed": true,
+          "evidence": "B3 flags shareable-shortlist assumption as '0.5 (anecdote)' and push notifications/onboarding as '0.1 (assumption)' \u2014 all three rows verdict SUSTAINED."
+        },
+        {
+          "text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1\u201310) on at least one assumption",
+          "passed": true,
+          "evidence": "B3 table column 'Confidence (Gilad)' contains numeric values: 0.5, 0.1, 0.1. Plus statement 'All three Confidence scores are below the 5 threshold.'"
+        },
+        {
+          "text": "Final recommendation is REVISE",
+          "passed": true,
+          "evidence": "'REVISE \u2014 bordering on KILL.' under the Recommendation section."
+        },
+        {
+          "text": "Review recommends running idea-triage on themes before allocation",
+          "passed": true,
+          "evidence": "Condition 2: 'Run idea-triage on each of the three themes before they re-enter the roadmap, producing an ICE score and Confidence scores.'"
+        },
+        {
+          "text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+          "passed": true,
+          "evidence": "Multiple buckets carry explicit falsifying conditions, e.g. B1: 'Falsifying condition: plan author can produce a written problem statement per theme in the A2 format with a named customer segment, named target metric, and quantified target.' B2 and B4 tables also list falsifying conditions per row."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 8,
+        "failed": 0,
+        "total": 8,
+        "time_seconds": 111.3,
+        "tokens": 53928,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated",
+          "passed": true,
+          "evidence": "'Cynefin domain: Complicated \u2014 schema migration on a 50M-row production table is a knowable problem with expert practice ... but emergent failure modes ... push toward the Complex edge.'"
+        },
+        {
+          "text": "Review selects Full tier (production data + one-way door auto-fires)",
+          "passed": true,
+          "evidence": "'Tier: Full \u2014 selected because the plan touches production data AND contains at least one one-way door (schema migration on a 50M-row table). Auto-fire condition #4 from the When-to-use section triggers.'"
+        },
+        {
+          "text": "B5 (reversibility/ADR) verdict is SUSTAINED \u2014 no Alternatives section, no ADR named",
+          "passed": true,
+          "evidence": "B5 table shows three one-way-door rows each with 'Alternatives in plan? No', 'ADR exists / committed? No', 'Verdict SUSTAINED'. 'The plan names no alternatives and no ADR.'"
+        },
+        {
+          "text": "B6 (operability/success metrics) verdict is SUSTAINED \u2014 no rollback path, no metrics, no capacity headroom",
+          "passed": true,
+          "evidence": "'Metrics: Absent ... Rollback path: Absent ... Capacity headroom: Absent ... Verdict: SUSTAINED on every line. Operability blocks APPROVE on Full tier per skill rules.'"
+        },
+        {
+          "text": "Review explicitly names rollback path as missing",
+          "passed": true,
+          "evidence": "'Rollback path: Absent. The plan implies single-step ship; expand-contract not named.' Also B2 row: 'Rollback path \u2014 adding a NOT NULL column is reversible (drop column), but rolling back app code that depends on the column after the column is dropped requires a multi-step coordinated rollback. The plan implies single-step rollback.' SUSTAINED."
+        },
+        {
+          "text": "Review explicitly names backfill progress metrics as missing",
+          "passed": true,
+          "evidence": "'Metrics: Absent. No named DB-side metrics (lock duration, replica lag, rows-per-second backfill rate, error rate on users writes), no named app-side metrics.'"
+        },
+        {
+          "text": "Final recommendation is REVISE (or KILL \u2014 both defensible given missing one-way-door safeguards)",
+          "passed": true,
+          "evidence": "'REVISE \u2014 strong lean to KILL if revisions are not produced.'"
+        },
+        {
+          "text": "At least one bucket has a named falsifying condition",
+          "passed": true,
+          "evidence": "Every bucket has a Falsifying condition. E.g. B1: 'Falsifying condition: A revised plan that opens with For [user/business segment], we believe [problem with current state] is causing [negative outcome] ...' Multiple per-row falsifying conditions in B2, B4, B5, B6, B7."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.67,
+        "passed": 4,
+        "failed": 2,
+        "total": 6,
+        "time_seconds": 33.1,
+        "tokens": 41160,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Clear",
+          "passed": false,
+          "evidence": "Cynefin is not mentioned. Review describes the change as 'low-risk, narrow-scope ... two-way door' but does not name the Clear domain explicitly. Baseline lacks the framework."
+        },
+        {
+          "text": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+          "passed": false,
+          "evidence": "No tier framework used. Review notes '30-minute appetite is appropriate for the scope' and 'two-way door \u2014 trivially reversible' but does not select a Quick/Full tier. Baseline lacks the framework."
+        },
+        {
+          "text": "Most buckets OVERTURNED (review does not invent concerns to look thorough)",
+          "passed": true,
+          "evidence": "No bucket framework used; review surfaces six concerns in 'roughly decreasing importance' and explicitly downgrades several ('Not load-bearing \u2014 flag, not block'; 'Trivial here ... so no formal plan needed'). It does not invent disproportionate concerns \u2014 meets the spirit of the assertion."
+        },
+        {
+          "text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+          "passed": true,
+          "evidence": "Concern #2 names new cops as the most likely failure: 'Rubocop minor versions routinely ship new cops ... Expect new offences to appear when the linter runs.' Recommendation also names revert as the rollback: 'Trivial here (git revert)'. Substantively meets the assertion despite no formal B8 label."
+        },
+        {
+          "text": "Final recommendation is APPROVE",
+          "passed": true,
+          "evidence": "'Approve, with the following adjustments before starting' \u2014 final recommendation is APPROVE."
+        },
+        {
+          "text": "Review length is proportionate \u2014 does not bloat into Full-tier output for a 30-min reversible change",
+          "passed": true,
+          "evidence": "Review is ~35 lines, six numbered concerns plus a short approve-with-adjustments recommendation. Concise and proportionate to a 30-minute KTLO bump."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.5,
+        "passed": 3,
+        "failed": 3,
+        "total": 6,
+        "time_seconds": 54.0,
+        "tokens": 42205,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated (or Clear \u2014 both defensible)",
+          "passed": false,
+          "evidence": "No Cynefin framework or domain classification appears anywhere in the review. Baseline lacks the framework."
+        },
+        {
+          "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+          "passed": false,
+          "evidence": "No tiering (Quick/Full) framework invoked. Review proceeds at uniform depth without selecting a tier."
+        },
+        {
+          "text": "B2 (scope) verdict is SUSTAINED \u2014 concern that 'unused' is unverified",
+          "passed": false,
+          "evidence": "No B2 bucket or SUSTAINED/OVERTURNED verdict scheme. Review does flag '\"Unused\" is unverified' as gap #2 and concern #1, but lacks the structured B2 verdict the assertion requires."
+        },
+        {
+          "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+          "passed": true,
+          "evidence": "'static analysis result (e.g. knip, ts-prune, ripgrep across app/, spec/, test/, stories/, server templates, i18n keys, dynamic-component registries)' \u2014 concrete tools and paths named."
+        },
+        {
+          "text": "Final recommendation is REVISE (not APPROVE \u2014 scope claim unverified)",
+          "passed": true,
+          "evidence": "'Recommendation: Do not approve as written. Send back for a 30\u201360 minute reshape... Reshape, don't rebuild.' \u2014 functional REVISE verdict."
+        },
+        {
+          "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+          "passed": true,
+          "evidence": "Review is moderately sized (~50 lines), proportionate to a one-day plan; does not escalate to deep architecture/dependency analysis. No tier framework so cannot 'inflate to Full' but stays appropriately scoped."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.43,
+        "passed": 3,
+        "failed": 4,
+        "total": 7,
+        "time_seconds": 55.8,
+        "tokens": 42347,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated",
+          "passed": false,
+          "evidence": "No Cynefin framing or domain classification anywhere in the review."
+        },
+        {
+          "text": "Review selects Full tier (vendor introduction = one-way door)",
+          "passed": false,
+          "evidence": "No tier selection. Review mentions 'one-way door of meaningful weight' but does not select a Full/Light/Spike tier."
+        },
+        {
+          "text": "B1 (problem framing) verdict is SUSTAINED \u2014 solution-first framing, no problem statement, no latency target",
+          "passed": false,
+          "evidence": "No B1 verdict structure. Review identifies the issue ('No problem statement', 'solution-first') but does not produce structured B1 SUSTAINED verdict."
+        },
+        {
+          "text": "B6 (operability/success metrics) verdict is SUSTAINED \u2014 no user-visible outcome metric named",
+          "passed": false,
+          "evidence": "No B6 verdict structure. Review notes 'No operability section' and 'Operability gap' but does not produce structured B6 SUSTAINED verdict."
+        },
+        {
+          "text": "Review explicitly calls out solutionism (chose Redis before stating the problem)",
+          "passed": true,
+          "evidence": "'The plan as written is solution-first, not problem-first' and concern #1 titled 'Solutionism / one-way door.'"
+        },
+        {
+          "text": "Final recommendation is REVISE",
+          "passed": true,
+          "evidence": "'**Do not approve as written.** Send back for reshaping' \u2014 equivalent to REVISE."
+        },
+        {
+          "text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)",
+          "passed": true,
+          "evidence": "'Restate as a problem, not a solution. \"Catalog reads at p95 are X ms today; we need them at Y ms\"...' and 'Approval blocked pending: problem statement with metric and target...'"
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.22,
+        "passed": 2,
+        "failed": 7,
+        "total": 9,
+        "time_seconds": 50.9,
+        "tokens": 41991,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+          "passed": false,
+          "evidence": "No mention of Cynefin or 'Complex' domain anywhere in review. Baseline lacks the framework."
+        },
+        {
+          "text": "Review selects Full tier (quarter-long appetite, multiple themes)",
+          "passed": false,
+          "evidence": "No tier selection mechanism (Full/Lite) is named. Baseline lacks the bucket framework."
+        },
+        {
+          "text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL \u2014 themes named without measurable outcomes",
+          "passed": false,
+          "evidence": "Review identifies the problem-framing gap qualitatively ('No problems, just solutions') but does not use B1 bucket label or SUSTAINED/PARTIAL verdict vocabulary."
+        },
+        {
+          "text": "B2 (scope) verdict is SUSTAINED \u2014 at least one theme has scope-vague concern (no triage record cited)",
+          "passed": false,
+          "evidence": "No B2 label or SUSTAINED verdict. Scope concerns are mentioned (push notifications platform, frequency capping) but not labeled as a B2 bucket finding."
+        },
+        {
+          "text": "B3 (assumptions) verdict is SUSTAINED \u2014 at least one assumption flagged as low-confidence/anecdotal",
+          "passed": false,
+          "evidence": "No B3 label or SUSTAINED verdict. Assumption-quality concerns are surfaced but not bucketed."
+        },
+        {
+          "text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1\u201310) on at least one assumption",
+          "passed": true,
+          "evidence": "Concerns section: 'We keep getting requests is the weakest form of evidence' and earlier: 'opinion-grade evidence (Confidence Meter ~0.5 \u2014 anecdotal)'. Cites Confidence Meter with 0.5 numeric value."
+        },
+        {
+          "text": "Final recommendation is REVISE",
+          "passed": true,
+          "evidence": "'Do not approve as-is. Send back for re-shaping.' and 'Decision: not approved. Returned for re-shaping along the seven points above.' Equivalent to REVISE."
+        },
+        {
+          "text": "Review recommends running idea-triage on themes before allocation",
+          "passed": false,
+          "evidence": "Review asks for problem statements, ICE scores, alternatives, appetite, kill criteria \u2014 but does not name 'idea-triage' as a process or skill to run before allocation."
+        },
+        {
+          "text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+          "passed": false,
+          "evidence": "Review lists 'asks before re-review' as conditions for re-approval, but does not frame any concern as a bucketed verdict with an explicit falsifying check that would overturn the verdict."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "without_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.38,
+        "passed": 3,
+        "failed": 5,
+        "total": 8,
+        "time_seconds": 40.7,
+        "tokens": 41558,
+        "tool_calls": 0,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Review names Cynefin domain as Complicated",
+          "passed": false,
+          "evidence": "No mention of Cynefin or 'Complicated' classification anywhere in the review. Review is structured as Assessment / Concerns / Recommendation, not by Cynefin/tier framework."
+        },
+        {
+          "text": "Review selects Full tier (production data + one-way door auto-fires)",
+          "passed": false,
+          "evidence": "No tier selection. The word 'tier' appears only in domain context (user_tier column), never as a review-tier choice. No Quick/Standard/Full framework invoked."
+        },
+        {
+          "text": "B5 (reversibility/ADR) verdict is SUSTAINED \u2014 no Alternatives section, no ADR named",
+          "passed": false,
+          "evidence": "No bucket structure (no B1-B8). No mention of ADR or 'SUSTAINED' verdict. Reversibility is discussed informally ('Once a NOT NULL column is added ... rolling back ... is non-trivial') but not via the B5 bucket structure."
+        },
+        {
+          "text": "B6 (operability/success metrics) verdict is SUSTAINED \u2014 no rollback path, no metrics, no capacity headroom",
+          "passed": false,
+          "evidence": "No B6 bucket. Operability concerns covered informally under 'No observability / verification plan' and 'No rollback plan' but no SUSTAINED verdict and no capacity headroom mention."
+        },
+        {
+          "text": "Review explicitly names rollback path as missing",
+          "passed": true,
+          "evidence": "'No rollback plan. Once a NOT NULL column is added and application code starts writing to it, rolling back the migration without data loss is non-trivial. The plan says \"ship in next release\" with no flag, no staged rollout, no rollback procedure.'"
+        },
+        {
+          "text": "Review explicitly names backfill progress metrics as missing",
+          "passed": true,
+          "evidence": "'Define observability: backfill progress metric, error rate, replication lag alarm, query-latency baseline on users before/during/after.' Listed as missing in the required-changes section."
+        },
+        {
+          "text": "Final recommendation is REVISE (or KILL \u2014 both defensible given missing one-way-door safeguards)",
+          "passed": true,
+          "evidence": "'Reject and reshape. Send back with the following required changes before re-review' \u2014 equivalent to REVISE verdict."
+        },
+        {
+          "text": "At least one bucket has a named falsifying condition",
+          "passed": false,
+          "evidence": "No bucket structure exists; no 'falsifying condition' language anywhere. Concerns are listed but not framed as overturnable verdicts."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 0.866,
+        "stddev": 0.2996,
+        "min": 0.33,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 99.34,
+        "stddev": 20.0098,
+        "min": 65.6,
+        "max": 115.0
+      },
+      "tokens": {
+        "mean": 52969.2,
+        "stddev": 1224.8652,
+        "min": 50986,
+        "max": 53928
+      }
+    },
+    "without_skill": {
+      "pass_rate": {
+        "mean": 0.44,
+        "stddev": 0.1648,
+        "min": 0.22,
+        "max": 0.67
+      },
+      "time_seconds": {
+        "mean": 46.9,
+        "stddev": 9.676,
+        "min": 33.1,
+        "max": 55.8
+      },
+      "tokens": {
+        "mean": 41852.2,
+        "stddev": 488.4298,
+        "min": 41160,
+        "max": 42347
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.43",
+      "time_seconds": "+52.4",
+      "tokens": "+11117"
+    }
+  },
+  "notes": []
+}

@@ -1,0 +1,55 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+      "passed": true,
+      "evidence": "B0 names 'Complicated' explicitly and adds: 'Flagging that without per-theme discovery evidence, this drifts toward Complex — at which point deterministic milestones like 60/30/10 allocation are themselves a defect.' Multiple emergent dimensions noted."
+    },
+    {
+      "text": "Review selects Full tier (quarter-long appetite, multiple themes)",
+      "passed": true,
+      "evidence": "Inputs section: 'Tier: Full — selected because plan appetite > 1 week (a full quarter), and the plan implies cross-team dependencies ... that warrant B4–B7.'"
+    },
+    {
+      "text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes",
+      "passed": true,
+      "evidence": "B1 ends with 'Verdict: SUSTAINED.' and notes 'None of the three themes are framed this way' (referring to A2 problem-statement format)."
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)",
+      "passed": true,
+      "evidence": "B2 table has all six rows marked SUSTAINED, including 'Onboarding rewrite — likely touches auth, signup, identity, marketing copy, analytics events ... None named.' Concludes 'Six SUSTAINED in B2.'"
+    },
+    {
+      "text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal",
+      "passed": true,
+      "evidence": "B3 flags shareable-shortlist assumption as '0.5 (anecdote)' and push notifications/onboarding as '0.1 (assumption)' — all three rows verdict SUSTAINED."
+    },
+    {
+      "text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption",
+      "passed": true,
+      "evidence": "B3 table column 'Confidence (Gilad)' contains numeric values: 0.5, 0.1, 0.1. Plus statement 'All three Confidence scores are below the 5 threshold.'"
+    },
+    {
+      "text": "Final recommendation is REVISE",
+      "passed": true,
+      "evidence": "'REVISE — bordering on KILL.' under the Recommendation section."
+    },
+    {
+      "text": "Review recommends running idea-triage on themes before allocation",
+      "passed": true,
+      "evidence": "Condition 2: 'Run idea-triage on each of the three themes before they re-enter the roadmap, producing an ICE score and Confidence scores.'"
+    },
+    {
+      "text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+      "passed": true,
+      "evidence": "Multiple buckets carry explicit falsifying conditions, e.g. B1: 'Falsifying condition: plan author can produce a written problem statement per theme in the A2 format with a named customer segment, named target metric, and quantified target.' B2 and B4 tables also list falsifying conditions per row."
+    }
+  ],
+  "summary": {
+    "passed": 9,
+    "failed": 0,
+    "total": 9,
+    "pass_rate": 1.0
+  }
+}

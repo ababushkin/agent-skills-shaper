@@ -1,0 +1,50 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated",
+      "passed": true,
+      "evidence": "'Cynefin domain: Complicated — schema migration on a 50M-row production table is a knowable problem with expert practice ... but emergent failure modes ... push toward the Complex edge.'"
+    },
+    {
+      "text": "Review selects Full tier (production data + one-way door auto-fires)",
+      "passed": true,
+      "evidence": "'Tier: Full — selected because the plan touches production data AND contains at least one one-way door (schema migration on a 50M-row table). Auto-fire condition #4 from the When-to-use section triggers.'"
+    },
+    {
+      "text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named",
+      "passed": true,
+      "evidence": "B5 table shows three one-way-door rows each with 'Alternatives in plan? No', 'ADR exists / committed? No', 'Verdict SUSTAINED'. 'The plan names no alternatives and no ADR.'"
+    },
+    {
+      "text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom",
+      "passed": true,
+      "evidence": "'Metrics: Absent ... Rollback path: Absent ... Capacity headroom: Absent ... Verdict: SUSTAINED on every line. Operability blocks APPROVE on Full tier per skill rules.'"
+    },
+    {
+      "text": "Review explicitly names rollback path as missing",
+      "passed": true,
+      "evidence": "'Rollback path: Absent. The plan implies single-step ship; expand-contract not named.' Also B2 row: 'Rollback path — adding a NOT NULL column is reversible (drop column), but rolling back app code that depends on the column after the column is dropped requires a multi-step coordinated rollback. The plan implies single-step rollback.' SUSTAINED."
+    },
+    {
+      "text": "Review explicitly names backfill progress metrics as missing",
+      "passed": true,
+      "evidence": "'Metrics: Absent. No named DB-side metrics (lock duration, replica lag, rows-per-second backfill rate, error rate on users writes), no named app-side metrics.'"
+    },
+    {
+      "text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)",
+      "passed": true,
+      "evidence": "'REVISE — strong lean to KILL if revisions are not produced.'"
+    },
+    {
+      "text": "At least one bucket has a named falsifying condition",
+      "passed": true,
+      "evidence": "Every bucket has a Falsifying condition. E.g. B1: 'Falsifying condition: A revised plan that opens with For [user/business segment], we believe [problem with current state] is causing [negative outcome] ...' Multiple per-row falsifying conditions in B2, B4, B5, B6, B7."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8,
+    "pass_rate": 1.0
+  }
+}

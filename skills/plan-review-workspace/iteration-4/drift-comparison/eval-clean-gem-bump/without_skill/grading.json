@@ -1,0 +1,40 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "text": "Review names Cynefin domain as Clear",
+      "result": "PASS",
+      "evidence": "'## Cynefin domain\\n\\n**Clear (Obvious).** Best practice exists, the cause-and-effect is well-understood, and the response is sense-categorise-respond.'"
+    },
+    {
+      "text": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "PASS",
+      "evidence": "'## Tier\\n\\n**Quick.** Sub-hour appetite, fully reversible, no production blast radius. Full plan-review machinery would exceed the cost of the change itself.'"
+    },
+    {
+      "text": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "PASS",
+      "evidence": "Sustained finding on bundle update scope downgraded to non-blocking recommendation: 'Use `bundle update rubocop --conservative` instead of a bare `bundle update`'. Plus explicit 'What I deliberately did not flag' section: 'Inventing concerns at that level for a 30-minute reversible change would be process theatre.'"
+    },
+    {
+      "text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "PASS",
+      "evidence": "'## Pre-mortem (low-likelihood failure modes)\\n\\n1. **New cop rules introduced between 1.60 and 1.65 produce lint errors on existing code.** Likelihood: medium. Impact: CI red on the PR. Kill-switch: revert the bump...'"
+    },
+    {
+      "text": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "PASS",
+      "evidence": "'## Verdict: APPROVE' plus recommendation 'Use `bundle update rubocop --conservative` instead of a bare `bundle update`'"
+    },
+    {
+      "text": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "PASS",
+      "evidence": "Review is ~43 lines, with explicit 'What I deliberately did not flag' carve-out section noting no spec doc/ADR/staged rollout/feature flag/observability/cross-team review needed."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "score": "6/6"
+  }
+}

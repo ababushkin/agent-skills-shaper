@@ -1,0 +1,13 @@
+{
+  "eval_id": 5,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "FAIL", "evidence": "No mention of Cynefin or Complicated domain anywhere in the review."},
+    {"text": "Review selects Full tier (vendor introduction = one-way door)", "verdict": "FAIL", "evidence": "No tier selection (Full/Fast/etc.) named in the review."},
+    {"text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target", "verdict": "FAIL", "evidence": "No explicit B1 bucket label or SUSTAINED verdict; though section '1. The problem is undefined' addresses the substance, no bucket verdict is stated."},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named", "verdict": "FAIL", "evidence": "Section '4. Operability is absent' covers the substance, but no explicit B6 bucket label or SUSTAINED verdict."},
+    {"text": "Review explicitly calls out solutionism (chose Redis before stating the problem)", "verdict": "PASS", "evidence": "'This is a classic solutionism pattern: the proposer has chosen the technology before defining the constraint.'"},
+    {"text": "Final recommendation is REVISE", "verdict": "PASS", "evidence": "'Verdict: Do not approve as written. Send back for problem framing and evidence.' and 'As-is: not yet.' — equivalent to REVISE."},
+    {"text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)", "verdict": "PASS", "evidence": "'Problem statement with numbers: current latency/load, target latency/load, business symptom.' and 'What is the target latency / load reduction, and how was it derived?'"}
+  ],
+  "summary": {"passed": 3, "total": 7, "score": "3/7"}
+}

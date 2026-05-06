@@ -1,0 +1,46 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Clear",
+      "result": "FAIL",
+      "evidence": "No mention of Cynefin or 'Clear' domain anywhere in review.",
+      "reasoning": "Cynefin classification must be named explicitly; review only describes it as 'low-risk, two-way-door' without naming the framework or Clear domain."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "FAIL",
+      "evidence": "No mention of 'Quick tier' or any tier selection.",
+      "reasoning": "Tier must be named explicitly; review does not select or name a tier."
+    },
+    {
+      "assertion": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "FAIL",
+      "evidence": "Review lists 5 'missing or under-specified' items, 3 'risks worth naming', and a full 8-step revised plan, expanding budget from 30 to 60 minutes.",
+      "reasoning": "Review invents extensive concerns rather than overturning buckets; no Quick-tier carve-out framing."
+    },
+    {
+      "assertion": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "FAIL",
+      "evidence": "Review mentions 'CI surprise after merge' and 'git revert' but does not frame as B8 pre-mortem or a low-likelihood failure mode with revert kill-switch.",
+      "reasoning": "No bucket framing (B8); CI breakage is treated as likely/expected case rather than low-likelihood; not structured as pre-mortem."
+    },
+    {
+      "assertion": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "PASS",
+      "evidence": "'Approve with minor caveats' and 'Bottom line: Approve.'",
+      "reasoning": "Verdict is explicitly approve."
+    },
+    {
+      "assertion": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "FAIL",
+      "evidence": "Review is 64 lines with sections: Verdict, What's good, What's missing (5 items), Time estimate (3 cases), One-way doors, Risks worth naming (3 items), Recommended revised plan (8 steps), Bottom line.",
+      "reasoning": "Output bloats into full-tier review for a 30-minute reversible change, expanding budget to 60+ min."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 6,
+    "score": "1/6"
+  }
+}

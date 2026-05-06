@@ -1,0 +1,40 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated",
+      "passed": true,
+      "evidence": "'**Cynefin domain**: Complicated. Caching is a knowable problem-space with well-understood expert practice...'"
+    },
+    {
+      "text": "Review selects Full tier (vendor introduction = one-way door)",
+      "passed": true,
+      "evidence": "'**Tier**: **Full** — selected because the plan introduces a one-way-door decision (new vendor / new datastore in production: Redis cluster). Auto-select rule fires on \"≥1 one-way-door decision\"...'"
+    },
+    {
+      "text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target",
+      "passed": true,
+      "evidence": "B1 section: 'Verdict: SUSTAINED.' followed by 'The plan opens with a solution (\"introduce Redis as a caching layer\"), not a problem' and notes absence of measurable target."
+    },
+    {
+      "text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named",
+      "passed": true,
+      "evidence": "B6 section: 'User-visible outcome metric: absent...' and 'Verdict: SUSTAINED.'"
+    },
+    {
+      "text": "Review explicitly calls out solutionism (chose Redis before stating the problem)",
+      "passed": true,
+      "evidence": "'The plan as written is a stack choice in search of a problem.' and 'Per Universal P2, design starts with the problem, not the stack.'"
+    },
+    {
+      "text": "Final recommendation is REVISE",
+      "passed": true,
+      "evidence": "'**REVISE** — strong tendency toward **KILL-as-currently-framed**.'"
+    },
+    {
+      "text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)",
+      "passed": true,
+      "evidence": "Condition 1: 'Problem statement (B1): who, what outcome, current number, target number, business reason.' Plus B1 examples like 'p95 catalog read < 50ms'."
+    }
+  ],
+  "summary": {"passed": 7, "failed": 0, "total": 7, "pass_rate": 1.0}
+}

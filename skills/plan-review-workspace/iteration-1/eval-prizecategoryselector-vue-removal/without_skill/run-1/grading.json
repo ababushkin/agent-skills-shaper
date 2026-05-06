@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "passed": false,
+      "evidence": "No Cynefin framework or domain classification appears anywhere in the review. Baseline lacks the framework."
+    },
+    {
+      "text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "passed": false,
+      "evidence": "No tiering (Quick/Full) framework invoked. Review proceeds at uniform depth without selecting a tier."
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "passed": false,
+      "evidence": "No B2 bucket or SUSTAINED/OVERTURNED verdict scheme. Review does flag '\"Unused\" is unverified' as gap #2 and concern #1, but lacks the structured B2 verdict the assertion requires."
+    },
+    {
+      "text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "passed": true,
+      "evidence": "'static analysis result (e.g. knip, ts-prune, ripgrep across app/, spec/, test/, stories/, server templates, i18n keys, dynamic-component registries)' — concrete tools and paths named."
+    },
+    {
+      "text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "passed": true,
+      "evidence": "'Recommendation: Do not approve as written. Send back for a 30–60 minute reshape... Reshape, don't rebuild.' — functional REVISE verdict."
+    },
+    {
+      "text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "passed": true,
+      "evidence": "Review is moderately sized (~50 lines), proportionate to a one-day plan; does not escalate to deep architecture/dependency analysis. No tier framework so cannot 'inflate to Full' but stays appropriately scoped."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 3,
+    "total": 6,
+    "pass_rate": 0.5
+  },
+  "eval_feedback": "Assertions 1, 2, 3 are framework-bound (Cynefin, tier, bucket-numbered verdict) and necessarily fail without the skill — they discriminate well between with/without but offer no credit for functionally equivalent reasoning in the baseline (e.g., baseline does flag 'unused' as unverified, just not under a B2 label). This is by design but worth noting."
+}

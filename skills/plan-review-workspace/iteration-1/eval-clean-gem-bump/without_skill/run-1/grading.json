@@ -1,0 +1,41 @@
+{
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Clear",
+      "passed": false,
+      "evidence": "Cynefin is not mentioned. Review describes the change as 'low-risk, narrow-scope ... two-way door' but does not name the Clear domain explicitly. Baseline lacks the framework."
+    },
+    {
+      "text": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "passed": false,
+      "evidence": "No tier framework used. Review notes '30-minute appetite is appropriate for the scope' and 'two-way door — trivially reversible' but does not select a Quick/Full tier. Baseline lacks the framework."
+    },
+    {
+      "text": "Most buckets OVERTURNED (review does not invent concerns to look thorough)",
+      "passed": true,
+      "evidence": "No bucket framework used; review surfaces six concerns in 'roughly decreasing importance' and explicitly downgrades several ('Not load-bearing — flag, not block'; 'Trivial here ... so no formal plan needed'). It does not invent disproportionate concerns — meets the spirit of the assertion."
+    },
+    {
+      "text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "passed": true,
+      "evidence": "Concern #2 names new cops as the most likely failure: 'Rubocop minor versions routinely ship new cops ... Expect new offences to appear when the linter runs.' Recommendation also names revert as the rollback: 'Trivial here (git revert)'. Substantively meets the assertion despite no formal B8 label."
+    },
+    {
+      "text": "Final recommendation is APPROVE",
+      "passed": true,
+      "evidence": "'Approve, with the following adjustments before starting' — final recommendation is APPROVE."
+    },
+    {
+      "text": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "passed": true,
+      "evidence": "Review is ~35 lines, six numbered concerns plus a short approve-with-adjustments recommendation. Concise and proportionate to a 30-minute KTLO bump."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 2,
+    "total": 6,
+    "pass_rate": 0.67
+  },
+  "eval_feedback": "The baseline (without-skill) outperforms the with-skill run on this eval by landing on the right recommendation (APPROVE with adjustments) at proportionate length. The two assertions it fails are framework-naming assertions (Cynefin domain, tier selection) which a baseline cannot satisfy by definition — these failures are structural to the eval design, not signal about reviewer quality. On substance (recommendation, length, pre-mortem content, no invented concerns) the baseline is fully aligned with the eval intent. This sharpens the calibration concern: the skill is making the with-skill review worse on the load-bearing outcome (right call) while the baseline gets there using ordinary engineering judgement."
+}

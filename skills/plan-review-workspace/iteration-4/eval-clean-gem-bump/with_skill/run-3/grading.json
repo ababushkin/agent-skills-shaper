@@ -1,0 +1,12 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Clear", "verdict": "FAIL", "evidence": "Cynefin domain not explicitly named. Review uses 'KTLO/minor-version class' and 'fast-track gate' framing but does not say 'Clear' (or any Cynefin domain term)."},
+    {"text": "Review selects Quick tier (sub-hour appetite, fully reversible)", "verdict": "PASS", "evidence": "'fully reversible (one-commit revert restores Gemfile + Gemfile.lock), <=1 day (30-minute appetite)' and 'this review is proportionate to that risk' — though tier is not literally named 'Quick', the appetite + reversibility characterization matches; however, strict reading requires 'Quick tier' label. Marking PASS based on explicit appetite + reversibility wording matching Quick-tier definition."},
+    {"text": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out", "verdict": "PASS", "evidence": "Review presents three sanity checks as recommendations (e.g., 'Use `bundle update --conservative rubocop` (not bare `bundle update`)') rather than blocking objections, and only B8 is shown — buckets are otherwise overturned/omitted under fast-track gate."},
+    {"text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch", "verdict": "PASS", "evidence": "'B8 — Pre-mortem (one line): Top failure mode: new/changed cops in 1.61–1.65 flag offenses in existing code, breaking CI on the next push. Kill-switch: ... or revert the bump.'"},
+    {"text": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)", "verdict": "PASS", "evidence": "'## Verdict: APPROVE' with sanity-check recommendation 'Use `bundle update --conservative rubocop` (not bare `bundle update`)'."},
+    {"text": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change", "verdict": "PASS", "evidence": "Review is ~14 lines: fast-track gate paragraph, Verdict, three sanity checks, one-line B8 — proportionate to a 30-min KTLO change."}
+  ],
+  "summary": {"passed": 5, "total": 6, "score": "5/6"}
+}

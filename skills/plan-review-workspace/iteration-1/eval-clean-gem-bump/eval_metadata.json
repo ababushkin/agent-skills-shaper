@@ -1,0 +1,13 @@
+{
+  "eval_id": 3,
+  "eval_name": "clean-gem-bump",
+  "prompt": "Review this plan: bump rubocop from 1.60 to 1.65 in Gemfile, run bundle update, run full test suite, commit. Should take 30 minutes. Approve?",
+  "assertions": [
+    {"text": "Review names Cynefin domain as Clear", "type": "qualitative"},
+    {"text": "Review selects Quick tier (sub-hour appetite, fully reversible)", "type": "qualitative"},
+    {"text": "Most buckets OVERTURNED (review does not invent concerns to look thorough)", "type": "qualitative"},
+    {"text": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch", "type": "qualitative"},
+    {"text": "Final recommendation is APPROVE", "type": "qualitative"},
+    {"text": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change", "type": "qualitative"}
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "eval_id": 4,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "PASS", "evidence": "This sits in the **Complicated** domain."},
+    {"text": "Review selects Full tier (production data + one-way door auto-fires)", "verdict": "PASS", "evidence": "A change of this profile demands the **Full review tier**: production data, central table, one-way door auto-fires."},
+    {"text": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named", "verdict": "PASS", "evidence": "B5 — Reversibility / ADR ... Verdict: SUSTAINED. No Alternatives section. No ADR named."},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom", "verdict": "PASS", "evidence": "B6 — Operability / success metrics ... Verdict: SUSTAINED. ... No rollback path named. ... No backfill progress metrics named. ... No capacity headroom analysis."},
+    {"text": "Review explicitly names rollback path as missing", "verdict": "PASS", "evidence": "**No rollback path named.** What happens if the deploy fails halfway through the backfill?"},
+    {"text": "Review explicitly names backfill progress metrics as missing", "verdict": "PASS", "evidence": "**No backfill progress metrics named.** How will on-call know whether the backfill is healthy, stalled, or about to exhaust the deploy window?"},
+    {"text": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)", "verdict": "PASS", "evidence": "**Recommendation: REVISE.** Re-submit with the eight items above addressed. If the team's appetite cannot accommodate that work, the alternative recommendation is **KILL**"},
+    {"text": "At least one bucket has a named falsifying condition", "verdict": "PASS", "evidence": "**Falsifying condition:** if the team can produce a written problem statement showing that `user_tier` must be a persistent column..."}
+  ],
+  "summary": {"passed": 8, "total": 8, "score": "8/8"}
+}

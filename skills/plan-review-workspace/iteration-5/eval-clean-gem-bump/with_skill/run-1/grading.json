@@ -1,0 +1,47 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Clear",
+      "result": "PASS",
+      "evidence": "\"**Cynefin domain**: Clear\"",
+      "reasoning": "Explicitly named in the output."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "PASS",
+      "evidence": "\"**Tier**: Quick (fast-track sub-form)\"",
+      "reasoning": "Tier is explicitly named as Quick."
+    },
+    {
+      "assertion": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "PASS",
+      "evidence": "No B1–B7 bucket verdicts are invented or sustained; the review skips the full bucket enumeration entirely (fast-track path) and offers only three sanity-check recommendations, including `bundle update rubocop --conservative` as a downgraded recommendation rather than a blocker.",
+      "reasoning": "The fast-track gate fired and the review did not bloat into a full 8-bucket analysis. Concerns raised are framed as recommendations, not SUSTAIN verdicts. Consistent with the carve-out."
+    },
+    {
+      "assertion": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "PASS",
+      "evidence": "\"## B8 — Pre-mortem (one line): Top failure mode: new cops introduced between 1.60 and 1.65 produce autocorrect conflicts or false-positive failures that block CI after commit.\"",
+      "reasoning": "Rubocop rule changes / CI breakage is explicitly named. Kill-switch is given as running rubocop before committing and reverting if needed. However, the kill-switch described is 'run rubocop --auto-correct-all' not a git revert — this still names a kill-switch. The assertion says 'revert as kill-switch' but the review names a different kill-switch (autocorrect). This is close but the assertion requires 'revert' specifically. The review does not mention 'revert' in the B8 section. FAIL on strict reading.",
+      "reasoning_final": "The assertion requires 'revert as kill-switch'. The B8 section does not mention revert — it proposes running autocorrect instead. FAIL."
+    },
+    {
+      "assertion": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "PASS",
+      "evidence": "\"## Verdict: APPROVE\"",
+      "reasoning": "Verdict is explicitly APPROVE. Also includes the recommended `bundle update rubocop --conservative` as a sanity check."
+    },
+    {
+      "assertion": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "PASS",
+      "evidence": "The review is 39 lines total, with a fast-track gate section, a one-line verdict, three bullet sanity checks, and a one-line pre-mortem. No full 8-bucket analysis.",
+      "reasoning": "Length is clearly proportionate to a Quick-tier change."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 6,
+    "score": "5/6"
+  }
+}

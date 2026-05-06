@@ -1,0 +1,13 @@
+{
+  "eval_id": 2,
+  "eval_name": "prizecategoryselector-vue-removal",
+  "prompt": "Review this plan: remove unused Vue components, starting with PrizeCategorySelector under app/javascript/components/. Should take about a day. Approve?",
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated (or Clear — both defensible)", "type": "qualitative"},
+    {"text": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)", "type": "qualitative"},
+    {"text": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified", "type": "qualitative"},
+    {"text": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)", "type": "qualitative"},
+    {"text": "Final recommendation is REVISE (not APPROVE — scope claim unverified)", "type": "qualitative"},
+    {"text": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)", "type": "qualitative"}
+  ]
+}

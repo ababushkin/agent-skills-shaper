@@ -1,0 +1,45 @@
+{
+  "eval_id": 5,
+  "assertions": [
+    {
+      "text": "Review names Cynefin domain as Complicated",
+      "verdict": "PASS",
+      "evidence": "'Cynefin domain: Complicated — caching with invalidation is a knowable problem...' and B0 section: 'Complicated.'"
+    },
+    {
+      "text": "Review selects Full tier (vendor introduction = one-way door)",
+      "verdict": "PASS",
+      "evidence": "'Tier: Full — selected because the plan introduces a new vendor / new piece of production infrastructure (Redis cluster). This is a one-way-door per the auto-select rule (vendor lock-in, production data path).'"
+    },
+    {
+      "text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target",
+      "verdict": "PASS",
+      "evidence": "'B1 — Problem framing. Verdict: SUSTAINED.' Notes solution-first opening, no outcome metric, no baseline (e.g. 'P95 = 320ms; target P95 = 80ms')."
+    },
+    {
+      "text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named",
+      "verdict": "PASS",
+      "evidence": "'User-visible outcome metric: absent — and this is the hinge.' and 'Verdict: SUSTAINED on both halves.'"
+    },
+    {
+      "text": "Review explicitly calls out solutionism (chose Redis before stating the problem)",
+      "verdict": "PASS",
+      "evidence": "'This is textbook solutionism — a Redis-shaped solution chosen before the problem is named.' Also recommendation: 'the choice was made before the problem was named and measured.'"
+    },
+    {
+      "text": "Final recommendation is REVISE",
+      "verdict": "PASS",
+      "evidence": "'Recommendation: REVISE — plan is solution-first, has zero stated outcome metric...'"
+    },
+    {
+      "text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)",
+      "verdict": "PASS",
+      "evidence": "Conditions to clear #1: 'Rewrite the plan opening as: For [customer segment], catalog read [outcome metric] is currently [baseline]. Target: [number].' Plus B1 falsifying condition demands baseline + target numbers."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 7,
+    "score": "7/7"
+  }
+}

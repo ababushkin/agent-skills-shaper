@@ -1,0 +1,13 @@
+{
+  "eval_id": 5,
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complicated", "verdict": "PASS", "evidence": "**Cynefin domain**: Complicated."},
+    {"text": "Review selects Full tier (vendor introduction = one-way door)", "verdict": "PASS", "evidence": "**Tier**: **Full** — selected because the plan contains a one-way-door decision (introducing a new infrastructure component / vendor topology)"},
+    {"text": "B1 (problem framing) verdict is SUSTAINED — solution-first framing, no problem statement, no latency target", "verdict": "PASS", "evidence": "B1 — Problem framing **Verdict: SUSTAINED.** The plan opens with a solution ... no latency target, no Postgres bottleneck evidence"},
+    {"text": "B6 (operability/success metrics) verdict is SUSTAINED — no user-visible outcome metric named", "verdict": "PASS", "evidence": "Six-of-six absent. SUSTAINED. ... User-visible outcome metric: **absent**"},
+    {"text": "Review explicitly calls out solutionism (chose Redis before stating the problem)", "verdict": "PASS", "evidence": "The plan is solution-first, lacks a problem statement ... the core defect is that **the problem is undefined**"},
+    {"text": "Final recommendation is REVISE", "verdict": "PASS", "evidence": "**REVISE** — the plan has six SUSTAINED bucket findings"},
+    {"text": "Review demands a measurable latency target before approval (or equivalent problem-quantifying ask)", "verdict": "PASS", "evidence": "Named user/business outcome with current measurement and target (\"p95 catalog read is X ms, target Y ms ...\")"}
+  ],
+  "summary": {"passed": 7, "total": 7, "score": "7/7"}
+}

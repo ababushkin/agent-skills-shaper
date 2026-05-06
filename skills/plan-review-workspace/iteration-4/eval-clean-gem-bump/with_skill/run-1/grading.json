@@ -1,0 +1,42 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Clear",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review does not explicitly name a Cynefin domain (Clear/Complicated/Complex/Chaotic); it only invokes a 'Fast-track gate' classification."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "FAIL",
+      "evidence": "Fast-track gate fired — KTLO/minor-version class (rubocop 1.60 → 1.65 is a minor SemVer bump), fully reversible (one-commit revert of Gemfile + Gemfile.lock restores prior state), ≤1 day appetite (stated 30 min)",
+      "reasoning": "The review names a 'Fast-track gate' rather than 'Quick tier'; the assertion requires explicit Quick-tier naming, which is not present."
+    },
+    {
+      "assertion": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "PASS",
+      "evidence": "Use `bundle update --conservative rubocop` (not bare `bundle update`) — bare `bundle update` walks every transitive gem in the lockfile, which is out of scope for a rubocop bump",
+      "reasoning": "The legitimate `bundle update` scope concern is presented as a sanity-check recommendation rather than blocking findings, and the verdict remains APPROVE — fitting the carve-out."
+    },
+    {
+      "assertion": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "PASS",
+      "evidence": "B8 — Pre-mortem (one line) Top failure mode: bare `bundle update` upgrades unrelated gems and a non-rubocop regression slips through under the cover of a \"rubocop bump\" commit. Kill-switch: scope the command to `--conservative rubocop` and inspect `git diff Gemfile.lock` before committing — if the diff touches gems other than rubocop and its direct deps, stop and revert.",
+      "reasoning": "B8 is explicitly labeled as pre-mortem, names a failure mode tied to the bump, and provides revert as the kill-switch."
+    },
+    {
+      "assertion": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "PASS",
+      "evidence": "## Verdict: APPROVE",
+      "reasoning": "Verdict is explicitly APPROVE, with the `--conservative rubocop` recommendation included as a sanity check."
+    },
+    {
+      "assertion": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "PASS",
+      "evidence": "The entire review is ~14 lines (gate line, verdict, 3 sanity checks, B8 one-liner).",
+      "reasoning": "The review is concise, with only a fast-track gate, three sanity checks, and a one-line B8 — proportionate to the 30-min change."
+    }
+  ],
+  "summary": {"passed": 4, "total": 6, "score": "4/6"}
+}

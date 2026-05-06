@@ -1,0 +1,57 @@
+{
+  "eval_id": 1,
+  "config": "without_skill",
+  "expectations": [
+    {
+      "text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+      "passed": false,
+      "evidence": "No Cynefin classification in baseline review"
+    },
+    {
+      "text": "Review selects Full tier (quarter-long appetite, multiple themes)",
+      "passed": false,
+      "evidence": "No tier framework used"
+    },
+    {
+      "text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL \u2014 themes named without measurable outcomes",
+      "passed": false,
+      "evidence": "No B1 bucket; section 1 identifies solution-not-problem issue but lacks structured verdict"
+    },
+    {
+      "text": "B2 (scope) verdict is SUSTAINED \u2014 at least one theme has scope-vague concern (no triage record cited)",
+      "passed": false,
+      "evidence": "No B2 bucket; no triage-record concept mentioned"
+    },
+    {
+      "text": "B3 (assumptions) verdict is SUSTAINED \u2014 at least one assumption flagged as low-confidence/anecdotal",
+      "passed": false,
+      "evidence": "No B3 bucket; section 3 calls evidence 'thin' but no structured verdict"
+    },
+    {
+      "text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1\u201310) on at least one assumption",
+      "passed": false,
+      "evidence": "No numeric confidence scoring"
+    },
+    {
+      "text": "Final recommendation is REVISE",
+      "passed": true,
+      "evidence": "'Do not approve' / 'Send back with...' \u2014 equivalent to REVISE"
+    },
+    {
+      "text": "Review recommends running idea-triage on themes before allocation",
+      "passed": false,
+      "evidence": "Recommends 'reframe each theme' but does not name idea-triage workflow"
+    },
+    {
+      "text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+      "passed": false,
+      "evidence": "No falsifying-condition discipline applied"
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 8,
+    "total": 9,
+    "pass_rate": 0.1111
+  }
+}
