@@ -32,7 +32,7 @@ principles_implemented:
     id: <principle or rule id>
     bucket: <embedded | standalone | hook | sub-agent>
     note: <one-line summary of how this principle is enforced here>
-triage_record_ref: <pointer to PROJECT_PLAN.md §11 row>
+triage_record_ref: <pointer to the originating idea-bank entry or issue, if any>
 purpose: <one paragraph>
 scope:
   in: <what this artefact covers>

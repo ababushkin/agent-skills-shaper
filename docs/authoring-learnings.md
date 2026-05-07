@@ -37,10 +37,9 @@ The reflexive move to "one skill per principle" inflates the pack. The right mov
 - a mechanically-verifiable failure mode (hook)
 - a structural reason the agent won't catch its own failure (sub-agent)
 
-Editors check this in the trace audit at M3 (KR1.6 in `PROJECT_GOVERNANCE.md`).
+Reviewers check this during PR review: a proposed standalone artefact must satisfy all three.
 
 ## See also
 
 - `references/confidence-meter.md` for calibration scale
-- `PROJECT_PLAN.md` §6.3 for editor reject triggers
-- `PROJECT_GOVERNANCE.md` §3 for OKRs
+- `docs/skill-anatomy.md`, `docs/hook-anatomy.md`, `docs/sub-agent-anatomy.md` for artefact shapes
