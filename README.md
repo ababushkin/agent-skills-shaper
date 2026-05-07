@@ -15,18 +15,23 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
   records          updates scores   builds roadmap               task breakdown
 ```
 
+Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) skill catches **93%** of the issues a senior reviewer should catch on a 5-scenario benchmark, vs **19%** without the skill loaded (n=3, Claude Sonnet 4.6). [Methodology and per-eval breakdown.](docs/benchmarks.md)
+
 ---
 
 ## When to use which skill
 
 | You're doing this | Use this |
 |---|---|
+| Not sure which skill applies | [`using-this-pack`](skills/using-this-pack/SKILL.md) |
 | An idea arrives — worth pursuing? | [`idea-triage`](skills/idea-triage/SKILL.md) |
+| Need to ground Impact scores in your app's context | [`app-calibrate`](skills/app-calibrate/SKILL.md) |
 | Idea bank needs curation — promote, kill, or update confidence | [`backlog-manage`](skills/backlog-manage/SKILL.md) |
 | Planning cycle — what to build next? | [`roadmap-shape`](skills/roadmap-shape/SKILL.md) |
 | Idea approved — does this feel right? | [`prototype-to-validate`](skills/prototype-to-validate/SKILL.md) |
 | Significant engineering work — how to build it? | [`design-doc`](skills/design-doc/SKILL.md) |
 | Have a design — break it into tasks | [`planning-and-task-breakdown`](skills/planning-and-task-breakdown/SKILL.md) |
+| Plan/spec/design needs review before approval | [`plan-review`](skills/plan-review/SKILL.md) |
 | Building anything non-trivial | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) |
 | Fixing a bug | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) bug-fix sub-workflow |
 | Agent says it's done | [`stop-the-line`](hooks/stop-the-line/HOOK.md) fires automatically |
@@ -41,6 +46,7 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 |---|---|---|
 | [PRODUCT_RULES.md](rules/PRODUCT_RULES.md) | Rule set covering idea filtering (P2–P4), roadmap discipline (B1–B5), and capacity allocation (C1–C3). | Load persistently for product work |
 | [idea-triage](skills/idea-triage/SKILL.md) | Interrogates incoming ideas through confidence gates, ICE scoring, and Kano classification. Routes to idea bank (Confidence ≥ 5) or validation slot (Confidence < 5). | Any proposal arrives |
+| [app-calibrate](skills/app-calibrate/SKILL.md) | Captures app-specific context (audience, value props, constraints) so Impact scores in `idea-triage` are grounded in this product, not a generic one. | Before running `idea-triage` for the first time on a product; product context shifts |
 | [backlog-manage](skills/backlog-manage/SKILL.md) | Maintains the idea bank between triage and planning. Promotes validated items, kills stale ones, updates confidence scores with new evidence, and tracks KTLO work. Run before `roadmap-shape` so it reads a clean input. | Idea bank needs curation; validation result arrived; adding KTLO work; feeding post-launch evidence back |
 | [roadmap-shape](skills/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
 
@@ -53,7 +59,14 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 | [prototype-to-validate](skills/prototype-to-validate/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
 | [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
+| [plan-review](skills/plan-review/SKILL.md) | Reviews a plan, spec, or design before approval. Eight MECE attack buckets plus a Cynefin classifier; surfaces unstated assumptions, missing alternatives, and reversibility blind spots. Calibrated against a [5-scenario benchmark](docs/benchmarks.md): 93% with-skill vs 19% baseline (n=3, Sonnet 4.6). | Plan/spec/design needs a second pass before commitment |
 | [incremental-implementation](skills/incremental-implementation/SKILL.md) | Thin vertical slices — implement, test, verify, commit. Walking skeleton first. Bug-fix sub-workflow for KTLO work. | Building anything touching more than one file |
+
+### Meta
+
+| Skill | What it does | Use when |
+|---|---|---|
+| [using-this-pack](skills/using-this-pack/SKILL.md) | Meta-skill that maps a task to the right pack skill. Loads first when the agent is unsure which workflow applies. | Starting a session; task arrives and you don't know which skill fits |
 
 ---
 
@@ -64,6 +77,14 @@ Hooks are mechanical checks that fire on events. They catch failure modes the ag
 | Hook | What it catches | Fires when |
 |---|---|---|
 | [stop-the-line](hooks/stop-the-line/HOOK.md) | Type suppressions, compiler directives, test skips, deleted assertions, static-analysis suppressions in a diff | Agent signals work is done |
+
+---
+
+## Benchmarks
+
+One skill (`plan-review`) has been calibrated against a 5-scenario eval set with isolated blinded grading and n=3 per cell. Headline: **93% pass rate with-skill vs 19% without** (delta +0.74) on Claude Sonnet 4.6. Full methodology, per-eval results, the trajectory across five iterations, and caveats: [docs/benchmarks.md](docs/benchmarks.md).
+
+The methodology is reusable; benchmarking the other nine skills is on the roadmap.
 
 ---
 
@@ -79,6 +100,7 @@ Short reference files cited by skills. Load on demand.
 | [portfolio-themes](references/portfolio-themes.md) | Doshi's seven strategic themes with capacity allocation guidance | roadmap-shape |
 | [nfr-categories](references/nfr-categories.md) | NFR taxonomy: category, measurable target, fitness function type | design-doc |
 | [dora-metrics](references/dora-metrics.md) | Four DORA metrics with elite / high / medium / low benchmarks | post-launch-impact-review, deploy |
+| [app-context-schema](references/app-context-schema.md) | Schema for capturing app-specific context (audience, value props, constraints) used to ground Impact scoring | app-calibrate, idea-triage |
 
 ---
 
