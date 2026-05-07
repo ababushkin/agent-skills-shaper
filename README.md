@@ -2,6 +2,8 @@
 
 **Workflow skills for the small product-design-engineering team - including the team of one.**
 
+The planning and decision-making layer: get the *what* and the *why* right before any code is written, so implementation is as smooth as possible. Implementation is left to a separate pack of your choice — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack).
+
 Skills encode the discipline that experienced PDE teams apply at each decision point: which ideas to pursue, how to structure work, how to build it, and how to catch failure modes before they compound. Packaged so AI agents follow them consistently instead of taking shortcuts.
 
 ```
@@ -16,6 +18,8 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 ```
 
 Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) skill catches **93%** of the issues a senior reviewer should catch on a 5-scenario benchmark, vs **19%** without the skill loaded (n=3, Claude Sonnet 4.6). [Methodology and per-eval breakdown.](docs/benchmarks.md)
+
+For implementation, plug in any compatible skill pack — [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example. [How pairing works →](#pairing-with-an-implementation-pack)
 
 ---
 
@@ -70,6 +74,61 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 
 ---
 
+## Pairing with an implementation pack
+
+pde-skills' job is planning and decision-making: discover, curate, decide, design, review-before-build. It deliberately stops at the point where implementation begins. For the implementation half — test, debug, build UI, harden, ship — pick a separate pack designed for that job, or skip the pack and drive implementation with your own prompting. Both are fine; the choice is yours.
+
+[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example throughout this section because four of pde's skills trace their lineage from it (`predecessor` declarations in frontmatter). It's not a required pair — it's one option among the implementation packs that exist or will exist.
+
+### What an implementation pack covers
+
+Using addy's pack as the example. Empty cells on pde's side aren't gaps to be filled — they're scope decisions. pde will never ship a TDD or CI/CD skill; that's not its job.
+
+| Phase | pde-skills (planning + decision) | Implementation pack (e.g. `agent-skills`) |
+|---|---|---|
+| Discover / curate | `idea-triage`, `app-calibrate`, `backlog-manage` | — |
+| Decide / plan | `roadmap-shape`, `planning-and-task-breakdown` | — |
+| Design | `design-doc`, `prototype-to-validate` | — |
+| Pre-build review | `plan-review` (calibrated, [benchmarks](docs/benchmarks.md)) | — |
+| Build | `incremental-implementation` (one slim handoff skill) | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
+| Verify | — | `test-driven-development`, `debugging-and-error-recovery`, `browser-testing-with-devtools` |
+| Review | — | `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `code-simplification` |
+| Ship | — | `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `shipping-and-launch`, `deprecation-and-migration` |
+| Persistent rules | `PRODUCT_RULES`, `eng-principles-universal`, `eng-principles-agentic` | — |
+| Hooks | `stop-the-line` | (varies by pack) |
+
+### Where the two intentionally overlap
+
+Four pde skills have direct counterparts in addy's pack. They diverge intentionally; the divergences are declared in each skill's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
+
+| pde skill ↔ addy skill | What pde changed | Why |
+|---|---|---|
+| `idea-triage` ↔ `idea-refine` (adjacent) | Mandatory ICE scoring + Confidence Meter gates; Kano classification; routes low-confidence ideas to a validation slot, not the roadmap. | The product principles in `PRODUCT_RULES.md` demand evidence before commitment — `idea-refine` accepts framed ideas; `idea-triage` gates them. |
+| `design-doc` ↔ `spec-driven-development` (derivative) | NFRs as numbered measurable targets, not adjectives; mandatory Operability section (metrics, alerts, rollback); ADR pattern enforced. | Universal eng principles A1–A6 require this rigour; `spec-driven-development` is more permissive. |
+| `incremental-implementation` ↔ `incremental-implementation` (derivative) | Adds a bug-fix sub-workflow (KTLO carve-out); explicit walking-skeleton-first ordering. | Product rules carve KTLO out of outcome framing; eng rules require walking skeleton before features. |
+| `planning-and-task-breakdown` ↔ `planning-and-task-breakdown` (derivative) | Acceptance criteria required per task; explicit dependency-order surfacing before commitment. | Eng principle B7 requires cross-team dependency surfacing pre-commitment; addy's version leaves it implicit. |
+
+If you install both packs, the namespace prefix (`pde-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
+
+### Install
+
+pde-skills (the core):
+
+```
+/plugin install github@ababushkin/pde-skills
+```
+
+Optional — add `addyosmani/agent-skills` as your implementation pack:
+
+```
+/plugin marketplace add addyosmani/agent-skills
+/plugin install agent-skills@addy-agent-skills
+```
+
+Restart Claude Code after install. Either pack works on its own; both work together. For local-dev co-install, run each pack's installer independently — namespacing prevents symlink collisions in `~/.claude/skills/`.
+
+---
+
 ## Hooks
 
 Hooks are mechanical checks that fire on events. They catch failure modes the agent has every reason not to flag against itself.
@@ -105,6 +164,8 @@ Short reference files cited by skills. Load on demand.
 ---
 
 ## How to install
+
+pde-skills installs and runs on its own. If you want lifecycle coverage end-to-end, also install an implementation pack — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack).
 
 ### Claude Code — marketplace install (recommended)
 
@@ -169,7 +230,7 @@ Skills declare which sizes they apply to. When a skill fires on work that's larg
 
 ## Attribution
 
-This pack is a soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani. It inherits the structural conventions (skill frontmatter, anatomy specs, the `SKILL.md` pattern) and improves on them where the owner's principles demand. Where an artefact has a counterpart in addy's pack, the relationship is declared explicitly in the artefact's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`). Where an artefact is new, it stands alone. No paragraph in this pack is a verbatim copy of the source.
+This pack is a soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani. It inherits the structural conventions (skill frontmatter, anatomy specs, the `SKILL.md` pattern). Where an artefact has a counterpart in addy's pack, the relationship is declared explicitly in the artefact's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`). Where an artefact is new, it stands alone. No paragraph in this pack is a verbatim copy of the source. See [Pairing with an implementation pack](#pairing-with-an-implementation-pack) for how the two are designed to be used together.
 
 ---
 
