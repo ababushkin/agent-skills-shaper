@@ -19,27 +19,6 @@ Skills encode the discipline that experienced PDE teams apply at each decision p
 
 Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) skill catches **93%** of the issues a senior reviewer should catch on a 5-scenario benchmark, vs **19%** without the skill loaded (n=3, Claude Sonnet 4.6). [Methodology and per-eval breakdown.](docs/benchmarks.md)
 
-For implementation, plug in any compatible skill pack — [`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example. [How pairing works →](#pairing-with-an-implementation-pack)
-
----
-
-## When to use which skill
-
-| You're doing this | Use this |
-|---|---|
-| Not sure which skill applies | [`using-this-pack`](skills/using-this-pack/SKILL.md) |
-| An idea arrives — worth pursuing? | [`idea-triage`](skills/idea-triage/SKILL.md) |
-| Need to ground Impact scores in your app's context | [`app-calibrate`](skills/app-calibrate/SKILL.md) |
-| Idea bank needs curation — promote, kill, or update confidence | [`backlog-manage`](skills/backlog-manage/SKILL.md) |
-| Planning cycle — what to build next? | [`roadmap-shape`](skills/roadmap-shape/SKILL.md) |
-| Idea approved — does this feel right? | [`prototype-to-validate`](skills/prototype-to-validate/SKILL.md) |
-| Significant engineering work — how to build it? | [`design-doc`](skills/design-doc/SKILL.md) |
-| Have a design — break it into tasks | [`planning-and-task-breakdown`](skills/planning-and-task-breakdown/SKILL.md) |
-| Plan/spec/design needs review before approval | [`plan-review`](skills/plan-review/SKILL.md) |
-| Building anything non-trivial | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) |
-| Fixing a bug | [`incremental-implementation`](skills/incremental-implementation/SKILL.md) bug-fix sub-workflow |
-| Agent says it's done | [`stop-the-line`](hooks/stop-the-line/HOOK.md) fires automatically |
-
 ---
 
 ## Skills
@@ -110,22 +89,7 @@ Four pde skills have direct counterparts in addy's pack. They diverge intentiona
 
 If you install both packs, the namespace prefix (`pde-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
 
-### Install
-
-pde-skills (the core):
-
-```
-/plugin install github@ababushkin/pde-skills
-```
-
-Optional — add `addyosmani/agent-skills` as your implementation pack:
-
-```
-/plugin marketplace add addyosmani/agent-skills
-/plugin install agent-skills@addy-agent-skills
-```
-
-Restart Claude Code after install. Either pack works on its own; both work together. For local-dev co-install, run each pack's installer independently — namespacing prevents symlink collisions in `~/.claude/skills/`.
+Install commands for both packs are in [How to install](#how-to-install).
 
 ---
 
@@ -165,7 +129,7 @@ Short reference files cited by skills. Load on demand.
 
 ## How to install
 
-pde-skills installs and runs on its own. If you want lifecycle coverage end-to-end, also install an implementation pack — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack).
+pde-skills installs and runs on its own. To pair it with an implementation pack, see the [optional step](#optional--pair-with-an-implementation-pack) below.
 
 ### Claude Code — marketplace install (recommended)
 
@@ -208,29 +172,26 @@ The script:
 
 Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
 
+### Optional — pair with an implementation pack
+
+`addyosmani/agent-skills` is the worked example for the implementation half (build, verify, review, ship — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack)). Install it alongside pde-skills:
+
+```
+/plugin marketplace add addyosmani/agent-skills
+/plugin install agent-skills@addy-agent-skills
+```
+
+Either pack works on its own; both work together. For local-dev co-install, run each pack's installer independently — namespacing (`pde-*` vs the implementation pack's namespace) prevents symlink collisions in `~/.claude/skills/`.
+
 ### Other agents (Cursor, Gemini CLI, Windsurf, …)
 
 Skills are plain Markdown. Paste the content of the relevant `rules/*.md` or `skills/<name>/SKILL.md` into your agent's rules/instructions file for the project. Load rule files persistently; load skills situationally — loading all of them at once wastes context.
 
 ---
 
-## How to size the work
-
-Size the work before you start.
-
-| Size | Complexity | Changes expected | Input required from you |
-|------|------------|-----------------|------------------------|
-| Small | Single concern, clear scope | Few files, low risk of cascades | Little to none — agent executes, you review output |
-| Medium | Multiple concerns or uncertain scope | Moderate changes, some coordination | Occasional decisions; expect 1–2 rounds |
-| Large | High complexity, cross-cutting, or contested tradeoffs | Many changes, likely revisions | Heavy involvement — frame the problem, review drafts, resolve conflicts |
-
-Skills declare which sizes they apply to. When a skill fires on work that's larger than its declared size, stop and split the work first.
-
----
-
 ## Attribution
 
-This pack is a soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani. It inherits the structural conventions (skill frontmatter, anatomy specs, the `SKILL.md` pattern). Where an artefact has a counterpart in addy's pack, the relationship is declared explicitly in the artefact's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`). Where an artefact is new, it stands alone. No paragraph in this pack is a verbatim copy of the source. See [Pairing with an implementation pack](#pairing-with-an-implementation-pack) for how the two are designed to be used together.
+This pack is a soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani. It inherits the structural conventions (skill frontmatter, anatomy specs, the `SKILL.md` pattern). Where an artefact has a counterpart in addy's pack, the relationship is declared explicitly in the artefact's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`). Where an artefact is new, it stands alone. No paragraph in this pack is a verbatim copy of the source.
 
 ---
 
