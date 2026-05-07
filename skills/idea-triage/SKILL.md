@@ -61,7 +61,7 @@ Run this skill when an idea arrives from outside the existing roadmap and backlo
 ## When not to use
 
 - **KTLO work** — bug fixes, compliance items, partner obligations, minor maintenance go straight to the backlog without triage (Rule A5). Do not wrap these in outcome hypotheses to justify them; do not let real product work hide inside them.
-- **Ideas already on the roadmap being refined or scoped** — that is design-doc or incremental-implementation territory.
+- **Ideas already on the roadmap being refined or scoped** — that is design-doc or implementation territory.
 - **Ideas that already hold a triage record and confidence score** — re-triage only if material new evidence arrives that changes the score.
 - **Multi-round, open-ended refinement** — use the idea-refine skill (addy/agent-skills) when the goal is iterative exploration rather than a single intake decision.
 

@@ -6,8 +6,8 @@ description: >
   time. Use before starting any non-trivial implementation. Trigger phrases: "break
   this down into tasks", "what do we need to build", "give me a task list", "sequence
   the work", "plan the implementation", "what order should we build this in",
-  "decompose this into steps". Use this skill before incremental-implementation
-  whenever the sequence of work isn't obvious.
+  "decompose this into steps". Use this skill whenever the sequence of work isn't
+  obvious before implementation begins.
 pack: engineering
 lifecycle_stage: plan
 principles_implemented:
@@ -47,7 +47,7 @@ changed_from_predecessor:
 
 ## Purpose
 
-This skill takes an accepted design doc and produces an ordered task list where each task is small enough to complete and verify independently. It bridges the gap between "we have an accepted design" and "we know exactly what to build in what order." The output is the input to `incremental-implementation`: a sequence of well-scoped tasks, each with acceptance criteria, that the implementation workflow will pick up one at a time.
+This skill takes an accepted design doc and produces an ordered task list where each task is small enough to complete and verify independently. It bridges the gap between "we have an accepted design" and "we know exactly what to build in what order." The output is a sequence of well-scoped tasks, each with acceptance criteria, that whichever build skill the team uses will pick up one at a time.
 
 The goal is not comprehensiveness — it is clarity and verifiability. A task list that looks thorough but whose tasks are too big to verify will not survive contact with implementation. Every task must answer: "how do I know this is done?"
 
@@ -59,7 +59,6 @@ The goal is not comprehensiveness — it is clarity and verifiability. A task li
 ## When not to use
 
 - **No accepted design doc and the work exceeds a Rule A1 trigger** — run `design-doc` first. A draft or in-flight doc does not count as accepted.
-- **KTLO bug fixes** — use the `incremental-implementation` bug-fix sub-workflow directly; task breakdown adds overhead without value for scoped fixes.
 - **The scope is unclear or contested** — resolve scope ambiguity in the design doc before breaking down tasks. Task breakdown from a vague spec produces tasks nobody believes in.
 
 ## Inputs
@@ -196,5 +195,4 @@ The skill has run correctly when:
 - `rules/eng-principles-universal.md` — Rule A1 (design doc trigger), Rule B1 (YAGNI per slice), Rule B2 (walking skeleton first), Rule C4 (dependencies before commitment)
 - `rules/eng-principles-agentic.md` — P3 (no drift from design doc)
 - `skills/design-doc/SKILL.md` — the upstream output that this skill consumes
-- `skills/incremental-implementation/SKILL.md` — the downstream skill that consumes this skill's output
 - Ryan Singer — "Shape Up" (appetite and scope as planning primitives)

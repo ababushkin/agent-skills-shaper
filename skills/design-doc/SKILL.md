@@ -84,7 +84,7 @@ If a trigger is ambiguous, default to writing the doc. A short, fast doc costs l
 
 - **None of the three triggers fire** — write a short ADR instead (Rule A3). A design doc for sub-threshold work is overhead; an ADR is the right fit.
 - **The problem is not yet understood** — run a `spike` first, then return here. Writing a design doc for an undefined problem produces a document about the solution you assumed, not the problem you have.
-- **Change is purely additive, clearly reversible, and has no shared-interface surface** — proceed directly to `incremental-implementation`. Not every shipped line needs a design doc.
+- **Change is purely additive, clearly reversible, and has no shared-interface surface** — proceed directly to implementation. Not every shipped line needs a design doc.
 
 ## Inputs
 
