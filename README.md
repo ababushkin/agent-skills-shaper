@@ -7,14 +7,14 @@ The planning and decision-making layer: get the *what* and the *why* right befor
 Skills encode the discipline that experienced PDE teams apply at each decision point: which ideas to pursue, how to structure work, how to build it, and how to catch failure modes before they compound. Packaged so AI agents follow them consistently instead of taking shortcuts.
 
 ```
-  DISCOVER         CURATE          DECIDE          DESIGN            BUILD
+  DISCOVER         CURATE          DECIDE          DESIGN            PLAN
  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐
- │  idea    │──▶ │ backlog  │──▶ │  roadmap │──▶ │ design   │──▶ │  incr.   │
- │  triage  │    │  manage  │    │  shape   │    │  doc     │    │  impl.   │
+ │  idea    │──▶ │ backlog  │──▶ │  roadmap │──▶ │ design   │──▶ │ planning │
+ │  triage  │    │  manage  │    │  shape   │    │  doc     │    │ + task   │
  └──────────┘    └──────────┘    └──────────┘    └──────────┘    └──────────┘
-  creates          promotes/        reads            how to             ▲
-  idea bank        kills items      idea bank        build it     planning &
-  records          updates scores   builds roadmap               task breakdown
+  creates          promotes/        reads            how to           tasks for
+  idea bank        kills items      idea bank        build it         your build
+  records          updates scores   builds roadmap                    skill
 ```
 
 Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) skill catches **93%** of the issues a senior reviewer should catch on a 5-scenario benchmark, vs **19%** without the skill loaded (n=3, Claude Sonnet 4.6). [Methodology and per-eval breakdown.](docs/benchmarks.md)
@@ -43,7 +43,6 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
 | [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
 | [plan-review](skills/plan-review/SKILL.md) | Reviews a plan, spec, or design before approval. Eight MECE attack buckets plus a Cynefin classifier; surfaces unstated assumptions, missing alternatives, and reversibility blind spots. Calibrated against a [5-scenario benchmark](docs/benchmarks.md): 93% with-skill vs 19% baseline (n=3, Sonnet 4.6). | Plan/spec/design needs a second pass before commitment |
-| [incremental-implementation](skills/incremental-implementation/SKILL.md) | Thin vertical slices — implement, test, verify, commit. Walking skeleton first. Bug-fix sub-workflow for KTLO work. | Building anything touching more than one file |
 
 ### Meta
 
@@ -57,7 +56,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 
 pde-skills' job is planning and decision-making: discover, curate, decide, design, review-before-build. It deliberately stops at the point where implementation begins. For the implementation half — test, debug, build UI, harden, ship — pick a separate pack designed for that job, or skip the pack and drive implementation with your own prompting. Both are fine; the choice is yours.
 
-[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example throughout this section because four of pde's skills trace their lineage from it (`predecessor` declarations in frontmatter). It's not a required pair — it's one option among the implementation packs that exist or will exist.
+[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example throughout this section because three of pde's skills trace their lineage from it (`predecessor` declarations in frontmatter). It's not a required pair — it's one option among the implementation packs that exist or will exist.
 
 ### What an implementation pack covers
 
@@ -69,7 +68,7 @@ Using addy's pack as the example. Empty cells on pde's side aren't gaps to be fi
 | Decide / plan | `roadmap-shape`, `planning-and-task-breakdown` | — |
 | Design | `design-doc`, `prototype-to-validate` | — |
 | Pre-build review | `plan-review` (calibrated, [benchmarks](docs/benchmarks.md)) | — |
-| Build | `incremental-implementation` (one slim handoff skill) | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
+| Build | — | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
 | Verify | — | `test-driven-development`, `debugging-and-error-recovery`, `browser-testing-with-devtools` |
 | Review | — | `code-review-and-quality`, `security-and-hardening`, `performance-optimization`, `code-simplification` |
 | Ship | — | `git-workflow-and-versioning`, `ci-cd-and-automation`, `documentation-and-adrs`, `shipping-and-launch`, `deprecation-and-migration` |
@@ -78,13 +77,12 @@ Using addy's pack as the example. Empty cells on pde's side aren't gaps to be fi
 
 ### Where the two intentionally overlap
 
-Four pde skills have direct counterparts in addy's pack. They diverge intentionally; the divergences are declared in each skill's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
+Three pde skills have direct counterparts in addy's pack. They diverge intentionally; the divergences are declared in each skill's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
 
 | pde skill ↔ addy skill | What pde changed | Why |
 |---|---|---|
 | `idea-triage` ↔ `idea-refine` (adjacent) | Mandatory ICE scoring + Confidence Meter gates; Kano classification; routes low-confidence ideas to a validation slot, not the roadmap. | The product principles in `PRODUCT_RULES.md` demand evidence before commitment — `idea-refine` accepts framed ideas; `idea-triage` gates them. |
 | `design-doc` ↔ `spec-driven-development` (derivative) | NFRs as numbered measurable targets, not adjectives; mandatory Operability section (metrics, alerts, rollback); ADR pattern enforced. | Universal eng principles A1–A6 require this rigour; `spec-driven-development` is more permissive. |
-| `incremental-implementation` ↔ `incremental-implementation` (derivative) | Adds a bug-fix sub-workflow (KTLO carve-out); explicit walking-skeleton-first ordering. | Product rules carve KTLO out of outcome framing; eng rules require walking skeleton before features. |
 | `planning-and-task-breakdown` ↔ `planning-and-task-breakdown` (derivative) | Acceptance criteria required per task; explicit dependency-order surfacing before commitment. | Eng principle B7 requires cross-team dependency surfacing pre-commitment; addy's version leaves it implicit. |
 
 If you install both packs, the namespace prefix (`pde-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
@@ -107,7 +105,7 @@ Hooks are mechanical checks that fire on events. They catch failure modes the ag
 
 One skill (`plan-review`) has been calibrated against a 5-scenario eval set with isolated blinded grading and n=3 per cell. Headline: **93% pass rate with-skill vs 19% without** (delta +0.74) on Claude Sonnet 4.6. Full methodology, per-eval results, the trajectory across five iterations, and caveats: [docs/benchmarks.md](docs/benchmarks.md).
 
-The methodology is reusable; benchmarking the other nine skills is on the roadmap.
+The methodology is reusable; benchmarking the other eight skills is on the roadmap.
 
 ---
 
@@ -141,8 +139,8 @@ Install the plugin directly from GitHub:
 
 This gives you:
 
-- The 9 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
-- The 10 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
+- The 8 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
+- The 9 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
 
 Restart Claude Code after install. To load the rule files persistently, add three `@` references to your `~/.claude/CLAUDE.md`:
 
