@@ -3,13 +3,6 @@
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ---
-type: Note
-_organized: true
----
-
-@AGENTS.md
-
----
 
 ## What this repo is
 
@@ -21,7 +14,6 @@ A Markdown-only skill pack — no build system, no tests, no CI. Every artefact 
 
 - Version-control all command/skill files in the repo (not `~/.claude/commands/`)
 - Always include proper frontmatter on new skill files on first pass
-- Reference skill-creator best practices before creating or reviewing skills
 
 ---
 
@@ -35,8 +27,8 @@ hooks/
   stop-the-line/    HOOK.md
 references/         Standalone reference files cited by skills
 docs/               Anatomy specs and authoring guidance (skill-anatomy.md, hook-anatomy.md, …)
-_briefs/            Author briefs (input artefacts, not shipped)
 .claude-plugin/     plugin.json — manifest for marketplace install
+.claude/commands/   Slash-command wrappers
 ```
 
 Skills live at `skills/<name>/SKILL.md`. Hooks at `hooks/<name>/HOOK.md`. References at `references/<name>.md`. Rule files (`PRODUCT_RULES.md`, `eng-principles-*.md`) live at `rules/<name>.md`.
@@ -63,34 +55,9 @@ Follow `docs/hook-anatomy.md`. Hooks have deterministic pass/fail criteria. Fail
 
 ---
 
-## PROJECT_STATE.md
-
-Source of truth for artefact status. Update on every state transition:
-- When an artefact moves from Next → Now: add a row to the Now table, update the Next table row status.
-- When an artefact is accepted: set status to `accepted`, add branch `—`, add merge note.
-- Update the `Last updated:` line on every change.
-
----
-
 ## Commit style
 
-No `Co-Authored-By` trailers. Push directly to main — no PRs unless owner asks. Commit message format: `feat: <verb> <artefact> (<short rationale>)`.
-
----
-
-## Planning & Triage
-
-- Run formal triage (idea-triage skill) on items before shaping roadmaps — do not freelance prioritization
-- When handing off to Ultraplan, complete the draft plan first; do not leave drafts incomplete
-- Explain non-obvious terminology (e.g., 'size-the-work rubric', 'appetite') when first introducing it
-
----
-
-## Deployment & Verification
-
-- Always verify changes locally (tests + browser when applicable) before deploying to production
-- For Rails projects, prefer `bundle exec` invocations; do not suggest kamal/runner commands without confirming the project's deploy stack
-- When tests fail due to flakes (Geocoder 403, network), stub them rather than skipping verification
+Conventional-commit-ish prefixes: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`. Push directly to main; PRs only when the owner asks. Subject line ≤ 70 chars; details in the body if needed.
 
 ---
 
