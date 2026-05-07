@@ -1,0 +1,64 @@
+{
+  "eval_id": 1,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+      "result": "PASS",
+      "evidence": "**Cynefin domain**: Complex ... **Complex.** User behaviour (re-engagement, funnel conversion, sharing) is emergent — cause-effect is not fully predictable in advance.",
+      "reasoning": "The review explicitly names 'Complex' as the Cynefin domain in both the Inputs section and Step 3, and explains the emergent rationale."
+    },
+    {
+      "assertion": "Review selects Full tier (quarter-long appetite, multiple themes)",
+      "result": "PASS",
+      "evidence": "**Tier**: Full — selected because appetite exceeds 1 week (full quarter) ... **Full tier.** Selecting attribute: appetite > 1 week (quarter-length roadmap).",
+      "reasoning": "The review explicitly selects 'Full' tier twice — once in the Inputs section and once in Step 2 — with the rationale that appetite exceeds 1 week."
+    },
+    {
+      "assertion": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes",
+      "result": "PASS",
+      "evidence": "**Verdict: SUSTAINED.** ... none names: the specific user segment affected / the outcome metric we expect to move / the target level of improvement",
+      "reasoning": "The review explicitly labels B1 verdict as SUSTAINED and cites absence of measurable outcomes for all three themes."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)",
+      "result": "PASS",
+      "evidence": "\"Shareable shortlist\" — what exactly is shared, to whom, via which channels, and whether this requires backend changes (auth, data access, link expiry) is not stated | SUSTAINED",
+      "reasoning": "B2 table explicitly marks multiple items SUSTAINED with scope-vague concerns; at least one theme ('Shareable shortlist') is explicitly labelled SUSTAINED in the B2 section."
+    },
+    {
+      "assertion": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal",
+      "result": "PASS",
+      "evidence": "\"We keep getting requests\" for shareable shortlist → the requests represent a broad user need, not a concentrated vocal minority | 0.5 — anecdote/volume of requests, not validated demand signal | ... | SUSTAINED — confidence below 5",
+      "reasoning": "B3 explicitly marks all three assumptions SUSTAINED and flags the first as anecdotal with a confidence score of 0.5."
+    },
+    {
+      "assertion": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption",
+      "result": "PASS",
+      "evidence": "0.5 — anecdote/volume of requests, not validated demand signal ... 0.1 — causal assumption; flat re-engagement may be caused by content, product value, or lifecycle mismatch — not notification absence",
+      "reasoning": "The B3 table explicitly assigns numeric Gilad confidence scores (0.5 and 0.1) to two of the three assumptions."
+    },
+    {
+      "assertion": "Final recommendation is REVISE",
+      "result": "FAIL",
+      "evidence": "**KILL** — the plan's core premises (problem framing, evidence quality, operability) fail simultaneously",
+      "reasoning": "The review's final recommendation is explicitly 'KILL', not 'REVISE'; the assertion requires 'REVISE' which is not present."
+    },
+    {
+      "assertion": "Review recommends running idea-triage on themes before allocation",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review does not mention 'idea-triage' or recommend running any triage process on the themes before allocation anywhere in the text."
+    },
+    {
+      "assertion": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+      "result": "PASS",
+      "evidence": "Falsifying condition: the plan is revised to lead with problem statements in the form \"For [segment], [problem] causes [negative outcome]; success = [metric] improves by [target]\" for each theme, before any solution label appears.",
+      "reasoning": "B1 contains an explicit 'Falsifying condition' label with a concrete, specific check that would overturn the SUSTAINED verdict."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "total": 9,
+    "score": "7/9"
+  }
+}

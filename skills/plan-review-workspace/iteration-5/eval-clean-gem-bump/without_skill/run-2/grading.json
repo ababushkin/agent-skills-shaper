@@ -1,0 +1,46 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Clear",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions Cynefin, Clear, Complicated, Complex, or Chaotic anywhere in its text."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never references Quick tier, Full tier, or fast-track — no tier classification is stated anywhere."
+    },
+    {
+      "assertion": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review has no bucket labels (B1–B8), no OVERTURNED/SUSTAINED verdicts, and no Quick-tier reversibility carve-out; it lists four 'Gaps worth addressing' sections without any explicit bucket framing or downgrade logic."
+    },
+    {
+      "assertion": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review mentions CI breakage risk ('The blast radius of getting this wrong is limited to broken CI or a noisy linting output. Easy to revert.') but never uses B8, pre-mortem framing, kill-switch language, or low-likelihood characterization."
+    },
+    {
+      "assertion": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "PASS",
+      "evidence": "Approve with minor caveats. The plan is directionally correct and the scope is right-sized.",
+      "reasoning": "The review's opening summary verdict is explicitly 'Approve with minor caveats,' satisfying the APPROVE requirement."
+    },
+    {
+      "assertion": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review runs to 57 lines, includes four 'Gaps worth addressing' sections, a 6-step revised checklist, a changelog scanning requirement, and an extended time estimate — disproportionate for a 30-minute reversible change, and no proportionality acknowledgment is stated."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "total": 6,
+    "score": "1/6"
+  }
+}

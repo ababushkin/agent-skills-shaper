@@ -1,0 +1,64 @@
+{
+  "eval_id": 1,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+      "result": "PASS",
+      "evidence": "Cynefin domain: Complex — each theme involves emergent user behaviour (sharing, re-engagement, onboarding conversion) with no deterministic cause-effect chain confirmed; outcomes depend on feedback from real usage",
+      "reasoning": "The review explicitly names the Cynefin domain as 'Complex' with supporting rationale."
+    },
+    {
+      "assertion": "Review selects Full tier (quarter-long appetite, multiple themes)",
+      "result": "PASS",
+      "evidence": "Tier: Full — selected because plan appetite exceeds 1 week (auto-select attribute)",
+      "reasoning": "The review explicitly states 'Full' tier selection with reasoning tied to the quarter-long appetite."
+    },
+    {
+      "assertion": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes",
+      "result": "PASS",
+      "evidence": "Verdict: SUSTAINED. The plan is solution-first for all three themes. Each theme names an output ('shareable shortlist,' 'push notifications,' 'onboarding rewrite') without naming the user problem it addresses or the measurable outcome it aims to move.",
+      "reasoning": "The review explicitly verdicts B1 as SUSTAINED with direct reference to missing measurable outcomes for all three themes."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)",
+      "result": "PASS",
+      "evidence": "'Shareable shortlist' touches sharing infrastructure (link generation, auth bypass or token logic, analytics events for shares) — none of this is declared in scope | SUSTAINED",
+      "reasoning": "B2 contains multiple explicit SUSTAINED verdicts for scope-vague concerns on named themes within the B2 section."
+    },
+    {
+      "assertion": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal",
+      "result": "PASS",
+      "evidence": "'We keep getting requests' justifies 60% of quarterly capacity for shareable shortlist | 0.1–0.5 — volume and source of requests unspecified; could be 3 power users or 300; no frequency, recency, or segment data stated | ... | SUSTAINED — blocks APPROVE",
+      "reasoning": "B3 explicitly verdicts at least one assumption as SUSTAINED with a low-confidence score and characterises it as anecdotal."
+    },
+    {
+      "assertion": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption",
+      "result": "PASS",
+      "evidence": "'We keep getting requests' justifies 60% of quarterly capacity for shareable shortlist | 0.1–0.5 — volume and source of requests unspecified",
+      "reasoning": "The B3 table includes explicit numeric Gilad confidence scores (0.1–0.5, 0.1) for each assumption."
+    },
+    {
+      "assertion": "Final recommendation is REVISE",
+      "result": "FAIL",
+      "evidence": "KILL — the plan's core premise fails on three independent grounds",
+      "reasoning": "The review's final recommendation is explicitly 'KILL', not 'REVISE'; KILL is a distinct, stronger verdict than REVISE."
+    },
+    {
+      "assertion": "Review recommends running idea-triage on themes before allocation",
+      "result": "PASS",
+      "evidence": "Run idea-triage on each theme to produce problem statements with outcome metrics and confidence scores before re-entering the roadmap",
+      "reasoning": "The review explicitly names 'idea-triage' as a corrective action before resubmitting the roadmap."
+    },
+    {
+      "assertion": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+      "result": "PASS",
+      "evidence": "Falsifying condition: Show a problem statement for each theme in the form \"For [segment], [specific problem] causes [measurable negative outcome]; solving it should move [metric] by [target] within [window].\" If those statements exist in a companion doc, link them. If they don't exist, B1 is SUSTAINED.",
+      "reasoning": "B1 contains an explicit, concrete falsifying condition describing exactly what evidence would overturn the SUSTAINED verdict."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 9,
+    "score": "8/9"
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "eval_id": 4,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complicated",
+      "result": "PASS",
+      "evidence": "Cynefin domain: Complicated — schema migration patterns are knowable with expertise, but the specific risk profile (50M rows, backfill sequencing, NOT NULL constraint) requires deliberate engineering analysis",
+      "reasoning": "The review explicitly names 'Complicated' as the Cynefin domain with supporting rationale."
+    },
+    {
+      "assertion": "Review selects Full tier (production data + one-way door auto-fires)",
+      "result": "PASS",
+      "evidence": "Tier: Full — auto-selected: plan contains a one-way-door schema migration and touches production data (50M-row table)",
+      "reasoning": "The review explicitly states 'Full' tier and names both triggering preconditions (one-way-door and production data)."
+    },
+    {
+      "assertion": "B5 (reversibility/ADR) verdict is SUSTAINED — no Alternatives section, no ADR named",
+      "result": "PASS",
+      "evidence": "Adding a NOT NULL column to a 50M-row table — rolling back requires a second DDL migration and a second deploy, and may not be feasible mid-deploy if backfill has partially run | No alternatives named | No ADR exists or committed | SUSTAINED",
+      "reasoning": "B5 rows explicitly show 'No alternatives named', 'No ADR exists or committed', and both rows carry a SUSTAINED verdict."
+    },
+    {
+      "assertion": "B6 (operability/success metrics) verdict is SUSTAINED — no rollback path, no metrics, no capacity headroom",
+      "result": "PASS",
+      "evidence": "Metrics: absent — no query performance metric, no backfill progress metric, no error rate on writes to users table ... Rollback path: absent — no procedure stated for if the migration fails mid-backfill ... Capacity headroom: absent — 50M rows, no stated estimate of backfill duration, no stated I/O headroom on the database host. All six operability items are absent. This blocks APPROVE under B6.",
+      "reasoning": "The review explicitly identifies missing rollback path, missing metrics, and missing capacity headroom under B6, and states all six operability items are absent."
+    },
+    {
+      "assertion": "Review explicitly names rollback path as missing",
+      "result": "PASS",
+      "evidence": "Rollback path: absent — no procedure stated for if the migration fails mid-backfill; NOT NULL + partial fill = broken state with no stated recovery",
+      "reasoning": "The review explicitly states 'Rollback path: absent' with specific explanation of why it matters."
+    },
+    {
+      "assertion": "Review explicitly names backfill progress metrics as missing",
+      "result": "PASS",
+      "evidence": "Metrics: absent — no query performance metric, no backfill progress metric, no error rate on writes to users table",
+      "reasoning": "The review explicitly names 'no backfill progress metric' as absent under B6."
+    },
+    {
+      "assertion": "Final recommendation is REVISE (or KILL — both defensible given missing one-way-door safeguards)",
+      "result": "PASS",
+      "evidence": "KILL — the plan's execution sequence is structurally unsafe for a 50M-row production table. The coupling of NOT NULL DDL + backfill + release into a single deploy creates a failure mode (partial backfill + constraint violation + write failures on old code) that has no stated rollback path and could cause a live production write outage.",
+      "reasoning": "The review issues an explicit KILL recommendation, which is one of the two acceptable verdicts per the assertion."
+    },
+    {
+      "assertion": "At least one bucket has a named falsifying condition",
+      "result": "PASS",
+      "evidence": "Falsifying condition: the plan is revised to open with the problem (e.g., 'tier-based feature gating fails because user_tier is not stored on the users record, causing X behaviour for Y users') and a measurable outcome target before B1 can be OVERTURNED.",
+      "reasoning": "B1 contains an explicit named falsifying condition; B2 also contains a falsifying condition column for each row, satisfying the assertion."
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "total": 8,
+    "score": "8/8"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "eval_id": 2,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "result": "PASS",
+      "evidence": "Cynefin domain: Complicated — \"unused\" is a knowable claim but requires expertise to verify (static analysis, dynamic import patterns, server-rendered references). Not self-evident.",
+      "reasoning": "The review explicitly names 'Complicated' as the Cynefin domain with a rationale."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "result": "PASS",
+      "evidence": "Tier: Quick — appetite ≤1 day; no one-way door explicitly stated; no ≥3 external dependencies; no schema, auth, or production data touch named.",
+      "reasoning": "The review explicitly selects 'Quick' tier and explains why the one-way door trigger did not fire."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "result": "PASS",
+      "evidence": "\"'Unused' is asserted, not defined — no method of usage verification is named | SUSTAINED | The plan names the method used to establish that the component is unused (e.g. 'grep + webpack bundle analysis + no references in Rails templates')\"",
+      "reasoning": "B2 explicitly verdicts 'SUSTAINED' on the concern that 'unused' is asserted without a verification method."
+    },
+    {
+      "assertion": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "result": "PASS",
+      "evidence": "\"The plan names the method used to establish that the component is unused (e.g. 'grep + webpack bundle analysis + no references in Rails templates')\"",
+      "reasoning": "The falsifying condition in B2 names a concrete grep-based verification method for establishing that the component is unused."
+    },
+    {
+      "assertion": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "result": "FAIL",
+      "evidence": "APPROVE — recommend: address named conditions before or immediately after deletion.",
+      "reasoning": "The review explicitly recommends APPROVE under a reversibility carve-out, not REVISE, despite the unverified 'unused' claim."
+    },
+    {
+      "assertion": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "result": "PASS",
+      "evidence": "Tier: Quick — appetite ≤1 day; no one-way door explicitly stated; no ≥3 external dependencies; no schema, auth, or production data touch named.",
+      "reasoning": "The review explicitly selects Quick tier, not Full tier, confirming it did not over-review."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "total": 6,
+    "score": "5/6"
+  }
+}

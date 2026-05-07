@@ -1,0 +1,64 @@
+{
+  "eval_id": 1,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions Cynefin, 'Complex', 'Complicated', 'Clear', or 'Chaotic' anywhere in the text."
+    },
+    {
+      "assertion": "Review selects Full tier (quarter-long appetite, multiple themes)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review contains no mention of 'Full', 'Quick', 'fast-track', or any tier classification language."
+    },
+    {
+      "assertion": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "While the review addresses problem-framing gaps (e.g., 'None of the three items have a measurable success criterion'), it never labels any concern as 'B1' or uses verdict language like SUSTAINED or PARTIAL."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review raises scope-vagueness concerns but never labels anything 'B2', applies 'SUSTAINED', or cites a missing triage record."
+    },
+    {
+      "assertion": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review flags assumptions as anecdotal (e.g., 'This is a demand signal, not a validated problem') but never labels this 'B3' or uses the verdict 'SUSTAINED'."
+    },
+    {
+      "assertion": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "No numeric confidence score appears anywhere in the review; the Gilad Confidence Meter is not referenced at all."
+    },
+    {
+      "assertion": "Final recommendation is REVISE",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review concludes 'Not ready to approve' and 'Approve the direction; don't approve the plan until...' but the explicit verdict label 'REVISE' is never stated."
+    },
+    {
+      "assertion": "Review recommends running idea-triage on themes before allocation",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions 'idea-triage', a triage process, or any equivalent recommendation to run a formal intake/triage step before allocation."
+    },
+    {
+      "assertion": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "No bucket labels (B1–B8) appear in the review, so no bucket can have a named falsifying condition per the grading rule requiring explicit bucket labeling."
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 9,
+    "score": "0/9"
+  }
+}

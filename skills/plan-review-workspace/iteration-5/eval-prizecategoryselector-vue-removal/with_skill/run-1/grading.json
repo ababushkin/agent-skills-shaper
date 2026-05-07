@@ -1,0 +1,46 @@
+{
+  "eval_id": 2,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "result": "PASS",
+      "evidence": "**Cynefin domain**: Complicated ... **Complicated.** The cause-effect is knowable with expertise but is not obvious from the plan",
+      "reasoning": "The review explicitly names 'Complicated' as the Cynefin domain in both the inputs summary and the B0 section."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "result": "PASS",
+      "evidence": "**Tier**: Quick — selected because appetite ≤ 1 week and no explicit one-way-door declaration in the plan text",
+      "reasoning": "The review explicitly selects 'Quick' tier and gives the rationale referencing appetite and the one-way-door check."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "result": "PASS",
+      "evidence": "Dynamic imports (`import(/* webpackChunkName */ './PrizeCategorySelector')`) are not in-scope in the plan but are the most common source of false-positive 'unused' calls | SUSTAINED",
+      "reasoning": "The B2 table contains explicit SUSTAINED verdicts on scope items, including the unverified 'unused' concern surfaced through dynamic imports and undeclared component sequence."
+    },
+    {
+      "assertion": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "result": "PASS",
+      "evidence": "Run `grep -r \"PrizeCategorySelector\" app/ spec/ --include=\"*.{vue,js,ts,erb,rb}\"` + check webpack/Vite chunk manifest for the component name",
+      "reasoning": "The review provides a specific, runnable grep command as the falsifying condition in the B3 table, which directly addresses the 'unused' verification gap identified in B2."
+    },
+    {
+      "assertion": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "result": "PASS",
+      "evidence": "**REVISE** — two SUSTAINED B3 assumptions at Confidence 0.1 block APPROVE; the Quick-tier reversibility carve-out does not apply because reversibility is conditional on those same untested assumptions.",
+      "reasoning": "The recommendation section explicitly states REVISE and explains why APPROVE is blocked by the unverified 'unused' assumptions."
+    },
+    {
+      "assertion": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "result": "PASS",
+      "evidence": "**Tier**: Quick — selected because appetite ≤ 1 week and no explicit one-way-door declaration in the plan text",
+      "reasoning": "The review explicitly selects Quick tier and never mentions or selects Full tier; the abbreviated bucket sections (B4, B5 marked '*(Quick tier — abbreviated)*') confirm Quick tier was maintained throughout."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "total": 6,
+    "score": "6/6"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "eval_id": 3,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Clear",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions Cynefin or any domain name (Clear, Complicated, Complex, Chaotic) anywhere in the text."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-hour appetite, fully reversible)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions Quick tier, Full tier, or any tier classification; it uses no tier-labelled framework at all."
+    },
+    {
+      "assertion": "Review does not invent concerns to look thorough — most buckets OVERTURNED OR a SUSTAINED finding (e.g., on `bundle update` scope) is downgraded to a recommendation under the Quick-tier reversibility carve-out",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review invents multiple concerns (changelog review, extension compatibility, .rubocop_todo.yml drift, separate rubocop run, time estimate) and elevates them to blocking issues without any reversibility carve-out or bucket labelling; no buckets (B1–B8) are used anywhere."
+    },
+    {
+      "assertion": "B8 (pre-mortem) names rubocop rule changes / CI breakage as a low-likelihood failure mode with revert as kill-switch",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review contains no pre-mortem section, no B8 label, no explicit characterisation of likelihood, and no mention of revert as a kill-switch."
+    },
+    {
+      "assertion": "Final recommendation is APPROVE (may include a named recommendation like `bundle update --conservative rubocop` — but verdict is APPROVE, not REVISE)",
+      "result": "FAIL",
+      "evidence": "\"Approve the *intent*. Reject the plan as written because step 3 (`bundle update` without gem name) risks a wider-than-intended update, and the plan omits the rubocop-itself linter run and changelog review which are the whole point of the exercise. Fix those two issues and it's a straightforward, low-risk upgrade.\"",
+      "reasoning": "The final verdict is effectively REVISE/REJECT-as-written, not a clean APPROVE; the review requires fixes before it will approve."
+    },
+    {
+      "assertion": "Review length is proportionate — does not bloat into Full-tier output for a 30-min reversible change",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review is 73 lines covering six distinct concerns plus a full revised plan with seven steps and a revised time estimate, which is Full-tier output volume for a 30-minute reversible change."
+    }
+  ],
+  "summary": {
+    "passed": 0,
+    "total": 6,
+    "score": "0/6"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "eval_id": 2,
+  "assertions": [
+    {
+      "assertion": "Review names Cynefin domain as Complicated (or Clear — both defensible)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never names any Cynefin domain (Clear, Complicated, Complex, or Chaotic) explicitly."
+    },
+    {
+      "assertion": "Review selects Quick tier (sub-day appetite, no one-way door auto-fire)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions Quick tier, Full tier, fast-track, or any tier classification explicitly."
+    },
+    {
+      "assertion": "B2 (scope) verdict is SUSTAINED — concern that 'unused' is unverified",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review raises the concern that 'unused' is unverified ('Unused must be demonstrated, not assumed') but never labels this as bucket B2 or delivers an explicit SUSTAINED verdict."
+    },
+    {
+      "assertion": "Falsifying condition for B2 is concrete (e.g., grep for PrizeCategorySelector references)",
+      "result": "PASS",
+      "evidence": "\"Required step: run a dead-code search that covers: import, require, components: blocks, Vue.component, dynamic () => import(...), and template string usage. Show the output. If zero references, deletion is clean.\" and \"A grep/search output confirming zero live references to PrizeCategorySelector\"",
+      "reasoning": "The review gives a concrete, actionable falsifying condition — run a grep/dead-code search and show the output — even though it does not label it as B2."
+    },
+    {
+      "assertion": "Final recommendation is REVISE (not APPROVE — scope claim unverified)",
+      "result": "PASS",
+      "evidence": "\"Not approved as stated. The goal is sound, but the plan is thin — it treats 'remove an unused component' as a single-day task without establishing that the component is actually unused...\"",
+      "reasoning": "The review explicitly withholds approval and conditions it on verification steps, which is a functional equivalent of REVISE, even though the exact word 'REVISE' is not used."
+    },
+    {
+      "assertion": "Review does NOT inflate to Full tier (would be over-review for a one-day reversible change)",
+      "result": "FAIL",
+      "evidence": "no evidence found",
+      "reasoning": "The review never mentions any tier (Quick, Full, fast-track) so it is impossible to confirm it explicitly selects Quick rather than Full; the assertion requires the review to NOT inflate to Full tier, but without any tier language this cannot be confirmed as an explicit choice."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "total": 6,
+    "score": "2/6"
+  }
+}

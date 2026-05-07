@@ -1,0 +1,16 @@
+{
+  "eval_id": 1,
+  "eval_name": "roadmap-without-triage",
+  "prompt": "Review this plan before I approve it: shape next-quarter roadmap with three themes — shareable shortlist, push notifications, onboarding rewrite — allocated 60/30/10 across them. The shareable shortlist is highest priority because we keep getting requests. Push notifications because re-engagement is flat. Onboarding rewrite because the funnel is leaky. Approve?",
+  "assertions": [
+    {"text": "Review names Cynefin domain as Complex (or notes multiple emergent dimensions)", "type": "qualitative"},
+    {"text": "Review selects Full tier (quarter-long appetite, multiple themes)", "type": "qualitative"},
+    {"text": "B1 (problem framing) verdict is SUSTAINED or PARTIAL — themes named without measurable outcomes", "type": "qualitative"},
+    {"text": "B2 (scope) verdict is SUSTAINED — at least one theme has scope-vague concern (no triage record cited)", "type": "qualitative"},
+    {"text": "B3 (assumptions) verdict is SUSTAINED — at least one assumption flagged as low-confidence/anecdotal", "type": "qualitative"},
+    {"text": "B3 includes a numeric confidence score (Gilad Confidence Meter, 0.1–10) on at least one assumption", "type": "qualitative"},
+    {"text": "Final recommendation is REVISE", "type": "qualitative"},
+    {"text": "Review recommends running idea-triage on themes before allocation", "type": "qualitative"},
+    {"text": "At least one bucket has a named falsifying condition (concrete check that would overturn the verdict)", "type": "qualitative"}
+  ]
+}
