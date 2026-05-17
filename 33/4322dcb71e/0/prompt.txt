@@ -1,0 +1,1 @@
+.github/skills - the entire directory should be deleted
