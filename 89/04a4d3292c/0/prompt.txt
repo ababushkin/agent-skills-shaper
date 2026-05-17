@@ -1,0 +1,5 @@
+we recently authored a new skill - render-html - but it's hasn't been registered correctly so its not loading
+this should be fixed, including the README files and installation instructions
+along side this it should be run against the /skill-creator:skill-creator for QA
+
+log this as a ticket in linear and assign it to cycle 1 - high priority issue
