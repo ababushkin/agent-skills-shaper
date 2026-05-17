@@ -26,7 +26,7 @@ The hard self-containment rule from `html-skeleton.md` applies to every pattern:
 
 ## P1 — Alternatives considered → side-by-side columns
 
-**Detect.** A section whose heading text matches `/alternatives?( considered)?/i`, OR a section containing two-to-four sibling H3s each followed by a bulleted list whose first item starts with `Pros:` or `Cons:` (case-insensitive). Maximum four columns — beyond that, fall back to prose (columns become unreadable).
+**Detect.** A section whose heading text matches `/alternatives?( considered)?/i`, OR a section containing two-to-four sibling H3s each followed by a bulleted list whose first item starts with `Pros:` or `Cons:` (case-insensitive). Maximum four columns — beyond that, fall back to prose (columns become unreadable). **Does not match** ADR `Rationale` sections whose options use bold-paragraph headers (`**Why X:**`) rather than H3 — those go to P11.
 
 **HTML.**
 
@@ -132,6 +132,17 @@ Mapping (used for `p-callout-<key>`): `problem` → red, `context` → grey, `co
 
 **Accessibility.** Colour is supplemental; the heading text carries the meaning. Border + label work for users who can't perceive the hue.
 
+**Sub-buckets inside `Consequences`.** When a `Consequences` callout contains H3s (or bold-paragraph headings) named `Positive`, `Negative`, `Neutral` / `Open`, render each as a coloured sub-block inside the callout rather than as nested H3s. Sub-block CSS:
+
+```css
+.p-conseq { margin: 12px 0; padding: 10px 14px; border-radius: 6px; }
+.p-conseq-positive { background: rgba(25,135,84,0.05);  border-left: 3px solid #198754; }
+.p-conseq-negative { background: rgba(220,53,69,0.05);  border-left: 3px solid #dc3545; }
+.p-conseq-neutral  { background: rgba(108,117,125,0.05); border-left: 3px solid #6c757d; }
+```
+
+This is a P3 extension, not a separate pattern — the parent callout is still `p-callout-consequences`.
+
 ---
 
 ## P4 — NFRs table → highlighted numeric table
@@ -231,7 +242,7 @@ Mapping (used for `p-callout-<key>`): `problem` → red, `context` → grey, `co
 
 ## P7 — Roadmap Now / Next / Later → three-column kanban
 
-**Detect.** A section whose body contains three sibling H2s or H3s with text exactly matching (case-insensitive, whitespace-tolerant): `Now`, `Next`, `Later`. If only two of the three are present, still render as a kanban with the missing column shown empty.
+**Detect.** Three sibling H2s or H3s with text exactly matching (case-insensitive, whitespace-tolerant): `Now`, `Next`, `Later`, **AND** each of those sections' body is predominantly a single `<ul>`/`<ol>` (no nested H3s, no Problem/Appetite/ICE callout sub-structure). If only two of the three columns are present and the bullet-only condition holds, still render as a kanban with the missing column shown empty. If the bullet-only condition fails (sections contain rich prose, callouts, or H3 sub-items per column), **do not apply** — fall back to prose so the column content stays readable. Evidence: collapsing a prose-heavy "Now" section into bullets destroys the Problem / Success criterion / Appetite / ICE structure roadmap items typically carry.
 
 **HTML.**
 
@@ -269,7 +280,7 @@ Mapping (used for `p-callout-<key>`): `problem` → red, `context` → grey, `co
 
 ## P8 — ICE scores → coloured score chips
 
-**Detect.** Markdown table whose header row contains `Impact`, `Confidence`, `Ease` (in any order, plus an optional `ICE` or `Score` column), with numeric cells `1`–`10`.
+**Detect.** Markdown table whose header row contains EITHER (a) `Impact`, `Confidence`, and `Ease` (in any order, plus an optional `Score` column), OR (b) a single `ICE` column alongside at least one of `Confidence` / `Slot` / `Theme` / `Kano` — real roadmaps frequently collapse the three sub-scores into one `ICE` total rather than listing each. Numeric cells are graded on the same red/amber/green band regardless of column. Em-dash placeholders (`—`) render as a muted chip.
 
 **HTML.** Numeric cells become chips coloured by value (red 1–3, amber 4–6, green 7–10).
 
@@ -295,10 +306,135 @@ Mapping (used for `p-callout-<key>`): `problem` → red, `context` → grey, `co
 .p-chip[data-band="red"]   { background: rgba(220,53,69,0.18); color: #dc3545; }
 .p-chip[data-band="amber"] { background: rgba(253,126,20,0.18); color: #fd7e14; }
 .p-chip[data-band="green"] { background: rgba(25,135,84,0.18); color: #198754; }
+.p-chip[data-band="muted"] { background: rgba(127,127,127,0.12); color: var(--muted); }
 .p-ice td:not(:first-child) { text-align: center; }
 ```
 
+Chip bands: `1–3 → red`, `4–6 → amber`, `7–10 → green`, em-dash / missing → `muted`. ICE totals (any value above 10) are graded against the same 50 / 100 / 200 thresholds used for sequencing in roadmaps that follow `PRODUCT_RULES`.
+
 **Accessibility.** Colour is supplemental; the numeric value is the source of truth. Chips render as plain numbers in print and to screen readers.
+
+---
+
+## P9 — YAML frontmatter → metadata grid
+
+**Detect.** Source markdown begins with a YAML frontmatter block delimited by `---` on its own line, before the H1. Common in ADRs and design docs (fields like `id`, `status`, `date`, `authors`, `linear`, `supersedes`).
+
+**HTML.** Render as a definition list immediately under the page title and the provenance meta line — before any body content.
+
+```html
+<dl class="p-frontmatter">
+  <dt>id</dt><dd>ADR-engagement-modifier-constants</dd>
+  <dt>status</dt><dd><span class="p-status p-status-accepted">accepted</span></dd>
+  <dt>date</dt><dd>2026-05-14</dd>
+  <dt>authors</dt><dd>Anton Babushkin</dd>
+</dl>
+```
+
+**CSS.**
+
+```css
+.p-frontmatter { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; padding: 12px 14px; background: rgba(127,127,127,0.04); border-radius: 6px; margin-bottom: 24px; }
+.p-frontmatter dt { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; margin: 0; }
+.p-frontmatter dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
+```
+
+The `status` field gets the P10 status-pill treatment automatically; other field values render as plain text. **Do not** drop frontmatter on the floor — readers use it to anchor the doc.
+
+**Accessibility.** Definition list is the right semantic tag for key-value metadata; screen readers announce each pair.
+
+---
+
+## P10 — Status / state values → coloured pill
+
+**Detect.** A frontmatter `status:` field, OR a top-of-doc bold line matching `/\*\*Status:\*\*\s+(\w+)/i`, OR a single-cell `Status` column in a table. Recognised values (case-insensitive): `accepted`, `proposed`, `draft`, `rejected`, `superseded`, `deprecated`, `flagged`, `ok`.
+
+**HTML.**
+
+```html
+<span class="p-status p-status-accepted">Accepted</span>
+```
+
+**CSS.**
+
+```css
+.p-status { display: inline-block; padding: 2px 9px; border-radius: 999px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+.p-status-accepted, .p-status-ok        { background: rgba(25,135,84,0.18);  color: #198754; }
+.p-status-proposed, .p-status-draft     { background: rgba(10,88,202,0.18);  color: #0a58ca; }
+.p-status-rejected, .p-status-deprecated{ background: rgba(220,53,69,0.18);  color: #dc3545; }
+.p-status-superseded, .p-status-flagged { background: rgba(253,126,20,0.18); color: #fd7e14; }
+```
+
+A pill is reusable wherever a state lives in the source — Slot columns (Now/Next/Later/Validation) in P7-rejected roadmap tables are a natural reuse site.
+
+**Accessibility.** The label text carries the meaning; colour is supplemental.
+
+---
+
+## P11 — Rationale "Why X" blocks → labelled list groups
+
+**Detect.** A section heading matches `/rationale/i` AND its body contains two-or-more bold-paragraph headers (`**Why X:**` / `**Why not Y:**`) each followed by a bullet list. Common in ADRs that consider multiple alternatives without dedicated H3s per option.
+
+**HTML.** Each bold paragraph becomes the heading of a styled group; the following list is the group's body.
+
+```html
+<section class="p-rationale">
+  <div class="p-rationale-group">
+    <h4>Why Rails</h4>
+    <ul><li>…</li></ul>
+  </div>
+  <div class="p-rationale-group">
+    <h4>Why not a separate frontend</h4>
+    <ul><li>…</li></ul>
+  </div>
+</section>
+```
+
+**CSS.**
+
+```css
+.p-rationale-group { margin: 14px 0; }
+.p-rationale-group h4 { margin: 0 0 6px; font-size: 14px; color: var(--accent); font-weight: 600; }
+.p-rationale-group ul { margin: 0; padding-left: 22px; }
+```
+
+**Precedence.** P11 ranks below P1 (Alternatives). When both could match (`Rationale` section whose options also have `Pros:`/`Cons:`), P1's side-by-side comparison is the stronger treatment.
+
+**Accessibility.** `<h4>` keeps the headings in the document outline; lists keep list semantics.
+
+---
+
+## P12 — Labelled rubric cards (C1, C2, FR3 …) → repeated sub-field cards
+
+**Detect.** Two or more sibling H3s whose text matches `/^([A-Z]+\d+)\s+[—–-]\s+/` (e.g. `C1 — Deadband: ±2%`, `FR3 — Idempotent writes`, `OQ5 — …`), AND each section repeats the same set of bold-paragraph sub-fields (e.g. **Reasoning**, **Alternative considered**, **Revision trigger**). The identifier prefix (`C`, `FR`, `OQ`, `NFR`, `ADR`) is rendered as a pill on the card header.
+
+**HTML.**
+
+```html
+<div class="p-rubric" id="c1">
+  <h3><span class="p-rubric-id">C1</span> Deadband: ±2% YoY</h3>
+  <div class="p-rubric-formula">If <code>abs(yoy_change) &lt; 0.02</code>, set <code>direction = 0</code> …</div>
+  <h4>Reasoning</h4><p>…</p>
+  <h4>Alternative considered</h4><p>…</p>
+  <h4>Revision trigger</h4><p>…</p>
+</div>
+```
+
+The first paragraph (often a one-line formal definition or formula) becomes `p-rubric-formula`. Subsequent bold-paragraph sub-fields become `<h4>` headings inside the card.
+
+**CSS.**
+
+```css
+.p-rubric { border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 6px; padding: 14px 18px; margin: 16px 0; background: rgba(127,127,127,0.02); }
+.p-rubric h3 { margin-top: 0; display: flex; gap: 12px; align-items: baseline; color: var(--fg); }
+.p-rubric h3 .p-rubric-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; padding: 2px 8px; background: var(--accent); color: white; border-radius: 4px; }
+.p-rubric h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 12px 0 4px; font-weight: 600; }
+.p-rubric-formula { background: rgba(10,88,202,0.06); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+```
+
+**Why a dedicated pattern.** Plain-prose rendering of a 6-card ADR section (C1–C6 with Reasoning / Alternative / Revision trigger each) produces a wall of repeating H3+H4 that the reader has to mentally segment. The card boundary plus the identifier pill makes "which constant am I reading" answerable at a glance — which is most of what reviewers want when scanning a pre-registered constants ADR.
+
+**Accessibility.** Heading levels (`<h3>` outer, `<h4>` inner) preserve the document outline; the card's visual boundary is decorative.
 
 ---
 
@@ -311,6 +447,6 @@ A section that matches no pattern renders with the shell's standard prose styles
 When a new pattern earns its slot:
 
 1. Add a section here following the same six-part structure: heading, **Detect**, **HTML**, **CSS**, **Accessibility**, brief rationale.
-2. Number it sequentially (`P9 — …`) so cross-references stay stable.
+2. Number it sequentially (`P13 — …`) so cross-references stay stable.
 3. Confirm the CSS only adds new selectors prefixed `p-` — it must not override any rule in `html-skeleton.md`.
 4. If the detection signal could overlap an existing pattern, document the precedence rule explicitly. The first-match-wins ordering of this file is the resolution mechanism.
