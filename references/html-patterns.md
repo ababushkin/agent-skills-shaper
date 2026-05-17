@@ -2,9 +2,11 @@
 name: html-patterns
 description: >
   Pattern catalogue for the render-html skill. Each entry maps a recognisable
-  markdown shape to a richer HTML treatment — side-by-side columns, kanban,
-  timelines, callouts, score chips. The skill consults this file during
-  conversion (Step 4) and substitutes the matching markup into {{body-html}}.
+  markdown shape — found in implementation plans and design docs — to a
+  product-UI HTML treatment: section-header tags, hover cards, decision
+  panels, summary strips, SVG diagrams, mockup frames, code panels, risk
+  tables. The skill consults this file during conversion (Step 4) and
+  substitutes the matching markup into {{body-html}}.
 type: reference
 cited_by:
   - skills/render-html/SKILL.md
@@ -12,52 +14,59 @@ cited_by:
 
 # HTML pattern catalogue
 
-The render-html skill walks the markdown body section by section. For each section, it checks the patterns below in order. The **first match wins** — if no pattern matches, the section renders as plain prose (the walking-skeleton fallback).
+The render-html skill walks the markdown body section by section. For each section, it checks the patterns below in order. The **first match wins** — if no pattern matches, the section renders with the shell's prose defaults (which are themselves styled — see `html-skeleton.md`).
 
 Every pattern is defined by:
 
 1. **Detect** — the markdown signal that triggers the treatment. Cheap to check; conservative (false-negative is fine, false-positive is bad — wrongly-treated content is harder to debug than untreated).
-2. **HTML** — the output markup. All class names are prefixed `p-` so they don't collide with prose styles.
+2. **HTML** — the output markup. All class names are prefixed `p-` so they don't collide with the shell's utilities.
 3. **CSS** — additions appended to the shell's inline `<style>` block. The shell's prose styles remain the fallback; pattern CSS only adds, never overrides.
 
-The hard self-containment rule from `html-skeleton.md` applies to every pattern: no external CSS, no external JS, no remote images. Inline SVG is preferred for visual elements.
+The hard self-containment rule from `html-skeleton.md` applies to every pattern: no external CSS, no external JS, no remote images. Inline SVG is preferred for visual elements. Colour tokens come from the shell's `:root` palette (`--accent`, `--ok`, `--warn`, `--info`, `--danger`, each with a `-soft` variant) — patterns must not introduce ad-hoc hex values.
 
 ---
 
-## P1 — Alternatives considered → side-by-side columns
+## P1 — Alternatives considered → side-by-side cards
 
 **Detect.** A section whose heading text matches `/alternatives?( considered)?/i`, OR a section containing two-to-four sibling H3s each followed by a bulleted list whose first item starts with `Pros:` or `Cons:` (case-insensitive). Maximum four columns — beyond that, fall back to prose (columns become unreadable). **Does not match** ADR `Rationale` sections whose options use bold-paragraph headers (`**Why X:**`) rather than H3 — those go to P11.
 
-**HTML.**
+**HTML.** Each alternative becomes a hover-state card in an auto-fit grid; pros/cons/cost/reversibility render as a small definition list inside.
 
 ```html
-<section class="p-alternatives">
-  <div class="p-alt-col">
-    <h3>Alternative A — short name</h3>
+<div class="p-alt-grid">
+  <article class="p-alt-card">
+    <header><h3>Alternative A — short name</h3><span class="p-alt-verdict p-alt-verdict-chosen">Chosen</span></header>
     <dl>
-      <dt>Pros</dt><dd><ul><li>...</li></ul></dd>
-      <dt>Cons</dt><dd><ul><li>...</li></ul></dd>
-      <dt>Cost</dt><dd>...</dd>
-      <dt>Reversibility</dt><dd>...</dd>
+      <dt>Pros</dt><dd><ul><li>…</li></ul></dd>
+      <dt>Cons</dt><dd><ul><li>…</li></ul></dd>
+      <dt>Cost</dt><dd>…</dd>
+      <dt>Reversibility</dt><dd>…</dd>
     </dl>
-  </div>
+  </article>
   <!-- repeat per alternative -->
-</section>
+</div>
 ```
+
+The verdict pill (`Chosen` / `Rejected` / em-dash) is optional — apply only if the source explicitly marks one option as chosen.
 
 **CSS.**
 
 ```css
-.p-alternatives { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 16px 0; }
-.p-alt-col { border: 1px solid var(--rule); border-radius: 6px; padding: 14px 16px; background: rgba(127,127,127,0.03); }
-.p-alt-col h3 { margin-top: 0; font-size: 15px; }
-.p-alt-col dl { margin: 0; }
-.p-alt-col dt { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 10px; }
-.p-alt-col dd { margin: 4px 0 0; font-size: 14px; }
-.p-alt-col ul { margin: 4px 0; padding-left: 18px; }
+.p-alt-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin: 20px 0; }
+.p-alt-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 20px; transition: border-color 0.15s, transform 0.15s; }
+.p-alt-card:hover { border-color: var(--accent); }
+.p-alt-card > header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 12px; }
+.p-alt-card h3 { margin: 0; font-size: 16px; font-weight: 700; color: var(--fg); }
+.p-alt-card dl { margin: 0; }
+.p-alt-card dt { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 12px; font-weight: 700; }
+.p-alt-card dd { margin: 4px 0 0; font-size: 15px; color: var(--fg-soft); line-height: 1.55; }
+.p-alt-card ul { margin: 4px 0; padding-left: 20px; }
+.p-alt-verdict { font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.04em; text-transform: uppercase; padding: 4px 8px; border-radius: 4px; }
+.p-alt-verdict-chosen { background: var(--ok-soft); color: var(--ok); }
+.p-alt-verdict-rejected { background: var(--rule-soft); color: var(--muted); }
 ```
 
-**Accessibility.** Each column is a `<section>` with a unique `<h3>`; the columns still appear in DOM order, so screen readers read them sequentially. No keyboard interaction needed — pure layout.
+**Accessibility.** Each card is an `<article>` with a unique `<h3>`; cards appear in DOM order so screen readers read them sequentially. The verdict pill text carries the meaning; colour is supplemental.
 
 ---
 
@@ -65,83 +74,147 @@ The hard self-containment rule from `html-skeleton.md` applies to every pattern:
 
 **Detect.** A section containing an ordered list (or sequence of H3s named `Task N — title` / `Step N`) where two or more entries mention "depends on", "after", "blocks", or "blocked by" in their first paragraph. Pure task lists without dependency language stay as ordinary ordered lists.
 
-**HTML.**
+**HTML.** Three-column row per task: optional `when` (date/sprint label), dot-and-line rail, body. The rail column is always present so the timeline reads as a connected sequence; the `when` column is omitted across the whole timeline if no task has scheduling info.
 
 ```html
 <ol class="p-timeline">
   <li class="p-task" id="task-1">
-    <div class="p-task-marker" aria-hidden="true">1</div>
+    <div class="p-task-when">Week 1 · Mon–Tue</div>
+    <div class="p-task-rail" aria-hidden="true">
+      <span class="p-task-dot p-task-dot-done"></span>
+      <span class="p-task-line"></span>
+    </div>
     <div class="p-task-body">
-      <h3>Task 1 — name</h3>
+      <h3>Schema &amp; API contract</h3>
+      <p>New <code>comments</code> and <code>comment_reads</code> tables, migrations, tRPC router stubs. Contract reviewed before anything else lands.</p>
       <p class="p-task-deps">Depends on: <em>none</em></p>
-      <p>Task description prose…</p>
+      <div class="p-task-tags">
+        <span class="p-task-tag">packages/db</span>
+        <span class="p-task-tag">packages/api</span>
+        <span class="p-task-tag">migration 0042</span>
+      </div>
     </div>
   </li>
-  <!-- repeat per task; dependency lines link to #task-N -->
+  <!-- repeat per task; final <li> drops the trailing line -->
 </ol>
 ```
+
+The dot has two states: default (`p-task-dot`, hollow ring in `--accent`) and done (`p-task-dot-done`, solid `--ok`). The line is omitted on the final task. Tag chips are optional — emit them when the source mentions concrete packages, components, file paths, or migration IDs.
 
 **CSS.**
 
 ```css
-.p-timeline { list-style: none; padding: 0; margin: 16px 0; position: relative; }
-.p-timeline::before { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--rule); }
-.p-task { position: relative; padding-left: 44px; margin-bottom: 18px; }
-.p-task-marker { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
-.p-task-body h3 { margin: 4px 0 6px; font-size: 16px; }
-.p-task-deps { color: var(--muted); font-size: 13px; margin: 0 0 8px; }
+.p-timeline { list-style: none; padding: 0; margin: 24px 0; }
+.p-task { display: grid; grid-template-columns: 132px 28px 1fr; gap: 0 18px; }
+.p-task[data-no-when] { grid-template-columns: 28px 1fr; }
+.p-task-when { text-align: right; font: 12.5px ui-monospace, SFMono-Regular, monospace; color: var(--muted); padding-top: 6px; }
+.p-task-rail { display: flex; flex-direction: column; align-items: center; }
+.p-task-dot { width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 3px solid var(--accent); margin-top: 6px; flex-shrink: 0; }
+.p-task-dot-done { background: var(--ok); border-color: var(--ok); }
+.p-task-line { width: 2px; flex: 1; background: var(--rule); margin: 4px 0; }
+.p-task:last-child .p-task-line { display: none; }
+.p-task-body { padding-bottom: 28px; }
+.p-task-body h3 { margin: 0 0 6px; font-size: 17px; font-weight: 600; color: var(--fg); }
+.p-task-body p { font-size: 14.5px; color: var(--fg-soft); margin: 0 0 10px; line-height: 1.55; max-width: 65ch; }
+.p-task-deps { color: var(--muted); font-size: 13.5px; }
 .p-task-deps a { color: var(--accent); text-decoration: none; }
+.p-task-deps a:hover { text-decoration: underline; }
+.p-task-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.p-task-tag { font: 11.5px ui-monospace, SFMono-Regular, monospace; background: var(--rule-soft); border: 1px solid var(--rule); border-radius: 6px; padding: 3px 8px; color: var(--fg-soft); }
+@media (max-width: 720px) { .p-task, .p-task[data-no-when] { grid-template-columns: 22px 1fr; } .p-task-when { display: none; } }
 ```
 
-**Accessibility.** Still an `<ol>` — screen readers announce the task count and order. Dependency phrases become inline links (`<a href="#task-2">Task 2</a>`); marker is `aria-hidden`.
+**Accessibility.** Still an `<ol>` — screen readers announce the task count and order. Dependency phrases become inline links (`<a href="#task-2">Task 2</a>`); rail (`p-task-rail`) is `aria-hidden`. The `when` label is plain text and reads as part of each task.
 
 ---
 
-## P3 — Design-doc blocks → coloured callouts
+## P3 — Design-doc blocks → tagged H2 + accent panel
 
-**Detect.** H2 headings whose text matches one of: `Problem`, `Context`, `Constraints`, `Decision` (or `Recommended approach`), `Consequences`, `Open questions`. Apply per matching H2 — sibling non-matching H2s render as prose.
+**Detect.** H2 headings whose text matches one of: `Problem`, `Context`, `Constraints`, `Decision` (or `Recommended approach`), `Consequences`, `Open questions`. Apply per matching H2 — sibling non-matching H2s render with the shell's plain section header.
 
-**HTML.**
+**HTML.** The H2 picks up a small tag pill matching the section type. For `Decision`, the body wraps in a **decision panel** (gradient-filled, indigo border, with a `→ We will` label). Other matches use a thin coloured left-border on the section body but otherwise inherit prose defaults — the type-tag does the visual work.
 
 ```html
-<section class="p-callout p-callout-problem">
-  <header class="p-callout-head"><span class="p-callout-icon" aria-hidden="true">▶</span> Problem</header>
-  <div class="p-callout-body">
-    <!-- prose -->
+<section class="s p-block p-block-decision" id="decision">
+  <header>
+    <span class="ix">02</span>
+    <h2>Decision <span class="p-block-tag p-block-tag-decision">Chosen</span></h2>
+  </header>
+  <div class="p-decision-panel">
+    <span class="p-decision-label">→ We will</span>
+    Build as a Ruby on Rails 8 monolith using Rails defaults wherever possible.
   </div>
 </section>
 ```
 
-Mapping (used for `p-callout-<key>`): `problem` → red, `context` → grey, `constraints` → amber, `decision` → blue, `consequences` → green, `open-questions` → purple.
+```html
+<section class="s p-block p-block-context" id="context">
+  <header>
+    <span class="ix">01</span>
+    <h2>Context <span class="p-block-tag p-block-tag-context">Background</span></h2>
+  </header>
+  <p>…</p>
+</section>
+```
+
+Tag-label mapping: `Problem` → `Problem` (danger), `Context` → `Background` (muted), `Constraints` → `Limits` (warn), `Decision` → `Chosen` (info / accent), `Consequences` → `Outcomes` (ok), `Open questions` → `Open` (accent-soft).
 
 **CSS.**
 
 ```css
-.p-callout { margin: 20px 0; border-left: 4px solid var(--cb, var(--rule)); border-radius: 0 6px 6px 0; background: var(--cbg, rgba(127,127,127,0.04)); padding: 12px 16px; }
-.p-callout-head { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cb, var(--muted)); margin-bottom: 6px; font-weight: 600; }
-.p-callout-icon { display: inline-block; margin-right: 4px; }
-.p-callout-body > :first-child { margin-top: 0; }
-.p-callout-body > :last-child { margin-bottom: 0; }
-.p-callout-problem      { --cb: #dc3545; --cbg: rgba(220,53,69,0.06); }
-.p-callout-context      { --cb: #6c757d; --cbg: rgba(108,117,125,0.06); }
-.p-callout-constraints  { --cb: #fd7e14; --cbg: rgba(253,126,20,0.07); }
-.p-callout-decision     { --cb: #0a58ca; --cbg: rgba(10,88,202,0.06); }
-.p-callout-consequences { --cb: #198754; --cbg: rgba(25,135,84,0.06); }
-.p-callout-open-questions { --cb: #6f42c1; --cbg: rgba(111,66,193,0.06); }
+.p-block-tag { margin-left: 12px; font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; vertical-align: 3px; padding: 4px 8px; border-radius: 4px; }
+.p-block-tag-problem    { background: var(--danger-soft); color: var(--danger); }
+.p-block-tag-context    { background: var(--rule-soft);   color: var(--muted); }
+.p-block-tag-constraints{ background: var(--warn-soft);   color: var(--warn); }
+.p-block-tag-decision   { background: var(--info-soft);   color: var(--info); }
+.p-block-tag-consequences{ background: var(--ok-soft);    color: var(--ok); }
+.p-block-tag-open-questions { background: var(--accent-soft); color: var(--accent); }
+
+.p-decision-panel {
+  background: linear-gradient(180deg, var(--info-soft), transparent 80%);
+  border: 1px solid var(--info); border-radius: 12px;
+  padding: 22px 24px; margin: 14px 0;
+  font-size: 18px; line-height: 1.5; color: var(--fg); font-weight: 500;
+}
+.p-decision-panel .p-decision-label { display: block; font: 700 13px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.08em; text-transform: uppercase; color: var(--info); margin-bottom: 10px; }
 ```
 
-**Accessibility.** Colour is supplemental; the heading text carries the meaning. Border + label work for users who can't perceive the hue.
+**Accessibility.** Colour is supplemental; the tag text carries the meaning. The decision panel's label (`→ We will`) is a real text node, not a pseudo-element, so screen readers announce it.
 
-**Sub-buckets inside `Consequences`.** When a `Consequences` callout contains H3s (or bold-paragraph headings) named `Positive`, `Negative`, `Neutral` / `Open`, render each as a coloured sub-block inside the callout rather than as nested H3s. Sub-block CSS:
+**Sub-buckets inside `Consequences`.** When a `Consequences` section's body contains H3s (or bold-paragraph headings) named `Positive`, `Negative`, `Neutral` / `Open`, render each as a coloured sub-card rather than as nested H3s:
+
+```html
+<div class="p-conseq-grid">
+  <div class="p-conseq p-conseq-positive"><h4>Positive</h4><ul>…</ul></div>
+  <div class="p-conseq p-conseq-negative"><h4>Negative</h4><ul>…</ul></div>
+  <div class="p-conseq p-conseq-neutral"><h4>Neutral</h4><ul>…</ul></div>
+</div>
+```
 
 ```css
-.p-conseq { margin: 12px 0; padding: 10px 14px; border-radius: 6px; }
-.p-conseq-positive { background: rgba(25,135,84,0.05);  border-left: 3px solid #198754; }
-.p-conseq-negative { background: rgba(220,53,69,0.05);  border-left: 3px solid #dc3545; }
-.p-conseq-neutral  { background: rgba(108,117,125,0.05); border-left: 3px solid #6c757d; }
+.p-conseq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; margin: 20px 0; }
+.p-conseq { background: var(--surface); border: 1px solid var(--rule); border-left-width: 4px; border-radius: 8px; padding: 14px 16px; }
+.p-conseq h4 { margin: 0 0 10px; font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; }
+.p-conseq-positive { border-left-color: var(--ok);     } .p-conseq-positive h4 { color: var(--ok); }
+.p-conseq-negative { border-left-color: var(--danger); } .p-conseq-negative h4 { color: var(--danger); }
+.p-conseq-neutral  { border-left-color: var(--muted);  } .p-conseq-neutral h4  { color: var(--muted); }
 ```
 
-This is a P3 extension, not a separate pattern — the parent callout is still `p-callout-consequences`.
+This is a P3 extension, not a separate pattern — the parent section is still `p-block-consequences`.
+
+**Consequences as checklist (when flat).** If the `Consequences` body is a single flat bullet list with no sub-buckets, render each bullet as a checklist-card row:
+
+```html
+<div class="p-conseq-list">
+  <div class="p-conseq-item"><span class="p-conseq-check">→</span><span>All code lives in one repo and deploys as one unit</span></div>
+</div>
+```
+
+```css
+.p-conseq-list { display: grid; gap: 10px; margin: 14px 0; }
+.p-conseq-item { display: grid; grid-template-columns: 32px 1fr; gap: 14px; align-items: start; padding: 14px 16px; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; font-size: 15px; line-height: 1.55; color: var(--fg); }
+.p-conseq-check { width: 24px; height: 24px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; font-size: 14px; font-weight: 700; }
+```
 
 ---
 
@@ -163,43 +236,49 @@ This is a P3 extension, not a separate pattern — the parent callout is still `
 **CSS.**
 
 ```css
-.p-nfr { width: 100%; }
-.p-nfr th { background: rgba(127,127,127,0.06); font-size: 13px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); }
-.p-nfr td.p-num { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; white-space: nowrap; }
-.p-nfr tbody tr:hover { background: rgba(127,127,127,0.04); }
+.p-nfr td.p-num { font-family: ui-monospace, SFMono-Regular, monospace; text-align: right; white-space: nowrap; font-size: 14px; }
+.p-nfr tbody tr:hover { background: var(--rule-soft); }
 ```
 
-**Accessibility.** Standard table semantics; `<thead>`/`<tbody>` preserved.
+The shell already styles `<table>` cleanly; P4 only adds numeric-cell alignment + hover. **Accessibility.** Standard table semantics; `<thead>`/`<tbody>` preserved.
 
 ---
 
-## P5 — Open questions → checklist with owner / due
+## P5 — Open questions → left-accent decision cards
 
-**Detect.** Section heading matches `/open questions?|outstanding questions?/i`. Body is a bullet list; each bullet may end with parenthetical metadata `(owner: name, due: 2026-06-01)` or markdown task-list syntax `- [ ]` / `- [x]`.
+**Detect.** Section heading matches `/open questions?|outstanding questions?|to decide|decisions? to make/i`. Body is either a bullet list (one item per question) or a sequence of bold-paragraph headers (`**Do we allow editing?**`) each followed by a short paragraph of context. Optional trailing metadata `(decide with: design, before slice 2)` or `(owner: @anton, due: 2026-06-01)` lifts into a footer line.
 
-**HTML.**
+**HTML.** Each question becomes a vertically-stacked card with a clay accent on the left, a bold question, a context paragraph, and an optional owner/deadline footer in mono.
 
 ```html
-<ul class="p-questions">
-  <li class="p-q">
-    <input type="checkbox" disabled> <!-- checked if [x] -->
-    <span class="p-q-text">Should we use Postgres or DynamoDB for the audit log?</span>
-    <span class="p-q-meta">@anton · due 2026-06-01</span>
-  </li>
-</ul>
+<div class="p-questions">
+  <div class="p-q">
+    <div class="p-q-title">Do we allow editing, or only delete-and-repost?</div>
+    <div class="p-q-body">Editing needs an <code>edited_at</code> column and an "edited" affordance. Delete-and-repost is simpler but loses the reply anchor. Leaning toward delete-only for v1.</div>
+    <div class="p-q-owner">Decide with · design, before slice 2</div>
+  </div>
+  <div class="p-q">
+    <div class="p-q-title">Email digest cadence when a user has the app closed</div>
+    <div class="p-q-body">Immediate-per-mention will be noisy. Proposal: batch on a 15-minute window, collapse to one email per task, and respect quiet hours from the existing settings table.</div>
+    <div class="p-q-owner">Decide with · platform, before slice 4</div>
+  </div>
+</div>
 ```
+
+The `p-q-owner` footer is optional. When metadata isn't present in the source, omit the `<div>` entirely rather than render an empty footer.
 
 **CSS.**
 
 ```css
-.p-questions { list-style: none; padding: 0; margin: 16px 0; }
-.p-q { display: grid; grid-template-columns: auto 1fr auto; gap: 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px dashed var(--rule); }
-.p-q input[type=checkbox] { transform: translateY(2px); }
-.p-q-text { color: var(--fg); }
-.p-q-meta { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.p-questions { display: flex; flex-direction: column; gap: 14px; margin: 20px 0; max-width: 820px; }
+.p-q { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 10px; padding: 16px 20px; }
+.p-q-title { font-weight: 600; font-size: 15.5px; color: var(--fg); margin-bottom: 6px; }
+.p-q-body { font-size: 14px; color: var(--fg-soft); line-height: 1.55; }
+.p-q-body code { font-size: 0.92em; padding: 1px 5px; background: var(--rule-soft); border-radius: 3px; }
+.p-q-owner { font: 11.5px ui-monospace, SFMono-Regular, monospace; color: var(--muted); margin-top: 10px; }
 ```
 
-**Accessibility.** The checkbox is `disabled` (read-only display); the parenthetical metadata is preserved as visible text, not buried in `title=` attributes.
+**Accessibility.** Plain text hierarchy (title → body → owner). The accent border is decorative — the bold title carries the visual weight and reads cleanly on screen readers.
 
 ---
 
@@ -227,12 +306,12 @@ This is a P3 extension, not a separate pattern — the parent callout is still `
 **CSS.**
 
 ```css
-.p-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
-.p-diff-side header { font-size: 12px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-.p-diff-before pre { border-left: 3px solid #dc3545; }
-.p-diff-after  pre { border-left: 3px solid #198754; }
-.p-diff-add { background: rgba(25,135,84,0.12); display: block; }
-.p-diff-del { background: rgba(220,53,69,0.12); display: block; }
+.p-diff { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+.p-diff-side header { font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.p-diff-before pre { border-left: 3px solid var(--danger); }
+.p-diff-after  pre { border-left: 3px solid var(--ok); }
+.p-diff-add { background: var(--ok-soft); color: var(--ok); display: block; }
+.p-diff-del { background: var(--danger-soft); color: var(--danger); display: block; }
 @media (max-width: 720px) { .p-diff { grid-template-columns: 1fr; } }
 ```
 
@@ -240,108 +319,31 @@ This is a P3 extension, not a separate pattern — the parent callout is still `
 
 ---
 
-## P7 — Roadmap Now / Next / Later → three-column kanban
-
-**Detect.** Three sibling H2s or H3s with text exactly matching (case-insensitive, whitespace-tolerant): `Now`, `Next`, `Later`, **AND** each of those sections' body is predominantly a single `<ul>`/`<ol>` (no nested H3s, no Problem/Appetite/ICE callout sub-structure). If only two of the three columns are present and the bullet-only condition holds, still render as a kanban with the missing column shown empty. If the bullet-only condition fails (sections contain rich prose, callouts, or H3 sub-items per column), **do not apply** — fall back to prose so the column content stays readable. Evidence: collapsing a prose-heavy "Now" section into bullets destroys the Problem / Success criterion / Appetite / ICE structure roadmap items typically carry.
-
-**HTML.**
-
-```html
-<div class="p-kanban">
-  <div class="p-kanban-col" data-col="now">
-    <header>Now</header>
-    <ul>
-      <li>Item one</li>
-      <li>Item two</li>
-    </ul>
-  </div>
-  <div class="p-kanban-col" data-col="next"> … </div>
-  <div class="p-kanban-col" data-col="later"> … </div>
-</div>
-```
-
-**CSS.**
-
-```css
-.p-kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-.p-kanban-col { border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; background: rgba(127,127,127,0.03); min-height: 120px; }
-.p-kanban-col header { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding-bottom: 8px; border-bottom: 1px solid var(--rule); margin-bottom: 10px; font-weight: 600; }
-.p-kanban-col[data-col="now"]   header { color: #198754; }
-.p-kanban-col[data-col="next"]  header { color: #0a58ca; }
-.p-kanban-col[data-col="later"] header { color: #6c757d; }
-.p-kanban-col ul { padding-left: 18px; margin: 0; font-size: 14px; }
-.p-kanban-col li { margin: 6px 0; }
-@media (max-width: 720px) { .p-kanban { grid-template-columns: 1fr; } }
-```
-
-**Accessibility.** Each column is keyboard-navigable as ordinary text; the header colour is supplemental to the label.
+<!-- P7 (Now/Next/Later kanban) and P8 (ICE scores) are out of scope for v1
+     — they belong to a future render-roadmap skill. P-numbers are not reused;
+     downstream patterns keep P9–P12 so cross-references stay stable. -->
 
 ---
 
-## P8 — ICE scores → coloured score chips
-
-**Detect.** Markdown table whose header row contains EITHER (a) `Impact`, `Confidence`, and `Ease` (in any order, plus an optional `Score` column), OR (b) a single `ICE` column alongside at least one of `Confidence` / `Slot` / `Theme` / `Kano` — real roadmaps frequently collapse the three sub-scores into one `ICE` total rather than listing each. Numeric cells are graded on the same red/amber/green band regardless of column. Em-dash placeholders (`—`) render as a muted chip.
-
-**HTML.** Numeric cells become chips coloured by value (red 1–3, amber 4–6, green 7–10).
-
-```html
-<table class="p-ice">
-  <thead><tr><th>Idea</th><th>Impact</th><th>Confidence</th><th>Ease</th><th>ICE</th></tr></thead>
-  <tbody>
-    <tr>
-      <td>Onboarding revamp</td>
-      <td><span class="p-chip" data-band="green">9</span></td>
-      <td><span class="p-chip" data-band="amber">5</span></td>
-      <td><span class="p-chip" data-band="red">3</span></td>
-      <td><span class="p-chip" data-band="amber">135</span></td>
-    </tr>
-  </tbody>
-</table>
-```
-
-**CSS.**
-
-```css
-.p-ice .p-chip { display: inline-block; min-width: 28px; padding: 2px 8px; border-radius: 999px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; text-align: center; font-weight: 600; }
-.p-chip[data-band="red"]   { background: rgba(220,53,69,0.18); color: #dc3545; }
-.p-chip[data-band="amber"] { background: rgba(253,126,20,0.18); color: #fd7e14; }
-.p-chip[data-band="green"] { background: rgba(25,135,84,0.18); color: #198754; }
-.p-chip[data-band="muted"] { background: rgba(127,127,127,0.12); color: var(--muted); }
-.p-ice td:not(:first-child) { text-align: center; }
-```
-
-Chip bands: `1–3 → red`, `4–6 → amber`, `7–10 → green`, em-dash / missing → `muted`. ICE totals (any value above 10) are graded against the same 50 / 100 / 200 thresholds used for sequencing in roadmaps that follow `PRODUCT_RULES`.
-
-**Accessibility.** Colour is supplemental; the numeric value is the source of truth. Chips render as plain numbers in print and to screen readers.
-
----
-
-## P9 — YAML frontmatter → metadata grid
+## P9 — YAML frontmatter → metadata grid (lifted into doc head)
 
 **Detect.** Source markdown begins with a YAML frontmatter block delimited by `---` on its own line, before the H1. Common in ADRs and design docs (fields like `id`, `status`, `date`, `authors`, `linear`, `supersedes`).
 
-**HTML.** Render as a definition list immediately under the page title and the provenance meta line — before any body content.
+**HTML.** Frontmatter fields **lift into the shell's `{{meta-grid}}` slot** under the doc head — they do not render as a separate block in the body. The shell's `.meta-grid` styles already cover the visual treatment; P9 only specifies the *lifting* behaviour. The `status` field also lifts into `{{header-pills}}` via the P10 pill treatment.
 
 ```html
-<dl class="p-frontmatter">
-  <dt>id</dt><dd>ADR-engagement-modifier-constants</dd>
-  <dt>status</dt><dd><span class="p-status p-status-accepted">accepted</span></dd>
-  <dt>date</dt><dd>2026-05-14</dd>
-  <dt>authors</dt><dd>Anton Babushkin</dd>
-</dl>
+<!-- inside the shell's <dl class="meta-grid"> -->
+<dt>id</dt>      <dd>ADR-engagement-modifier-constants</dd>
+<dt>authors</dt> <dd>Anton Babushkin</dd>
+<dt>linear</dt>  <dd><a href="https://linear.app/…">ABA-110</a></dd>
+<dt>supersedes</dt><dd>—</dd>
+<dt>source</dt>  <dd>docs/adrs/engagement-modifier-constants.md</dd>
+<dt>rendered</dt><dd>2026-05-17</dd>
 ```
 
-**CSS.**
+`source` and `rendered` are always included; frontmatter fields fold in alphabetically after them, except `status` (which becomes a header pill, not a grid row) and `date` (which becomes a date pill in the header). **Do not drop frontmatter on the floor** — readers use it to anchor the doc.
 
-```css
-.p-frontmatter { display: grid; grid-template-columns: auto 1fr; gap: 4px 14px; font-size: 13px; padding: 12px 14px; background: rgba(127,127,127,0.04); border-radius: 6px; margin-bottom: 24px; }
-.p-frontmatter dt { color: var(--muted); text-transform: uppercase; font-size: 11px; letter-spacing: 0.04em; margin: 0; }
-.p-frontmatter dd { margin: 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px; }
-```
-
-The `status` field gets the P10 status-pill treatment automatically; other field values render as plain text. **Do not** drop frontmatter on the floor — readers use it to anchor the doc.
-
-**Accessibility.** Definition list is the right semantic tag for key-value metadata; screen readers announce each pair.
+**Accessibility.** Definition-list semantics; screen readers announce each key-value pair.
 
 ---
 
@@ -349,58 +351,59 @@ The `status` field gets the P10 status-pill treatment automatically; other field
 
 **Detect.** A frontmatter `status:` field, OR a top-of-doc bold line matching `/\*\*Status:\*\*\s+(\w+)/i`, OR a single-cell `Status` column in a table. Recognised values (case-insensitive): `accepted`, `proposed`, `draft`, `rejected`, `superseded`, `deprecated`, `flagged`, `ok`.
 
-**HTML.**
+**HTML.** When detected from frontmatter or top-of-doc bold line, the pill **lifts into the shell's `{{header-pills}}` slot** (using the shell's `.pill` utility — no new CSS needed):
 
 ```html
-<span class="p-status p-status-accepted">Accepted</span>
+<span class="pill pill-accepted"><span class="dot"></span>Accepted</span>
 ```
 
-**CSS.**
+When detected inside a table cell, render in-place:
 
-```css
-.p-status { display: inline-block; padding: 2px 9px; border-radius: 999px; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
-.p-status-accepted, .p-status-ok        { background: rgba(25,135,84,0.18);  color: #198754; }
-.p-status-proposed, .p-status-draft     { background: rgba(10,88,202,0.18);  color: #0a58ca; }
-.p-status-rejected, .p-status-deprecated{ background: rgba(220,53,69,0.18);  color: #dc3545; }
-.p-status-superseded, .p-status-flagged { background: rgba(253,126,20,0.18); color: #fd7e14; }
+```html
+<td><span class="pill pill-accepted"><span class="dot"></span>Accepted</span></td>
 ```
 
-A pill is reusable wherever a state lives in the source — Slot columns (Now/Next/Later/Validation) in P7-rejected roadmap tables are a natural reuse site.
-
-**Accessibility.** The label text carries the meaning; colour is supplemental.
+The shell already defines `.pill-accepted`, `.pill-proposed`, `.pill-rejected`, `.pill-superseded`, etc. P10 adds no new CSS — it specifies the *detection + placement* contract. **Accessibility.** Label text carries the meaning; colour is supplemental.
 
 ---
 
-## P11 — Rationale "Why X" blocks → labelled list groups
+## P11 — Rationale "Why X" blocks → hover-state cards
 
 **Detect.** A section heading matches `/rationale/i` AND its body contains two-or-more bold-paragraph headers (`**Why X:**` / `**Why not Y:**`) each followed by a bullet list. Common in ADRs that consider multiple alternatives without dedicated H3s per option.
 
-**HTML.** Each bold paragraph becomes the heading of a styled group; the following list is the group's body.
+**HTML.** Each bold paragraph becomes a card heading; the following list is the card body. Cards stack in a single-column grid (one per row) so each option gets full line-length for its bullets, but pick up an indigo border on hover and a directional chevron in the title — `✓` for `Why X`, `✗` for `Why not Y`.
 
 ```html
-<section class="p-rationale">
-  <div class="p-rationale-group">
-    <h4>Why Rails</h4>
+<div class="p-why-grid">
+  <div class="p-why-card p-why-pro">
+    <h3><span class="p-why-chev">✓</span>Why Rails</h3>
     <ul><li>…</li></ul>
   </div>
-  <div class="p-rationale-group">
-    <h4>Why not a separate frontend</h4>
+  <div class="p-why-card p-why-con">
+    <h3><span class="p-why-chev">✗</span>Why not a separate frontend</h3>
     <ul><li>…</li></ul>
   </div>
-</section>
+</div>
 ```
 
 **CSS.**
 
 ```css
-.p-rationale-group { margin: 14px 0; }
-.p-rationale-group h4 { margin: 0 0 6px; font-size: 14px; color: var(--accent); font-weight: 600; }
-.p-rationale-group ul { margin: 0; padding-left: 22px; }
+.p-why-grid { display: grid; grid-template-columns: 1fr; gap: 14px; margin: 20px 0; }
+.p-why-card { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 18px 22px; transition: border-color 0.15s; }
+.p-why-card:hover { border-color: var(--accent); }
+.p-why-card h3 { margin: 0 0 14px; font-size: 16px; font-weight: 700; display: flex; align-items: center; gap: 10px; color: var(--fg); }
+.p-why-chev { font-size: 18px; line-height: 1; font-weight: 700; }
+.p-why-pro .p-why-chev { color: var(--ok); }
+.p-why-con .p-why-chev { color: var(--warn); }
+.p-why-card ul { margin: 0; padding: 0; list-style: none; }
+.p-why-card li { position: relative; padding: 6px 0 6px 20px; font-size: 15px; color: var(--fg-soft); line-height: 1.6; }
+.p-why-card li::before { content: ""; position: absolute; left: 4px; top: 15px; width: 5px; height: 5px; border-radius: 50%; background: var(--muted); }
 ```
 
-**Precedence.** P11 ranks below P1 (Alternatives). When both could match (`Rationale` section whose options also have `Pros:`/`Cons:`), P1's side-by-side comparison is the stronger treatment.
+**Precedence.** P11 ranks below P1 (Alternatives). When both could match (`Rationale` section whose options also have `Pros:`/`Cons:`), P1's side-by-side card grid is the stronger treatment.
 
-**Accessibility.** `<h4>` keeps the headings in the document outline; lists keep list semantics.
+**Accessibility.** `<h3>` keeps headings in the document outline; lists keep list semantics; chevron is a real text node (not pseudo-content) so screen readers announce it.
 
 ---
 
@@ -425,22 +428,235 @@ The first paragraph (often a one-line formal definition or formula) becomes `p-r
 **CSS.**
 
 ```css
-.p-rubric { border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 6px; padding: 14px 18px; margin: 16px 0; background: rgba(127,127,127,0.02); }
-.p-rubric h3 { margin-top: 0; display: flex; gap: 12px; align-items: baseline; color: var(--fg); }
-.p-rubric h3 .p-rubric-id { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; padding: 2px 8px; background: var(--accent); color: white; border-radius: 4px; }
-.p-rubric h4 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 12px 0 4px; font-weight: 600; }
-.p-rubric-formula { background: rgba(10,88,202,0.06); border-left: 3px solid var(--accent); padding: 8px 12px; margin: 8px 0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; }
+.p-rubric { background: var(--surface); border: 1px solid var(--rule); border-left: 4px solid var(--accent); border-radius: 10px; padding: 18px 22px; margin: 20px 0; transition: border-color 0.15s; }
+.p-rubric:hover { border-color: var(--accent); }
+.p-rubric h3 { margin: 0 0 10px; display: flex; gap: 12px; align-items: baseline; font-size: 17px; font-weight: 700; color: var(--fg); }
+.p-rubric-id { font-family: ui-monospace, SFMono-Regular, monospace; font-size: 13px; padding: 4px 9px; background: var(--accent); color: white; border-radius: 4px; letter-spacing: 0.02em; font-weight: 700; }
+.p-rubric h4 { font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 16px 0 6px; }
+.p-rubric-formula { background: var(--accent-soft); border-left: 3px solid var(--accent); padding: 12px 16px; margin: 12px 0; font-family: ui-monospace, SFMono-Regular, monospace; font-size: 14px; line-height: 1.55; border-radius: 0 6px 6px 0; color: var(--fg); }
+.p-rubric p { margin: 0 0 10px; font-size: 15px; line-height: 1.6; color: var(--fg-soft); }
 ```
 
-**Why a dedicated pattern.** Plain-prose rendering of a 6-card ADR section (C1–C6 with Reasoning / Alternative / Revision trigger each) produces a wall of repeating H3+H4 that the reader has to mentally segment. The card boundary plus the identifier pill makes "which constant am I reading" answerable at a glance — which is most of what reviewers want when scanning a pre-registered constants ADR.
+**Why a dedicated pattern.** Plain-prose rendering of a 6-card ADR section (C1–C6 with Reasoning / Alternative / Revision trigger each) produces a wall of repeating H3+H4 that the reader has to mentally segment. The card boundary plus the identifier pill makes "which constant am I reading" answerable at a glance.
 
-**Accessibility.** Heading levels (`<h3>` outer, `<h4>` inner) preserve the document outline; the card's visual boundary is decorative.
+**Accessibility.** Heading levels (`<h3>` outer, `<h4>` inner) preserve the document outline; the card boundary is decorative.
+
+---
+
+## P13 — Summary strip → top-of-doc KPI cells
+
+**Detect.** The first content block after the doc header is a short bullet list or definition list of 3–6 key:value pairs where keys are short labels (`Effort`, `Surfaces touched`, `New tables`, `Feature flag`, `Owner`, `Decision deadline`, `Cost`, `Status`) and values are short atomic phrases (a duration, a count, a flag name, a date, a dollar figure). Also matches when the source uses a YAML-frontmatter-style block under a `## Summary` or `## At a glance` heading. **Does not apply** when the same shape appears mid-doc — only the first such block lifts into the summary strip; subsequent ones render as ordinary `<dl>`s.
+
+**HTML.** Lifts into a 4-up grid directly under the doc head (above the first `<section>`):
+
+```html
+<div class="p-summary">
+  <div class="p-summary-cell"><div class="p-summary-k">Effort</div><div class="p-summary-v p-summary-v-accent">~2 weeks</div></div>
+  <div class="p-summary-cell"><div class="p-summary-k">Surfaces touched</div><div class="p-summary-v">3 packages</div></div>
+  <div class="p-summary-cell"><div class="p-summary-k">New tables</div><div class="p-summary-v">2</div></div>
+  <div class="p-summary-cell"><div class="p-summary-k">Feature flag</div><div class="p-summary-v">task_comments_v1</div></div>
+</div>
+```
+
+The first cell's value gets `p-summary-v-accent` when it carries the headline number (effort, cost, deadline) — at most one per strip. Strip auto-collapses to 2-up at narrow widths.
+
+**CSS.**
+
+```css
+.p-summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 0 0 32px; }
+.p-summary-cell { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 16px 18px; }
+.p-summary-k { font: 700 11px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.p-summary-v { font-size: 17px; font-weight: 600; color: var(--fg); line-height: 1.3; }
+.p-summary-v-accent { color: var(--accent); }
+@media (max-width: 720px) { .p-summary { grid-template-columns: repeat(2, 1fr); } }
+```
+
+**Accessibility.** Each cell is plain text; label and value are independent text nodes. **Why a dedicated pattern.** A plan or design doc that opens with "this will take two weeks, touch three packages, and ship behind `task_comments_v1`" gives every subsequent reader an anchor for "is this proportionate?" before they hit the first detail.
+
+---
+
+## P14 — Data flow / architecture → inline SVG diagram
+
+**Detect.** A section heading matches `/data flow|architecture|sequence|system( context)?|fan[- ]?out|pipeline/i` AND its body contains EITHER (a) a fenced code block tagged ` ```svg ` containing literal `<svg>` markup, OR (b) a markdown description of nodes-and-edges that the agent has already converted to SVG during conversion. The skill **does not** auto-generate SVG from prose — agents author the SVG explicitly when they identify a diagram-worthy concept.
+
+**HTML.** The SVG is wrapped in a framed panel with a caption beneath. Solid lines and dashed lines carry semantic meaning by convention; the caption explains the convention used.
+
+```html
+<div class="p-diagram">
+  <svg viewBox="0 0 860 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Comment write path and realtime fan-out">
+    <defs>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10z" fill="currentColor"/>
+      </marker>
+      <marker id="arr-accent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M0,0 L10,5 L0,10z" fill="var(--accent)"/>
+      </marker>
+    </defs>
+    <!-- Node template -->
+    <g class="p-node">
+      <rect x="20" y="20" width="180" height="54" rx="10"/>
+      <text x="110" y="43" text-anchor="middle" class="p-node-title">&lt;Composer&gt;</text>
+      <text x="110" y="60" text-anchor="middle" class="p-node-sub">apps/web</text>
+    </g>
+    <!-- Edges: stroke="currentColor" = solid request path; class="p-edge-async" = dashed realtime path -->
+    <path d="M110 74 L110 150" marker-end="url(#arr)" class="p-edge"/>
+    <path d="M520 177 L660 177" marker-end="url(#arr-accent)" class="p-edge-async"/>
+    <!-- Edge label -->
+    <text x="240" y="170" class="p-edge-label">mutate</text>
+  </svg>
+  <p class="p-diagram-caption">Solid = request/response. Dashed = realtime fan-out. The composer never waits on the dashed path.</p>
+</div>
+```
+
+**CSS.**
+
+```css
+.p-diagram { background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; padding: 24px; margin: 20px 0; overflow-x: auto; }
+.p-diagram svg { display: block; min-width: 100%; max-width: 100%; height: auto; color: var(--muted); }
+.p-diagram .p-node rect { fill: var(--bg); stroke: var(--rule); stroke-width: 1.5; }
+.p-diagram .p-node-title { font: 600 12px ui-sans-serif, system-ui, sans-serif; fill: var(--fg); }
+.p-diagram .p-node-sub { font: 10.5px ui-monospace, monospace; fill: var(--muted); }
+.p-diagram .p-edge { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.p-diagram .p-edge-async { stroke: var(--accent); stroke-width: 1.5; fill: none; stroke-dasharray: 5 4; }
+.p-diagram .p-edge-label { font: 10.5px ui-monospace, monospace; fill: var(--muted); }
+.p-diagram-caption { font-size: 13.5px; color: var(--muted); margin: 12px 0 0; line-height: 1.55; }
+```
+
+**Authoring guidance for the agent.** Use the four node-classes (`p-node` for default, `p-node p-node-emphasis` for the persistence layer or any single "focus" box — fills with `var(--fg)` background and `var(--bg)` text). Limit to ~7 nodes and ~10 edges; if the diagram needs more, split it. Edge labels must be ≤ 24 chars; longer explanations go in the caption.
+
+**Accessibility.** `<svg role="img" aria-label="…">` provides a short description; the caption beneath provides the long description. Text inside the SVG is selectable. **No remote fonts** — the SVG inherits the page font stack.
+
+---
+
+## P15 — Mockup frame → labelled UI sketch
+
+**Detect.** Section heading matches `/mockup|wireframe|sketch|prototype/i` AND body contains 1–3 sub-blocks separated by H3s or bold paragraph headers that look like artefact labels (`A · Thread inside a task card`, `Variant 1`, `Empty state`). Mockup contents can be either (a) inline HTML the agent has authored to approximate the UI, or (b) an inline SVG sketch.
+
+**HTML.** Each mockup is a framed card with a small label bar and a body area. Two-up grid by default; collapses to single column at narrow widths.
+
+```html
+<div class="p-mocks">
+  <figure class="p-mock">
+    <figcaption class="p-mock-label">A · Thread inside a task card</figcaption>
+    <div class="p-mock-body">
+      <!-- agent-authored UI sketch goes here -->
+    </div>
+  </figure>
+  <figure class="p-mock">
+    <figcaption class="p-mock-label">B · Sidebar unread digest</figcaption>
+    <div class="p-mock-body"> … </div>
+  </figure>
+</div>
+```
+
+**CSS.**
+
+```css
+.p-mocks { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin: 20px 0; }
+.p-mock { margin: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; }
+.p-mock-label { padding: 10px 16px; border-bottom: 1px solid var(--rule); background: var(--rule-soft); font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.p-mock-body { padding: 20px; background: var(--bg); }
+```
+
+**Authoring guidance.** Mockups are deliberately sketchy — they exist to align reviewers on layout, not to look pixel-final. Real UI primitives the agent can lean on: rounded `<div>`s for cards, small circular `<div>`s for avatars (initials inside), dashed-border divs for "image goes here," `<input disabled>` for form fields. The aim is "we agree on the shape," not "this is the final design."
+
+**Accessibility.** `<figure>` + `<figcaption>` keeps the label tied to the mockup for screen readers. Mockup bodies should be ARIA-`role="presentation"` if they contain non-functional interactive-looking elements (a `<button>` that doesn't do anything is worse than a styled `<div>`).
+
+---
+
+## P16 — Code panel → file-labelled dark block
+
+**Detect.** Any fenced code block that has BOTH (a) an info string naming the language AND (b) a preceding line or paragraph that names a file path (`apps/web/hooks/useAddComment.ts`, `packages/db/migrations/0042_comments.sql`). The file path is detected as a relative-path-looking token containing at least one `/` and ending in a recognised extension. Plain fenced blocks without a file label fall through to the shell's default `<pre>` styling. The P6 two-column diff treatment takes precedence when both apply.
+
+**HTML.**
+
+```html
+<figure class="p-code">
+  <figcaption class="p-code-file">apps/web/hooks/useAddComment.ts</figcaption>
+  <pre class="p-code-body"><code class="language-ts">…</code></pre>
+</figure>
+```
+
+When two or more code panels appear in the same section back-to-back, they render in a 2-up grid so reviewers can scan them in parallel (e.g. migration + hook):
+
+```html
+<div class="p-code-grid">
+  <figure class="p-code"> … </figure>
+  <figure class="p-code"> … </figure>
+</div>
+```
+
+**CSS.**
+
+```css
+.p-code { margin: 16px 0; display: flex; flex-direction: column; }
+.p-code-file { font: 12px ui-monospace, SFMono-Regular, monospace; color: var(--muted); margin-bottom: 8px; }
+.p-code-body { background: var(--fg); color: #e8e6de; border-radius: 12px; padding: 18px 20px; overflow-x: auto; margin: 0; }
+.p-code-body code { font: 12.5px/1.65 ui-monospace, SFMono-Regular, monospace; color: inherit; background: transparent; padding: 0; }
+.p-code-body .tok-kw  { color: var(--accent); }
+.p-code-body .tok-str { color: var(--ok); }
+.p-code-body .tok-cm  { color: var(--muted); font-style: italic; }
+.p-code-body .tok-fn  { color: #c9b98a; }
+.p-code-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 16px 0; }
+@media (max-width: 900px) { .p-code-grid { grid-template-columns: 1fr; } }
+```
+
+**Token wrapping.** The agent applies four span classes inline (`tok-kw` for keywords, `tok-str` for string literals, `tok-cm` for comments, `tok-fn` for function/identifier names). Don't attempt full lexer-grade highlighting — the four tokens are enough to give the panel hierarchy without misleading the reader. If the agent isn't confident about a token, leave it un-spanned (the default body colour reads cleanly).
+
+**Accessibility.** `<figure>` + `<figcaption>` ties the file path to the code. Dark background + light text passes AA at 14.5:1 (`#e8e6de` on `var(--fg)` `#0a0a0f`).
+
+---
+
+## P17 — Risks & mitigations → severity-tagged table
+
+**Detect.** Section heading matches `/risks?( ?(and|&) ?mitigations?)?|threats?|failure modes?/i` AND body is a markdown table with at least these columns (case-insensitive, partial match OK): `Risk` (or `Description`), `Severity` (or `Sev` / `Likelihood`), `Mitigation` (or `Response`). An optional `Owner` column is preserved. Severity values are matched against `high|med(ium)?|low|critical` (case-insensitive).
+
+**HTML.** Three- or four-column grid (not a real `<table>`, because we want the severity cell to be a chip in a narrow centred column). Borders form the visual table.
+
+```html
+<div class="p-risks">
+  <div class="p-risks-row p-risks-head">
+    <div>Risk</div><div>Sev</div><div>Mitigation</div>
+  </div>
+  <div class="p-risks-row">
+    <div>Realtime duplicate: socket append races with HTTP response.</div>
+    <div><span class="p-sev p-sev-high">HIGH</span></div>
+    <div>Dedupe on server-assigned <code>id</code>; temp rows filtered on reconcile.</div>
+  </div>
+  <!-- repeat rows -->
+</div>
+```
+
+**CSS.**
+
+```css
+.p-risks { border: 1px solid var(--rule); border-radius: 12px; overflow: hidden; background: var(--surface); margin: 20px 0; }
+.p-risks-row { display: grid; grid-template-columns: 1.6fr 80px 1.6fr; }
+.p-risks-row + .p-risks-row { border-top: 1px solid var(--rule); }
+.p-risks-row > div { padding: 14px 18px; font-size: 14px; line-height: 1.55; color: var(--fg-soft); }
+.p-risks-row > div + div { border-left: 1px solid var(--rule); }
+.p-risks-head > div { background: var(--rule-soft); color: var(--fg); font: 700 12px/1 "Inter", ui-sans-serif, sans-serif; letter-spacing: 0.05em; text-transform: uppercase; padding: 12px 18px; }
+.p-sev { display: inline-block; font: 700 11px/1 ui-monospace, monospace; padding: 4px 9px; border-radius: 6px; letter-spacing: 0.04em; }
+.p-sev-high     { background: var(--danger-soft); color: var(--danger); }
+.p-sev-critical { background: var(--danger);      color: white; }
+.p-sev-med      { background: var(--warn-soft);   color: var(--warn); }
+.p-sev-low      { background: var(--ok-soft);     color: var(--ok); }
+@media (max-width: 720px) {
+  .p-risks-row { grid-template-columns: 1fr; }
+  .p-risks-row > div + div { border-left: none; border-top: 1px dashed var(--rule); }
+  .p-risks-head { display: none; }
+}
+```
+
+**Optional owner column.** When the source table has an Owner column, switch the grid to `1.5fr 80px 1.5fr 120px` and add a fourth `<div>` per row. Owner renders as plain text or a `pill pill-meta` if it looks like a handle (`@anton`).
+
+**Accessibility.** Severity label text (`HIGH` / `MED` / `LOW`) carries the meaning; colour is supplemental. The grid uses `<div>`s rather than `<table>` because the severity column is intentionally narrow and centre-aligned — a real table here forces awkward column-width compromises. Screen readers still announce each row's content in order; for users who require table semantics, the source markdown table is the canonical form.
 
 ---
 
 ## Fallback
 
-A section that matches no pattern renders with the shell's standard prose styles (`<h2>`, `<h3>`, `<p>`, `<ul>`, `<table>`, `<pre>`). Fallback is the default, not the exception — false-positive pattern matches degrade review trust faster than missing treatments.
+A section that matches no pattern renders with the shell's section-header treatment (`<section class="s"><header><span class="ix">NN</span><h2>…</h2></header>`) and the shell's prose defaults (`<p>`, `<ul>`, `<table>`, `<pre>`, `<blockquote>`). The fallback is "well-typeset doc," not raw HTML — false-positive pattern matches degrade review trust faster than missing treatments.
 
 ## Adding a new pattern
 
@@ -448,5 +664,6 @@ When a new pattern earns its slot:
 
 1. Add a section here following the same six-part structure: heading, **Detect**, **HTML**, **CSS**, **Accessibility**, brief rationale.
 2. Number it sequentially (`P13 — …`) so cross-references stay stable.
-3. Confirm the CSS only adds new selectors prefixed `p-` — it must not override any rule in `html-skeleton.md`.
-4. If the detection signal could overlap an existing pattern, document the precedence rule explicitly. The first-match-wins ordering of this file is the resolution mechanism.
+3. Confirm the CSS uses shell colour tokens (`--accent`, `--ok`, `--warn`, `--info`, `--danger`, `-soft` variants) — no ad-hoc hex values.
+4. Confirm the CSS only adds new selectors prefixed `p-` — it must not override any rule in `html-skeleton.md`.
+5. If the detection signal could overlap an existing pattern, document the precedence rule explicitly. The first-match-wins ordering of this file is the resolution mechanism.
