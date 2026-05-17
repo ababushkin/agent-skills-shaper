@@ -1,5 +1,11 @@
+.agents/
+.claude/agents/
+.claude/settings.json
+.claude/skills/
 .claude/worktrees/
 .claire/
+.codex/
+.entire/
 
 # plan-review benchmark workspace: keep analysis files (benchmark.md/json,
 # aggregate.py, grader-prompt.md, feedback.json), drop raw per-cell runs.
