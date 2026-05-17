@@ -43,6 +43,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
 | [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
 | [plan-review](skills/plan-review/SKILL.md) | Reviews a plan, spec, or design before approval. Eight MECE attack buckets plus a Cynefin classifier; surfaces unstated assumptions, missing alternatives, and reversibility blind spots. Calibrated against a [5-scenario benchmark](docs/benchmarks.md): 93% with-skill vs 19% baseline (n=3, Sonnet 4.6). | Plan/spec/design needs a second pass before commitment |
+| [render-html](skills/render-html/SKILL.md) | Converts a markdown design doc, plan, ADR, or roadmap into a single self-contained HTML file for human review. Preserves spatial content (alternatives tables, dependency graphs, timelines) that flat markdown collapses. | Artefact is about to go to review or sign-off and reviewer experience matters |
 
 ### Meta
 
