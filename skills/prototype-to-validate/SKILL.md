@@ -24,6 +24,9 @@ principles_implemented:
   - source: eng-universal
     id: Rule D5
     bucket: embedded
+  - source: eng-agentic
+    id: P8
+    bucket: embedded
 length_target: 180–240
 author: Anton Babushkin
 predecessor:
@@ -83,7 +86,7 @@ Questions too vague to drive a prototype:
 - "Is this the right approach?" — too broad; which aspect of the approach?
 
 **2. Set the time box and the kill condition.**
-Name both before writing a line. Default: half a day to two days. Anything beyond three days is a design project, not a throwaway prototype. The kill condition is the signal that ends the prototype early — the question is answered in the first hour, or the approach clearly fails in a way that needs no further exploration. Stopping early is not a failure; it is the skill working as intended.
+Name both before writing a line. Default appetite: 1–3 build-observe iterations on the single question. Each iteration is a slice (build → put it in front of an observer → record what was seen). Anything beyond ~3 iterations means the question is too broad or the answer is already "reshape" — stop and write the finding (see Agentic P8: appetite is a cap expressed in slices, not in days). The kill condition is the signal that ends the prototype early — the question is answered in the first iteration, or the approach clearly fails in a way that needs no further exploration. Stopping early is not a failure; it is the skill working as intended.
 
 **3. Choose the mode.**
 
@@ -151,7 +154,7 @@ Time used: <actual>
 |---|---|
 | "The prototype took a day to build — we should ship it instead of throwing it away." | Sunk cost. The prototype answered a question; that was its job. If the finding is proceed, build it properly from a design-doc. If reshape or kill, the day was well spent. |
 | "We'll clean up the throwaway code later." | No. Throwaway code goes to production as-is or it gets deleted. "Clean it up later" produces production code with no coverage, no error handling, and no operability. |
-| "We don't have time for a prototype — let's just build it." | This is never faster. A prototype takes half a day; a design takes a day; an implementation takes a week. Skipping the prototype bets a week on an assumption testable in half a day. |
+| "We don't have time for a prototype — let's just build it." | This is never faster. A prototype is 1–3 throwaway slices; a design-doc is many more; an implementation is many more again. Skipping the prototype bets the full build on an assumption that 1–3 throwaway slices would have resolved. |
 | "We already know what users want — we don't need to observe." | This is the highest-confidence claim in product development, and the most commonly wrong one. A narrative prototype takes two hours. If the answer is certain, confirm it cheaply. |
 | "The prototype became the product and it works fine." | Prototype code is built to answer a question, not to survive production. "It works fine" means it hasn't failed yet under controlled conditions. It has no test coverage, no security review, and no operability plan. It will fail. |
 
@@ -178,6 +181,7 @@ The skill has run correctly when:
 ## References
 
 - `rules/eng-principles-universal.md` — P4 (name assumptions; test the risky ones before committing), Rule B3 (reversibility: prototypes are throwaway by design), Rule C5 (time-box; produce a written decision at expiry; adapted for product discovery), Rule D5 (kill is a celebrated outcome)
+- `rules/eng-principles-agentic.md` — P8 (effort in slices, not calendar time)
 - `skills/idea-triage/SKILL.md` — upstream: produces the validated hypothesis and confidence rating that may route here
 - `skills/design-doc/SKILL.md` — downstream: the target when the recommendation is proceed
 - Hunt, Thomas — "The Pragmatic Programmer" (tracer bullets; test risky assumptions before committing)

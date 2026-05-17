@@ -54,6 +54,12 @@ Agents have no continuity between sessions. The ADR, the design doc, the postmor
 
 **Implication:** Every architectural change updates or supersedes its corresponding ADR or design doc in the same PR. The hook `artefact-pair` (Later) flags code changes without doc updates. Skills that produce design artefacts treat the artefact as the deliverable, not the code.
 
+### 8. Effort is measured in slices and gates, not in calendar time
+
+Days, weeks, and months are human-engineering units — they describe how long a person will sit at a keyboard. Agents don't experience work in those units, and asking an agent to produce "time estimates" forces fabrication: the number is either copied from training-data patterns or hallucinated to look plausible. Worse, it imports a false frame — that the relevant question is "how long will this take" rather than "how many independently verifiable steps does this break into, and what gates separate them." The universal tier inherits Larson's "more than four weeks" trigger, Singer's "six-week appetite," and Nygard's "rollback time estimate" because they were written for human teams. Under agents, the load-bearing unit is the **slice** (a thin vertical change that runs end-to-end and is independently verifiable, per universal Rule B2 and `planning-and-task-breakdown`), and the load-bearing checkpoint is the **gate** (a proceed/stop condition with explicit pass criteria). Appetite survives the translation, but only as a cap expressed in slices, not in weeks.
+
+**Implication:** Skills, doc templates, and ADRs that prompt for "time estimates," "deadlines," "weeks," or "days" are rewritten to prompt for slice counts, gates, milestones, or verification conditions. Where a universal-tier rule names a time unit (Rule A1's "four weeks," Rule C5's "spike time-box," Rule A6's "rollback time estimate"), the agentic translation is: number of slices for A1, number of investigation steps with a stop-the-line condition for C5, ordered rollback steps with a verification gate for A6. Calendar time is permitted only at the human-interface seam — date commitments to stakeholders (universal Rule C2) — not inside the work itself.
+
 ---
 
 ## Part 2 — How universal principles bite harder under agents
@@ -76,7 +82,7 @@ The agentic tier is: an agent's failure modes are predictable, structural, and l
 
 The agentic tier is not: a list of complaints about agents, or a denial of how much they accelerate the work.
 
-The seven principles in one line each:
+The eight principles in one line each:
 
 1. Context is the asset; loading it is the work
 2. Hallucination is the default; sources are the brake
@@ -85,6 +91,7 @@ The seven principles in one line each:
 5. The rationalisations are predictable; pre-rebut them
 6. Stop the line on first failure; never silence the signal
 7. Memory lives in artefacts, not in agents
+8. Effort is measured in slices and gates, not in calendar time
 
 Cross-references to universal-tier principles that amplify under agents are in Part 2 above.
 See `eng-principles-universal.md` for the full tier-1 principles set.

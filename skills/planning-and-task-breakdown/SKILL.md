@@ -102,7 +102,7 @@ Format: `Task is done when: [specific, verifiable condition]`
 Review every task. Any task that:
 - Cannot be described in one sentence
 - Has more than one acceptance criterion that requires a separate deployment to verify
-- Would take more than one working session (~4–6 hours) to implement and verify
+- Cannot be completed and verified in a single uninterrupted implementation session — i.e. it bundles multiple independently verifiable changes (see `eng-principles-agentic.md` P8: size by slice count and verification granularity, not hours)
 
 is too big. Split it. Size is not about effort estimation; it is about verification granularity. Small tasks surface problems early.
 

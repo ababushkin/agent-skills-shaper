@@ -7,8 +7,9 @@ description: >
   even if they haven't asked for review explicitly. Trigger phrases: "review
   this plan", "is this plan ok", "before I approve", "should we go with this",
   "what's missing here", "any concerns", "look this over", "thoughts on this
-  approach". Auto-fire conditions: any plan that exceeds one day of effort,
-  touches code the user has not personally read recently, or contains a
+  approach". Auto-fire conditions: any plan that breaks into more than a single
+  independently verifiable slice, touches code the user has not personally read
+  recently, or contains a
   one-way-door decision (architecture choice, schema migration, public API,
   vendor lock-in, auth or production-data touch).
 pack: engineering
@@ -28,6 +29,9 @@ principles_implemented:
     bucket: embedded
   - source: eng-agentic
     id: P7
+    bucket: embedded
+  - source: eng-agentic
+    id: P8
     bucket: embedded
   - source: eng-universal
     id: P2
@@ -97,7 +101,7 @@ This skill catches plan defects before approval. A plan that looks coherent can 
 Run plan-review when at least one trigger fires. Any single trigger is sufficient.
 
 1. An LLM (or a human) has just produced a plan, spec, design doc, or roadmap, and the owner is about to approve it.
-2. The work described will exceed one day of execution time.
+2. The plan breaks into more than one independently verifiable slice (see Agentic P8 — slices, not calendar time).
 3. The plan touches code or systems the owner has not personally traced this week.
 4. **Auto-fire**: the plan contains a one-way-door decision — architecture choice, schema migration, public API, vendor lock-in, auth change, or any touch of production data (defined: any system reachable from the production database, secrets vault, or auth identity store).
 
@@ -131,7 +135,7 @@ Two tiers. The skill selects the tier from plan attributes; the owner can overri
 
 **Auto-select Full when ANY of these holds:**
 
-- Plan appetite > 1 week
+- Plan appetite > ~5 slices (the design-doc threshold from Rule A1 / Agentic P8)
 - Plan contains ≥1 one-way-door decision
 - Plan has ≥3 external dependencies (other teams, vendors, third-party APIs)
 - Plan touches production data, schema migrations, or auth
@@ -148,7 +152,7 @@ Before tier selection, check whether the plan qualifies for fast-track. The fast
 
 1. **Class is KTLO/maintenance.** One of: dependency bump at minor or patch SemVer (any gem/npm/cargo/etc.); lint or format config change (rubocop.yml, eslint, prettier); doc-only change (README, comments, changelog); log/telemetry cleanup (removing unused log lines, renaming); test cleanup (deleting skipped/dead tests, fixture refresh).
 2. **Fully reversible.** One-commit revert restores prior state. No production data, schema, auth, or vendor topology touched.
-3. **Appetite ≤1 day.** If the owner has stated longer, fall through to normal flow.
+3. **Appetite is a single slice.** If the plan breaks into more than one independently verifiable slice, fall through to normal flow.
 4. **No major-version anything.** Any major SemVer bump (1.x → 2.x), any breaking-API call-out, any "we'll need to absorb new features" framing → full flow. Major bumps need a problem statement (what features, why now, what we're absorbing) — they are not KTLO.
 
 If all four hold → emit the fast-track output template (below) and stop. Skip B0–B7 entirely; B8 is folded into the template as a one-liner. Length target 15–25 lines, hard cap 30. Token target ~15k vs ~55k for full Quick-tier flow.
@@ -162,7 +166,7 @@ Rationale: this is the operational form of Universal Rule A5 (KTLO carve-out). O
 ```markdown
 # Plan review: <plan-slug>
 
-**Fast-track gate fired** — KTLO/minor-version class, fully reversible, ≤1 day. CI/CD is the runtime gate; this review is proportionate to that risk.
+**Fast-track gate fired** — KTLO/minor-version class, fully reversible, single slice. CI/CD is the runtime gate; this review is proportionate to that risk.
 
 **Cynefin domain**: Clear
 **Tier**: Quick (fast-track sub-form)
@@ -194,7 +198,7 @@ One line: classify the plan's domain as Clear, Complicated, Complex, or Chaotic 
 Does the plan open with a problem (a user or business outcome) or with a solution (a stack choice or feature)? A plan that begins "we will use Redis…" without a problem statement is solution-first; SUSTAINED. Demand a problem statement with measurable target before approval. (Universal P2.)
 
 **Step 5 — B2 Scope clarity [GATE]**
-Read the plan against its declared scope. Name three things the plan touches that it has NOT declared in scope. Name three things it declares in-scope that are vague enough to expand silently. For each item, issue a verdict: **SUSTAINED**, **OVERTURNED**, or **PARTIAL**, accompanied by a specific falsifying condition (the observable thing that would prove the verdict wrong). If zero SUSTAINED items surface and the plan exceeds 1-day appetite, re-run B2 more aggressively — clean plans are rare, and zero hits usually means lenient review.
+Read the plan against its declared scope. Name three things the plan touches that it has NOT declared in scope. Name three things it declares in-scope that are vague enough to expand silently. For each item, issue a verdict: **SUSTAINED**, **OVERTURNED**, or **PARTIAL**, accompanied by a specific falsifying condition (the observable thing that would prove the verdict wrong). If zero SUSTAINED items surface and the plan exceeds single-slice appetite, re-run B2 more aggressively — clean plans are rare, and zero hits usually means lenient review.
 
 **Step 6 — B3 Assumptions + evidence quality [GATE]**
 Extract every "we assume…", "X will…", "the system can…", and "users want…" implicit in the plan. List the three riskiest. **For each, assign a Confidence score on Gilad's scale (`references/confidence-meter.md`):**
@@ -224,7 +228,7 @@ Is the critical path surfaced — does the plan name what blocks what? Is the ap
 
 **Step 11 — B8 Pre-mortem (cross-cutting, both tiers)**
 Adopt prospective hindsight (Klein): assume the plan has already failed.
-- **Quick**: the plan failed by end-of-week. Name the top 1 reason. Name a kill-switch condition that would catch it early.
+- **Quick**: the plan failed by the end of the slice it's executing. Name the top 1 reason. Name a kill-switch condition that would catch it early.
 - **Full**: the plan shipped and failed within its appetite. Write the top 3 reasons ranked by likelihood. For the top 2, name kill-switch conditions.
 
 Generic reasons ("things went wrong") are rejected — name the specific failure mode.
@@ -256,7 +260,7 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 <!-- Path or link to the plan being reviewed. Pasted excerpt if no path. -->
 
 ## Inputs
-- **Appetite**: <days/weeks — fixed cap, not range>
+- **Appetite**: <slice count — fixed cap, not range; see Agentic P8>
 - **Cynefin domain**: <Clear | Complicated | Complex | Chaotic>
 - **Tier**: <Quick | Full> — selected because <attribute>
 
@@ -312,12 +316,12 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 | "Pre-mortem is theatre." | Klein's prospective-hindsight literature shows pre-mortem reliably surfaces failure modes that forward critique misses. If the pre-mortem produces only generic reasons, it has been run badly — the rule is "name the specific failure mode," not "imagine generic difficulties." |
 | "I don't have time for the full mode." | The plan attributes — appetite, one-way doors, dependencies, production data — are exactly the conditions under which review is most expensive to skip. The 30-minute cap exists because past that point the plan itself needs simplification before it can be reviewed at all. |
 | "We can revise mid-execution if we hit issues." | Revising mid-execution is the failure mode this skill exists to prevent. The cost of a SUSTAINED B2 caught before execution is rewriting a plan; the same finding caught mid-execution is rewriting code, tests, and partial deployments. |
-| "But this is a 5-minute change, do I really need a review?" | If the Step 1a fast-track gate fires, the review is ~20 lines and runs in seconds. The gate is calibrated for exactly this case (KTLO, fully reversible, ≤1 day). If the gate doesn't fire on what you thought was a 5-minute change, the change is not what you think it is — read what the gate flagged as missing. |
+| "But this is a tiny change, do I really need a review?" | If the Step 1a fast-track gate fires, the review is ~20 lines and runs in seconds. The gate is calibrated for exactly this case (KTLO, fully reversible, single slice). If the gate doesn't fire on what you thought was a one-slice change, the change is not what you think it is — read what the gate flagged as missing. |
 
 ## Red flags
 
 - A verdict is given without a named falsifying condition.
-- B2 returns zero items on a plan with appetite >1 day.
+- B2 returns zero items on a plan whose appetite exceeds a single slice.
 - Pre-mortem reasons are all generic ("things might go wrong", "might be slow").
 - A one-way door is identified but the plan is APPROVED without alternatives or ADR.
 - Confidence scores are missing on B3 items.
@@ -352,7 +356,7 @@ The skill carries deliberate limitations. Each one has a measurable trigger that
 
 ## References
 
-- `rules/eng-principles-agentic.md` — P3, P4, P5, P6, P7
+- `rules/eng-principles-agentic.md` — P3, P4, P5, P6, P7, P8
 - `rules/eng-principles-universal.md` — P2, P3, P4, P6, P9, Rule A2, Rule A6, Rule B3, Rule B7
 - `rules/PRODUCT_RULES.md` — P1, P4
 - `references/confidence-meter.md` — Gilad scale used in B3

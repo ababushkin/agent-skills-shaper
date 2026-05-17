@@ -3,8 +3,9 @@ name: design-doc
 description: >
   Produce a structured design document before any non-trivial implementation begins.
   Use when someone asks "how should we build X", "what's the architecture for Y",
-  "should we build or buy Z", or when work will take more than a month, touch shared
-  infrastructure, or meaningfully affect users, cost, or compliance. Also use when
+  "should we build or buy Z", or when work breaks into more than ~5 verifiable
+  slices, contains a one-way-door decision, touches shared infrastructure, or
+  meaningfully affects users, cost, or compliance. Also use when
   an engineer is about to start a significant project with no written design —
   even if they haven't asked for a doc explicitly. Trigger phrases: "how do we
   build", "design this", "architecture for", "technical approach to", "what's the
@@ -45,6 +46,9 @@ principles_implemented:
   - source: eng-agentic
     id: P5
     bucket: embedded
+  - source: eng-agentic
+    id: P8
+    bucket: embedded
 length_target: 250-300
 author: Anton Babushkin
 predecessor:
@@ -74,7 +78,7 @@ This skill produces a structured design document before any non-trivial implemen
 
 At least one Rule A1 trigger must fire. Any single trigger is sufficient:
 
-1. The work will take more than four weeks of engineering time.
+1. The work breaks into more than roughly five independently verifiable slices, or contains any one-way-door decision (schema migration, public API, vendor lock-in, auth boundary, production-data touch). This is the agentic translation of universal Rule A1's "more than four weeks" trigger (see `eng-principles-agentic.md` P8: effort in slices and gates, not calendar time).
 2. The capability will be used by parties outside the team building it.
 3. The change has meaningful impact on users, operational cost, or compliance posture.
 
@@ -91,7 +95,7 @@ If a trigger is ambiguous, default to writing the doc. A short, fast doc costs l
 - A problem description or feature request, however rough
 - Named stakeholders and affected users
 - Known constraints — functional and non-functional
-- A rough scope estimate that suggests at least one Rule A1 trigger fires
+- A rough slice count (or one-way-door flag) that suggests at least one Rule A1 trigger fires
 - Prior design docs and ADRs for related capabilities (loaded per Agentic P1)
 - Access to `rules/eng-principles-universal.md` (Rules A1, A2, A4, A5, A6, B2, B3)
 
@@ -125,10 +129,10 @@ State the recommendation. Explain why it beats the named alternatives on the nam
 Name positive and negative consequences. Explicitly state whether a walking skeleton should precede the full build (Rule B2). A walking skeleton is the minimal end-to-end implementation — one request path wired through every real component in the real deployment environment. Pre-skeleton estimates are uncalibrated. If the path to production is already clear and integration risks are fully known, note that explicitly.
 
 **Step 8 — Operability plan [GATE]**
-Complete every sub-field: metrics (what to graph), structured logs (what to emit), traces (spans to instrument), alerts (thresholds and on-call routing), rollback plan (steps and time estimate), capacity headroom, known failure modes with mitigations, upstream and downstream dependency failure modes. A skeletal or absent Operability section means the doc is not ready for review. This gate does not pass until every sub-field has content. This section is authored with the people who will operate the system — not written in isolation and delivered to them later (Rule A6).
+Complete every sub-field: metrics (what to graph), structured logs (what to emit), traces (spans to instrument), alerts (thresholds and on-call routing), rollback plan (ordered steps with a verification gate that confirms each step succeeded), capacity headroom, known failure modes with mitigations, upstream and downstream dependency failure modes. A skeletal or absent Operability section means the doc is not ready for review. This gate does not pass until every sub-field has content. This section is authored with the people who will operate the system — not written in isolation and delivered to them later (Rule A6).
 
 **Step 9 — Open questions**
-List every unresolved question. Each question has an owner and a resolution deadline. An open questions section with no owners or dates is not an open questions section; it is a list of known unknowns being politely ignored.
+List every unresolved question. Each question has an owner and a resolution gate — the slice or milestone whose start is blocked until the question is answered. An open questions section without owners or gates is not an open questions section; it is a list of known unknowns being politely ignored. Calendar dates appear only when the resolution depends on an external human commitment (vendor reply, legal review).
 
 **Step 10 — Review hand-off**
 Share the completed document for review before any implementation begins. Implementation begins only after the design doc is accepted. Sharing a draft with known incomplete sections is not a hand-off; it is a draft in progress.
@@ -182,13 +186,14 @@ supersedes: <path to prior doc, or "none">
 ## Operability plan
 
 <!-- Metrics, structured logs, traces, alerts (thresholds and routing), rollback
-     plan (steps and time estimate), capacity headroom, known failure modes with
-     mitigations, upstream and downstream dependency failure modes.
-     Required. Absent = reject. -->
+     plan (ordered steps + verification gate per step), capacity headroom,
+     known failure modes with mitigations, upstream and downstream dependency
+     failure modes. Required. Absent = reject. -->
 
 ## Open questions
 
-<!-- Unresolved questions. Each has an owner and a resolution deadline. -->
+<!-- Unresolved questions. Each has an owner and a resolution gate — the slice
+     or milestone whose start is blocked until the question is answered. -->
 ```
 
 ## Common rationalisations
@@ -209,7 +214,8 @@ supersedes: <path to prior doc, or "none">
 - Operability section is absent, has placeholder text, or is a stub
 - No fitness function named for any NFR
 - Walking skeleton not addressed in the Consequences section
-- Open questions have no owners or no deadlines
+- Open questions have no owners or no resolution gates
+- Effort or scope is expressed in days/weeks/months rather than slices or gates (Agentic P8)
 - Document shared for review while known sections are incomplete
 - Implementation has started before the doc is accepted
 
@@ -223,13 +229,13 @@ The design doc passes review when:
 - Alternatives section contains at least two options including "do nothing," each with blast radius and reversal cost (Rule B3)
 - Operability plan covers all required sub-fields (Rule A6)
 - Walking skeleton recommendation is addressed in the Consequences section (Rule B2)
-- Every open question has an owner and a resolution deadline
+- Every open question has an owner and a resolution gate
 - No implementation work has started before acceptance
 
 ## References
 
 - `rules/eng-principles-universal.md` — P2, Rule A1, A2, A4, A5, A6, B2, B3
-- `rules/eng-principles-agentic.md` — P1, P3, P5
+- `rules/eng-principles-agentic.md` — P1, P3, P5, P8
 - Larson, Will — "Staff Engineer" (trigger conditions for design docs)
 - Nygard, Michael — "Release It!" (operability; ADR format)
 - Cockburn, Alistair — walking skeleton (Rule B2 source)
