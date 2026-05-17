@@ -27,3 +27,7 @@ review plan-review and prototype-to-validate
 before we commit i want to understand how we should think about "slices"
 
 there's still "effort" involved from a human here - reviewing, accepting permissions, supervising, making decisions, and so on
+
+---
+
+hold as is for now, lets commit and push
