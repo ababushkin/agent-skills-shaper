@@ -1,6 +1,8 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Claude Code reads this file automatically at session start. Tool-agnostic repository instructions live in `AGENTS.md` — this file imports them and adds Claude-Code-specific notes below.
+
+@AGENTS.md
 
 ---
 
