@@ -1,0 +1,64 @@
+b
+
+---
+
+what's next
+
+---
+
+none of them rendered with the right fonts/colors/etc and they look like nothing more than markdown files rendered like any other markdown previewer - there are basic treatments in place that are fine but it's not really matching the style guide beyond that
+
+---
+
+B - product
+
+---
+
+it feels better, i just want you to do a couple of iterations, mostly focusing around improving the readability. i want you to incorporate WCAG 2.0 AA guidelines for font-sizes and contrast
+
+---
+
+the contrast feels good what's next? the only thing i really want to make sure the skill can render are two types of artefacts:
+
+1. an implementation plan - i find these genuinely hard to read today
+2. a design-doc - same, hard to read and insufficient visuals
+
+https://thariqs.github.io/html-effectiveness/16-implementation-plan.html
+
+this design is guide good because it captures both the plan and the design - with some diagrams inside
+
+---
+
+agreed, narrow scope is better
+
+---
+
+the link styling doesn't match and the contrast on it feels off - its hard to read
+
+---
+
+looks good proceed ahead
+
+---
+
+again the only issue i see is that it doesn't seem to be following WCAG 2.0 AA guidelines for font sizes/contrast
+
+---
+
+the only issue now is the diagrams overflow slightly
+
+---
+
+continue
+
+---
+
+confirmed
+
+---
+
+yes
+
+---
+
+commit that and push too
