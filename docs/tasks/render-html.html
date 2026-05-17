@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tasks: render-html</title>
+<style>
+  :root { --fg: #111; --muted: #666; --bg: #fff; --rule: #e5e5e5; --accent: #0a58ca; }
+  @media (prefers-color-scheme: dark) {
+    :root { --fg: #eee; --muted: #999; --bg: #111; --rule: #2a2a2a; --accent: #6ea8fe; }
+  }
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--fg); }
+  body { font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .layout { display: grid; grid-template-columns: 260px 1fr; max-width: 1100px; margin: 0 auto; }
+  nav.toc { position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; padding: 24px 16px; border-right: 1px solid var(--rule); font-size: 14px; }
+  nav.toc h2 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin: 0 0 8px; }
+  nav.toc ul { list-style: none; padding: 0; margin: 0; }
+  nav.toc li { margin: 4px 0; }
+  nav.toc li.h3 { padding-left: 12px; font-size: 13px; }
+  nav.toc a { color: var(--fg); text-decoration: none; }
+  nav.toc a:hover, nav.toc a.active { color: var(--accent); }
+  main { padding: 32px 40px; max-width: 72ch; }
+  main h1 { font-size: 28px; margin: 0 0 4px; }
+  main .meta { color: var(--muted); font-size: 13px; margin-bottom: 32px; }
+  main h2 { font-size: 22px; margin-top: 40px; padding-top: 8px; border-top: 1px solid var(--rule); }
+  main h3 { font-size: 17px; margin-top: 24px; }
+  main pre { background: rgba(127,127,127,0.08); padding: 12px 14px; border-radius: 6px; overflow-x: auto; font-size: 13px; }
+  main code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.92em; }
+  main table { border-collapse: collapse; margin: 12px 0; }
+  main th, main td { border: 1px solid var(--rule); padding: 6px 10px; text-align: left; }
+  footer { grid-column: 1 / -1; padding: 24px 40px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--rule); }
+  @media print {
+    nav.toc { display: none; }
+    .layout { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 720px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.toc { position: static; max-height: none; border-right: none; border-bottom: 1px solid var(--rule); }
+  }
+
+  /* Pattern P2 — task-list-with-dependencies */
+  .p-timeline { list-style: none; padding: 0; margin: 16px 0; position: relative; }
+  .p-timeline::before { content: ""; position: absolute; left: 14px; top: 0; bottom: 0; width: 2px; background: var(--rule); }
+  .p-task { position: relative; padding-left: 44px; margin-bottom: 22px; }
+  .p-task-marker { position: absolute; left: 0; top: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--bg); border: 2px solid var(--accent); color: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 13px; }
+  .p-task-body h3 { margin: 4px 0 6px; font-size: 16px; }
+  .p-task-deps { color: var(--muted); font-size: 13px; margin: 6px 0 0; }
+  .p-task-deps a { color: var(--accent); text-decoration: none; }
+  .p-task-field { margin: 6px 0; font-size: 14px; }
+  .p-task-field .p-task-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc" aria-label="Table of contents">
+<h2>Contents</h2>
+<ul>
+  <li class="h2"><a href="#how-skill-creator-changes-the-shape">How skill-creator changes the shape</a></li>
+  <li class="h2"><a href="#task-list">Task list</a></li>
+  <li class="h3"><a href="#task-1">Task 1 — Walking skeleton via skill-creator draft</a></li>
+  <li class="h3"><a href="#task-2">Task 2 — Extract HTML shell into reference file</a></li>
+  <li class="h3"><a href="#task-3">Task 3 — Build the fixture + expectations set</a></li>
+  <li class="h3"><a href="#task-4">Task 4 — Scaffold the pattern catalogue</a></li>
+  <li class="h3"><a href="#task-5">Task 5 — Iterate via skill-creator until fixtures pass</a></li>
+  <li class="h3"><a href="#task-6">Task 6 — Description-improver pass</a></li>
+  <li class="h3"><a href="#task-7">Task 7 — Wire up routing in README and using-this-pack</a></li>
+  <li class="h3"><a href="#task-8">Task 8 — End-to-end verification on a real artefact</a></li>
+  <li class="h2"><a href="#resolved-decisions">Resolved decisions</a></li>
+</ul>
+</nav>
+<main>
+<h1>Tasks: render-html</h1>
+<p class="meta">Rendered from <code>docs/tasks/render-html.md</code> on 2026-05-17</p>
+
+<p>Design doc: <code>/Users/anton/.claude/plans/expressive-knitting-quiche.md</code> (approved plan; serves as the design doc for this skill)<br>
+Implementation tool: <code>/skill-creator:skill-creator</code> (used for drafting, evals, iteration, and description tuning)<br>
+Last updated: 2026-05-17</p>
+
+<h2 id="how-skill-creator-changes-the-shape">How skill-creator changes the shape</h2>
+<p>skill-creator's loop is: draft → test prompts → run skill against prompts → quantitative + qualitative eval → rewrite → repeat → finally run the description-improver. That replaces the sequential "author one pattern at a time" structure with an iterate-on-evals loop. Each HTML pattern becomes a test case in the eval suite, not a discrete authoring task. Pattern coverage is then measured rather than asserted.</p>
+
+<h2 id="task-list">Task list</h2>
+
+<ol class="p-timeline">
+
+  <li class="p-task" id="task-1">
+    <div class="p-task-marker" aria-hidden="true">1</div>
+    <div class="p-task-body">
+      <h3>Task 1 — Walking skeleton via skill-creator draft</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Invoke <code>/skill-creator:skill-creator</code> to draft <code>skills/render-html/SKILL.md</code> and <code>.claude/commands/render-html.md</code> covering anatomy compliance (per <code>docs/skill-anatomy.md</code>) and a minimal inline HTML shell that converts any md file to a self-contained <code>&lt;source&gt;.html</code> with TOC of H2/H3 + prose body.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>Running <code>/render-html &lt;some-existing-md-in-this-repo&gt;</code> writes a sibling <code>.html</code> that (a) opens via <code>file://</code> in Chrome with no console errors and zero network requests, (b) contains a TOC listing every H2/H3 from the source, (c) renders every md heading and paragraph, (d) if the target <code>.html</code> already exists, the skill prompts for overwrite confirmation before writing. SKILL.md passes a manual anatomy check (all required sections present in order, <code>[GATE]</code>s preserved, frontmatter validates).</p>
+      <p class="p-task-deps">Depends on: <em>none</em></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-2">
+    <div class="p-task-marker" aria-hidden="true">2</div>
+    <div class="p-task-body">
+      <h3>Task 2 — Extract HTML shell into reference file</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Move the inline <code>&lt;!doctype html&gt;</code> shell out of SKILL.md into <code>references/html-skeleton.md</code> (system font stack, ~70ch prose cap, sticky TOC sidebar, scrollspy JS ≤ 50 lines, prefers-color-scheme dark mode, print stylesheet). Document the hard rule: no external <code>&lt;link&gt;</code>/<code>&lt;script src&gt;</code>/remote images. SKILL.md cites the reference.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>Re-rendering the Task 1 fixture produces an HTML byte-identical to before (modulo provenance/timestamp lines); SKILL.md line count drops accordingly and stays inside the 180–240 target.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-1">Task 1</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-3">
+    <div class="p-task-marker" aria-hidden="true">3</div>
+    <div class="p-task-body">
+      <h3>Task 3 — Build the fixture + expectations set for the iterate loop</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Create one synthetic md fixture per HTML pattern from the approved plan (alternatives-considered, task-list-with-dependencies, design-doc-blocks, NFRs-table, open-questions, diff/before-after, roadmap-now-next-later, ICE-scores) plus two control fixtures: an unstructured bulleted brainstorm (must degrade to clean prose) and an omnibus fixture combining every pattern. For each fixture, write a plaintext expectations file describing what the rendered HTML must contain (specific structures, no console errors, size &lt; 500KB). v0.1 evaluation is by eyeball — run the skill against each fixture, open the output in a browser, check against the expectations file. No automated scoring harness yet (see Resolved decisions).</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>Fixtures live under <code>skills/render-html/evals/fixtures/</code>; each has a sibling expectations file; the Task 1 walking-skeleton draft has been eyeballed against every fixture and the baseline (most pattern fixtures fail, prose + control fixtures pass) recorded in a notes file.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-1">Task 1</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-4">
+    <div class="p-task-marker" aria-hidden="true">4</div>
+    <div class="p-task-body">
+      <h3>Task 4 — Scaffold the pattern catalogue</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Create <code>references/html-patterns.md</code> with an introduction and one empty section per pattern (matching the fixtures from Task 3). Each section template: <em>when to apply</em>, <em>source md shape</em>, <em>HTML/CSS treatment</em>, <em>accessibility notes</em>. SKILL.md cites this reference in its workflow step 3.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span><code>references/html-patterns.md</code> exists with 8 named sections; SKILL.md references it.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-2">Task 2</a>, <a href="#task-3">Task 3</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-5">
+    <div class="p-task-marker" aria-hidden="true">5</div>
+    <div class="p-task-body">
+      <h3>Task 5 — Iterate via skill-creator until all pattern fixtures pass</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Run the skill-creator iterate loop with eyeball evaluation. Each iteration: render every fixture → inspect failures against the expectations file → extend SKILL.md and/or <code>html-patterns.md</code> and/or <code>html-skeleton.md</code> to cover the failing pattern → re-render. Repeat until every pattern fixture and both control fixtures pass.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>Every pattern fixture and both control fixtures pass on two consecutive runs (a light-touch variance check appropriate to eyeball evaluation). SKILL.md still inside the 180–240 line target.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-4">Task 4</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-6">
+    <div class="p-task-marker" aria-hidden="true">6</div>
+    <div class="p-task-body">
+      <h3>Task 6 — Description-improver pass</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Run skill-creator's description-improver to tune the SKILL.md <code>description:</code> frontmatter for triggering accuracy on trigger phrases from the approved plan ("render this doc as HTML", "make this reviewable", "convert design doc to HTML", "I want to share this plan").</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>Description-improver reports an improved or equal triggering score vs. baseline; the tuned description is committed to SKILL.md.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-5">Task 5</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-7">
+    <div class="p-task-marker" aria-hidden="true">7</div>
+    <div class="p-task-body">
+      <h3>Task 7 — Wire up routing in README and using-this-pack</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Add a <code>render-html</code> row to the engineering/review table in <code>README.md</code>; add a routing entry to <code>skills/using-this-pack/SKILL.md</code> mapping the trigger phrases above to <code>render-html</code>.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span><code>README.md</code> lists render-html with its one-line description; <code>using-this-pack/SKILL.md</code> routes the trigger phrases to <code>render-html</code>.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-6">Task 6</a></p>
+    </div>
+  </li>
+
+  <li class="p-task" id="task-8">
+    <div class="p-task-marker" aria-hidden="true">8</div>
+    <div class="p-task-body">
+      <h3>Task 8 — End-to-end verification on a real artefact</h3>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Run <code>/render-html</code> on a real artefact already in the repo (an existing <code>docs/designs/*.md</code> or <code>docs/tasks/*.md</code>, not a synthetic fixture). Validate against the full verification checklist from the approved plan in two browsers.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span>All checks pass: (a) output written alongside source, (b) opens in Chrome AND Safari via <code>file://</code> with zero network requests in DevTools Network tab, (c) no console errors/warnings, (d) every H2/H3 reachable via TOC, (e) every applicable pattern renders correctly, (f) file size &lt; 500KB, (g) print preview hides the TOC and breaks pages reasonably, (h) re-rendering the same source produces a diff only in provenance/timestamp lines.</p>
+      <p class="p-task-deps">Depends on: <a href="#task-7">Task 7</a></p>
+    </div>
+  </li>
+
+</ol>
+
+<h2 id="resolved-decisions">Resolved decisions</h2>
+<ul>
+  <li><strong>Fixtures location:</strong> <code>skills/render-html/evals/</code> (co-located with the skill). Safe because the Claude Code plugin loader only auto-loads <code>SKILL.md</code> from each skill directory — subdirectory contents are read on demand by the agent, not eagerly loaded into context. Confirmed against the loader behaviour observed in <code>.claude-plugin/plugin.json</code> discovery. Re-check if skill-creator publishes contrary best-practice guidance.</li>
+  <li><strong>Pattern detection:</strong> hybrid — heading-name heuristics are the primary signal, with an optional explicit override via a fenced annotation (<code>```pattern:alternatives</code>) for cases where authors want precision or where their headings don't match the catalogue. Rationale: pde skills already produce consistent heading names (design-doc enforces "Problem", "Alternatives considered", etc. by anatomy), so heading-name detection works out of the box for the most common inputs. The annotation escape hatch preserves the "any structured md" property without forcing every author to mark up their docs. Pure-heuristic loses on renames; pure-annotation breaks zero-effort rendering; hybrid avoids both failure modes.</li>
+  <li><strong>Output file collision:</strong> overwrite with a confirmation prompt. When <code>&lt;source&gt;.html</code> exists, the skill must prompt before writing. Affects Task 1's acceptance criterion (below).</li>
+  <li><strong>Eval harness scope for v0.1:</strong> define fixtures + expected-output descriptions and <em>eyeball</em> results during iteration. Defer automated scoring to v0.2. Context: skill-creator's full loop wants (a) fixture inputs, (b) machine-checkable expectations, (c) running claude-with-the-skill against each fixture, (d) automated pass/fail scoring, (e) iterate until scores stabilise. Automated scoring catches regressions when the pattern catalogue grows, but for the initial 8 patterns the iteration cost of eyeballing is lower than the cost of building the scoring harness. Revisit once we add a 9th pattern or a regression appears.</li>
+</ul>
+
+</main>
+<footer>Generated by render-html. Re-render the source markdown to update.</footer>
+</div>
+<script>
+  const links = Array.from(document.querySelectorAll('nav.toc a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  const byId = new Map(targets.map((el, i) => [el.id, links[i]]));
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        byId.get(e.target.id)?.classList.add('active');
+      }
+    }
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  targets.forEach(t => io.observe(t));
+</script>
+</body>
+</html>
