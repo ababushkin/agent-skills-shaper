@@ -35,8 +35,6 @@ changed_from_predecessor: n/a
 
 This skill converts a markdown artefact — design doc, task list, ADR, roadmap, postmortem — into one self-contained HTML file written next to the source as `<source>.html`. The deliverable is for humans about to review or sign off on the artefact, not for archival or publication. It is the operational form of agentic Principle 7 (memory lives in artefacts): the doc itself, made navigable and legible, is the persistent record reviewers and future agents read. And it is a lever on universal Principle 1 (shipped is not done; observed is done): better review UX raises the rate at which review actually happens, which raises the rate at which outcomes get observed.
 
-The v0.1 skill produces a clean walking-skeleton render — title, sticky TOC sidebar generated from H2/H3, prose body, code blocks, footer with provenance. Rich pattern-specific treatments (side-by-side alternatives, kanban roadmaps, diff blocks, dependency timelines) arrive in later iterations as the pattern catalogue is built out. The walking skeleton must work end-to-end on any structured markdown before any pattern logic is added.
-
 ## When to use
 
 - The user asks to "render", "convert to HTML", "make this reviewable", or "share this doc" and points at a markdown file.
