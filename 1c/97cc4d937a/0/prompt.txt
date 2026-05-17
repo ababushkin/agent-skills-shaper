@@ -1,0 +1,33 @@
+i noticed recently when running a design-doc skill from this skill-pack that when it creates "time estimates" it's using time/days/weeks 
+example: ~/src/stock-review/docs/design-docs/engagement-kpi-enrichment/design-doc.md
+
+is this because of how the skill has been authored or just a gap in the skill pack?
+
+estimating in these bounds makes no sense as this is an agentic skill pack
+
+what makes sense are things like:
+
+- phases/stages
+- milestones
+
+if effort is to be measured there's a better heuristic - pretty sure one is written in this skill pack but i can provide more context if one isn't
+
+troubleshoot what happened here
+
+---
+
+ok go ahead
+
+---
+
+review plan-review and prototype-to-validate
+
+---
+
+before we commit i want to understand how we should think about "slices"
+
+there's still "effort" involved from a human here - reviewing, accepting permissions, supervising, making decisions, and so on
+
+---
+
+hold as is for now, lets commit and push
