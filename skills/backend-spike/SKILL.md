@@ -59,7 +59,7 @@ Size the work: if you can answer the question in one paragraph from memory with 
 
 ## When not to use
 
-- **The dominant unknown is product feel** — run `prototype-to-validate` instead (becomes `product-spike` when ABA-129 lands). That skill answers: does this interaction feel right, will users understand this? This skill answers: is this approach correct, does it handle the edge cases?
+- **The dominant unknown is product feel** — run `product-spike` instead. That skill answers: does this interaction feel right, will users understand this? This skill answers: is this approach correct, does it handle the edge cases?
 - **The problem is not yet framed** — run `idea-triage` or `design-doc` first. A spike on an undefined problem produces an answer to the wrong question.
 - **The answer is well-established and unambiguous** — document the choice in the design-doc or an ADR and proceed. No spike needed.
 - **The spike requires building and running code to verify** — that is a proof-of-concept, not a spike. Size accordingly and route to a build task, not this skill.
@@ -200,6 +200,6 @@ The skill has run correctly when:
 - `rules/eng-principles-universal.md` — P4 (name assumptions; test the risky ones before committing), Rule C5 (time-boxed spike → written decision at expiry), Rule D5 (kill is a celebrated outcome — applies to rejected options)
 - `rules/eng-principles-agentic.md` — P4 (evidence beats vibes; "seems right" is never sufficient), P8 (effort in slices and gates, not calendar time)
 - `references/confidence-meter.md` — Gilad scale used in Step 5
-- `skills/prototype-to-validate/SKILL.md` — parallel skill for product/UX discovery (referenced as `product-spike` once ABA-129 lands)
+- `skills/product-spike/SKILL.md` — parallel skill for product/UX discovery
 - `skills/design-doc/SKILL.md` — downstream: proceeds after spike recommendation is in place
 - `skills/plan-review/SKILL.md` — run on the follow-up implementation ticket before committing to the build

@@ -126,7 +126,7 @@ There is no parking lot (Rule A6). Every triaged idea goes to exactly one of the
 
 | Dominant unknown | Method |
 |---|---|
-| Product feel — how the interaction works, whether a flow makes sense | `prototype-to-validate` |
+| Product feel — how the interaction works, whether a flow makes sense | `product-spike` |
 | Customer reality — does this problem exist, how often, for whom | Customer interview or survey |
 | Market signal — will people pay, sign up, switch | Smoke test or landing-page test |
 | Technical feasibility — can we build this, at what cost | Spike (→ `design-doc`) |

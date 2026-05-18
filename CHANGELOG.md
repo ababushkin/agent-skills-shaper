@@ -19,7 +19,7 @@ Product:
 
 Engineering:
 
-- `prototype-to-validate` — throwaway artefact to answer one product question before committing to a design.
+- `product-spike` — throwaway artefact to answer one product question before committing to a design.
 - `design-doc` — structures significant work before building (problem → constraints → alternatives → decision → operability).
 - `planning-and-task-breakdown` — decomposes a design or spec into small, verifiable tasks.
 - `incremental-implementation` — thin vertical slices, walking-skeleton-first; bug-fix sub-workflow for KTLO work.

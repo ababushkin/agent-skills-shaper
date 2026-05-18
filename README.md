@@ -39,7 +39,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 |---|---|---|
 | [eng-principles-universal.md](rules/eng-principles-universal.md) | Rule set: design before build (A1–A5), small batch (B1), explicit contracts (C1–C3), technical quality (D1–D4). | Load persistently for engineering work |
 | [eng-principles-agentic.md](rules/eng-principles-agentic.md) | Agentic-specific constraints: scope discipline, no speculative refactoring, confirmation before destructive action. | Load alongside universal for agent-driven work |
-| [prototype-to-validate](skills/prototype-to-validate/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
+| [product-spike](skills/product-spike/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
 | [backend-spike](skills/backend-spike/SKILL.md) | Time-boxed investigation of a backend correctness question (detection threshold, substitution strategy, algorithmic safeguard). Produces a recommendation with a rejected-alternatives table and a named follow-up implementation ticket. | Design-doc stalls on a correctness sub-question; ≥2 plausible approaches with different edge-case behaviour |
 | [planning-and-task-breakdown](skills/planning-and-task-breakdown/SKILL.md) | Decomposes a design doc or spec into small, verifiable tasks with acceptance criteria and dependency order. | Design accepted; ready to implement |
 | [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
@@ -68,7 +68,7 @@ Using addy's pack as the example. Empty cells on pde's side aren't gaps to be fi
 |---|---|---|
 | Discover / curate | `idea-triage`, `app-calibrate`, `backlog-manage` | — |
 | Decide / plan | `roadmap-shape`, `planning-and-task-breakdown` | — |
-| Design | `design-doc`, `prototype-to-validate`, `backend-spike` | — |
+| Design | `design-doc`, `product-spike`, `backend-spike` | — |
 | Pre-build review | `plan-review` (calibrated, [benchmarks](docs/benchmarks.md)) | — |
 | Build | — | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
 | Verify | — | `test-driven-development`, `debugging-and-error-recovery`, `browser-testing-with-devtools` |

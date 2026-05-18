@@ -28,7 +28,7 @@ Task arrives
     │       ├── Confidence ≥ 5: file in idea bank          (wait — no action until roadmap-shape runs)
     │       │       └── Idea bank needs review/curation?   → backlog-manage
     │       └── Confidence < 5: validation slot
-    │               ├── product feel unknown               → prototype-to-validate
+    │               ├── product feel unknown               → product-spike
     │               ├── customer reality unknown           → interview / survey
     │               ├── market signal unknown              → smoke test
     │               └── technical feasibility unknown     → backend-spike (→ design-doc)
@@ -80,7 +80,7 @@ Most work spans more than one skill. These are the common sequences:
 **Product track — from idea to roadmap:**
 ```
 idea arrives → idea-triage → idea bank (confidence ≥ 5)
-                           → validation slot (confidence < 5) → prototype-to-validate → re-score
+                           → validation slot (confidence < 5) → product-spike → re-score
 idea bank clean → backlog-manage → roadmap-shape
 ```
 
@@ -100,7 +100,7 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 |---|---|---|
 | `idea-triage` | "We should build…", "A customer asked for…", "Competitor just launched…" | Triage record with ICE score and routing decision (idea bank or validation slot) |
 | `backlog-manage` | "Review the backlog", "Add to KTLO", "Promote this idea", "Kill this" | Updated idea bank records + KTLO list |
-| `prototype-to-validate` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
+| `product-spike` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
 | `backend-spike` | "What's the right threshold for", "How should we detect", "Spike on", "What guard should we add" | Recommendation with rejected-alternatives table + follow-up ticket |
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
 | `planning-and-task-breakdown` | "Break this down into tasks", "What order should we build this in?", "Give me a task list" | Ordered task list with acceptance criteria |
