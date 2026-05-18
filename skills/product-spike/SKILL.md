@@ -1,5 +1,5 @@
 ---
-name: prototype-to-validate
+name: product-spike
 description: >
   Build a throwaway artefact that answers one specific product question before committing
   engineering time to a design. Use when anyone wants to test an interaction, flow, or
@@ -37,11 +37,11 @@ kept_from_predecessor: "n/a"
 changed_from_predecessor: "n/a"
 ---
 
-# Prototype to validate
+# Product spike
 
 ## Purpose
 
-A prototype-to-validate is a throwaway artefact built to answer one specific question before engineering time is committed to a design. The question is always a product question — how the feature will feel, whether users will understand an interaction, whether a proposed flow creates or removes confusion. Technical unknowns belong in a spike (Rule C5). The output is a written finding, not a deliverable artefact.
+A product spike is a throwaway artefact built to answer one specific question before engineering time is committed to a design. The question is always a product question — how the feature will feel, whether users will understand an interaction, whether a proposed flow creates or removes confusion. Technical unknowns belong in a spike (Rule C5). The output is a written finding, not a deliverable artefact.
 
 This skill sits between `idea-triage` and `design-doc`. Idea-triage confirms a problem is real and worth pursuing. That is not enough to know how to solve it. When the gap between "this is worth building" and "this is how we'll build it" is a product question, a prototype answers it cheaply. A design-doc started from an unclear product direction will be redesigned; a prototype started from an unclear product direction will be thrown away. Throwaways are cheaper.
 
