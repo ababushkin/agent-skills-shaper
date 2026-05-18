@@ -1,0 +1,109 @@
+Work on Linear issue ABA-128:
+
+<issue identifier="ABA-128">
+<title>Author `backend-spike` skill for pde-skills pack</title>
+<description>
+## Problem
+
+The pde-skills pack has `prototype-to-validate` for **product/UX** spikes but no equivalent for **backend correctness** spikes (detection thresholds, substitution strategies, algorithmic safeguards, etc.). I've authored \~5 spike tickets of this exact shape recently (e.g. <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> base-year FCF distortion, <issue id="da63ea5b-3a1c-46cb-8487-b89fa0be4179">ABA-103</issue> WACC auto-derive, and three earlier ones in the `/stock` skill family). Each was assembled ad hoc from `agent-skills:spec` + universal Rule C5 (time-boxed spike → written decision) + `pde-plan-review`.
+
+Per universal Rule B6 (generalise on the third occurrence), five recurrences clears the bar.
+
+## Goal
+
+A new skill — `backend-spike` — that codifies the investigate-recommend-spawn-followup pattern for backend correctness spikes. Designed as a sibling to `product-spike` (the renamed `prototype-to-validate`, tracked in <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue>) so the pack exposes a clean `product-spike` / `backend-spike` pair.
+
+## Why this is above <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue>
+
+Authoring this skill first means <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> (and any future spike ticket) gets the codified workflow, gates, and rationalisations table from the start — rather than being shaped freehand and post-hoc reviewed. Doing <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> first means we re-derive the pattern by hand for the sixth time.
+
+## Relationship to `product-spike` (<issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue>)
+
+The two skills share a thin spine (Rule C5 time-box, agentic P8 slices, written exit, three-state recommendation, throwaway/discovery framing) but diverge operationally:
+
+| Dimension | `product-spike` | `backend-spike` |
+| -- | -- | -- |
+| Question shape | Subjective ("does this feel right?") | Analytical ("what's the right threshold?") |
+| Instrument | Artefact + observer | Reasoning + data + alternatives table |
+| Output | Finding (observations + recommendation) | Recommendation (rejected alternatives + follow-up ticket) |
+| Failure guarded | Prototype becomes production | Pick the obvious option without comparing alternatives |
+
+Folding into one skill would create \~60% branched workflow content — rejected. Keep two skills, make the parallel legible via naming.
+
+## Inputs to the skill design
+
+Calibrate against the 5 prior spikes (TBD — list them in the first slice):
+
+1. <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> — base-year FCF distortion in `/stock:model`
+2. <issue id="da63ea5b-3a1c-46cb-8487-b89fa0be4179">ABA-103</issue> — WACC auto-derive
+3. (3 earlier spikes — to be enumerated)
+
+For each: workflow shape, where I skipped a step and regretted it (→ `[GATE]` candidate), what was consistent vs. what varied (→ template slot vs. fixed prescription).
+
+## Expected shape
+
+Following `docs/skill-anatomy.md`:
+
+* Title, Purpose, When to use, When not to use
+* **When not to use** must explicitly route product/UX questions to `product-spike` (the parallel skill)
+* Inputs (problem statement, failure example, existing behaviour, time-box)
+* Outputs (written recommendation + follow-up implementation ticket)
+* Workflow:
+  * Problem framing gate
+  * Enumerate detection/tripwire options
+  * Enumerate response strategies
+  * Scope check (does this generalise to adjacent paths?)
+  * Confidence/semantics impact
+  * Recommendation with rejected alternatives + rationale
+  * Spawn follow-up implementation ticket
+* Recommendation template (with rejected-alternatives table as a required section)
+* Common rationalisations (e.g. "I'll just pick the obvious option," "alternatives are obviously worse, skip the table," "I'll just substitute the trailing 1Y and ship")
+* Red flags
+* Verification / exit criteria
+* References
+
+## Frontmatter
+
+* `pack: pde-skills` (or `engineering` to match `prototype-to-validate` — confirm during authoring)
+* `lifecycle_stage`: define (discovery) — parallel to `product-spike`
+* `principles_implemented`: universal Rule C5 (time-boxed spike); universal Principle 4 (test risky assumptions); universal Rule D5 (kill is celebrated); agentic Principle 4 (evidence beats vibes); agentic Principle 8 (slices and gates)
+* `predecessor`: sibling to `product-spike` (tracked in <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue>); complements `agent-skills:spec` and `pde-plan-review`
+
+## Sequencing with <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue>
+
+Goal: both land in the same cycle so the pack never sits in an inconsistent state. Either can ship first — but if `backend-spike` ships first, its frontmatter `predecessor` field and "When not to use" section should reference `prototype-to-validate` (current name) and a follow-up edit lands when <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue> completes.
+
+Cleanest sequence: do <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue> (rename) first as a low-risk warm-up, then author `backend-spike` referencing the new name throughout.
+
+## Acceptance criteria
+
+* Skill file at `skills/backend-spike/SKILL.md`
+* Length 100–300 lines (per repo cap)
+* "When not to use" routes product/UX spikes to `product-spike`
+* Cross-linked from `pde-using-this-pack` decision flowchart
+* README table updated
+* Re-runnable against <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> as a sanity check: applying the skill to <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> should produce a workflow that matches what I'd do by hand
+
+## Out of scope
+
+* Renaming `prototype-to-validate` (tracked in <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue>)
+* Refactoring the two skills to share content
+* Building a hook to enforce the workflow
+* Retrofitting prior spike tickets to the new shape
+
+## Related
+
+* <issue id="eaa04653-9fb8-4026-8db9-ba6e2c653ec5">ABA-129</issue> — rename `prototype-to-validate` → `product-spike` (the parallel skill)
+* <issue id="3262b968-8554-45f9-97e2-b49640b1e792">ABA-104</issue> — first ticket that will benefit from this skill
+* <issue id="da63ea5b-3a1c-46cb-8487-b89fa0be4179">ABA-103</issue> — second beneficiary
+</description>
+<team name="Personal"/>
+<project name="PDE skill pack">Cycle 1 (17–24 May): Goal 1 — spike pair in place (product-spike + backend-spike, clean naming). Goal 2 — pair validated by running backend-spike on ABA-104. Full brief → Equity project doc "Cycle 1 — goals & success criteria".</project>
+<issue-relations>
+<related>
+<issue-ref identifier="ABA-104" title="Spike: detect &amp; handle base-year effect in /stock:model FCF growth rate"/>
+<issue-ref identifier="ABA-103" title="Spike: auto-derive base WACC for /stock:model instead of always asking"/>
+<issue-ref identifier="ABA-129" title="Rename `prototype-to-validate` → `product-spike` (parallel to `backend-spike`)"/>
+</related>
+</issue-relations>
+</issue>

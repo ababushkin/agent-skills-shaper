@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "cc5968d3076c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md",
+    "skills/backend-spike/SKILL.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/cc/5968d3076c/0/metadata.json",
+      "transcript": "/cc/5968d3076c/0/full.jsonl",
+      "content_hash": "/cc/5968d3076c/0/content_hash.txt",
+      "prompt": "/cc/5968d3076c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18,
+    "cache_creation_tokens": 135854,
+    "cache_read_tokens": 793909,
+    "output_tokens": 10333,
+    "api_call_count": 14
+  }
+}
