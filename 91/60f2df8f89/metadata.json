@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "9160f2df8f89",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude/commands/backend-spike.md",
+    "install.sh"
+  ],
+  "sessions": [
+    {
+      "metadata": "/91/60f2df8f89/0/metadata.json",
+      "transcript": "/91/60f2df8f89/0/full.jsonl",
+      "content_hash": "/91/60f2df8f89/0/content_hash.txt",
+      "prompt": "/91/60f2df8f89/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 12,
+    "cache_creation_tokens": 9230,
+    "cache_read_tokens": 824733,
+    "output_tokens": 2723,
+    "api_call_count": 10
+  }
+}

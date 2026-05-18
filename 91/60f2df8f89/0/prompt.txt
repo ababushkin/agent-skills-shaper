@@ -1,0 +1,1 @@
+Are all the installation instructions updated? Have all the symlinks been updated?
