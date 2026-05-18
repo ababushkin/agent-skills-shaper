@@ -1,0 +1,51 @@
+Work on Linear issue ABA-129:
+
+<issue identifier="ABA-129">
+<title>Rename `prototype-to-validate` → `product-spike` (parallel to `backend-spike`)</title>
+<description>
+## Problem
+
+`prototype-to-validate` and the new `backend-spike` (<issue id="b1430477-7565-4264-832c-6c0a5705ada5">ABA-128</issue>) share the same spine — time-boxed discovery, written exit, three-state recommendation — but the asymmetric naming hides the parallel. A user looking at the pack should immediately see "there's a product version and a backend version of the same shape."
+
+## Goal
+
+Rename `prototype-to-validate` → `product-spike` so the pack exposes a clear `product-spike` / `backend-spike` pair.
+
+## Scope
+
+* Rename directory: `skills/prototype-to-validate/` → `skills/product-spike/`
+* Update `name:` frontmatter in `SKILL.md` from `prototype-to-validate` → `product-spike`
+* Update `description:` to keep trigger phrases (still mentions "prototype", "mockup", etc.) — the renamed skill still covers prototype-driven discovery; the new name just makes the parallel with `backend-spike` legible
+* Find and update all cross-references in the repo:
+  * `skills/*/SKILL.md` (especially `idea-triage`, `design-doc`, `pde-using-this-pack`)
+  * `README.md` tables
+  * `docs/*.md` if any reference it
+  * `.claude/commands/` slash-command wrappers if one exists for this skill
+* Update `pde-using-this-pack` decision flowchart to show the `product-spike` / `backend-spike` fork
+
+## Sequencing
+
+Pairs with <issue id="b1430477-7565-4264-832c-6c0a5705ada5">ABA-128</issue> (author `backend-spike`). Either can ship first, but landing both in the same cycle is the goal so the pack never sits in an inconsistent state where one half of the pair exists with the old name.
+
+## Out of scope
+
+* Refactoring the skills to share content
+* Changing the internal workflow of `prototype-to-validate` beyond the name
+* Adding any new modes or sections
+
+## Acceptance criteria
+
+* Directory renamed, frontmatter updated
+* All in-repo references updated (grep clean for `prototype-to-validate`)
+* `pde-using-this-pack` flowchart shows the parallel
+* README table reflects the new name
+* Existing slash command (if any) still functions or is renamed in parallel
+
+## Related
+
+* <issue id="b1430477-7565-4264-832c-6c0a5705ada5">ABA-128</issue> — author `backend-spike` (the parallel skill that motivates this rename)
+</description>
+<team name="Personal"/>
+<project name="PDE skill pack">Cycle 1 (17–24 May): Goal 1 — spike pair in place (product-spike + backend-spike, clean naming). Goal 2 — pair validated by running backend-spike on ABA-104. Full brief → Equity project doc "Cycle 1 — goals & success criteria".</project>
+<issue-relations><related><issue-ref identifier="ABA-128" title="Author `backend-spike` skill for pde-skills pack"/></related></issue-relations>
+</issue>

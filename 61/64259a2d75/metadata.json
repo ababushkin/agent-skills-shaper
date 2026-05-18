@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "6164259a2d75",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude/commands/product-spike.md",
+    "CHANGELOG.md",
+    "README.md",
+    "install.sh",
+    "skills/backend-spike/SKILL.md",
+    "skills/idea-triage/SKILL.md",
+    "skills/product-spike/SKILL.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/61/64259a2d75/0/metadata.json",
+      "transcript": "/61/64259a2d75/0/full.jsonl",
+      "content_hash": "/61/64259a2d75/0/content_hash.txt",
+      "prompt": "/61/64259a2d75/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 37,
+    "cache_creation_tokens": 79244,
+    "cache_read_tokens": 2194550,
+    "output_tokens": 7917,
+    "api_call_count": 33
+  }
+}
