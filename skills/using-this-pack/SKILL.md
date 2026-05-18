@@ -31,7 +31,7 @@ Task arrives
     │               ├── product feel unknown               → prototype-to-validate
     │               ├── customer reality unknown           → interview / survey
     │               ├── market signal unknown              → smoke test
-    │               └── technical feasibility unknown     → spike (→ design-doc)
+    │               └── technical feasibility unknown     → backend-spike (→ design-doc)
     ├── Managing the idea bank or KTLO list?               → backlog-manage
     │       └── Idea bank clean — ready to plan?           → roadmap-shape
     ├── Building or reviewing a roadmap?                   → roadmap-shape
@@ -87,7 +87,7 @@ idea bank clean → backlog-manage → roadmap-shape
 **Engineering track — from design to task list:**
 ```
 significant work → design-doc → planning-and-task-breakdown → [hand off to your build skill]
-unknown risk    → spike → design-doc → planning-and-task-breakdown → [hand off]
+unknown risk    → backend-spike → design-doc → planning-and-task-breakdown → [hand off]
 ```
 
 **Every PR:** `stop-the-line` hook fires automatically on PR open/update — no manual invocation.
@@ -101,6 +101,7 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 | `idea-triage` | "We should build…", "A customer asked for…", "Competitor just launched…" | Triage record with ICE score and routing decision (idea bank or validation slot) |
 | `backlog-manage` | "Review the backlog", "Add to KTLO", "Promote this idea", "Kill this" | Updated idea bank records + KTLO list |
 | `prototype-to-validate` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
+| `backend-spike` | "What's the right threshold for", "How should we detect", "Spike on", "What guard should we add" | Recommendation with rejected-alternatives table + follow-up ticket |
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
 | `planning-and-task-breakdown` | "Break this down into tasks", "What order should we build this in?", "Give me a task list" | Ordered task list with acceptance criteria |
 | `design-doc` | "How should we build X?", "Architecture for Y", "Technical approach to Z" | Accepted design doc |
