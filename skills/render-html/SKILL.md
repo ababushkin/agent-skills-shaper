@@ -71,10 +71,10 @@ Compute the output path: replace the source's `.md` extension with `.html`. If a
 Walk the markdown and collect every H2 and H3 in document order. Generate a stable slug for each (kebab-case from the heading text, deduplicated with `-2`, `-3` if needed). These become both anchor IDs in the body and the TOC entries in the sidebar. H1 is the document title — it goes in the page header, not the TOC.
 
 **Step 4 — Convert body**
-Walk the markdown section by section (H2-delimited). For each section, read `references/html-patterns.md` and check the patterns in declared order — first match wins. If a pattern matches, emit its HTML template and append its CSS rules to the collected pattern-CSS buffer. If nothing matches, render the section as straightforward prose using standard CommonMark semantics (H2/H3 with anchor IDs from Step 3, paragraphs, lists, blockquotes, fenced code blocks preserving language hints, inline code, tables, links). Prose is the fallback, not the exception — false-positive pattern matches degrade reviewer trust faster than missing treatments.
+Walk the markdown section by section (H2-delimited). For each section, read `<skill-base>/references/html-patterns.md` and check the patterns in declared order — first match wins. If a pattern matches, emit its HTML template and append its CSS rules to the collected pattern-CSS buffer. If nothing matches, render the section as straightforward prose using standard CommonMark semantics (H2/H3 with anchor IDs from Step 3, paragraphs, lists, blockquotes, fenced code blocks preserving language hints, inline code, tables, links). Prose is the fallback, not the exception — false-positive pattern matches degrade reviewer trust faster than missing treatments.
 
 **Step 5 — Compose the page**
-Read the HTML shell from `references/html-skeleton.md`. Substitute the tokens defined there: `{{title}}` (H1 from the source), `{{source-path}}`, `{{render-date}}` (ISO date only, no time, so same-day re-renders produce no diff), `{{toc-entries}}` (one `<li class="h2|h3">` per entry from Step 3), and `{{body-html}}` (the converted body from Step 4). Append the pattern-CSS buffer from Step 4 to the end of the inline `<style>` block — patterns add new selectors prefixed `p-`, never overriding the prose styles.
+Read the HTML shell from `<skill-base>/references/html-skeleton.md`. Substitute the tokens defined there: `{{title}}` (H1 from the source), `{{source-path}}`, `{{render-date}}` (ISO date only, no time, so same-day re-renders produce no diff), `{{toc-entries}}` (one `<li class="h2|h3">` per entry from Step 3), and `{{body-html}}` (the converted body from Step 4). Append the pattern-CSS buffer from Step 4 to the end of the inline `<style>` block — patterns add new selectors prefixed `p-`, never overriding the prose styles.
 
 **Step 6 — Self-containment check [GATE]**
 Before writing the file, verify the composed HTML contains zero `<link rel="stylesheet">`, zero `<script src=>`, and no `<img src="http...">` or `<img src="//...">`. SVG and base64 data URIs are allowed; remote URLs are not. If any external reference is present, fix the shell rather than ship the violation.
@@ -84,7 +84,7 @@ Write the file to `<source>.html`. Report the output path, file size, and the co
 
 ## Artefact template
 
-The HTML shell — `<!doctype html>` template, inline CSS, scrollspy JS, and the substitution-token contract (`{{title}}`, `{{source-path}}`, `{{render-date}}`, `{{toc-entries}}`, `{{body-html}}`) — lives in `references/html-skeleton.md`. Read that file in Step 5 and substitute the tokens. The shell is not duplicated here so a single edit to the skeleton updates both this skill and any future pattern-aware extensions of it.
+The HTML shell — `<!doctype html>` template, inline CSS, scrollspy JS, and the substitution-token contract (`{{title}}`, `{{source-path}}`, `{{render-date}}`, `{{toc-entries}}`, `{{body-html}}`) — lives in `references/html-skeleton.md`, bundled with this skill. Read it in Step 5 using the `Base directory for this skill` path shown in the skill context header: `<skill-base>/references/html-skeleton.md`. The shell is not duplicated here so a single edit to the skeleton updates both this skill and any future pattern-aware extensions of it.
 
 ## Common rationalisations
 
@@ -98,6 +98,7 @@ The HTML shell — `<!doctype html>` template, inline CSS, scrollspy JS, and the
 
 ## Red flags
 
+- Reference files read from a relative path instead of `<skill-base>/references/` — causes silent degradation when invoked cross-project.
 - Output contains `<link rel="stylesheet">`, `<script src=>`, or remote `<img>` URLs.
 - File written to a path other than `<source>.html` (no timestamps, no version suffixes, no other directories).
 - Existing output silently overwritten without prompt.
@@ -121,8 +122,8 @@ The skill has run correctly when:
 
 ## References
 
-- `references/html-skeleton.md` — the self-contained HTML shell, substitution tokens, and the hard self-containment rule
-- `references/html-patterns.md` — the pattern catalogue (alternatives, timelines, callouts, kanban, diffs, chips) consulted in Step 4
+- `<skill-base>/references/html-skeleton.md` — the self-contained HTML shell, substitution tokens, and the hard self-containment rule (bundled with this skill)
+- `<skill-base>/references/html-patterns.md` — the pattern catalogue (alternatives, timelines, callouts, kanban, diffs, chips) consulted in Step 4 (bundled with this skill)
 - `rules/eng-principles-agentic.md` — P7 (memory lives in artefacts)
 - `rules/eng-principles-universal.md` — P1 (shipped is not done; observed is done)
 - Thariq Shihipar — "HTML effectiveness" (https://thariqs.github.io/html-effectiveness/) — case for HTML as a substrate for spatial review content

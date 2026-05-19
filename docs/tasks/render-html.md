@@ -16,7 +16,7 @@ skill-creator's loop is: draft → test prompts → run skill against prompts �
 **Dependencies:** none
 
 ### Task 2 — Extract HTML shell into reference file
-**Description:** Move the inline `<!doctype html>` shell out of SKILL.md into `references/html-skeleton.md` (system font stack, ~70ch prose cap, sticky TOC sidebar, scrollspy JS ≤ 50 lines, prefers-color-scheme dark mode, print stylesheet). Document the hard rule: no external `<link>`/`<script src>`/remote images. SKILL.md cites the reference.
+**Description:** Move the inline `<!doctype html>` shell out of SKILL.md into `skills/render-html/references/html-skeleton.md` (system font stack, ~70ch prose cap, sticky TOC sidebar, scrollspy JS ≤ 50 lines, prefers-color-scheme dark mode, print stylesheet). Document the hard rule: no external `<link>`/`<script src>`/remote images. SKILL.md cites the reference.
 **Done when:** Re-rendering the Task 1 fixture produces an HTML byte-identical to before (modulo provenance/timestamp lines); SKILL.md line count drops accordingly and stays inside the 180–240 target.
 **Dependencies:** Task 1
 
@@ -26,8 +26,8 @@ skill-creator's loop is: draft → test prompts → run skill against prompts �
 **Dependencies:** Task 1
 
 ### Task 4 — Scaffold the pattern catalogue
-**Description:** Create `references/html-patterns.md` with an introduction and one empty section per pattern (matching the fixtures from Task 3). Each section template: *when to apply*, *source md shape*, *HTML/CSS treatment*, *accessibility notes*. SKILL.md cites this reference in its workflow step 3.
-**Done when:** `references/html-patterns.md` exists with 8 named sections; SKILL.md references it.
+**Description:** Create `skills/render-html/references/html-patterns.md` with an introduction and one empty section per pattern (matching the fixtures from Task 3). Each section template: *when to apply*, *source md shape*, *HTML/CSS treatment*, *accessibility notes*. SKILL.md cites this reference in its workflow step 3.
+**Done when:** `skills/render-html/references/html-patterns.md` exists with 8 named sections; SKILL.md references it.
 **Dependencies:** Task 2, Task 3
 
 ### Task 5 — Iterate via skill-creator until all pattern fixtures pass
