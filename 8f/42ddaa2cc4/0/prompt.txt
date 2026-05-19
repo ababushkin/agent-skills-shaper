@@ -1,0 +1,13 @@
+i got this error message when running the /render-html skill recently in another folder 
+why?
+
+The skill's reference files (html-skeleton.md, html-patterns.md) aren't present in the skill
+  folder, so I'll compose the HTML directly while keeping to the skill's hard rules: self-contained, no remote refs, anchor TOC, scrollspy.
+
+---
+
+review your recommendation against the /skill-creator:skill-creator skill
+
+---
+
+yes
