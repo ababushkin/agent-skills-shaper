@@ -700,6 +700,46 @@ When two or more code panels appear in the same section back-to-back, they rende
 
 ---
 
+## P19 — Normalised-margin position-band strip
+
+**Detect.** Three concurrent conditions must all be true: (1) section H2 matches `/(capex|AI investment) cycle|cycle position|normalised.?margin/i`; (2) the section body contains a sentence with one of `floor`, `ceiling`, `sits between`, or `anchor` AND at least two `%` values; (3) the two or more `%` values are within 300 characters of the triggering keyword. If any condition fails, fall through to prose — DCF prose is dense with `%` figures that are not margin anchors.
+
+**Extract.** From the matching sentence: parse the lower bound (floor `%`), the upper bound (ceiling `%`), and the base anchor `%`. These three values drive the visual. Tick position = `(base − floor) / (ceiling − floor) × 100`.
+
+**HTML.**
+```html
+<figure class="p-band-fig" role="img"
+  aria-label="Normalised-margin range: floor ~{{floor}}%, base ~{{base}}%, ceiling ~{{ceiling}}%">
+  <div class="p-band-row">
+    <span class="p-band-ep">~{{floor}}%<br><span class="p-band-ep-lbl">floor</span></span>
+    <div class="p-band-track">
+      <div class="p-band-tick" style="left:{{tick_pct}}%">
+        <span class="p-band-tick-lbl">~{{base}}%</span>
+      </div>
+    </div>
+    <span class="p-band-ep p-band-ep-r">~{{ceiling}}%<br><span class="p-band-ep-lbl">ceiling</span></span>
+  </div>
+</figure>
+```
+
+**CSS.**
+```css
+.p-band-fig { margin: 0.5rem 0 0.75rem; }
+.p-band-row { display: flex; align-items: center; gap: 0.75rem; }
+.p-band-ep { font-size: 0.75rem; color: var(--muted); text-align: center; white-space: nowrap; min-width: 2.5rem; line-height: 1.3; }
+.p-band-ep-r { text-align: right; }
+.p-band-ep-lbl { font-size: 0.65rem; }
+.p-band-track { flex: 1; height: 12px; border-radius: 6px; background: linear-gradient(to right, var(--danger-soft), var(--warn-soft), var(--ok-soft)); position: relative; }
+.p-band-tick { position: absolute; top: -4px; width: 3px; height: 20px; background: var(--fg); border-radius: 2px; transform: translateX(-50%); }
+.p-band-tick-lbl { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 700; color: var(--fg); white-space: nowrap; background: var(--bg); padding: 0 2px; }
+```
+
+**Accessibility.** The `<figure>` carries a full `aria-label` with all three values in plain text. The gradient is decorative — floor, base, and ceiling values are announced verbatim by the label.
+
+**When to use.** Playbook §2 sections that establish a floor-to-ceiling margin range with a named base anchor. Both GOOG §2 ("AI Investment Cycle Position") and ASML §2 ("Capex-Cycle Position") match. Do not fire on general prose that mentions `%` without an explicit floor/ceiling/base structure — the three-condition gate handles this.
+
+---
+
 ## P20 — Catalyst probability × IV-impact mini-bars
 
 **Detect.** Section H2 matches `/catalysts?/i` AND the section contains a markdown table with headers matching `Catalyst`, `Probability`, and `IV impact` (case-insensitive, partial match on each header).
@@ -864,6 +904,83 @@ Omit `.p-axis-nvs` if the H3 has no `**Noise vs. structural:**` block. H3 anchor
 **Accessibility.** Each chip carries `aria-label="[slug] layer"` so screen readers announce the category before the body text. Layer distinctions are conveyed by both the text label and colour.
 
 **When to use.** Playbook §5 "Failure Modes" sections where bullets are tagged with `[xxx layer]` per the playbook convention. Do not apply to untagged bullet lists (fall through to prose) or table-format risk registers (P17 handles those).
+
+---
+
+## P23 — Scenario-axes shape plot
+
+**Detect.** P9 (frontmatter parser) has already produced a `scenario_axes` field with at least one of `bear` or `bull` sub-keys containing `growth_ceiling` or `terminal_margin` overrides. The section H2 matches `/overrides?|rationale/i`. Insert the plot immediately below the H2, before the existing prose.
+
+**Extract from frontmatter.**
+| Symbol | Source | Fallback when absent |
+|---|---|---|
+| `gc_base` | `growth_ceiling` frontmatter | (required — always present) |
+| `tm_base` | `terminal_margin` frontmatter | (required — always present) |
+| `gc_bear` | `scenario_axes.bear.growth_ceiling` | `gc_base × 0.60` |
+| `tm_bear` | `scenario_axes.bear.terminal_margin` | `tm_base × 0.85` |
+| `gc_bull` | `scenario_axes.bull.growth_ceiling` | `gc_base × 1.30` |
+| `tm_bull` | `scenario_axes.bull.terminal_margin` | `tm_base × 1.07` |
+
+The fallback multipliers match the DCF skill's own scenario-spread formulas so that the shape plot and the model agree on the meaning of absent overrides.
+
+**SVG coordinate formulas.** Plot area: `x ∈ [55, 470]`, `y ∈ [20, 220]`. Axis ranges: x = growth ceiling 0–25%, y = terminal margin 15–40%.
+- `cx = 55 + (gc / 0.25) × 415`
+- `cy = 220 − ((tm − 0.15) / 0.25) × 200`
+
+Clamp any computed coordinate to the plot area before rendering.
+
+**HTML.**
+```html
+<figure class="p-ax-fig" aria-label="Scenario-axes shape: bear gc={{gc_bear*100}}% tm={{tm_bear*100}}%; base gc={{gc_base*100}}% tm={{tm_base*100}}%; bull gc={{gc_bull*100}}% tm={{tm_bull*100}}%">
+  <svg class="p-ax-svg" viewBox="0 0 500 260" role="img" aria-hidden="true">
+    <!-- grid lines -->
+    <line x1="55" y1="220" x2="470" y2="220" class="p-ax-axis"/>
+    <line x1="55" y1="20"  x2="55"  y2="220" class="p-ax-axis"/>
+    <line x1="193" y1="20" x2="193" y2="220" class="p-ax-grid"/>
+    <line x1="332" y1="20" x2="332" y2="220" class="p-ax-grid"/>
+    <line x1="470" y1="20" x2="470" y2="220" class="p-ax-grid"/>
+    <line x1="55" y1="140" x2="470" y2="140" class="p-ax-grid"/>
+    <line x1="55" y1="60"  x2="470" y2="60"  class="p-ax-grid"/>
+    <!-- axis labels -->
+    <text x="193" y="238" text-anchor="middle" class="p-ax-lbl">10%</text>
+    <text x="332" y="238" text-anchor="middle" class="p-ax-lbl">20%</text>
+    <text x="470" y="238" text-anchor="middle" class="p-ax-lbl">25%</text>
+    <text x="48"  y="144" text-anchor="end"    class="p-ax-lbl">25%</text>
+    <text x="48"  y="64"  text-anchor="end"    class="p-ax-lbl">35%</text>
+    <text x="262" y="255" text-anchor="middle" class="p-ax-lbl">Growth ceiling</text>
+    <text x="14"  y="120" text-anchor="middle" class="p-ax-lbl" transform="rotate(-90,14,120)">Terminal margin</text>
+    <!-- scenario polygon -->
+    <polygon points="{{bear_cx}},{{bear_cy}} {{base_cx}},{{base_cy}} {{bull_cx}},{{bull_cy}}"
+             class="p-ax-poly"/>
+    <!-- scenario dots -->
+    <circle cx="{{bear_cx}}" cy="{{bear_cy}}" r="6" class="p-ax-bear"><title>Bear: gc={{gc_bear*100}}% tm={{tm_bear*100}}%</title></circle>
+    <circle cx="{{base_cx}}" cy="{{base_cy}}" r="6" class="p-ax-base"><title>Base: gc={{gc_base*100}}% tm={{tm_base*100}}%</title></circle>
+    <circle cx="{{bull_cx}}" cy="{{bull_cy}}" r="6" class="p-ax-bull"><title>Bull: gc={{gc_bull*100}}% tm={{tm_bull*100}}%</title></circle>
+    <!-- point labels -->
+    <text x="{{bear_cx}}" y="{{bear_cy - 10}}" text-anchor="middle" class="p-ax-pt-lbl">bear</text>
+    <text x="{{base_cx}}" y="{{base_cy - 10}}" text-anchor="middle" class="p-ax-pt-lbl">base</text>
+    <text x="{{bull_cx}}" y="{{bull_cy - 10}}" text-anchor="middle" class="p-ax-pt-lbl">bull</text>
+  </svg>
+</figure>
+```
+
+**CSS.**
+```css
+.p-ax-fig { margin: 0.75rem 0 0; }
+.p-ax-svg { width: 100%; max-width: 500px; height: auto; display: block; }
+.p-ax-axis { stroke: var(--fg); stroke-width: 1.5; }
+.p-ax-grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+.p-ax-lbl  { fill: var(--muted); font-size: 11px; }
+.p-ax-poly { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.5; fill-opacity: 0.5; }
+.p-ax-bear { fill: var(--danger); opacity: 0.85; }
+.p-ax-base { fill: var(--accent); opacity: 0.85; }
+.p-ax-bull { fill: var(--ok);     opacity: 0.85; }
+.p-ax-pt-lbl { fill: var(--fg-soft); font-size: 10px; }
+```
+
+**Accessibility.** The `<figure>` carries a full `aria-label` naming each scenario's coordinates in prose. SVG is `aria-hidden`. If the shape degenerates to a line (one axis is identical across all three scenarios), the polygon still renders — just as a line, which is the correct representation of a one-dimensional spread.
+
+**When to use.** Playbook §6 "Ticker-Specific Overrides" sections whose frontmatter includes a `scenario_axes` block. Both GOOG §6 and ASML §6 match. Do not fire if `scenario_axes` is absent from frontmatter — fall through to prose.
 
 ---
 
