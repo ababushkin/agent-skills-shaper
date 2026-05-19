@@ -654,6 +654,113 @@ When two or more code panels appear in the same section back-to-back, they rende
 
 ---
 
+## P21 — Sell-side disagreement axes → bull/bear/NVS cards
+
+**Detect.** Section H2 matches `/sell[- ]side disagreement|disagreement axes/i` AND the section body contains at least one H3 followed by both a `**Bull:**` and a `**Bear:**` marker (case-insensitive) within that H3's scope.
+
+**HTML.** Any introductory paragraph before the first axis H3 renders as plain prose. Each H3 becomes a `.p-axis-card`. The card header carries the axis title and the `**The question:**` paragraph (with the `**The question:**` bold prefix stripped). The card body has a two-column grid for Bull and Bear views, and a full-width Noise-vs-Structural strip if present. The list-item prefixes `- **Bull:**`, `- **Bear:**`, and `- **Noise vs. structural:**` are stripped; their inline content fills the respective blocks.
+
+```html
+<p>The real arguments the sell-side is having…</p>
+
+<div class="p-axis-card">
+  <div class="p-axis-head">
+    <h3 id="axis-1">1. Capex-cycle trough timing</h3>
+    <p class="p-axis-q">Does the capex cycle trough in H2 2026…</p>
+  </div>
+  <div class="p-axis-body">
+    <div class="p-axis-views">
+      <div class="p-axis-bull">
+        <div class="p-axis-view-label">Bull</div>
+        TSMC has sustained its 2025 and 2026 capex guidance…
+      </div>
+      <div class="p-axis-bear">
+        <div class="p-axis-view-label">Bear</div>
+        Memory oversupply is slower-than-consensus…
+      </div>
+    </div>
+    <div class="p-axis-nvs">
+      <div class="p-axis-nvs-label">Noise vs. Structural</div>
+      A single quarter of order intake recovery is noise…
+    </div>
+  </div>
+</div>
+<!-- one .p-axis-card per H3 axis -->
+```
+
+Omit `.p-axis-nvs` if the H3 has no `**Noise vs. structural:**` block. H3 anchors use the same slug rules as Step 3 of the render-html workflow.
+
+**CSS.**
+
+```css
+.p-axis-card { border: 1px solid var(--rule); border-radius: 8px; margin: 1.25rem 0; overflow: hidden; }
+.p-axis-head { padding: 0.8rem 1rem; background: var(--surface); border-bottom: 1px solid var(--rule); }
+.p-axis-head h3 { margin: 0; font-size: 1rem; scroll-margin-top: 1.5rem; }
+.p-axis-q { font-size: 0.85rem; color: var(--muted); font-style: italic; margin: 0.25rem 0 0; }
+.p-axis-body { padding: 1rem; }
+.p-axis-views { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; margin-bottom: 0.65rem; }
+.p-axis-bull, .p-axis-bear { border-radius: 6px; padding: 0.75rem; font-size: 0.84rem; line-height: 1.6; }
+.p-axis-bull { background: var(--ok-soft); border: 1px solid var(--ok); }
+.p-axis-bear { background: var(--danger-soft); border: 1px solid var(--danger); }
+.p-axis-view-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; margin-bottom: 0.35rem; }
+.p-axis-bull .p-axis-view-label { color: var(--ok); }
+.p-axis-bear .p-axis-view-label { color: var(--danger); }
+.p-axis-nvs { background: var(--rule-soft); border: 1px solid var(--rule); border-radius: 6px; padding: 0.75rem; font-size: 0.84rem; line-height: 1.6; }
+.p-axis-nvs-label { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; color: var(--muted); margin-bottom: 0.3rem; }
+@media (max-width: 720px) { .p-axis-views { grid-template-columns: 1fr; } }
+```
+
+**Accessibility.** Each card contains a unique `<h3>` that remains in the TOC navigation. The view labels (`Bull` / `Bear`) carry meaning as text, not colour alone. The NVS strip's purpose is stated in its label text.
+
+**When to use.** Playbook §4 "Sell-Side Disagreement Axes" sections with 2–8 numbered or lettered axes, each having a question, bull view, bear view, and optional NVS falsifiability criterion. ASML §4 and GOOG §4 are the canonical cases. Do not apply to generic sections that happen to mention "bull" or "bear" inline — the H3-level structure with explicit `**Bull:**` / `**Bear:**` markers is the required signal.
+
+---
+
+## P22 — Failure-mode bullets → layer-tagged cards
+
+**Detect.** Section H2 matches `/failure modes?/i` AND the section body is a bullet list where ≥50% of items end with a `[xxx layer]` tag (regex `\[[\w ]+layer\]` at the end of the trimmed item text). P17 takes precedence when the failure-modes content is a markdown table rather than a bullet list.
+
+**HTML.** Any intro paragraph renders as prose above the list. Each bullet item becomes a `.p-fm-card`. The `[xxx layer]` suffix is extracted from the item text, lowercased, and " layer" is stripped to produce the tag slug (e.g. `[demand layer]` → `demand`, `[FX layer]` → `fx`). The slug drives the CSS modifier class and the chip label text. The `[xxx layer]` suffix is removed from the rendered card body. Unknown slugs fall back to `.p-fm-tag-other`. Bullets without a `[xxx layer]` tag render as plain `<li>` items inside a `<ul>` fallback.
+
+```html
+<p>These are the thesis-breaking scenarios that the DCF does not capture…</p>
+<div class="p-fm-list">
+  <div class="p-fm-card">
+    <span class="p-fm-tag p-fm-tag-demand" aria-label="demand layer">demand</span>
+    <strong>Customer concentration shock:</strong> TSMC + Samsung + Intel represent the dominant share…
+  </div>
+  <div class="p-fm-card">
+    <span class="p-fm-tag p-fm-tag-regulatory" aria-label="regulatory layer">regulatory</span>
+    <strong>China service/spare-parts export controls:</strong> Current restrictions primarily cover new EUV…
+  </div>
+  <!-- one .p-fm-card per tagged bullet -->
+</div>
+```
+
+**CSS.**
+
+```css
+.p-fm-list { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.75rem; }
+.p-fm-card { border: 1px solid var(--rule); border-radius: 6px; padding: 0.7rem 0.9rem 0.7rem 3.75rem; font-size: 0.88rem; line-height: 1.6; position: relative; }
+.p-fm-tag { position: absolute; left: 0.65rem; top: 0.7rem; font-size: 0.58rem; text-transform: uppercase; font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 4px; white-space: nowrap; }
+.p-fm-tag-demand       { background: var(--danger-soft); color: var(--danger); }
+.p-fm-tag-interface    { background: var(--danger-soft); color: var(--danger); }
+.p-fm-tag-regulatory   { background: var(--warn-soft);   color: var(--warn); }
+.p-fm-tag-monetisation { background: var(--warn-soft);   color: var(--warn); }
+.p-fm-tag-technology   { background: var(--accent-soft); color: var(--accent); }
+.p-fm-tag-cost         { background: var(--accent-soft); color: var(--accent); }
+.p-fm-tag-ecosystem    { background: var(--info-soft);   color: var(--info); }
+.p-fm-tag-fx           { background: var(--info-soft);   color: var(--info); }
+.p-fm-tag-accounting   { background: var(--rule-soft);   color: var(--muted); }
+.p-fm-tag-other        { background: var(--rule-soft);   color: var(--muted); }
+```
+
+**Accessibility.** Each chip carries `aria-label="[slug] layer"` so screen readers announce the category before the body text. Layer distinctions are conveyed by both the text label and colour.
+
+**When to use.** Playbook §5 "Failure Modes" sections where bullets are tagged with `[xxx layer]` per the playbook convention. Do not apply to untagged bullet lists (fall through to prose) or table-format risk registers (P17 handles those).
+
+---
+
 ## Fallback
 
 A section that matches no pattern renders with the shell's section-header treatment (`<section class="s"><header><span class="ix">NN</span><h2>…</h2></header>`) and the shell's prose defaults (`<p>`, `<ul>`, `<table>`, `<pre>`, `<blockquote>`). The fallback is "well-typeset doc," not raw HTML — false-positive pattern matches degrade review trust faster than missing treatments.
