@@ -128,4 +128,4 @@ The skill has run correctly when:
 - `rules/eng-principles-universal.md` — P1 (shipped is not done; observed is done)
 - Thariq Shihipar — "HTML effectiveness" (https://thariqs.github.io/html-effectiveness/) — case for HTML as a substrate for spatial review content
 - `docs/skill-anatomy.md` — frontmatter and section-order contract
-- `docs/tasks/render-html.md` — task plan; later iterations build the pattern catalogue at `references/html-patterns.md`
+- `docs/tasks/render-html.md` — task plan; later iterations build the pattern catalogue at `skills/render-html/references/html-patterns.md`

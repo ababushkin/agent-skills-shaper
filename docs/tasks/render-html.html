@@ -97,7 +97,7 @@ Last updated: 2026-05-17</p>
     <div class="p-task-marker" aria-hidden="true">2</div>
     <div class="p-task-body">
       <h3>Task 2 — Extract HTML shell into reference file</h3>
-      <p class="p-task-field"><span class="p-task-label">Description</span>Move the inline <code>&lt;!doctype html&gt;</code> shell out of SKILL.md into <code>references/html-skeleton.md</code> (system font stack, ~70ch prose cap, sticky TOC sidebar, scrollspy JS ≤ 50 lines, prefers-color-scheme dark mode, print stylesheet). Document the hard rule: no external <code>&lt;link&gt;</code>/<code>&lt;script src&gt;</code>/remote images. SKILL.md cites the reference.</p>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Move the inline <code>&lt;!doctype html&gt;</code> shell out of SKILL.md into <code>skills/render-html/references/html-skeleton.md</code> (system font stack, ~70ch prose cap, sticky TOC sidebar, scrollspy JS ≤ 50 lines, prefers-color-scheme dark mode, print stylesheet). Document the hard rule: no external <code>&lt;link&gt;</code>/<code>&lt;script src&gt;</code>/remote images. SKILL.md cites the reference.</p>
       <p class="p-task-field"><span class="p-task-label">Done when</span>Re-rendering the Task 1 fixture produces an HTML byte-identical to before (modulo provenance/timestamp lines); SKILL.md line count drops accordingly and stays inside the 180–240 target.</p>
       <p class="p-task-deps">Depends on: <a href="#task-1">Task 1</a></p>
     </div>
@@ -117,8 +117,8 @@ Last updated: 2026-05-17</p>
     <div class="p-task-marker" aria-hidden="true">4</div>
     <div class="p-task-body">
       <h3>Task 4 — Scaffold the pattern catalogue</h3>
-      <p class="p-task-field"><span class="p-task-label">Description</span>Create <code>references/html-patterns.md</code> with an introduction and one empty section per pattern (matching the fixtures from Task 3). Each section template: <em>when to apply</em>, <em>source md shape</em>, <em>HTML/CSS treatment</em>, <em>accessibility notes</em>. SKILL.md cites this reference in its workflow step 3.</p>
-      <p class="p-task-field"><span class="p-task-label">Done when</span><code>references/html-patterns.md</code> exists with 8 named sections; SKILL.md references it.</p>
+      <p class="p-task-field"><span class="p-task-label">Description</span>Create <code>skills/render-html/references/html-patterns.md</code> with an introduction and one empty section per pattern (matching the fixtures from Task 3). Each section template: <em>when to apply</em>, <em>source md shape</em>, <em>HTML/CSS treatment</em>, <em>accessibility notes</em>. SKILL.md cites this reference in its workflow step 3.</p>
+      <p class="p-task-field"><span class="p-task-label">Done when</span><code>skills/render-html/references/html-patterns.md</code> exists with 8 named sections; SKILL.md references it.</p>
       <p class="p-task-deps">Depends on: <a href="#task-2">Task 2</a>, <a href="#task-3">Task 3</a></p>
     </div>
   </li>
