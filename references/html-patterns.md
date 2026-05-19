@@ -654,6 +654,112 @@ When two or more code panels appear in the same section back-to-back, they rende
 
 ---
 
+## P18 — Segment-mix horizontal stack bar
+
+**Detect.** Section H2 matches `/business architecture|segment mix|revenue mix/i` AND the section contains a markdown table whose first column header matches `Segment` (case-insensitive) and second column header contains `%`, `share`, or `mix`. Pattern fires on the table; the bar inserts immediately before it, and the table renders below as the canonical legend.
+
+**HTML.** Parse each data row's second-column value (format `~XX%` or `XX%`); normalise all shares to sum to exactly 100%. Render a flex-row container where each segment is a coloured `<div>` with inline `style="width:N%"`. Include a `<span class="p-seg-bar-lbl">` only on segments with normalised share ≥8% (first significant word of the segment name). Wrap in a `<div role="img" aria-label="Segment mix: [name] N%, …">`. Six colour slots `.p-seg-s0`–`.p-seg-s5` cycle through the shell's primary tokens; use the first N slots for N segments.
+
+```html
+<div class="p-seg-bar-fig" role="img" aria-label="Segment mix: EUV systems 50%, Advanced DUV 25%, Mature DUV 10%, Installed Base Management 15%">
+  <div class="p-seg-bar">
+    <div class="p-seg-s0" style="width:50%" title="EUV systems ~50%">
+      <span class="p-seg-bar-lbl">EUV</span>
+    </div>
+    <div class="p-seg-s1" style="width:25%" title="Advanced DUV ~25%">
+      <span class="p-seg-bar-lbl">Adv DUV</span>
+    </div>
+    <div class="p-seg-s2" style="width:10%" title="Mature DUV ~10%">
+      <span class="p-seg-bar-lbl">Mature</span>
+    </div>
+    <div class="p-seg-s3" style="width:15%" title="Installed Base Management ~15%">
+      <span class="p-seg-bar-lbl">IBM</span>
+    </div>
+  </div>
+</div>
+<!-- source table renders immediately below as canonical legend -->
+```
+
+**CSS.**
+
+```css
+.p-seg-bar-fig { margin: 0.5rem 0 0.25rem; }
+.p-seg-bar { display: flex; height: 36px; border-radius: 4px; overflow: hidden; gap: 1px; background: var(--rule); }
+.p-seg-s0 { background: var(--accent);  flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.p-seg-s1 { background: var(--info);    flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.p-seg-s2 { background: var(--warn);    flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.p-seg-s3 { background: var(--ok);      flex-shrink: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.p-seg-s4 { background: var(--danger);  flex-shrink: 0; overflow: hidden; }
+.p-seg-s5 { background: var(--muted);   flex-shrink: 0; overflow: hidden; }
+.p-seg-bar-lbl { color: white; font-size: 0.68rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; padding: 0 6px; }
+```
+
+**Accessibility.** The `role="img" aria-label` on the wrapper div provides a text summary for screen readers; segment divs are presentational. The source table that follows is the canonical data record.
+
+**When to use.** Playbook §1 "Business Architecture" segment-mix tables. Fires on the first `Segment`-headed table in the section. Does not fire on tables whose second column is growth rate, margin, or another non-share metric.
+
+---
+
+## P20 — Catalyst probability × IV-impact mini-bars
+
+**Detect.** Section H2 matches `/catalysts?/i` AND the section contains a markdown table with headers matching `Catalyst`, `Probability`, and `IV impact` (case-insensitive, partial match on each header).
+
+**HTML.** Render the standard 4-column table augmented with inline mini-bar `<div>`s below the text value in two cells per row. Probability bar: `width = parsed_probability_percent%` (e.g., `~35%` → `width:35%`). IV-impact bar: `width = min(midpoint_of_range, 30) / 30 × 100%` — midpoint is the average of the two endpoint values in a range like `−10–20%` (using absolute values, e.g. midpoint = 15); a 30%-absolute range fills the bar fully. IV bar class: `p-cat-bar-pos` if range starts with `+`; `p-cat-bar-neg` if it starts with `−` or `-`. Direction cell becomes a pill: text containing `positive` → `.p-cat-dir-pos`; `negative` → `.p-cat-dir-neg`; `mixed`, `neutral`, or `modest` → `.p-cat-dir-mixed`.
+
+```html
+<table class="p-cat-table">
+  <thead>
+    <tr><th>Catalyst</th><th>Probability</th><th>IV impact</th><th>Direction</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>DOJ Search remedies finalised (default-payment restrictions, Chrome leverage…)</td>
+      <td>~35% by end-2027
+        <div class="p-cat-bar-track"><div class="p-cat-bar-fill p-cat-bar-prob" style="width:35%"></div></div>
+      </td>
+      <td>−10–20%
+        <div class="p-cat-bar-track"><div class="p-cat-bar-fill p-cat-bar-neg" style="width:50%"></div></div>
+      </td>
+      <td><span class="p-cat-dir p-cat-dir-neg">Strongly negative</span></td>
+    </tr>
+    <tr>
+      <td>GCP margin print sustains above 15% for 2+ consecutive quarters</td>
+      <td>~55% by end-2027
+        <div class="p-cat-bar-track"><div class="p-cat-bar-fill p-cat-bar-prob" style="width:55%"></div></div>
+      </td>
+      <td>+5–8%
+        <div class="p-cat-bar-track"><div class="p-cat-bar-fill p-cat-bar-pos" style="width:22%"></div></div>
+      </td>
+      <td><span class="p-cat-dir p-cat-dir-pos">Positive</span></td>
+    </tr>
+  </tbody>
+</table>
+```
+
+**CSS.**
+
+```css
+.p-cat-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.p-cat-table th, .p-cat-table td { padding: 0.5rem 0.65rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.p-cat-table th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 600; border-bottom: 2px solid var(--rule); white-space: nowrap; }
+.p-cat-bar-track { height: 4px; background: var(--rule); border-radius: 2px; margin-top: 5px; overflow: hidden; }
+.p-cat-bar-fill  { height: 100%; border-radius: 2px; }
+.p-cat-bar-prob  { background: var(--accent); }
+.p-cat-bar-pos   { background: var(--ok); }
+.p-cat-bar-neg   { background: var(--danger); }
+.p-cat-bar-mixed { background: var(--warn); }
+.p-cat-dir { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 4px; font-size: 0.75rem; font-weight: 600; }
+.p-cat-dir-pos   { background: var(--ok-soft);    color: var(--ok); }
+.p-cat-dir-neg   { background: var(--danger-soft); color: var(--danger); }
+.p-cat-dir-mixed { background: var(--warn-soft);   color: var(--warn); }
+```
+
+**Accessibility.** Table semantic structure (`<table>/<thead>/<tbody>`) is preserved. Mini-bar `<div>`s are presentational; the text value in each cell already carries the numeric content. Direction pills are text spans; colour is supplemental.
+
+**When to use.** Playbook §3 "Active Catalysts" tables with the `Catalyst | Probability | IV impact | Direction` header shape. Does not fire on catalyst sections with a different table structure; those fall through to standard prose table rendering.
+
+---
+
 ## P21 — Sell-side disagreement axes → bull/bear/NVS cards
 
 **Detect.** Section H2 matches `/sell[- ]side disagreement|disagreement axes/i` AND the section body contains at least one H3 followed by both a `**Bull:**` and a `**Bear:**` marker (case-insensitive) within that H3's scope.
@@ -758,6 +864,68 @@ Omit `.p-axis-nvs` if the H3 has no `**Noise vs. structural:**` block. H3 anchor
 **Accessibility.** Each chip carries `aria-label="[slug] layer"` so screen readers announce the category before the body text. Layer distinctions are conveyed by both the text label and colour.
 
 **When to use.** Playbook §5 "Failure Modes" sections where bullets are tagged with `[xxx layer]` per the playbook convention. Do not apply to untagged bullet lists (fall through to prose) or table-format risk registers (P17 handles those).
+
+---
+
+## P24 — Historical reset-and-recover scatter
+
+**Detect.** Section H2 matches `/historical reset|reset[- ]and[- ]recover|recovery prior/i` AND the section contains a markdown table with headers matching `Episode`, `Drawdown`, and `Recovery` (case-insensitive, partial match).
+
+**HTML.** Inline SVG scatter (`viewBox="0 0 500 260"`) rendered immediately before the source table. Plot area: x ∈ [55, 470], y ∈ [20, 220] (width 415, height 200). X-axis: recovery months, default max 18 (extend to `maxMonths + 2` if any value exceeds 16). Y-axis: drawdown magnitude %, default max 50 (extend to `maxPct + 5` if any value exceeds 45). Coordinate formulas: `cx = 55 + months / maxMonths × 415`; `cy = 220 − pct / maxPct × 200`. Parse drawdown from `~−XX%` or `~−XX–YY%` (midpoint of range). Parse recovery months from `~N months` or `~N–M months` (midpoint). Dot colour: drawdown ≤ 20% → `.p-sc-warn`; > 20% → `.p-sc-danger`. Episodes with non-numeric recovery (e.g. "Partial", "Ongoing") render as hollow circles at `cx = 478` with class `.p-sc-partial`. Each circle has a `<title>` child naming the episode. The `<figure aria-label>` summarises all plotted episodes; the SVG is `aria-hidden="true"`.
+
+```html
+<figure class="p-sc-fig" aria-label="Reset-and-recover: 2022 ad recession −45% recovered 12 months; 2023 Bing scare −15% recovered 6 months; 2024 DOJ partial recovery not plotted">
+  <svg class="p-sc-svg" viewBox="0 0 500 260" role="img" aria-hidden="true">
+    <!-- horizontal grid lines at 10/20/30/40% drawdown levels -->
+    <line x1="55" y1="180" x2="470" y2="180" class="p-sc-grid"/>
+    <line x1="55" y1="140" x2="470" y2="140" class="p-sc-grid"/>
+    <line x1="55" y1="100" x2="470" y2="100" class="p-sc-grid"/>
+    <line x1="55" y1="60"  x2="470" y2="60"  class="p-sc-grid"/>
+    <!-- axes -->
+    <line x1="55" y1="20"  x2="55"  y2="220" class="p-sc-axis"/>
+    <line x1="55" y1="220" x2="470" y2="220" class="p-sc-axis"/>
+    <!-- Y axis labels (drawdown %) -->
+    <text x="50" y="221" class="p-sc-lbl" text-anchor="end">0</text>
+    <text x="50" y="181" class="p-sc-lbl" text-anchor="end">10</text>
+    <text x="50" y="141" class="p-sc-lbl" text-anchor="end">20</text>
+    <text x="50" y="101" class="p-sc-lbl" text-anchor="end">30</text>
+    <text x="50" y="61"  class="p-sc-lbl" text-anchor="end">40</text>
+    <text x="50" y="24"  class="p-sc-lbl" text-anchor="end">50%</text>
+    <!-- X axis labels (months) -->
+    <text x="55"  y="237" class="p-sc-lbl" text-anchor="middle">0</text>
+    <text x="193" y="237" class="p-sc-lbl" text-anchor="middle">6</text>
+    <text x="332" y="237" class="p-sc-lbl" text-anchor="middle">12</text>
+    <text x="470" y="237" class="p-sc-lbl" text-anchor="middle">18 mo</text>
+    <!-- axis titles -->
+    <text x="262" y="254" class="p-sc-lbl" text-anchor="middle">Recovery (months)</text>
+    <text x="14"  y="120" class="p-sc-lbl" text-anchor="middle" transform="rotate(-90 14 120)">Drawdown</text>
+    <!-- data points (cx/cy from formulas above; example uses GOOG data) -->
+    <circle cx="332" cy="40"  r="7" class="p-sc-danger"><title>2022 ad recession: −45%, ~12 months</title></circle>
+    <circle cx="193" cy="160" r="7" class="p-sc-warn"><title>2023 Bing scare: −15%, ~6 months</title></circle>
+    <!-- partial recovery: hollow circle beyond right axis edge -->
+    <circle cx="478" cy="132" r="7" class="p-sc-partial"><title>2024–25 DOJ: ~−22%, partial recovery</title></circle>
+  </svg>
+  <p class="p-sc-note">† Open circles beyond axis edge = recovery not yet complete. Source table below is the canonical record.</p>
+</figure>
+```
+
+**CSS.**
+
+```css
+.p-sc-fig { margin: 0.75rem 0 0; }
+.p-sc-svg { width: 100%; max-width: 500px; height: auto; display: block; }
+.p-sc-axis { stroke: var(--fg); stroke-width: 1.5; }
+.p-sc-grid { stroke: var(--rule); stroke-width: 1; stroke-dasharray: 3 3; }
+.p-sc-lbl    { fill: var(--muted); font-size: 11px; }
+.p-sc-danger { fill: var(--danger); opacity: 0.8; }
+.p-sc-warn   { fill: var(--warn);   opacity: 0.8; }
+.p-sc-partial { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 3 2; }
+.p-sc-note { font-size: 0.75rem; color: var(--muted); margin: 0.3rem 0 0; }
+```
+
+**Accessibility.** The `<figure aria-label>` summarises all episodes; the SVG is `aria-hidden="true"`. Each `<circle>` has a `<title>` child for hover tooltips. The source table that follows is the canonical record.
+
+**When to use.** Playbook §7 "Historical Reset-and-Recover Priors" tables with `Episode | Drawdown | … | Recovery | …` headers. Does not fire without a parseable drawdown column.
 
 ---
 
