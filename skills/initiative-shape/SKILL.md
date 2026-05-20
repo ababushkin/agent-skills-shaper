@@ -79,6 +79,15 @@ Write it down verbatim. Do not reframe it yet.
 **2. [GATE] Problem or solution?**
 Read the raw idea. Is it framed as something to build ("add X", "integrate Y") or a problem to solve ("users can't Z", "the model output isn't usable")? If solution, probe: "What goes wrong if we don't build this?" If the underlying problem can't be articulated, the initiative is not ready. Return for clarification; do not proceed.
 
+**2.5. Probe — project type.**
+Before asking outcome questions, capture which of the six project types this initiative belongs to. The type sets the Objective shape and the rubric the KRs are judged against — a methodology skill pack and a personal product can both pass cycle close, but they pass on different KRs, because their theories of success are different.
+
+Ask:
+
+> "Which type? `1` methodology skill pack · `2` personal product · `3` utility skill pack · `4` research/thesis · `5` equity research · `6` production / customer-facing."
+
+One-paragraph descriptions of each type are in `references/initiative-types.md` — load it if the user wants the longer form. If the user can't pick a single type, the initiative likely contains two outcomes — flag and split before proceeding.
+
 **3. Probe — outcome questions.**
 Ask explicitly. Do not infer. Wait for a response before synthesising.
 
@@ -93,18 +102,11 @@ Ask explicitly. Do not infer. Wait for a response before synthesising.
   - And tag each KR `[committed]` (must hit 1.0 — operability, no-silent-failure, baseline tracking) or `[aspirational]` (0.6–0.7 is success — outcome KRs, behaviour change, forecast calibration). A mixed OKR with 1–2 committed + 1–2 aspirational is the common shape.
 - **Which repos does this touch?** Name them. Cross-repo scope is allowed; name it explicitly.
 
-**4. Probe — scope, kill condition, project type.**
-Three separate questions:
+**4. Probe — scope and kill condition.**
+Two separate questions:
 
 - **Appetite — how many issues?** Guide: 5 ≈ small (1–2 days), 10 ≈ medium (full cycle slot), 15 ≈ large (fills the whole cycle). If the answer exceeds 15, the initiative needs splitting — flag this now.
 - **Kill condition — when do we stop?** Name the observable state that says "the bet didn't work, walk away." An initiative with KRs but no kill condition becomes a zombie. Phrasing: "If [KR] fails for [N] consecutive cycles" / "If we ship [X] and [baseline metric] doesn't move" / "If we learn [Y] in research".
-- **Project type — which of the six?** Capture the type (no branching yet — Slice 2 introduces type-specific shaping):
-  - `1` — Methodology skill pack (pde-skills, agent-skills)
-  - `2` — Personal product (nestl, adyen-onboarding)
-  - `3` — Utility skill pack (resell-au, garage-sale)
-  - `4` — Research / thesis (single hypothesis, unknown outcome)
-  - `5` — Equity research (stock-review, ticker coverage)
-  - `6` — Production system (live customer-facing)
 
 **5. Synthesise into initiative format.**
 Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable states with full sub-field discipline). Use the template in the next section.
@@ -212,5 +214,6 @@ The skill has run correctly when:
 - `rules/linear-workflow.md` — initiative definition, lifecycle, cycle model, ops slot (source of truth)
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
+- `references/initiative-types.md` — one-paragraph descriptions of the six project types probed at Step 2.5
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
