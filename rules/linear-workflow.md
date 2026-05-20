@@ -11,11 +11,16 @@ An **initiative** is a time-bounded, goal-oriented body of work with a stated su
 An initiative is ready to enter a cycle when it can answer all four of these fields:
 
 ```
-Goal:               For [who], we want to [solve problem / achieve outcome].
-Success criterion:  [observable change] — measurable by [method], within [window].
-Affected repos:     [list]
-Appetite:           ~[N] issues
+Goal:           For [who], we want to [solve problem / achieve outcome].
+Key results:    1. [observable state — binary pass/fail, fitness function firing, or measurable delta]
+                2. [observable state]
+                3. [observable state]
+                (3–5 KRs total; each verifiable by inspecting the system)
+Affected repos: [list]
+Appetite:       ~[N] issues
 ```
+
+The format is OKR-shaped: the Goal is the Objective (qualitative, what we want to achieve), and Key results are the 3–5 observable states that must be true for the initiative to be Done. KRs are written so a future agent (or you on a fresh session) can verify each by looking at the system — no "improve X" / "better Y" language.
 
 If any of the four fields can't be filled, the initiative is not ready. Create it as a Draft in Linear but don't assign it to a cycle.
 
@@ -39,7 +44,7 @@ If any of the four fields can't be filled, the initiative is not ready. Create i
 | **Done** | Success criterion observed (or definitively ruled out) — not just issues closed |
 | **Paused** | Deprioritised mid-cycle; carries over with a note on why |
 
-**Done ≠ all issues closed.** An initiative closes when the success criterion moves — or when the evidence definitively says it won't. An initiative that shipped everything but the criterion didn't move is not Done; it is Paused for a retrospective.
+**Done ≠ all issues closed.** An initiative closes when the key results are observed (or definitively ruled out) — not when its issue list reaches zero. An initiative that shipped everything but the KRs didn't hold is not Done; it is Paused for a retrospective.
 
 ### Creating an initiative
 
@@ -71,16 +76,16 @@ The ops slot is not an initiative. It exists for: bug fixes, compliance items, e
 ### Cycle planning
 
 On planning day:
-1. Confirm 3 initiatives are in Ready state (four-field check passes for each).
+1. Confirm 3 initiatives are in Ready state (four-field check passes for each: Goal + Key results + Repos + Appetite).
 2. Identify the ops slot: pull 2–5 issues from the team backlog (bugs, maintenance, one-offs) into the cycle as standalone issues.
-3. For each initiative, confirm which issues in its backlog will be worked this cycle. Do not try to clear the entire initiative backlog in one cycle — prioritise by what moves the success criterion.
+3. For each initiative, confirm which issues in its backlog will be worked this cycle. Do not try to clear the entire initiative backlog in one cycle — prioritise by what moves a Key Result.
 4. Assign all confirmed issues to the cycle.
 
 ### Cycle close
 
 At cycle end, for each initiative:
-- If the success criterion moved: mark initiative Done. Write one sentence in the Linear project description noting what was observed.
-- If the work shipped but criterion didn't move yet: note this; either carry the initiative into the next cycle (Active) or pause it for a retrospective.
+- If all key results hold (or were definitively ruled out): mark initiative Done. Write one sentence in the Linear project description noting what was observed.
+- If the work shipped but KRs didn't hold yet: note this; either carry the initiative into the next cycle (Active) or pause it for a retrospective.
 - If the initiative is being killed: mark Cancelled with a one-sentence reason. This is a normal outcome, not a failure.
 
 ---
@@ -131,16 +136,16 @@ Two cases:
 - **Project name**: goal or problem name, not a solution name and not a repo name.
   - Good: "Equity analysis report — usability for non-analysts"
   - Bad: "stock-review", "stock-explain feature", "pde-skills v2"
-- **Project description**: always uses the four-field initiative format (goal / success criterion / affected repos / appetite).
+- **Project description**: always uses the four-field initiative format (goal / key results / affected repos / appetite).
 - **Project state**: Planned until it enters a cycle; In Progress when active; Completed or Cancelled on close.
 
 ---
 
 ## What this model replaces
 
-The previous model used repo-named Linear projects (e.g. "PDE skill pack", "Equity skill pack") as de-facto issue containers. These were not initiatives — they had no goal sentences, no success criteria, and no appetite. Work was tracked by repo rather than by outcome, making cross-repo initiatives invisible and preventing meaningful cycle planning.
+The previous model used repo-named Linear projects (e.g. "PDE skill pack", "Equity skill pack") as de-facto issue containers. These were not initiatives — they had no goal sentences, no key results, and no appetite. Work was tracked by repo rather than by outcome, making cross-repo initiatives invisible and preventing meaningful cycle planning.
 
 The new model uses:
-- **Projects** = initiatives (goal + criterion + appetite)
+- **Projects** = initiatives (goal + key results + appetite)
 - **Team backlog** = issues not yet assigned to an initiative
 - **Cycles** = sprint cadence pulling 3 initiatives + 1 ops slot
