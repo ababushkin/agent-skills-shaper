@@ -1,0 +1,53 @@
+is the initiative-shape all symlinked etc already?
+
+---
+
+ok do research on the existing projects and tell me what you've learned, we can brainstorm a bit, don't write a plan yet
+
+---
+
+ok do research on the existing projects and tell me what you've learned, we can brainstorm a bit, don't write a plan yet
+
+---
+
+do research over the existing projects, issues that are in them, milestones and cycle planned currently
+don't write a plan yet, i just want you to learn that will be helpful for us to create a migration plan - if you have any questions let me know or if you see anything odd do as well
+its ok for you to also make a directional guess at this moment
+
+---
+
+continue
+
+---
+
+go
+
+---
+
+no the success criteria is a bit vague
+for functionality i'm interested in how we can make success measurable
+running something "3" or "5" times is less interesting - i want to make sure it works and is bug free on critical/common paths, doesn't get me blocked and it runs fast and efficienctly
+
+the equity goals look like they're repeating themselves
+
+let's put them all into a plan first so we can iterate
+
+think about them harder and get back to me again
+
+ultrathink
+
+---
+
+yes lets do a quick iteration on the wording for the initiatives themselves. they should be written in "laymans" terms or in "product manager" speak -- easy to understand, clear direction
+
+---
+
+looks good
+
+---
+
+what about the ops project - should i create that manually? what sort of guidance / guardrails should i put around that initiative
+
+---
+
+go ahead and create the project for me with that content and make the soft change to rules/linear-workflow.md
