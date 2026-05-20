@@ -69,9 +69,9 @@ Every cycle has **exactly four slots**:
 | Initiative 3 | Goal-oriented | Yes |
 | Ops slot | Maintenance | No |
 
-The ops slot is not an initiative. It exists for: bug fixes, compliance items, emergent issues, one-offs, and KTLO work. Ops slot issues have no project assigned — they live directly on the team backlog and are pulled into the cycle as standalone issues.
+The ops slot is not an initiative. It exists for: bug fixes, compliance items, emergent issues, one-offs, and KTLO work. Ops slot issues either have no project assigned, or live in the team's **ops container project** — a perpetual Backlog-state project named e.g. "Ops — bugs, maintenance, emergent" that holds ops work. The container project carries no Goal and no Key Results because it is not an initiative — it exists only because MCP tooling can't clear an issue's project assignment, so issues created via Claude Code need a non-initiative home.
 
-**Do not add a 4th initiative.** The ops slot is not a buffer for overflow from the three initiative slots; it is a deliberate reservation for non-initiative work that would otherwise eat into initiative time unplanned.
+**Do not add a 4th initiative.** The ops slot is not a buffer for overflow from the three initiative slots; it is a deliberate reservation for non-initiative work that would otherwise eat into initiative time unplanned. The ops container project is not an initiative either — it doesn't get a Goal, KRs, or appetite, and it never enters the Done state.
 
 ### Cycle planning
 
@@ -92,7 +92,7 @@ At cycle end, for each initiative:
 
 ## Backlog
 
-**Backlog = team issues with no project assigned.**
+**Backlog = team issues with no project assigned, plus issues in the ops container project.**
 
 Issues enter the backlog when:
 - They don't belong to any current initiative
@@ -111,7 +111,7 @@ The backlog is not the idea bank. The idea bank (from `idea-triage`) holds unval
 
 - Move to **In Progress** via `mcp__claude_ai_Linear__save_issue`.
 - If the issue isn't yet in the current cycle and you intend to ship it this cycle, assign it to the current cycle.
-- Every issue must be either (a) assigned to an initiative project, or (b) explicitly in the ops slot (no project). An issue with neither a project nor a cycle assignment is untracked — don't let this happen.
+- Every issue must be either (a) assigned to an initiative project, or (b) explicitly in the ops slot — meaning either no project assigned, or in the ops container project. An issue with neither an initiative nor an ops home is untracked — don't let this happen.
 
 ### On completion
 
