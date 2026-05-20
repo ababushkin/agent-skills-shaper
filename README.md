@@ -32,6 +32,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [app-calibrate](skills/app-calibrate/SKILL.md) | Captures app-specific context (audience, value props, constraints) so Impact scores in `idea-triage` are grounded in this product, not a generic one. | Before running `idea-triage` for the first time on a product; product context shifts |
 | [backlog-manage](skills/backlog-manage/SKILL.md) | Maintains the idea bank between triage and planning. Promotes validated items, kills stale ones, updates confidence scores with new evidence, and tracks KTLO work. Run before `roadmap-shape` so it reads a clean input. | Idea bank needs curation; validation result arrived; adding KTLO work; feeding post-launch evidence back |
 | [roadmap-shape](skills/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
+| [initiative-shape](skills/initiative-shape/SKILL.md) | Probes a vague idea or roadmap item through the four-field check (goal / success criterion / affected repos / appetite) and creates a Linear project. Enforces the initiative model from `linear-workflow.md`. | Before creating a Linear project for goal-directed work |
 
 ### Engineering
 
@@ -67,7 +68,7 @@ Using addy's pack as the example. Empty cells on pde's side aren't gaps to be fi
 | Phase | pde-skills (planning + decision) | Implementation pack (e.g. `agent-skills`) |
 |---|---|---|
 | Discover / curate | `idea-triage`, `app-calibrate`, `backlog-manage` | — |
-| Decide / plan | `roadmap-shape`, `planning-and-task-breakdown` | — |
+| Decide / plan | `roadmap-shape`, `initiative-shape`, `planning-and-task-breakdown` | — |
 | Design | `design-doc`, `product-spike`, `backend-spike` | — |
 | Pre-build review | `plan-review` (calibrated, [benchmarks](docs/benchmarks.md)) | — |
 | Build | — | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
@@ -141,15 +142,16 @@ Install the plugin directly from GitHub:
 
 This gives you:
 
-- The 8 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
-- The 9 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
+- The 11 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
+- The 12 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
 
-Restart Claude Code after install. To load the rule files persistently, add three `@` references to your `~/.claude/CLAUDE.md`:
+Restart Claude Code after install. To load the rule files persistently, add four `@` references to your `~/.claude/CLAUDE.md`:
 
 ```
 @/path/to/pde-skills/rules/PRODUCT_RULES.md
 @/path/to/pde-skills/rules/eng-principles-universal.md
 @/path/to/pde-skills/rules/eng-principles-agentic.md
+@/path/to/pde-skills/rules/linear-workflow.md
 ```
 
 Where `/path/to/pde-skills` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
@@ -168,7 +170,7 @@ The script:
 
 1. Generates wrapper command files in `~/.claude/commands/pde/` (slash commands).
 2. Symlinks each skill dir into `~/.claude/skills/pde-<name>` (auto-invocable Skills, edits propagate live).
-3. Appends `@`-refs for the three rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old layout refs are migrated automatically).
+3. Appends `@`-refs for the four rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old layout refs are migrated automatically).
 
 Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
 

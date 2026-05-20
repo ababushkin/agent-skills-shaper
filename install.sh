@@ -39,6 +39,7 @@ RULE_REFS=(
   "@${REPO_DIR}/rules/PRODUCT_RULES.md"
   "@${REPO_DIR}/rules/eng-principles-universal.md"
   "@${REPO_DIR}/rules/eng-principles-agentic.md"
+  "@${REPO_DIR}/rules/linear-workflow.md"
 )
 
 touch "${CLAUDE_MD}"
@@ -112,8 +113,9 @@ echo "  /pde:product-spike         Answer a product question before designing"
 echo "  /pde:backend-spike         Investigate a backend correctness question before implementing"
 echo "  /pde:design-doc            Structure significant engineering work"
 echo "  /pde:planning-and-task-breakdown  Break a design into tasks"
-echo "  /pde:incremental-implementation  Build in thin vertical slices"
+echo "  /pde:initiative-shape      Shape an idea into a Linear initiative"
 echo "  /pde:plan-review           Review a plan/spec/design before approval"
+echo "  /pde:render-html           Render a markdown doc as a reviewable HTML file"
 echo "  /pde:stop-the-line         Scan a diff for quality red flags"
 echo "  /pde:backlog-manage        Review and curate the idea bank"
 echo ""
