@@ -65,7 +65,7 @@ This skill converts a markdown artefact — design doc, task list, ADR, roadmap,
 Read the source markdown. Confirm it has at least one H1 and at least one H2. If not, stop and report: "render-html expects structured markdown — source has no H1/H2." Do not invent structure to make the doc renderable. The skill is a renderer, not a restructurer.
 
 **Step 2 — Overwrite check [GATE]**
-Compute the output path: replace the source's `.md` extension with `.html`. If a file already exists at that path, prompt the user for confirmation before proceeding: "`<output-path>` exists. Overwrite? (y/n)". Do not silently overwrite. Do not append timestamps or version suffixes — re-rendering must be idempotent so diffs are meaningful. If the user declines, stop.
+Compute the output path: replace the source's `.md` extension with `.html`. If a file already exists at that path, call `Read(<output-path>, limit=1)` immediately — this satisfies the Write tool's precondition that the file must be read before it can be overwritten, and it costs only one line of tokens. Then prompt the user for confirmation before proceeding: "`<output-path>` exists. Overwrite? (y/n)". Do not silently overwrite. Do not append timestamps or version suffixes — re-rendering must be idempotent so diffs are meaningful. If the user declines, stop.
 
 **Step 3 — Inventory headings**
 Walk the markdown and collect every H2 and H3 in document order. Generate a stable slug for each (kebab-case from the heading text, deduplicated with `-2`, `-3` if needed). These become both anchor IDs in the body and the TOC entries in the sidebar. H1 is the document title — it goes in the page header, not the TOC.
