@@ -1,0 +1,13 @@
+/agent-skills:debugging-and-error-recovery i'm not able to see the /initiative-shape skill when i'm inside other projects (e.g. ~/src/nestl)
+
+---
+
+/commit-commands:commit
+
+---
+
+so if i install this pack on another computer - will it install cleanly? are all the installation scripts etc up to date?
+
+---
+
+Is the README me in good shape?
