@@ -137,6 +137,67 @@ Project type:   2 — Personal product
 
 *Examples: `resell-au`, `garage-sale`, `codex-primary-runtime`.* Flat collection of callable skills, each solving a discrete recurring task. The consumer is the author at per-invocation use. The theory of success is first-shot correctness of the generated artefact — the next invocation produces something the user posts, prints, or hands off without editing. Authoring more skills is output; what counts is whether the next invocation needs ≤ one edit and whether the pack covers the categories the user actually encounters end-to-end. Time-to-result KRs are usually vanity here unless speed is the named bottleneck.
 
+**Objective shape.** "For [single user — name them], when doing [recurring task], make the skill produce a correct, immediately-usable artefact." The Objective names the *artefact handoff* — the listing gets posted, the label gets printed, the deck gets presented — not the skill itself and not the volume of invocations. Authoring more skills, or running the existing skills more often, is implementation; what the OKR scores is whether the next invocation produces something the user uses without rewriting it.
+
+**Default KR mix (3 KRs).** One first-shot correctness (aspirational, lagging) + one coverage (committed) + one use-log discipline (committed). Pair as one aspirational (the outcome — does it work first-shot) + two committed (the brakes — does it cover the cases the user actually hits, and is there an immutable record so the lagging KR is gradable). A domain-specific quality KR (pricing accuracy, print acceptance, sale outcome) is an optional 4th when the pack has a quantifiable downstream signal.
+
+- **First-shot correctness KR (aspirational, lagging)** — does the generated artefact get used without edits? Form: "in next N invocations of [skill] across mixed [categories / inputs / use cases], ≥X are posted / printed / handed off without text edits beyond [acceptable carve-out — e.g. photo selection only]." Data sources: the use-log (see below) with a per-invocation edit-or-not field; the artefact itself (a diff between generated and final-posted version is the strongest evidence). This is the lagging indicator that the skill body produces immediately-usable output, not just plausible output.
+- **Coverage KR (committed)** — does the pack handle the categories / inputs the user actually encounters? Form: "zero invocations across [window] where the skill failed to handle the category end-to-end and the user fell back to writing the artefact manually." Data sources: the use-log with a fell-back-to-manual flag; the user's "I gave up and did it myself" sessions are the failure mode this KR catches. A pack with high first-shot correctness on the easy categories but zero coverage of the hard ones is a Type 3 failure that looks like success in aggregate metrics.
+- **Use-log discipline KR (committed)** — is there an immutable per-invocation record the lagging KR can be graded against? Form: "every invocation in the window is logged to [named use-log location — e.g. `listings/`, `outputs/`, `runs/`] with input, generated artefact, final posted/printed artefact, and edit-or-not outcome; zero invocations without a use-log entry across [window]." Data sources: the use-log directory's git history (or modification timestamps if the use-log is local-only). This is the committed brake that makes the first-shot correctness KR gradable — without a per-invocation record captured at the moment of use, "≥8 of last 10 needed no edits" collapses into a vibe check on remembered sessions. Parallel to Type 5's pre-registration KR: capture discipline at call time, not narration after the fact.
+- **Domain-specific quality KR (optional 4th, aspirational)** — does the artefact produce the downstream outcome the user actually cares about? Form: "for ≥X of next N invocations, [downstream signal] is within [tolerance] of [reference]" — e.g. "≥9 of next 10 prices within ±10% of actual sale price"; "≥X of next N labels printed without re-running the layout"; "≥X of next N decks presented without further edits in the meeting." Use when the pack has a quantifiable downstream signal; otherwise the 3-KR default is sufficient.
+
+Throughput KRs ("run `/resell-au` N times this cycle", "process N items") are categorically the wrong shape for Type 3 — volume is output, and Type 3 grades on the quality of each artefact, not the count of them. Volume KRs disguised as "usage drives" or "cycle activity" are the same anti-pattern, just renamed.
+
+**Worked example — `agent-skills` (`resell-au` + `garage-sale`), Facebook Marketplace pack.**
+
+```
+Goal:           For Anton selling things on Facebook Marketplace, make the
+                skill pack produce a ready-to-post listing he posts without
+                editing — across the categories he actually sells.
+
+KR1 [aspirational] — in next 10 invocations of /resell-au or /garage-sale
+                  across mixed categories, ≥8 listings are posted without
+                  text edits (photo selection only is acceptable)
+  baseline: unknown — start by logging the next 5 invocations
+  target:   ≥8/10 first-shot success
+  window:   next 10 invocations (rolling)
+  source:   listings/<item>/listing.md + listings/use-log.md
+            with edit-or-not field per invocation
+
+KR2 [committed] — zero invocations where the skill fails to handle the
+                  category end-to-end and Anton falls back to writing the
+                  listing manually
+  baseline: unknown — needs first-window measurement
+  target:   0 manual fallbacks across the window
+  window:   next 10 invocations
+  source:   listings/use-log.md with fell-back-to-manual flag
+
+KR3 [committed] — every invocation in the window is logged to listings/
+                  with input photos, generated listing, final posted
+                  listing, and edit-or-not outcome; zero invocations
+                  without a use-log entry
+  baseline: no use-log discipline today; ~0/10 invocations recorded
+  target:   10/10 invocations logged
+  window:   next 10 invocations
+  source:   listings/use-log.md + listings/<item>/ directories
+
+Kill condition: if KR2 fails twice in a row (two consecutive manual
+                fallbacks), the category-detection logic is wrong rather
+                than the operator — pause and address coverage before
+                producing further listings
+Project type:   3 — Utility skill pack
+```
+
+**Anti-patterns specific to Type 3.**
+
+- **"Add more skills to the pack this cycle"** — output, not outcome. Type 3 grades on first-shot correctness and coverage of the cases the user actually hits, not on skill count. Five more skills with no use-log produce no graded improvement; reshape into first-shot correctness or coverage KRs over the categories the user actually encounters.
+- **"Run `/resell-au` N times this cycle"** — activity vanity. Twenty invocations with bad outputs is failure, not progress. Volume is output; the OKR scores whether each artefact was used without edits. "Usage drive" framings are this anti-pattern with a friendly name.
+- **"Improve skill descriptions / trigger phrases"** — wrong type. Trigger-description quality is a Type 1 invocation-rate concern (does the skill fire at the right moment?). Type 3 assumes the skill has already fired and grades what came out.
+- **"Generate prettier listings / nicer-looking labels / cleaner-formatted output"** — aesthetic, unmeasurable as written. Reshape into a domain-specific quality KR with a concrete downstream signal (posted-without-edits, sold-within-7-days, printed-without-re-running) or drop.
+- **"Skip the use-log — I'll remember which invocations went well"** — same failure mode as Type 5's post-hoc rationalisation. Memory is not a use-log. Without immutable per-invocation capture, the lagging first-shot correctness KR collapses into selective recall of the wins.
+
+**Verification rubric (Type 3).** A Type 3 KR is gradable if a fresh agent in the next session can: (a) point at the use-log location — recorded as a file path or directory, not "somewhere in the repo"; (b) read each invocation's record — input, generated artefact, final-posted/-printed artefact, edit-or-not outcome — without narration from the original operator; (c) read the baseline at first-window start and the target — both numeric (counts, ratios) or binary, not "better"; (d) confirm the observation window has closed before grading begins; (e) compute a 0.0–1.0 grade by counting use-log entries against the target. Additionally: at least one KR must be a first-shot correctness KR (lagging) AND at least one KR must be a use-log discipline KR (committed) naming the log location. A Type 3 OKR without use-log discipline is ungradable by construction — the lagging KRs become arguments about which invocations the operator remembers favourably rather than checks of what each artefact actually was.
+
 ## Type 4 — Research / thesis-driven
 
 *Example: `em-os` (paused).* Work whose primary output is knowledge — a defended thesis, a resolved open question, or a published position. The consumer is the intended audience for the thesis (engineering leaders, in `em-os`'s case). The theory of success is that the thesis is clear, survives critique, and — at later stages — is adopted by the intended audience. Knowledge KRs (what we will be able to assert, with sourced evidence and stated confidence) sit above artefact-clarity KRs (what we will publish); adoption KRs sit above both but are usually later-stage. Pre-registration of predictions matters where the work is forecasting-shaped.
