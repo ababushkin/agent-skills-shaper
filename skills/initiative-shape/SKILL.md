@@ -139,14 +139,18 @@ Run the following checks against the confirmed draft. Each rule is a binary pass
 | 2 | Goal names who + outcome | Sentence contains an affected party and a desired outcome — no solution verb ("build", "add", "integrate", "ship") |
 | 3 | Initiative name is a goal/problem | Name does not open with a solution verb ("Build X", "Add Y", "Integrate Z") |
 | 4 | At least 3 KRs, no more than 5 | KR count ≥ 3 and ≤ 5 |
-| 5 | Every KR is an observable state | No KR contains "improve", "better", "enhance", or arbitrary count thresholds without a correctness or quality dimension |
-| 6 | Every KR has all four sub-fields | Each KR has baseline, target, window, source — none blank or "TBD" |
+| 5a | No degenerate KRs | `target ≠ baseline` either numerically (different number) or by state change (different observable state) — bans "baseline 100%, target 100%" patterns |
+| 5b | KRs name distinct Layer 1 dimensions | Across all KRs, no two share the same Layer 1 dimension. Default vocabulary: correctness / outcome / maintenance / discipline (see `references/kr-quality-templates.md`). An out-of-default dimension (e.g. performance) is permitted only when the initiative genuinely has that property |
+| 5c | KRs are not Goal-restatements | Strip the Goal to its measurable noun-phrase; no KR's observable state matches it. Each KR must name a *measurable property of* the Goal — not the Goal itself |
+| 5d | KR matches its Layer 2 template | For each KR, name which Layer 1 dimension it sits in and confirm it matches the template (golden-path test / self-trial protocol / structural cap + revisit gate / artefact-exists + sections-complete) in `references/kr-quality-templates.md` |
+| 5e | Language ban | No KR contains "improve", "better", "enhance", or arbitrary "run N times" count thresholds without a correctness or quality dimension |
+| 6 | Every KR has all four sub-fields, no placeholders, `source` is a concrete artefact | Each KR has baseline, target, window, source — none blank, none equal to `TBD`, `unknown`, `currently unknown`, `we'll measure it`, `we'll figure it out`, `various`, `the logs`, `the system`, `the dashboard`, `better than today`, `the report`. `source` points to a concrete artefact: a file path, a directory, a Linear query, a log query (e.g. `bigquery: events WHERE ...`), a cached report URL, or a metric name + system |
 | 7 | Every KR is tagged | Each KR carries exactly one of `[committed]` or `[aspirational]` |
 | 8 | Kill condition is present | Non-empty; names an observable state, not a vague clause ("if it doesn't work") |
 | 9 | Project type is canonical | One of: 1, 2, 3, 4, 5, or 6 — not free text |
 | 10 | Appetite is in issues | Expressed as "~N issues" — not days, weeks, or sprints |
 
-Report each failing rule by number with the specific text that triggered the failure. When all 10 pass, proceed to Step 7.
+Report each failing rule by number with the specific text that triggered the failure. For rule 5, name the specific sub-rule (5a / 5b / 5c / 5d / 5e) that failed, so the user knows whether to fix the baseline-equals-target problem (5a), the duplicate-dimension problem (5b), the Goal-restatement problem (5c), the template-mismatch problem (5d), or the language problem (5e). When all checks pass, proceed to Step 7.
 
 **7. Create the Linear project.**
 Call `mcp__claude_ai_Linear__save_project` with:
@@ -202,6 +206,7 @@ If the user listed existing issues for this initiative, list them and offer to r
 | "I know what the goal is — I don't need to write it down." | The KRs aren't for you right now; they're for the agent in the next session who has no memory of this conversation. Write them down. |
 | "The key results will be obvious once the work is done." | Defining them after the work is done is how "shipped = done" creeps in. KRs are what convert a list of closed issues into an achieved outcome. |
 | "One KR is enough — the goal sentence covers the rest." | One KR collapses easily into a single arbitrary threshold. 3 KRs force you to name the dimensions that actually matter (correctness, no-blocking, no-silent-failure, speed) — and that's the discipline. |
+| "I need a 3rd KR — let me add one for documentation / tests / logging." | If your 3rd KR's only reason to exist is to clear rule #4, you have two real dimensions and you're padding. A meta-KR that wasn't load-bearing pre-gate is filler — and rule 5b will catch it as a duplicate of "discipline" if you already have a discipline KR. Two honest paths: (a) **reshape** — a real third Layer 1 dimension is hiding (typically maintenance or outcome, see `references/kr-quality-templates.md`); (b) **descope** — narrow the initiative until 2 KRs are honestly sufficient and the work fits an ops slot rather than an initiative slot. Padding to clear the gate is the failure mode the gate exists to catch. |
 | "I don't know the baseline — I'll add it later." | If baseline isn't known, the first issue in the initiative is to measure it. A KR without a baseline is an aspiration, not a result — you can't grade it at cycle close. |
 | "The target is obvious from the goal — I don't need to spell it out separately." | The target is what makes the KR scoreable. Without it, "we'll know it when we see it" replaces a binary pass/fail, and the post-launch review degrades to vibes. |
 | "I don't need a window — we'll just keep at it until it lands." | Without a window, a KR cannot be closed. Open-ended KRs become zombies — they neither succeed nor fail, they just live on the project page forever. |
@@ -275,6 +280,7 @@ The skill has run correctly when:
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
+- `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline) and Layer 2 measurement templates — cited by rule 5b and 5d in Step 6.5
 - Research Section 5 — 10 cross-cutting verification rules (inline copy at Step 6.5); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
