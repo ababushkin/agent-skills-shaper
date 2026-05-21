@@ -1,0 +1,107 @@
+Work on Linear issue ABA-193:
+
+<issue identifier="ABA-193">
+<title>Make KRs grader-backed by default in /initiative-shape</title>
+<description>
+## Problem
+
+KRs that require manual cycle-close inspection are expensive (an afternoon of reading), unreliable (verdict drifts with mood), and admit filler (you can write a KR that has no clear pass condition and nobody notices until the review is upon you).
+
+A recent drain-cycle initiative demonstrated a stronger pattern: build the **grader** as part of the initiative itself, so the KR is verifiable by running a command rather than by reading artefacts.
+
+## The pattern — grader-backed KR
+
+A KR is **grader-backed** when its `source:` points at a tool (script, command, query) that reads the write-side artefacts and emits a verdict — not at the raw artefacts themselves.
+
+Two-part shape, both halves are user stories *in the initiative*:
+
+| Part | What it is |
+| -- | -- |
+| **Write-side artefact** | Every relevant event/run/state-change emits a structured record at a known location with a known schema. |
+| **Read-side grader** | A command reads the write-side records and emits a verdict — numeric grade, OK/WATCH/KILL, or pass/fail. |
+
+### Worked example (drain-cycle)
+
+User stories from the drain-cycle initiative that exemplify the pattern:
+
+> *As the operator, I want each drain run to write a structured log (issue order, spawn timestamps, exit codes, final Linear state) to* `~/.drain-cycle/runs/<cycle-id>.json` *— so KR1 (completion %) is gradable from the file alone, and KR2's time_spent block has a known home to be appended to at cycle close.*
+
+> *As the operator, I want to run a command that reads the run logs across recent cycles and prints a grade — per-cycle completion %, trend across the last N cycles, recurrent failure-mode tuples, and a verdict against the kill condition (OK / WATCH / KILL) — so I can decide whether to ship-as-is, iterate, or walk away, without re-reading JSON by hand.*
+
+## Why this is the right default
+
+1. **Cheap to re-run.** Cycle close becomes one command, not an afternoon.
+2. **Honest by construction.** If you have to write the grader, you can't fudge the KR. The grader returns a verdict whether you like it or not.
+3. **Filler-KR filter.** Filler KRs don't admit graders. "We will document this" has no grader. "Skill exists and has all anatomy sections" does — `grep -c '^## ' SKILL.md` is the grader. **If you can't describe the grader command in one sentence, the KR is filler.**
+
+That third property is the load-bearing one: it's a sharper rule than <issue id="0b00aafe-b668-47db-8768-31eca82ad6f4">ABA-191</issue>'s rule 5b/5c/5d combined.
+
+## Layer 2 — each template gets a `grader:` sub-field
+
+<issue id="0b00aafe-b668-47db-8768-31eca82ad6f4">ABA-191</issue> introduces 4 Layer 2 templates (golden-path test, self-trial protocol, structural cap + revisit, artefact-exists). This ticket extends each with a `grader:` sub-field, with a preferred shape:
+
+| Layer 1 | Grader shape |
+| -- | -- |
+| **Correctness** | script that runs golden-path inputs and diffs against expected output → exit code + diff summary |
+| **Outcome** | script that scans resulting artefacts (Linear issues, files, logs) and counts observable behaviour → numeric grade |
+| **Maintenance** | one-liner that checks structural caps (`wc -l`, `grep -c`, file count) → pass/fail |
+| **Discipline** | one-liner that asserts artefact existence + section count + no-TBD → pass/fail |
+
+## Change — rubric rule #5
+
+Extend rule 5d (introduced by <issue id="0b00aafe-b668-47db-8768-31eca82ad6f4">ABA-191</issue>) or add a new sub-rule:
+
+* **5d (extended) — KR is grader-backed.** Each KR's `source:` points at a command/script/query that emits a verdict against the target. The grader command must be describable in one sentence at draft time. Building the grader (write-side schema + read-side command) is in the initiative's scope — included as one or two user stories — unless explicitly waived under the carve-out below.
+
+### Manual-grading carve-out
+
+A KR may be manually graded (no grader required) only when:
+
+* The initiative is genuinely one-shot or throwaway (and the initiative type field reflects that), or
+* The KR's verdict is irreducibly qualitative (e.g. "the prose reads naturally") and no automatable proxy is honest.
+
+The carve-out is the exception, not the default. Drafts that lean on it without justification fail 5d.
+
+## New section in `references/kr-quality-templates.md`
+
+Add a section "The grader-backed KR pattern" containing:
+
+* The two-part shape (write-side artefact + read-side grader).
+* The drain-cycle worked example (verbatim user stories above).
+* The one-sentence-grader test as the filler-KR filter.
+* The four Layer 2 grader shapes (table above).
+* The manual-grading carve-out.
+* A short "building the grader is part of the initiative" subsection — names that grader user stories should appear in the issue list before the initiative enters Active.
+
+## Acceptance criteria
+
+* `skills/initiative-shape/SKILL.md` rule 5d extended (or new 5f added) requiring grader-backed KRs by default, with the manual-grading carve-out named.
+* `references/kr-quality-templates.md` has a "Grader-backed KR pattern" section with the two-part shape, drain-cycle example, four Layer 2 grader shapes, and carve-out.
+* Step 6.5 failure-report instruction recognises grader-related failures (5d).
+* Smoke test: draft a KR with no grader — gate rejects with pointer to 5d.
+* Smoke test: draft a KR with a one-sentence grader (e.g. "grader: `grep -c '^## ' SKILL.md` returns ≥ 11") — gate passes.
+
+## Files
+
+* `skills/initiative-shape/SKILL.md` — rule 5 extension in Step 6.5.
+* `references/kr-quality-templates.md` — new section appended.
+
+## Dependencies
+
+* **Blocked by** <issue id="0b00aafe-b668-47db-8768-31eca82ad6f4">ABA-191</issue> — Layer 1/Layer 2 framework and `references/kr-quality-templates.md` must exist first.
+
+## Out of scope
+
+* Building actual graders for existing/in-flight initiatives (that's per-initiative work, not framework work).
+* A schema standard for write-side artefacts (JSON vs JSONL vs SQLite is per-initiative).
+* CI/automated enforcement of the rule (the rubric gate at Step 6.5 is the enforcement; CI is out of scope for the skill pack).
+* Changes to `references/initiative-types.md` to bake graders into per-type playbooks (could be a follow-up).
+
+## Why this is small
+
+One rule extension in the skill, one section appended to a reference file. The pattern itself is already validated in the wild (drain-cycle).
+</description>
+<team name="Personal"/>
+<project name="Initiative quality - type-aware OKRs with KRs">Improve /initiative-shape so it produces type-aware OKR-shaped Linear initiatives with 3 KRs each (baseline+target+window+source), a kill condition, and a project type tag — verifiable by system inspection.</project>
+<issue-relations><blocked-by><issue-ref identifier="ABA-191" title="Tighten /initiative-shape KR-quality gate to reject filler KRs"/></blocked-by></issue-relations>
+</issue>
