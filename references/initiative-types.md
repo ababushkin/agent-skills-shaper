@@ -20,6 +20,59 @@ The six types below are the ones actually observed across this portfolio (`pde-s
 
 *Examples: `pde-skills`, `agent-skills`.* Markdown-encoded decision rules invoked by humans or agents at decision moments. The consumer is the author plus any agent that loads the pack. The theory of success is that the skill fires at the right decision moment, and when it fires, decision quality improves. Authoring more skills is output, not outcome — invocation accuracy at the right moment, and the downstream quality of decisions made under the skill's guidance, are what count. Leading-indicator KRs measure invocation rate; lagging-indicator KRs measure decision quality when invoked.
 
+**Objective shape.** "For [agent or human invoker], make [decision moment] happen correctly without prompting." The Objective sentence names the *decision moment*, not the artefact. Authoring is implementation; what the OKR scores is whether the decision moment is now handled.
+
+**Default KR mix (3 KRs).** One leading + one lagging + one anti-output guard. Pair as two committed + one aspirational, or one committed + two aspirational, depending on which dimensions are inspectable today.
+
+- **Invocation-rate KR (leading)** — does the skill fire at the right moment? Form: "[skill] fires (or is offered) in ≥X% of [decision-moment] across the next N cycles." Data sources: transcript history (`rtk discover`), Linear project list, sampled session logs. This is the leading indicator that the trigger description is well-targeted.
+- **Decision-quality KR (lagging)** — when it fires, does the outcome improve? Form: "in ≥X of last N sampled invocations, [skill] surfaced an issue or produced an artefact that would otherwise not have appeared." This is the lagging indicator that the skill body itself is well-authored.
+- **Anti-output guard KR (committed)** — the discipline holds at the bottleneck. Form: "zero [historically-common output failure] across [window]" (e.g., zero repo-aliased Linear projects, zero KRs without sub-fields). Catches drift between intent and practice.
+
+Adoption KRs ("skill installed in N repos") are output unless cross-repo adoption is itself the named goal — usually leave them out.
+
+**Worked example — `/initiative-shape` itself.**
+
+```
+Goal:           For Anton (and any agent invoking pde-skills), make
+                initiatives properly shaped before they enter a cycle —
+                so cycle planning works against goals and KRs rather than
+                repo-aliased backlogs.
+
+KR1 [committed] — initiative-shape fires (or is offered) in ≥80% of
+                  new-initiative moments across the next 4 cycles
+  baseline: unknown — first cycle of measurement
+  target:   ≥80% offered at new-initiative moments
+  window:   next 4 cycles
+  source:   transcript history (rtk discover), sampled
+
+KR2 [committed] — in ≥4 of last 5 created initiatives, all six fields
+                  pass the verification rubric
+  baseline: 0/5 pass full rubric today
+  target:   4/5 pass full rubric
+  window:   next 4 cycles
+  source:   Linear project descriptions, manual audit
+
+KR3 [aspirational] — zero Linear projects created in the next 4 cycles
+                  that are repo-aliased rather than outcome-named
+  baseline: majority of historical projects repo-aliased
+  target:   0 repo-aliased in window
+  window:   next 4 cycles
+  source:   Linear project list
+
+Kill condition: if KR2 isn't hit within 2 cycles of the skill update,
+                the template is wrong rather than the operator
+Project type:   1 — Methodology skill pack
+```
+
+**Anti-patterns specific to Type 1.**
+
+- **"Author N new skills"** — output. Volume of skills is not what success means for a methodology pack. Success is the existing skills firing at the right moment with the right effect.
+- **"Improve skill quality"** — unmeasurable; fails Wodtke's weekly-trackable test. Reshape into invocation-rate or decision-quality KRs with sample, target, and window.
+- **"Update SKILL.md for X"** — task, not KR. Belongs on the issue body, not in the OKR.
+- **"Skill installed in N repos"** — output disguised as outcome unless cross-repo spread is genuinely the named goal.
+
+**Verification rubric (Type 1).** A Type 1 KR is gradable if a fresh agent in the next session can name: (a) the data source for the sample (transcript history, Linear projects, session logs); (b) the sampling method (last-N, all-of-cycle, random); (c) the baseline — recorded, not "TBD"; (d) the target — numeric or binary, not "improved"; (e) a 0.0–1.0 grade at cycle close. If any of (a)–(e) is missing, the KR isn't gradable and cycle close degrades to a vibe check.
+
 ## Type 2 — Personal product (single-user, running)
 
 *Example: `nestl` (Rails app).* Complete deployed software solving a recurring problem for one user. The consumer is the author as a single user. The theory of success is that the recurring job gets done reliably without manual intervention. Growth metrics, MAU, and adoption breadth are inapplicable — the dimensions that matter are correctness (zero false negatives or missed events), no-silent-failure (every failure surfaces in a visible alert within a bounded time), availability (scheduled jobs complete to SLO), and maintenance burden (zero manual restarts/redeploys over the observation window).

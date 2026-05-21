@@ -89,11 +89,19 @@ Ask:
 One-paragraph descriptions of each type are in `references/initiative-types.md` — load it if the user wants the longer form. If the user can't pick a single type, the initiative likely contains two outcomes — flag and split before proceeding.
 
 **3. Probe — outcome questions.**
-Ask explicitly. Do not infer. Wait for a response before synthesising.
+
+**Load the type-specific playbook first.** Open `references/initiative-types.md` and read the Objective shape, default KR mix, and anti-patterns for the type chosen at Step 2.5. The KR mix names which leading + lagging dimensions this initiative is scored along — propose KRs from those dimensions rather than from a blank page.
+
+Default KR mix by type:
+
+- **Type 1 (methodology skill pack)** — invocation-rate KR (leading) + decision-quality KR (lagging) + anti-output guard KR (committed). See playbook for a worked example on `/initiative-shape` itself.
+- **Types 2–6** — playbooks land in later slices; for now, use the generic outcome frame below and avoid type-specific KR-mix claims.
+
+Then ask explicitly. Do not infer. Wait for a response before synthesising.
 
 - **Who is affected?** Which users, operators, or contexts does this problem touch?
 - **What's the negative outcome if this isn't solved?** What task fails, what decision can't be made, what workflow breaks?
-- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds.
+- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For Type 1, propose the default mix from the playbook (invocation-rate + decision-quality + anti-output guard) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
 - **For each KR, fill all four sub-fields:**
   - **baseline** — current value or state (if unknown, the first issue in the initiative is to measure it)
   - **target** — value or state we expect at the end
@@ -178,6 +186,8 @@ If the user listed existing issues for this initiative, list them and offer to r
 | "The source of evidence is obvious — it's just whether the feature works." | Name the artefact. A file path, a Linear query, a log line, a cached report. If you can't name where the evidence lives, the KR isn't inspectable — and an uninspectable KR is a feeling, not a result. |
 | "Why a kill condition? We're going to make this work." | Most bets don't pay off on the first try. The kill condition is what protects the next quarter from a sunk-cost zombie. Naming it up front costs one sentence; not naming it costs an entire cycle. |
 | "Project type is bureaucratic — we know what kind of thing this is." | The field exists so the next agent — or you in three weeks — can apply the right rubric without re-deriving the taxonomy. It's a one-token tag and a downstream skill needs it. |
+| "We just need to author N new skills this cycle — the pack is the deliverable." | For methodology skill packs (Type 1), volume of skills authored is output, not outcome. Success is invocation accuracy at the decision moment + decision quality when invoked. Reshape into invocation-rate + decision-quality KRs — see Type 1 playbook in `references/initiative-types.md`. |
+| "Improving skill quality this cycle is enough — we don't need a KR for it." | "Improve quality" fails Wodtke's weekly-trackable test. Reshape into a decision-quality KR: in ≥X of last N sampled invocations, the skill surfaced an issue or produced an artefact that would otherwise not have appeared. Now it has a sample, target, and window — and can be graded at cycle close. |
 | "This is too big for 15 issues but it's one coherent thing." | Split by outcome: which key result do you want first? That's one initiative. The rest follow. |
 | "I'll sort out the KRs after we create the project." | Step 6 is a gate. The project doesn't get created until the KRs (with all sub-fields) and kill condition are confirmed. |
 | "The affected repo is obvious — we only work in one repo here." | Name it anyway. The field exists for cross-repo legibility, not to teach you something you don't know. |
@@ -191,6 +201,7 @@ If the user listed existing issues for this initiative, list them and offer to r
 - A KR is missing its `[committed]` or `[aspirational]` tag — the rubric for grading it at cycle close is undefined.
 - No kill condition — the initiative has no defined off-ramp and will become a zombie when the bet doesn't pay off.
 - The Project type field is missing or set to a free-text label that doesn't match the six-type taxonomy.
+- For Type 1 (methodology skill pack), every KR scores artefact volume (skills authored, lines written, files edited) — no invocation-rate (leading) or decision-quality (lagging) KR. The OKR is then measuring output, not outcome.
 - The initiative name describes a solution ("Build the X feature") rather than a goal or problem.
 - The appetite is expressed as a time duration ("2 weeks") rather than an issue count.
 - The Linear project was created before Step 6 confirmed the draft.
@@ -208,12 +219,13 @@ The skill has run correctly when:
 6. The project type is set to one of the six values (1–6).
 7. The appetite is expressed in issues (not days or weeks).
 8. The user confirmed the draft before the project was created (Step 6 gate honoured).
+9. For type=1 (methodology skill pack), at least one KR is an invocation-rate (leading) indicator and at least one is a decision-quality (lagging) indicator — the OKR is not measuring only artefact volume.
 
 ## References
 
 - `rules/linear-workflow.md` — initiative definition, lifecycle, cycle model, ops slot (source of truth)
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
-- `references/initiative-types.md` — one-paragraph descriptions of the six project types probed at Step 2.5
+- `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
