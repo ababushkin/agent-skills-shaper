@@ -200,7 +200,58 @@ Project type:   3 — Utility skill pack
 
 ## Type 4 — Research / thesis-driven
 
-*Example: `em-os` (paused).* Work whose primary output is knowledge — a defended thesis, a resolved open question, or a published position. The consumer is the intended audience for the thesis (engineering leaders, in `em-os`'s case). The theory of success is that the thesis is clear, survives critique, and — at later stages — is adopted by the intended audience. Knowledge KRs (what we will be able to assert, with sourced evidence and stated confidence) sit above artefact-clarity KRs (what we will publish); adoption KRs sit above both but are usually later-stage. Pre-registration of predictions matters where the work is forecasting-shaped.
+*Example: `em-os` (paused).* Work whose primary output is knowledge — a defended thesis, a resolved open question, or a published position. The consumer is the intended audience (engineering leaders, in `em-os`'s case). The theory of success is that the thesis is source-backed and survives expert critique. Authoring essays or building demos is implementation; what the OKR scores is whether the assertions are defensible. Adoption KRs (readers, buyer interest) are later-stage — readership of an undefended thesis is noise, not signal.
+
+**Objective shape.** "For [audience], make [thesis / open question] defensible — internally consistent, source-backed, and survivable under expert critique." The Objective names the *defensibility outcome*, not essay count or audience size.
+
+**Default KR mix (3 KRs).** One knowledge-claim (committed) + one critique-survivability (aspirational, lagging) + one source-discipline (committed). Adoption KRs are a later-stage 4th — defer until critique-survivability has held.
+
+- **Knowledge-claim KR (committed)** — assertions the thesis defends at window close. Form: "by [date], [thesis] defends [N] claims of the form 'we can assert X with [confidence band] backed by [evidence type]', recorded in [artefact path]." Catches the failure mode where the thesis grows in length but not in defensible claims.
+- **Critique-survivability KR (aspirational, lagging)** — does the thesis survive expert review? Form: "in ≥X of N expert reviews, the thesis survives without a load-bearing claim being overturned." Reviews logged with reviewer, date, claims challenged, and claims that held. Lagging indicator that the thesis is right, not just well-written.
+- **Source-discipline KR (committed)** — every load-bearing claim cites primary evidence. Form: "zero load-bearing claims in [thesis artefact] without an inline citation across [window]; sources file shows ≥N entries." Brake against confident, persuasive, unsourced assertions that collapse under critique.
+
+**Worked example — `em-os` thesis arc, defensibility cycle.**
+
+```
+Goal:           For VPEs/CTOs/Eng Directors at growth-stage companies,
+                make the EM OS thesis defensible — source-backed and
+                survivable under expert critique.
+
+KR1 [committed] — by end of cycle, thesis defends 8 claims of the form
+                  "we can assert X with [confidence] backed by [evidence
+                  type]", recorded in drafts/em-os-thesis.md
+  baseline: ~4 specific claims; rest is framing
+  target:   8 claims with confidence band + evidence type
+  window:   end of next active cycle
+  source:   drafts/em-os-thesis.md + drafts/em-os-sources.md
+
+KR2 [aspirational] — in ≥3 of 4 expert reviews, the thesis survives
+                  without a load-bearing claim being overturned
+  baseline: 0 external reviews completed
+  target:   3/4 survive
+  window:   next 4 active cycles
+  source:   drafts/em-os-reviews.md
+
+KR3 [committed] — zero load-bearing claims in drafts/em-os-thesis.md
+                  without an inline citation; sources file ≥20 entries
+  baseline: ~50% of load-bearing claims uncited; ~6 sources logged
+  target:   0 uncited claims; ≥20 sources
+  window:   end of next active cycle
+  source:   drafts/em-os-thesis.md + drafts/em-os-sources.md
+
+Kill condition: if KR2 fails — two consecutive expert reviews overturn
+                a load-bearing claim — pause demo/marketing and re-shape
+Project type:   4 — Research / thesis-driven
+```
+
+**Anti-patterns specific to Type 4.**
+
+- **"Publish N essays this cycle"** — output. Volume is not defensibility. A thesis with 20 unsourced essays is weaker than one with 3 claims each holding under scrutiny. Reshape into knowledge-claim KRs that name the assertions.
+- **"Get to N readers / N newsletter subscribers"** — adoption masquerading as outcome on an undefended thesis. Defer until critique-survivability has held; the wrong audience signal entrenches a wrong thesis.
+- **"Build the demo / build the homepage"** — output. Demos and sites are valuable artefact-clarity *after* survivability has held; before it, they amplify the error. Pair every demo/site KR with the defensibility KR it depends on.
+- **"The thesis improved this cycle"** — unmeasurable. Reshape into claim-count, source-count, or review-survivability.
+
+**Verification rubric (Type 4).** A Type 4 KR is gradable if a fresh agent in the next session can: (a) open the thesis artefact at the file path in the KR's source field; (b) count claims, sources, or surviving reviews against the target; (c) confirm the baseline was recorded at first-cycle start, not narrated post-hoc; (d) verify the observation window has closed; (e) compute a 0.0–1.0 grade from the artefact alone. At least one KR must score claim-defensibility (committed) AND at least one must score source-discipline (committed). A Type 4 OKR scoring only essay count or reader count is measuring artefact volume or noise, not defensibility.
 
 ## Type 5 — Equity research tooling
 
@@ -269,7 +320,27 @@ Project type:   5 — Equity research tooling
 
 ## Type 6 — Production / customer-facing
 
-*Anticipated; no example yet in this portfolio.* Live software with paying users or external business stakeholders. The consumer is the paying user (or the business). The theory of success is standard product-OKR territory: activation, retention, conversion — each paired with a quality KR (NPS, p95 latency, error rate) to prevent vanity gains. Every KR has a baseline number from production telemetry, a target, and a window, with the telemetry in place before the cycle starts. "Ship feature X to 100% of users" is the canonical output-disguised-as-outcome failure mode here (Cagan); the antidote is to name the customer behaviour the feature is supposed to change.
+*Anticipated; no example yet in this portfolio.* Live software with paying users or external business stakeholders. The consumer is the paying user (or the business). The theory of success is standard product-OKR territory: activation, retention, or conversion — each paired with a quality KR (NPS, p95 latency, error rate, support volume per user) to prevent vanity gains. Every KR has a baseline number from production telemetry, a target, and a window, with the telemetry in place before the cycle starts (no telemetry = no Type 6 KR). The canonical failure mode is "ship feature X to 100% of users" framing — output, not outcome (Cagan); the antidote is to name the customer behaviour the feature is supposed to change.
+
+**Objective shape.** "For [paying user segment], make [behaviour / job-to-be-done] happen reliably — observably better than today on [value metric] without regressing [quality metric]." The Objective names the *user behaviour*, not the feature; the paired quality clause is non-negotiable.
+
+**Default KR mix (3 KRs).** One activation/retention/conversion (aspirational, lagging) + one quality-pair (committed — the brake on vanity gains) + one telemetry-discipline (committed). Growth without a paired quality counterweight is the canonical failure mode; the paired structure (every value KR has a quality KR) is what prevents it.
+
+- **Activation / retention / conversion KR (aspirational, lagging)** — the user behaviour change you're betting on. Form: "[N-day retention | activation rate | conversion rate] moves from [baseline]% to [target]% across [window], measured on [cohort]." Telemetry baseline required pre-cycle — if it can't be read today, the first issue in the initiative is to instrument it.
+- **Quality-pair KR (committed)** — the brake. Form: "[NPS / p95 latency / error rate / refund rate / support volume per user] does not regress beyond [tolerance] across [window]." Counterweight to the value KR. A retention lift paid for by latency or support volume is a vanity gain; the pair makes that trade visible.
+- **Telemetry-discipline KR (committed)** — cohort + metric definitions locked before cycle start. Form: "cohort definition, metric definitions, and baselines for KR1 and KR2 are recorded in [artefact / dashboard] before cycle start; zero retroactive metric redefinitions across the window." Catches the failure mode where the team ships, the number moves, and the definition is "clarified" post-hoc to make the number look better.
+
+**Worked example.** None in this portfolio yet — this section will get a concrete cycle example once a Type 6 initiative enters cycle planning. For now, the canonical shape is: KR1 a value KR (activation/retention/conversion baseline → target on a named cohort) + KR2 a paired quality KR (NPS, p95 latency, error rate, or support-per-user does not regress beyond a tolerance) + KR3 a telemetry-discipline KR (cohort + metric definitions recorded in a dashboard / definitions file before cycle start, with no retroactive edits across the window).
+
+**Anti-patterns specific to Type 6.**
+
+- **"Ship feature X to 100% of users"** — Cagan's canonical output-disguised-as-outcome. Rollout is implementation; the OKR scores whether the customer behaviour the feature was supposed to change actually moved. Reshape into a behaviour-change KR with a quality pair.
+- **"MAU / DAU growth without a retention pair"** — value KR without a quality counterweight. MAU can be inflated by re-engagement emails that crater NPS, or by registration prompts that bloat the denominator. Every growth KR is paired with retention, NPS, churn, or support-per-user — a solo growth KR is half a KR.
+- **"Improve conversion"** — unmeasurable as written, missing cohort, baseline, and quality pair. Reshape: "[cohort] conversion from [baseline]% to [target]% across [window] without regressing [quality metric]."
+- **"Instrument the funnel"** — task, not KR. Telemetry is a precondition (telemetry-discipline KR enforces it) — if the funnel isn't instrumented, the first issue is to instrument it, not a KR.
+- **"Customer-requested feature shipped"** — output. The customer asked because they had an underlying job-to-be-done; the OKR scores whether the job is done better, not whether the artefact landed.
+
+**Verification rubric (Type 6).** A Type 6 KR is gradable if a fresh agent in the next session can: (a) open the dashboard / telemetry source at the path or query in the KR's source field; (b) read the baseline locked at cycle start and the target; (c) confirm cohort + metric definitions were recorded before cycle start (per the telemetry-discipline KR) and that git/dashboard history shows no retroactive edits; (d) verify the observation window has closed; (e) compute a 0.0–1.0 grade from telemetry alone. At least one KR must score user behaviour (activation/retention/conversion, aspirational lagging) AND at least one must score quality as a paired brake (committed). A Type 6 OKR with a growth KR but no quality pair, or with feature-rollout language as a KR, is mis-shaped.
 
 ## Sources
 
