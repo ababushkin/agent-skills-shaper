@@ -8,21 +8,32 @@ This document is the canonical governance model for how work is tracked in Linea
 
 An **initiative** is a time-bounded, goal-oriented body of work with a stated success criterion and a bounded appetite. It is not a repo alias, not a backlog, and not a feature list.
 
-An initiative is ready to enter a cycle when it can answer all four of these fields:
+An initiative is ready to enter a cycle when it can answer all six of these fields:
 
 ```
 Goal:           For [who], we want to [solve problem / achieve outcome].
-Key results:    1. [observable state — binary pass/fail, fitness function firing, or measurable delta]
-                2. [observable state]
-                3. [observable state]
-                (3–5 KRs total; each verifiable by inspecting the system)
+Key results:    1. [committed|aspirational] — [observable state — binary pass/fail,
+                      fitness function firing, or measurable delta]
+                   baseline: [current value/state]
+                   target:   [value/state we expect at the end]
+                   window:   [when this is judged — "by end of cycle", "within 30 days"]
+                   source:   [where the evidence lives — file path, log, Linear query]
+                2. [committed|aspirational] — [observable state]
+                   baseline: ...  target: ...  window: ...  source: ...
+                3. [committed|aspirational] — [observable state]
+                   baseline: ...  target: ...  window: ...  source: ...
+                (3–5 KRs total; each verifiable by inspecting the system —
+                 no "improve X" / "better Y" / "run N times" language)
 Affected repos: [list]
-Appetite:       ~[N] issues
+Appetite:       ~[N] issues  (not days or weeks)
+Kill condition: [observable state that says "the bet didn't work, walk away"]
+Project type:   [1: methodology | 2: personal product | 3: utility skill pack |
+                 4: research/thesis | 5: equity research | 6: production]
 ```
 
-The format is OKR-shaped: the Goal is the Objective (qualitative, what we want to achieve), and Key results are the 3–5 observable states that must be true for the initiative to be Done. KRs are written so a future agent (or you on a fresh session) can verify each by looking at the system — no "improve X" / "better Y" language.
+The format is OKR-shaped: the Goal is the Objective (qualitative, what we want to achieve), and Key results are the 3–5 observable states that must be true for the initiative to be Done. KRs are written so a future agent (or you on a fresh session) can verify each by looking at the system — no "improve X" / "better Y" language. Each KR carries four sub-fields (baseline / target / window / source) and a `[committed|aspirational]` tag that sets the grading bar at cycle close.
 
-If any of the four fields can't be filled, the initiative is not ready. Create it as a Draft in Linear but don't assign it to a cycle.
+If any of the six fields can't be filled, the initiative is not ready. Create it as a Draft in Linear but don't assign it to a cycle.
 
 ### Initiative size
 
@@ -39,16 +50,17 @@ If any of the four fields can't be filled, the initiative is not ready. Create i
 | State | Meaning |
 |---|---|
 | **Draft** | Idea exists; goal or criterion not yet written |
-| **Ready** | Goal + criterion + appetite confirmed; can enter a cycle |
+| **Ready** | All six fields confirmed — Goal + Key results (with sub-fields + tags) + Affected repos + Appetite + Kill condition + Project type; can enter a cycle |
 | **Active** | Assigned to the current cycle; work in progress |
 | **Done** | Success criterion observed (or definitively ruled out) — not just issues closed |
 | **Paused** | Deprioritised mid-cycle; carries over with a note on why |
+| **Cancelled** | Kill condition triggered, or initiative definitively ruled out mid-cycle; one-sentence reason recorded |
 
 **Done ≠ all issues closed.** An initiative closes when the key results are observed (or definitively ruled out) — not when its issue list reaches zero. An initiative that shipped everything but the KRs didn't hold is not Done; it is Paused for a retrospective.
 
 ### Creating an initiative
 
-Use the `/initiative-shape` skill. Do not create Linear projects by hand for goal-directed work — the skill enforces the four-field check before creating the project.
+Use the `/initiative-shape` skill. Do not create Linear projects by hand for goal-directed work — the skill enforces the six-field check (including the 10-rule verification rubric gate at Step 6.5) before creating the project.
 
 Direct creation is permitted only for: maintenance buckets, ops slots, and one-off standalone issue groupings.
 
@@ -76,7 +88,7 @@ The ops slot is not an initiative. It exists for: bug fixes, compliance items, e
 ### Cycle planning
 
 On planning day:
-1. Confirm 3 initiatives are in Ready state (four-field check passes for each: Goal + Key results + Repos + Appetite).
+1. Confirm 3 initiatives are in Ready state (six-field check passes for each: Goal + Key results with sub-fields + Affected repos + Appetite + Kill condition + Project type).
 2. Identify the ops slot: pull 2–5 issues from the team backlog (bugs, maintenance, one-offs) into the cycle as standalone issues.
 3. For each initiative, confirm which issues in its backlog will be worked this cycle. Do not try to clear the entire initiative backlog in one cycle — prioritise by what moves a Key Result.
 4. Assign all confirmed issues to the cycle.
@@ -136,7 +148,7 @@ Two cases:
 - **Project name**: goal or problem name, not a solution name and not a repo name.
   - Good: "Equity analysis report — usability for non-analysts"
   - Bad: "stock-review", "stock-explain feature", "pde-skills v2"
-- **Project description**: always uses the four-field initiative format (goal / key results / affected repos / appetite).
+- **Project description**: always uses the six-field initiative format (goal / key results with sub-fields / affected repos / appetite / kill condition / project type).
 - **Project state**: Planned until it enters a cycle; In Progress when active; Completed or Cancelled on close.
 
 ---

@@ -130,6 +130,24 @@ Present the draft. Do not create the Linear project yet.
 **6. [GATE] User confirms the draft.**
 Ask explicitly: "Does this capture the initiative correctly? Any changes to the Objective, the Key results, kill condition, or project type before I create the project?" Do not proceed until confirmed. Fixing a wrong problem statement, vague KR, or missing kill condition here takes one minute; fixing it mid-cycle costs days.
 
+**6.5. [GATE] Verification rubric — 10 cross-cutting rules.**
+Run the following checks against the confirmed draft. Each rule is a binary pass/fail. Any failure returns the draft to Step 5 for repair — the Linear project is NOT created until all 10 pass.
+
+| # | Rule | Pass condition |
+|---|---|---|
+| 1 | All six fields present | Goal / Key results / Affected repos / Appetite / Kill condition / Project type are all non-empty |
+| 2 | Goal names who + outcome | Sentence contains an affected party and a desired outcome — no solution verb ("build", "add", "integrate", "ship") |
+| 3 | Initiative name is a goal/problem | Name does not open with a solution verb ("Build X", "Add Y", "Integrate Z") |
+| 4 | At least 3 KRs, no more than 5 | KR count ≥ 3 and ≤ 5 |
+| 5 | Every KR is an observable state | No KR contains "improve", "better", "enhance", or arbitrary count thresholds without a correctness or quality dimension |
+| 6 | Every KR has all four sub-fields | Each KR has baseline, target, window, source — none blank or "TBD" |
+| 7 | Every KR is tagged | Each KR carries exactly one of `[committed]` or `[aspirational]` |
+| 8 | Kill condition is present | Non-empty; names an observable state, not a vague clause ("if it doesn't work") |
+| 9 | Project type is canonical | One of: 1, 2, 3, 4, 5, or 6 — not free text |
+| 10 | Appetite is in issues | Expressed as "~N issues" — not days, weeks, or sprints |
+
+Report each failing rule by number with the specific text that triggered the failure. When all 10 pass, proceed to Step 7.
+
 **7. Create the Linear project.**
 Call `mcp__claude_ai_Linear__save_project` with:
 - `name`: goal or problem label — not a solution name, not a repo name
@@ -253,9 +271,10 @@ The skill has run correctly when:
 
 ## References
 
-- `rules/linear-workflow.md` — initiative definition, lifecycle, cycle model, ops slot (source of truth)
+- `rules/linear-workflow.md` — initiative definition, lifecycle, cycle model, ops slot (source of truth; six-field shape and KR sub-field requirements)
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
+- Research Section 5 — 10 cross-cutting verification rules (inline copy at Step 6.5); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
