@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.6.1",
+  "checkpoint_id": "c0911328111b",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "references/kr-quality-templates.md",
+    "skills/initiative-shape/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c0/911328111b/0/metadata.json",
+      "transcript": "/c0/911328111b/0/full.jsonl",
+      "content_hash": "/c0/911328111b/0/content_hash.txt",
+      "prompt": "/c0/911328111b/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 120,
+    "cache_creation_tokens": 371982,
+    "cache_read_tokens": 4362372,
+    "output_tokens": 60821,
+    "api_call_count": 50
+  }
+}

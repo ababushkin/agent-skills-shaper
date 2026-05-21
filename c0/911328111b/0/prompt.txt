@@ -1,0 +1,160 @@
+file a ticket to loosen up the restriction on the /initiative-shape skill so that 3 KRs is not mandatory. it should be > 2 and < 5 (no more than 5 KRs but 2 high-quality KRs is OK)
+
+---
+
+in ticket aba-191 i can see these dimensions being listed correctness / quality / coverage / no-silent-failure / operability / adoption / calibration / discipline / maintenance-burden / performance
+
+how many of these are distinct categories?
+
+i want to calibrate the skill better against certain best practices
+for example, when ever there's a KR written against something that can be considered a service level objective - there are some good practices on how to craft really good SLOs - those that measure availability, latency, correctness or completeness (as per the Google SRE book)
+
+---
+
+that looks good, but i want to make sure we have a layer 2 for other categories too
+
+---
+
+just remember all the projects i have are personal ones, with no user facing traffic
+so many of the frameworks aren't applicable
+
+i just need to make sure that good goals that helps me prioritize the work affectively and that i have good tools to measure if things i'm building are working as intended - thats more important
+
+---
+
+a
+
+---
+
+i want to show you something that we did recently that worked well
+as part of the user stories that were being created for a project
+these two were created:
+
+As the operator, I want each drain run to write a structured log (issue order, spawn timestamps, exit codes, final Linear state) to ~/.drain-cycle/runs/<cycle-id>.json — so KR1 (completion %) is gradable from the file alone, and KR2’s time_spent block has a known home to be appended to at cycle close.
+
+As the operator, I want to run a command that reads the run logs across recent cycles and prints a grade — per-cycle completion %, trend across the last N cycles, recurrent failure-mode tuples, and a verdict against the kill condition (OK / WATCH / KILL) — so I can decide whether to ship-as-is, iterate, or walk away, without re-reading JSON by hand.
+
+
+--
+
+i liked these because the outcomes were gradeable using automation, and we could even plan to build the automation
+
+---
+
+split into a sibling ticket
+
+---
+
+Work on Linear issue ABA-191:
+
+<issue identifier="ABA-191">
+<title>Tighten /initiative-shape KR-quality gate to reject filler KRs</title>
+<description>
+## Problem
+
+The `/initiative-shape` Step 6.5 rubric requires ≥3 KRs (rule #4). In real use, this floor produces a failure mode the rubric doesn't catch: when an initiative only has 2 *load-bearing* dimensions, the user pads to 3 with a filler KR just to clear the gate. The padded KR passes rule #5 ("observable state") and rule #6 ("sub-fields filled") at face value, but the KR is meaningless and the post-cycle review degrades.
+
+The ≥3 floor itself is load-bearing — each of the 6 type playbooks defines a 3-KR minimum that maps to grading dimensions. Loosening the count would silently allow under-specified initiatives. The right fix is to make the **quality** gate strong enough that filler is rejected at draft time, so the user is forced to either find a real 3rd dimension or descope the initiative.
+
+## Scope context — personal projects only
+
+All initiatives in this workspace are personal projects with no production traffic, no real-user funnel, and no on-call. Layer 1 dimensions and Layer 2 templates are calibrated for that scale. SRE SLO machinery (availability/latency/error budgets), DORA four keys (deployment frequency/MTTR), and product funnels (AARRR) are explicitly **not** the reference frameworks here — they assume operational context that doesn't exist.
+
+What does matter for personal projects:
+
+1. Good goals that prioritize work effectively.
+2. Tools to measure whether what's being built is working as intended — verifiable by one person, on a laptop, without dashboards or telemetry.
+
+## Filler patterns the new rules must catch
+
+1. **Target = baseline.** "baseline 100%, target 100%" — zero delta, no information.
+2. **Two KRs measuring the same dimension.** KR1 "test pass rate ≥95%" + KR3 "test coverage ≥90%" — both = "tests are good."
+3. **KR is the Goal restated.** Goal: "decision quality improves." KR: "decision quality improves."
+4. **Sub-field points nowhere.** `source: the logs` / `baseline: currently unknown` / `target: better than today`.
+5. **Meta-KRs added for gate compliance.** "We will document" / "we will write tests" added to hit the count, not load-bearing pre-gate.
+
+## Layer 1 — the four personal-project dimensions (used by rule 5b)
+
+| Dimension | What it answers | When it's load-bearing |
+| -- | -- | -- |
+| **Correctness** | does the thing produce the intended output on the cases I care about | always, for any build |
+| **Outcome / behaviour change** | does the thing I built actually change what I do or how I work | most product-shaped initiatives (Types 2, 4, 5, 6 from `references/initiative-types.md`) |
+| **Maintenance / future-me cost** | can I come back in 30 days and still navigate this | always — solo means future-me pays the whole tax |
+| **Discipline / completion** | did the artefacts get finished, or did this half-ship | always — solo means nobody else will finish it |
+
+Dropped from the original brainstormed list: performance, operability-as-SLO, adoption-as-funnel, calibration, coverage, no-silent-failure. They were enterprise-shaped sub-dimensions; they re-enter only as per-initiative exceptions when a specific initiative genuinely ships runtime traffic.
+
+## Layer 2 — measurement templates (one per Layer 1 dimension)
+
+Lives in a new reference file `references/kr-quality-templates.md`, cited from rule 5 in the skill.
+
+| Layer 1 | Template | What a good KR includes | Example |
+| -- | -- | -- | -- |
+| **Correctness** | Golden-path test | named input(s) → named expected output → how it's verified (script run, snapshot diff, eyeball check) → judged-by date | "Run `/initiative-shape` against 5 fixture inputs in `fixtures/`; all 5 produce the 6-field structure verified by a checked-in snapshot diff; judged at cycle close" |
+| **Outcome** | Self-trial protocol | the next N times I hit situation X, observable behaviour Y happens (or doesn't); judged by inspecting the resulting artefacts | "Next 5 initiatives shaped after this lands: zero filler KRs, judged by reading the Linear project descriptions" |
+| **Maintenance** | Structural cap + revisit gate | size/shape cap (LOC, section count, file count) stays within a stated bound; revisit-at-N-days check that I can still navigate without re-reading | "`SKILL.md` stays ≤ 300 lines; in 30 days I can answer 'where does rule 5c live' from memory" |
+| **Discipline** | Artefact-exists + sections-complete | named artefact exists, named sections populated, no TBD/placeholder, predecessor/supersedes declared if applicable | "<issue id="0b00aafe-b668-47db-8768-31eca82ad6f4">ABA-191</issue> closes only after rule 5 has 5a/5b/5c/5d each with a 1-line pass condition, zero TBDs, and the rationalisations row added" |
+
+Every template above is verifiable by one person, locally, without instrumentation. That's the constraint.
+
+## Change — rubric rule #5
+
+Replace the current single-row rule with four sub-checks:
+
+* **5a. No degenerate KRs.** `target ≠ baseline` either numerically or by state change.
+* **5b. KRs name distinct dimensions.** No two KRs share the same Layer 1 dimension. Default vocabulary: correctness / outcome / maintenance / discipline (see `references/kr-quality-templates.md`). A KR may invoke an out-of-default dimension (e.g. performance) only when the initiative genuinely has that property.
+* **5c. KRs are not Goal-restatements.** Strip the Goal to its measurable noun-phrase; no KR's observable state matches it.
+* **5d. KR matches its Layer 2 template.** For each KR, name which Layer 1 dimension it sits in and confirm it matches the template in `references/kr-quality-templates.md`.
+* **5e. Existing language ban.** Keep the ban on "improve", "better", "enhance", and arbitrary count thresholds without a quality dimension.
+
+## Change — rubric rule #6
+
+Extend the placeholder ban list: also reject `unknown`, `currently unknown`, `we'll measure it`, `we'll figure it out`, `various`, `the logs`, `the system`, `the dashboard`, `better than today`, `the report`. Require `source` to point to a concrete artefact: file path, directory, Linear query, log query, cached report URL, or metric name + system.
+
+## Change — rationalisations table
+
+Add a row covering the "I need a 3rd KR — let me add documentation / tests / logging" pattern, with the rebuttal "if the 3rd KR only exists to clear the gate, reshape or descope — don't pad."
+
+## New reference file — `references/kr-quality-templates.md`
+
+Single new file. Contains:
+
+* The 4 Layer 1 dimensions with one-line definitions.
+* The 4 Layer 2 templates above, each with: when it applies, what fields it requires, one good example, one bad example.
+* A short "out of scope for personal projects" note naming the dimensions we deliberately don't use as defaults (performance, operability-as-SLO, adoption-as-funnel).
+
+## Acceptance criteria
+
+* `skills/initiative-shape/SKILL.md` rubric rule #5 enumerates 5a/5b/5c/5d/5e with concrete pass conditions.
+* `skills/initiative-shape/SKILL.md` rubric rule #6 has the extended placeholder ban list and the concrete-artefact requirement for `source`.
+* `skills/initiative-shape/SKILL.md` rationalisations table has the new "padding to 3" row.
+* Step 6.5 failure-report instruction names sub-rules (5a/5b/5c/5d/5e) when failing.
+* `references/kr-quality-templates.md` exists with the 4 Layer 1 dimensions + 4 Layer 2 templates + out-of-scope note.
+* Skill rule 5b and 5d cite `references/kr-quality-templates.md`.
+* Manual smoke test against each of the 5 filler patterns: re-run `/initiative-shape` with a draft that exhibits the pattern; confirm the gate rejects it with a pointer to the specific sub-rule.
+* Manual smoke test against a legitimate 3-KR draft (across all 4 Layer 1 dimensions): confirm it still passes.
+
+## Files
+
+* `skills/initiative-shape/SKILL.md` — rubric rules #5 and #6 in Step 6.5, plus the rationalisations table around lines 200-210.
+* `references/kr-quality-templates.md` — new file.
+
+## Out of scope
+
+* Changing rule #4 (count range stays `≥ 3 and ≤ 5`).
+* Changing the default KR count (still 3).
+* Changing type playbooks in `references/initiative-types.md`.
+* Edits to `rules/linear-workflow.md`.
+* Adding a "waive the floor with justification" override path.
+* Importing SRE SLO / DORA / AARRR vocabulary as defaults. They can be cited for a single initiative that genuinely needs them, but they are not the default Layer 1 vocabulary.
+
+## Background
+
+Originally filed after the user hit filler-KR pain on recent projects (padding to 3 KRs just to clear the gate). Initial direction was to loosen the floor from ≥3 to ≥2; after reviewing the rationale for the ≥3 floor (multi-dimensional grading; type playbooks all define 3-KR load-bearing minimums), the direction pivoted to strengthening the quality check instead. Floor stays at 3.
+
+A follow-up review (same session) collapsed the 10-dimension brainstorm to the 4 personal-project dimensions above, dropping SRE/DORA/AARRR machinery as misapplied at this scale. Layer 2 templates were added so each Layer 1 dimension has a known-good measurement form verifiable without instrumentation.
+</description>
+<team name="Personal"/>
+<project name="Initiative quality - type-aware OKRs with KRs">Improve /initiative-shape so it produces type-aware OKR-shaped Linear initiatives with 3 KRs each (baseline+target+window+source), a kill condition, and a project type tag — verifiable by system inspection.</project>
+<issue-relations><blocking><issue-ref identifier="ABA-193" title="Make KRs grader-backed by default in /initiative-shape"/></blocking></issue-relations>
+</issue>
