@@ -144,13 +144,14 @@ Run the following checks against the confirmed draft. Each rule is a binary pass
 | 5c | KRs are not Goal-restatements | Strip the Goal to its measurable noun-phrase; no KR's observable state matches it. Each KR must name a *measurable property of* the Goal — not the Goal itself |
 | 5d | KR matches its Layer 2 template | For each KR, name which Layer 1 dimension it sits in and confirm it matches the template (golden-path test / self-trial protocol / structural cap + revisit gate / artefact-exists + sections-complete) in `references/kr-quality-templates.md` |
 | 5e | Language ban | No KR contains "improve", "better", "enhance", or arbitrary "run N times" count thresholds without a correctness or quality dimension |
+| 5f | KR is grader-backed (or carved out with justification) | Each KR's `source:` points at a command / script / query that emits a verdict against the target — describable in one sentence at draft time. Manual grading is permitted only under the carve-out: (a) the initiative is genuinely one-shot or throwaway, OR (b) the verdict is irreducibly qualitative ("the prose reads naturally", "the diagram is legible") and no honest automatable proxy exists. The carve-out must be stated alongside the KR. Building the grader (write-side schema + read-side command) is scoped into the initiative as one or two user stories before it enters Active. See `references/kr-quality-templates.md` "The grader-backed KR pattern" |
 | 6 | Every KR has all four sub-fields, no placeholders, `source` is a concrete artefact | Each KR has baseline, target, window, source — none blank, none equal to `TBD`, `unknown`, `currently unknown`, `we'll measure it`, `we'll figure it out`, `various`, `the logs`, `the system`, `the dashboard`, `better than today`, `the report`. `source` points to a concrete artefact: a file path, a directory, a Linear query, a log query (e.g. `bigquery: events WHERE ...`), a cached report URL, or a metric name + system |
 | 7 | Every KR is tagged | Each KR carries exactly one of `[committed]` or `[aspirational]` |
 | 8 | Kill condition is present | Non-empty; names an observable state, not a vague clause ("if it doesn't work") |
 | 9 | Project type is canonical | One of: 1, 2, 3, 4, 5, or 6 — not free text |
 | 10 | Appetite is in issues | Expressed as "~N issues" — not days, weeks, or sprints |
 
-Report each failing rule by number with the specific text that triggered the failure. For rule 5, name the specific sub-rule (5a / 5b / 5c / 5d / 5e) that failed, so the user knows whether to fix the baseline-equals-target problem (5a), the duplicate-dimension problem (5b), the Goal-restatement problem (5c), the template-mismatch problem (5d), or the language problem (5e). When all checks pass, proceed to Step 7.
+Report each failing rule by number with the specific text that triggered the failure. For rule 5, name the specific sub-rule (5a / 5b / 5c / 5d / 5e / 5f) that failed, so the user knows whether to fix the baseline-equals-target problem (5a), the duplicate-dimension problem (5b), the Goal-restatement problem (5c), the template-mismatch problem (5d), the language problem (5e), or the missing-grader problem (5f). When all checks pass, proceed to Step 7.
 
 **7. Create the Linear project.**
 Call `mcp__claude_ai_Linear__save_project` with:
@@ -280,7 +281,7 @@ The skill has run correctly when:
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
-- `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline) and Layer 2 measurement templates — cited by rule 5b and 5d in Step 6.5
+- `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline), Layer 2 measurement templates, and the grader-backed KR pattern — cited by rules 5b, 5d, and 5f in Step 6.5
 - Research Section 5 — 10 cross-cutting verification rules (inline copy at Step 6.5); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues

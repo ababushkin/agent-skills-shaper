@@ -34,7 +34,7 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 **Required fields:**
 - named input(s) — specific fixtures, sample tickers, sample prompts, etc.
 - named expected output — what "correct" looks like for each input
-- verification method — script run, snapshot diff, eyeball check against a checked-in reference
+- grader — one-sentence describable command that runs the inputs and diffs against expected output (exit code + diff summary)
 - judged-by date — when the check is run
 
 **Good example:**
@@ -42,7 +42,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > - baseline: `0/5` pass (fixtures don't exist yet — first issue creates them)
 > - target: `5/5` pass
 > - window: cycle close
-> - source: `fixtures/initiative-drafts/` + diff output
+> - grader: `bin/grade-initiative-shape fixtures/initiative-drafts/` runs each fixture, diffs against `fixtures/initiative-drafts/expected/<name>.md`, exits 0 only if all pass
+> - source: grader exit code + diff output cached at `fixtures/initiative-drafts/_runs/<cycle-id>.log`
 
 **Bad example:**
 > "The skill works well."
@@ -56,14 +57,15 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 - the situation (X) where the behaviour change should occur
 - the next N occurrences over which it's judged (N is small — typically 3–10 — so the cycle window can contain it)
 - the observable behaviour (Y) that confirms or denies the change
-- inspection method — what artefact you read to grade it (cached outputs, Linear project descriptions, git logs, run logs)
+- grader — one-sentence describable command that scans the artefacts produced across N occurrences and emits a numeric grade or pass/fail
 
 **Good example:**
-> "Next 5 initiatives shaped with `/initiative-shape` after this lands: zero filler KRs in the created Linear projects, judged by re-reading each project description against rule 5a–5e."
+> "Next 5 initiatives shaped with `/initiative-shape` after this lands: zero filler KRs in the created Linear projects, graded by `bin/grade-kr-quality` against rules 5a–5f."
 > - baseline: filler-KR rate is `~1 in 3` historically (eyeball estimate from past 9 projects)
 > - target: `0/5` filler KRs
 > - window: next 5 invocations
-> - source: Linear projects under `Initiative quality - type-aware OKRs with KRs`
+> - grader: `bin/grade-kr-quality $(linear-project-list --since=cycle-start)` reads each project description and emits a per-project pass/fail across 5a–5f; the KR passes if total filler-KR count is 0
+> - source: grader output cached at `~/.initiative-shape/grades/cycle-<id>.log`
 
 **Bad example:**
 > "Initiatives will be better shaped."
@@ -76,6 +78,7 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 **Required fields:**
 - size/shape cap — a stated bound: LOC, line count, section count, file count, function count
 - revisit gate — a check at N days that the artefact is still navigable (typical: "I can answer question X from memory" or "I can find section Y without re-reading the whole file")
+- grader — one-sentence describable structural-cap check using shell primitives (`wc -l`, `grep -c`, file count); the navigation gate is the manual half and is captured in a retro note
 - judged-by date — when the revisit check is run
 
 **Good example:**
@@ -83,7 +86,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > - baseline: 281 lines today
 > - target: ≤ 320 lines, navigation check passes
 > - window: 30 days from cycle close
-> - source: `wc -l skills/initiative-shape/SKILL.md` + a one-paragraph navigation note added to the cycle retro
+> - grader: `wc -l skills/initiative-shape/SKILL.md` returns ≤ 320 (cap check, automated); the 30-day navigation check is the manual half — captured in a one-paragraph retro note
+> - source: grader output + retro note in `retros/<cycle-id>.md`
 
 **Bad example:**
 > "The skill stays maintainable."
@@ -96,6 +100,7 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 **Required fields:**
 - named artefact (file path)
 - named sections within the artefact (e.g. "rule 5 has 5a/5b/5c/5d/5e populated", "rationalisations table has the new row")
+- grader — one-sentence describable existence + section-count + no-placeholder check (chained shell primitives: `test -f`, `grep -c '^### '`, `! grep -E 'TBD|unknown'`)
 - zero placeholders — no `TBD`, no `unknown`, no `we'll figure it out`
 - predecessor / supersedes declaration if the artefact replaces an earlier one
 
@@ -104,7 +109,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > - baseline: rule 5 is one row, rule 6 has the short ban list, no kr-quality-templates reference
 > - target: all four artefact changes landed
 > - window: cycle close
-> - source: `skills/initiative-shape/SKILL.md` + `references/kr-quality-templates.md`
+> - grader: `test -f references/kr-quality-templates.md && [ $(grep -cE '^\| 5[a-f] \|' skills/initiative-shape/SKILL.md) -ge 5 ] && ! grep -nE 'TBD|currently unknown|the logs|the system' skills/initiative-shape/SKILL.md references/kr-quality-templates.md`
+> - source: grader exit code + matched-line output
 
 **Bad example:**
 > "The work will be documented."
@@ -120,6 +126,69 @@ A clean 3-KR draft typically picks 3 of the 4 dimensions, not 3 of the same one.
 - **Type 4 research / thesis** — discipline (sources file populated, claims indexed) + outcome (next N decisions cite the thesis) + correctness (claims survive critique).
 - **Type 5 equity research** — discipline (pre-registration artefact exists, immutable) + correctness (per-call structure) + outcome (calibration trend across cohort).
 - **Type 6 production / customer-facing** — this is the type where SRE/DORA/AARRR vocabulary genuinely applies. Cite from there for the relevant KRs, but keep at least one Layer 1 dimension (typically discipline — telemetry exists, definitions locked).
+
+## The grader-backed KR pattern
+
+Every KR in this workspace is **grader-backed** by default: its `source:` points at a command (script, query, one-liner) that reads the write-side artefacts and emits a verdict. Manual cycle-close inspection is the carve-out, not the default. This is the load-bearing sub-check at rule 5f in `skills/initiative-shape/SKILL.md` Step 6.5 — sharper than 5b / 5c / 5d combined, because a KR that cannot name a one-sentence grader is filler regardless of how well it satisfies the other sub-rules.
+
+### Two-part shape
+
+The pattern has two halves, both scoped *into* the initiative as user stories on its issue list:
+
+| Part | What it is |
+| -- | -- |
+| **Write-side artefact** | Every relevant event / run / state-change emits a structured record at a known location with a known schema |
+| **Read-side grader** | A command reads the write-side records and emits a verdict — numeric grade, OK / WATCH / KILL, or pass / fail |
+
+### Worked example — drain-cycle
+
+The drain-cycle initiative shaped both halves explicitly. Two user stories from its issue list:
+
+> *As the operator, I want each drain run to write a structured log (issue order, spawn timestamps, exit codes, final Linear state) to* `~/.drain-cycle/runs/<cycle-id>.json` *— so KR1 (completion %) is gradable from the file alone, and KR2's time_spent block has a known home to be appended to at cycle close.*
+
+> *As the operator, I want to run a command that reads the run logs across recent cycles and prints a grade — per-cycle completion %, trend across the last N cycles, recurrent failure-mode tuples, and a verdict against the kill condition (OK / WATCH / KILL) — so I can decide whether to ship-as-is, iterate, or walk away, without re-reading JSON by hand.*
+
+The first story is the write-side schema; the second is the read-side grader. Together they make the lagging KRs gradable in one command at cycle close.
+
+### The one-sentence-grader test
+
+If you cannot describe the grader command in one sentence at draft time, the KR is filler. This is the sharpest filler-KR filter the rubric has:
+
+- "We will document this initiative" — no grader. Fail.
+- "Skill exists and has all anatomy sections" — grader is `grep -c '^## ' skills/<name>/SKILL.md` returns ≥ 11. Pass.
+- "Decision quality improves" — no grader. Fail.
+- "0/5 filler KRs in next 5 shaped initiatives, graded by `bin/grade-kr-quality`" — grader names the command. Pass.
+
+A draft KR that survives 5a–5e but cannot name a one-sentence grader still fails 5f.
+
+### Grader shapes by Layer 1 dimension
+
+| Layer 1 | Grader shape | Typical primitives |
+| -- | -- | -- |
+| **Correctness** | runs the named inputs, diffs against expected output → exit code + diff summary | `diff`, snapshot tests, `pytest`, exit code |
+| **Outcome** | scans resulting artefacts, counts observable behaviour → numeric grade | `linear-project-list`, file globs, `grep`, simple counters |
+| **Maintenance** | checks structural caps → pass/fail (navigation gate stays manual) | `wc -l`, `grep -c`, `find … \| wc -l` |
+| **Discipline** | asserts artefact existence + section count + no-TBD → pass/fail | `test -f`, `grep -c '^## '`, `! grep -E 'TBD\|unknown'` |
+
+See the Layer 2 templates above for one full example per dimension.
+
+### Manual-grading carve-out
+
+A KR may be manually graded only when one of these holds:
+
+- The initiative is genuinely one-shot or throwaway (and the project type field reflects that — e.g. a Type 4 thesis essay whose review is irreducibly a reader's verdict).
+- The verdict is irreducibly qualitative ("the prose reads naturally", "the diagram is legible") and no honest automatable proxy exists.
+
+The carve-out must be stated alongside the KR — drafts that lean on it without explicit justification fail rule 5f. "It's too much work to write a grader for this personal project" is not a valid justification: the grader shapes above are all one-line shell commands.
+
+### Building the grader is part of the initiative
+
+The write-side schema and read-side grader are scoped *into* the initiative as one or two user stories — they are not bolted on after. Before the initiative enters Active, its issue list must include:
+
+- a write-side story: "every <event> logs <fields> to <location> with <schema>"
+- a read-side story: "command <name> reads <location> and emits <verdict>"
+
+If those stories are absent at cycle planning, the grader-backed KR is aspirational decoration and the KR is ungradable by construction. The grader is the work, not the overhead — without it, the lagging KRs collapse into a vibe check at cycle close.
 
 ## Out of scope for personal projects — when not to use the defaults
 
