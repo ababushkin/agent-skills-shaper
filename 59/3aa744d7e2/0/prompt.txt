@@ -1,0 +1,1 @@
+/agent-skills:debugging-and-error-recovery Error: Skill initiative-shape cannot be used with Skill tool due to disable-model-invocation
