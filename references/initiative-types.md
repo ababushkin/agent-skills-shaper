@@ -143,7 +143,68 @@ Project type:   2 — Personal product
 
 ## Type 5 — Equity research tooling
 
-*Examples: `stock-screen`, `stock-signal`, `stock-model`, `stock-timing`, `stock-portfolio`.* Tools that produce structured forecasts and decisions about specific tickers, with a durable artefact (cached `reports/TICKER_YYYYMMDD.json`) per call. The consumer is the author plus any downstream reader of cached reports. The theory of success is forecast calibration improving over time — the Tetlock standard — not throughput of analyses. Pre-registration of BUY / WATCH / AVOID calls before outcomes are visible, and post-hoc calibration scoring across 12-month windows, matter more than per-call confidence or volume. Every KR points at the structured outputs the equity skills already produce.
+*Examples: `stock-screen`, `stock-signal`, `stock-model`, `stock-timing`, `stock-portfolio`.* Tools that produce structured forecasts and decisions about specific tickers, with a durable artefact (cached `reports/TICKER_YYYYMMDD.json`) per call. The consumer is the author plus any downstream reader of cached reports. The theory of success is forecast calibration improving over time — the Tetlock standard — not throughput of analyses. Per Tetlock, calibration over a portfolio of dated, pre-registered calls matters more than accuracy on any single name; the Brier-score view forces forecasts to be dated, immutable, and graded against outcomes. Pre-registration is what makes the discipline honest — it removes the option to rationalise a wrong call after the fact, and it is the single feature that separates equity research from horoscope. Every KR points at the structured outputs the equity skills already produce.
+
+**Objective shape.** "For [analyst plus downstream reader of cached reports], make [BUY/WATCH/AVOID calls] calibrated and pre-registered, with hit-rate and calibration graded post-hoc." The Objective names the *calibration discipline*, not the per-call analysis throughput. Running more screens, signals, or models is implementation; what the OKR scores is whether the calls made under this initiative grade well 12 months out — and whether the calling discipline was honest enough to be gradable at all.
+
+**Default KR mix (3 KRs).** One pre-registration (committed) + one calibration (aspirational, lagging) + one hit-rate (aspirational, lagging). Pre-registration is non-negotiable for Type 5 — without it, the lagging KRs are ungradable, because there is no immutable record of what was actually claimed before outcomes were visible. A decision-quality KR (per-call postmortem) is an optional 4th when the cycle window already covers prior 12-month outcomes.
+
+- **Pre-registration KR (committed)** — every BUY/WATCH/AVOID call written to a dated, immutable artefact before 12-month outcomes are visible. Form: "every BUY/WATCH/AVOID call from [skill] this window is logged to `reports/TICKER_YYYYMMDD.json` with timestamp; zero retroactive edits detected via git history across [window]." Data sources: the `reports/` directory git history (the immutability check) and the cached report files themselves. This is the committed brake against post-hoc rationalisation — a Type 5 initiative without it is producing horoscopes, not forecasts.
+- **Calibration KR (aspirational, lagging)** — does the model's stated range bracket reality? Form: "for ≥X of N tickers whose 12-month window has closed, the bear–bull range from `/stock-model` bracketed the actual price at window close." Data sources: cached `reports/TICKER_YYYYMMDD.json` for the original call + current price at window close. This is the lagging indicator that the model's uncertainty bands are honest — wider isn't better, narrower isn't better, calibrated is what counts.
+- **Hit-rate KR (aspirational, lagging)** — directional calls graded against the market. Form: "of BUY calls made ≥12 months ago, ≥X% are above entry by ≥Y%; of AVOID calls, ≥Z% are flat or down vs entry." Data sources: original call timestamps + current/window-close prices, both derivable from the cached reports. This is the lagging indicator that the calling discipline produces positive expected value, not just well-reasoned losses.
+- **Decision-quality KR (optional 4th, aspirational)** — per-call postmortem. Form: "for ≥X tickers whose 12-month window has closed, a written postmortem exists in `reports/postmortems/` comparing model output, action taken, and observed outcome." Use when the cycle window already covers closed 12-month windows from prior calls; otherwise the 3-KR default is sufficient.
+
+Throughput KRs ("run `/stock-screen` on N tickers", "produce N reports") are categorically the wrong shape for Type 5 — more analyses is output, and Type 5 grades on calibration of the analyses you already made.
+
+**Worked example — equity skill pack cycle, calibrated-calls initiative.**
+
+```
+Goal:           For Anton (and any downstream reader of cached reports),
+                make BUY/WATCH/AVOID calls from /stock-signal calibrated
+                and pre-registered — so 12-month outcomes can be graded
+                against immutable claims rather than rationalised after.
+
+KR1 [committed] — every BUY/WATCH/AVOID call this cycle is logged to a
+                  dated, immutable file before the next earnings release
+                  for each ticker; zero retroactive edits detected via
+                  git history across the window
+  baseline: pre-registration discipline not enforced; 0/7 calls dated
+  target:   7 calls timestamped + immutable across the window
+  window:   this cycle + 90-day no-edit period
+  source:   reports/TICKER_YYYYMMDD.json + git history (immutability)
+
+KR2 [aspirational] — for ≥5 of 7 tickers whose 12-month window has
+                  closed, the bear–bull range from /stock-model
+                  bracketed the actual price at window close
+  baseline: unknown — first cohort with full 12-month windows
+  target:   5/7 calibration hits
+  window:   next 4 cycles (catches the first cohort's window closes)
+  source:   reports/TICKER_YYYYMMDD.json + current price feed
+
+KR3 [aspirational] — of BUY calls made ≥12 months ago, ≥60% are above
+                  entry by ≥10%; of AVOID calls, ≥60% are flat or down
+                  vs entry
+  baseline: zero graded calls — first cohort
+  target:   ≥60% BUY hit-rate, ≥60% AVOID hit-rate
+  window:   next 4 cycles
+  source:   reports/TICKER_YYYYMMDD.json + current price feed
+
+Kill condition: if KR1 fails — any retroactive edit detected via git
+                history — the pre-registration discipline is broken
+                and the lagging KRs are ungradable. Stop and rebuild
+                the immutability fabric before producing further calls
+Project type:   5 — Equity research tooling
+```
+
+**Anti-patterns specific to Type 5.**
+
+- **"Run `/stock-screen` on N new tickers this cycle"** — throughput vanity. Type 5 grades on calibration, not coverage. Twenty new screens with no pre-registration produce twenty unrecorded opinions, not twenty results. Reshape into a pre-registration KR over the names you actually call.
+- **"BUY calls outperform the S&P over the next year"** — un-pre-registered and cherry-pickable. Without a dated, immutable set of names locked at call time, "outperform" becomes whatever cherry-picked window the analyst chooses post-hoc. Reshape into a hit-rate KR over the explicit pre-registered cohort.
+- **"Update `/stock-model` with new financial data"** — KTLO masquerading as outcome. Refreshing inputs is maintenance; the question is whether the calls the model produces grade well, not whether its inputs are current. Belongs on issues, not on KRs.
+- **"Improve model accuracy"** — unmeasurable without a calibration target and a closed window. Reshape into the calibration KR (range brackets actual price) or the hit-rate KR (directional calls graded).
+- **"Generate N reports across the watchlist"** — same vanity as the screen-count rationalisation. Reports are the artefact, not the outcome — a small portfolio of well-calibrated reports beats a library of unread ones.
+
+**Verification rubric (Type 5).** A Type 5 KR is gradable if a fresh agent 12 months from now can: (a) point at the cached report files (`reports/TICKER_YYYYMMDD.json`) that constitute the pre-registered claim — file paths recorded, not "in the repo somewhere"; (b) confirm the file's git history shows no retroactive edits inside the call window; (c) read the baseline at call time and the target — both numeric or binary, not "improved"; (d) verify the observation window has closed before grading begins; (e) compute a 0.0–1.0 grade by comparing the immutable claim against the current state. This is the Tetlock standard: a KR a third party can grade from artefacts alone, without narration from the original analyst. Additionally: at least one KR must be a pre-registration KR (committed). A Type 5 OKR without pre-registration is ungradable by construction — the lagging KRs collapse into arguments about what was meant rather than checks of what was claimed.
 
 ## Type 6 — Production / customer-facing
 
