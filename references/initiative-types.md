@@ -77,6 +77,62 @@ Project type:   1 — Methodology skill pack
 
 *Example: `nestl` (Rails app).* Complete deployed software solving a recurring problem for one user. The consumer is the author as a single user. The theory of success is that the recurring job gets done reliably without manual intervention. Growth metrics, MAU, and adoption breadth are inapplicable — the dimensions that matter are correctness (zero false negatives or missed events), no-silent-failure (every failure surfaces in a visible alert within a bounded time), availability (scheduled jobs complete to SLO), and maintenance burden (zero manual restarts/redeploys over the observation window).
 
+**Objective shape.** "For [single user — name them], make [recurring job] happen reliably without manual intervention." The Objective names the *recurring job* being automated, not the technology stack or the feature set. Shipping more features is implementation; what the OKR scores is whether the recurring job now runs without nagging you.
+
+**Default KR mix (3 KRs).** One correctness (lagging) + one no-silent-failure (committed) + one maintenance-burden (committed). Where scheduled-job completion is the system's central guarantee, an availability KR may substitute for maintenance-burden, or sit alongside it as a 4th. Pair as one aspirational (correctness — the outcome) + two committed (operability — the brake). Adoption, retention, and growth KRs are categorically inapplicable to Type 2 — there is one user.
+
+- **Correctness KR (lagging)** — does the system get the right answer when it runs? Form: "≤X false negatives / missed events / wrong outputs across [N] runs in window" or "[result] matches [reference source] in ≥X% of [N] sampled runs." Data sources: production logs, sampled outputs against ground truth, the system's own audit trail. This is the lagging indicator that the implementation is sound.
+- **No-silent-failure KR (committed)** — when a failure happens, do you find out? Form: "every error surfaces in [alert channel] within [bounded time] of failure" or "zero silent failures across [N] runs in window — every job either completes or fires an alert." Data sources: alert history, log diff between job runs and alert firings. This is the committed operability brake: a Type 2 system that fails silently is worse than one that doesn't run at all, because you're now trusting an output that isn't there.
+- **Maintenance-burden KR (committed)** — does the human have to intervene to keep it running? Form: "zero manual restarts / redeploys / production-data hotfixes over [N-day window]" or "≤X manual interventions per [window]." Data sources: deploy history, ssh/console session log, on-call notes. This is the committed brake against the slow-leak failure mode where the product technically runs but consumes the operator's attention.
+- **Availability KR (optional, committed when central)** — do the scheduled jobs complete? Form: "scheduled job [name] completes within [time budget] in ≥X% of runs across [window]." Data sources: job scheduler logs, completion timestamps. Use when scheduled-job completion is the central guarantee; otherwise rolled into maintenance-burden.
+
+Feature-shipping KRs ("add [feature]", "build [integration]") are output. Growth KRs (DAU, MAU, retention, signups) are categorically inapplicable — there is one user.
+
+**Worked example — `nestl`-shaped personal Rails app, scheduled-job product.**
+
+```
+Goal:           For Anton (single user), make the daily [recurring job]
+                run reliably without manual intervention — so the output
+                arrives on time without nagging the operator.
+
+KR1 [aspirational] — ≤1 missed event / false negative per 30-day window
+                  across the daily run
+  baseline: unknown — first cycle of measurement
+  target:   ≤1 missed event per 30 days
+  window:   next 4 cycles (3 × 30-day observation windows)
+  source:   production logs + sampled audit against source-of-truth
+
+KR2 [committed] — every job failure surfaces in [alert channel] within
+                  5 minutes; zero silent failures in window
+  baseline: unknown — first cycle of measurement
+  target:   0 silent failures across 90 days
+  window:   next 4 cycles
+  source:   alert history vs job scheduler log diff
+
+KR3 [committed] — zero manual restarts, redeploys, or production-data
+                  hotfixes across the 90-day window
+  baseline: estimate ~1 manual intervention/week today; first cycle
+            instruments the counter
+  target:   0 manual interventions across 90 days
+  window:   next 4 cycles
+  source:   deploy history + ssh/console session log
+
+Kill condition: if KR2 (no-silent-failure) cannot be hit within 2
+                cycles, the alerting fabric is wrong rather than the
+                product — pause and address operability first
+Project type:   2 — Personal product
+```
+
+**Anti-patterns specific to Type 2.**
+
+- **"Add user registration / signup flow"** — wrong product model. Type 2 is single-user by definition; there are no users to register. If signup is genuinely needed, the initiative is Type 6 (production / customer-facing) and the type was misclassified.
+- **"Increase MAU / DAU / retention / signups"** — categorically inapplicable. There is one user. Growth metrics belong to Type 6.
+- **"Build feature X" / "Add integration with Y"** — output. Shipping a feature is implementation; what the OKR scores is whether the recurring job now runs reliably without manual intervention.
+- **"Improve performance" / "Make it faster"** — unmeasurable as written. Reshape into a specific availability KR ("p95 job completion ≤ X minutes") or drop — speed is rarely the bottleneck on a personal product.
+- **"Reduce errors"** — ambiguous. Either correctness (wrong outputs) or no-silent-failure (errors not surfacing) — name which.
+
+**Verification rubric (Type 2).** A Type 2 KR is gradable if a fresh agent in the next session can name: (a) the data source — production logs, alert history, deploy log, audit trail — recorded as a file path, query, or log location; (b) the observation window length in days or cycles; (c) the baseline — recorded, not "TBD"; (d) the target as a numeric count or a binary state, not "improved"; (e) a 0.0–1.0 grade at cycle close. If any of (a)–(e) is missing, the KR isn't gradable and cycle close degrades to a vibe check. Additionally: at least one KR scores correctness (lagging) AND at least one KR scores operability (no-silent-failure, maintenance-burden, or availability). A Type 2 OKR with three correctness KRs and no operability brake is a feature-set, not a personal-product OKR.
+
 ## Type 3 — Utility skill pack
 
 *Examples: `resell-au`, `garage-sale`, `codex-primary-runtime`.* Flat collection of callable skills, each solving a discrete recurring task. The consumer is the author at per-invocation use. The theory of success is first-shot correctness of the generated artefact — the next invocation produces something the user posts, prints, or hands off without editing. Authoring more skills is output; what counts is whether the next invocation needs ≤ one edit and whether the pack covers the categories the user actually encounters end-to-end. Time-to-result KRs are usually vanity here unless speed is the named bottleneck.

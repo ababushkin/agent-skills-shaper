@@ -95,13 +95,14 @@ One-paragraph descriptions of each type are in `references/initiative-types.md` 
 Default KR mix by type:
 
 - **Type 1 (methodology skill pack)** — invocation-rate KR (leading) + decision-quality KR (lagging) + anti-output guard KR (committed). See playbook for a worked example on `/initiative-shape` itself.
-- **Types 2–6** — playbooks land in later slices; for now, use the generic outcome frame below and avoid type-specific KR-mix claims.
+- **Type 2 (personal product, single-user)** — correctness KR (lagging) + no-silent-failure KR (committed) + maintenance-burden KR (committed). Availability KR optional 4th when scheduled-job completion is the central guarantee. Growth, MAU, retention KRs are categorically inapplicable — there is one user.
+- **Types 3–6** — playbooks land in later slices; for now, use the generic outcome frame below and avoid type-specific KR-mix claims.
 
 Then ask explicitly. Do not infer. Wait for a response before synthesising.
 
 - **Who is affected?** Which users, operators, or contexts does this problem touch?
 - **What's the negative outcome if this isn't solved?** What task fails, what decision can't be made, what workflow breaks?
-- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For Type 1, propose the default mix from the playbook (invocation-rate + decision-quality + anti-output guard) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
+- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For Type 1 and Type 2, propose the default mix from the playbook (Type 1: invocation-rate + decision-quality + anti-output guard; Type 2: correctness + no-silent-failure + maintenance-burden, with availability as an optional 4th) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
 - **For each KR, fill all four sub-fields:**
   - **baseline** — current value or state (if unknown, the first issue in the initiative is to measure it)
   - **target** — value or state we expect at the end
@@ -188,6 +189,8 @@ If the user listed existing issues for this initiative, list them and offer to r
 | "Project type is bureaucratic — we know what kind of thing this is." | The field exists so the next agent — or you in three weeks — can apply the right rubric without re-deriving the taxonomy. It's a one-token tag and a downstream skill needs it. |
 | "We just need to author N new skills this cycle — the pack is the deliverable." | For methodology skill packs (Type 1), volume of skills authored is output, not outcome. Success is invocation accuracy at the decision moment + decision quality when invoked. Reshape into invocation-rate + decision-quality KRs — see Type 1 playbook in `references/initiative-types.md`. |
 | "Improving skill quality this cycle is enough — we don't need a KR for it." | "Improve quality" fails Wodtke's weekly-trackable test. Reshape into a decision-quality KR: in ≥X of last N sampled invocations, the skill surfaced an issue or produced an artefact that would otherwise not have appeared. Now it has a sample, target, and window — and can be graded at cycle close. |
+| "Let's add user registration so we can onboard people to [personal product]." | Type 2 is single-user by definition — no users to register. If signup is genuinely the work, the initiative is Type 6 (production / customer-facing), not Type 2 — re-classify before proceeding. |
+| "Let's set a KR to increase MAU / DAU / retention on the personal app." | Categorically inapplicable to Type 2. There is one user. The dimensions that matter are correctness, no-silent-failure, and maintenance burden — growth KRs belong to Type 6. See Type 2 playbook in `references/initiative-types.md`. |
 | "This is too big for 15 issues but it's one coherent thing." | Split by outcome: which key result do you want first? That's one initiative. The rest follow. |
 | "I'll sort out the KRs after we create the project." | Step 6 is a gate. The project doesn't get created until the KRs (with all sub-fields) and kill condition are confirmed. |
 | "The affected repo is obvious — we only work in one repo here." | Name it anyway. The field exists for cross-repo legibility, not to teach you something you don't know. |
@@ -202,6 +205,7 @@ If the user listed existing issues for this initiative, list them and offer to r
 - No kill condition — the initiative has no defined off-ramp and will become a zombie when the bet doesn't pay off.
 - The Project type field is missing or set to a free-text label that doesn't match the six-type taxonomy.
 - For Type 1 (methodology skill pack), every KR scores artefact volume (skills authored, lines written, files edited) — no invocation-rate (leading) or decision-quality (lagging) KR. The OKR is then measuring output, not outcome.
+- For Type 2 (personal product, single-user), any KR targets growth metrics (MAU, DAU, retention, signups) or feature volume — the type was misclassified, or growth metrics were imported from a product model that doesn't apply.
 - The initiative name describes a solution ("Build the X feature") rather than a goal or problem.
 - The appetite is expressed as a time duration ("2 weeks") rather than an issue count.
 - The Linear project was created before Step 6 confirmed the draft.
@@ -220,6 +224,7 @@ The skill has run correctly when:
 7. The appetite is expressed in issues (not days or weeks).
 8. The user confirmed the draft before the project was created (Step 6 gate honoured).
 9. For type=1 (methodology skill pack), at least one KR is an invocation-rate (leading) indicator and at least one is a decision-quality (lagging) indicator — the OKR is not measuring only artefact volume.
+10. For type=2 (personal product), at least one KR scores correctness (lagging) and at least one KR scores operability (no-silent-failure, maintenance-burden, or availability) — the OKR is not measuring feature volume or growth metrics that don't apply.
 
 ## References
 
