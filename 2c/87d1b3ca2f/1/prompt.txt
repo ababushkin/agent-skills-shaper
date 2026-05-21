@@ -1,0 +1,37 @@
+Work on Linear issue ABA-173:
+
+<issue identifier="ABA-173">
+<title>Slice 6 — Type 3 (utility skill pack) playbook</title>
+<description>
+## Description
+
+First-shot-correctness and coverage KR prompts. Per-invocation use-log requirement. Applies to `agent-skills` (`resell-au`, `garage-sale`).
+
+## Acceptance criteria
+
+* Type 3 section in references
+* Step 3 branches for type=3
+* Prompt requires a use-log location
+* Type 3 anti-patterns added ("add more skills to the pack", "run N times this cycle")
+
+## Verification
+
+* Re-shape the Facebook Listing Skill Pack project through the updated skill (research Section 7.1 shows the target shape).
+
+## Dependencies
+
+Slice 3. Parallel-safe with Slices 4, 5, 7.
+
+## Files
+
+* `references/initiative-types.md`
+* `skills/initiative-shape/SKILL.md`
+
+## Scope
+
+S
+</description>
+<team name="Personal"/>
+<project name="Initiative quality - type-aware OKRs with KRs">Improve /initiative-shape so it produces type-aware OKR-shaped Linear initiatives with 3 KRs each (baseline+target+window+source), a kill condition, and a project type tag — verifiable by system inspection.</project>
+<issue-relations><blocked-by><issue-ref identifier="ABA-170" title="Slice 3 — Type 1 (methodology) playbook + branched KR probe"/></blocked-by></issue-relations>
+</issue>

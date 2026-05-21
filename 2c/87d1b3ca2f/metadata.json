@@ -5,7 +5,8 @@
   "branch": "main",
   "checkpoints_count": 1,
   "files_touched": [
-    "references/initiative-types.md"
+    "references/initiative-types.md",
+    "skills/initiative-shape/SKILL.md"
   ],
   "sessions": [
     {
@@ -13,13 +14,19 @@
       "transcript": "/2c/87d1b3ca2f/0/full.jsonl",
       "content_hash": "/2c/87d1b3ca2f/0/content_hash.txt",
       "prompt": "/2c/87d1b3ca2f/0/prompt.txt"
+    },
+    {
+      "metadata": "/2c/87d1b3ca2f/1/metadata.json",
+      "transcript": "/2c/87d1b3ca2f/1/full.jsonl",
+      "content_hash": "/2c/87d1b3ca2f/1/content_hash.txt",
+      "prompt": "/2c/87d1b3ca2f/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 24,
-    "cache_creation_tokens": 50710,
-    "cache_read_tokens": 408563,
-    "output_tokens": 5139,
-    "api_call_count": 10
+    "input_tokens": 70,
+    "cache_creation_tokens": 230654,
+    "cache_read_tokens": 2520420,
+    "output_tokens": 27379,
+    "api_call_count": 31
   }
 }
