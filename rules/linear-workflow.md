@@ -54,7 +54,7 @@ If any of the six fields can't be filled, the initiative is not ready. Create it
 | **Active** | Assigned to the current cycle; work in progress |
 | **Done** | Success criterion observed (or definitively ruled out) — not just issues closed |
 | **Paused** | Deprioritised mid-cycle; carries over with a note on why |
-| **Cancelled** | Kill condition triggered, or initiative definitively ruled out mid-cycle; one-sentence reason recorded |
+| **Canceled** | Kill condition triggered, or initiative definitively ruled out mid-cycle; one-sentence reason recorded |
 
 **Done ≠ all issues closed.** An initiative closes when the key results are observed (or definitively ruled out) — not when its issue list reaches zero. An initiative that shipped everything but the KRs didn't hold is not Done; it is Paused for a retrospective.
 
@@ -127,8 +127,15 @@ The backlog is not the idea bank. The idea bank (from `idea-triage`) holds unval
 
 ### On completion
 
-- Move to **Done** only after the work is committed AND pushed. An issue isn't Done if the work only exists locally.
-- Status updates happen at the moment of state change — not batched at the end of a session.
+Before an issue moves to **Done**, all of these must pass in order:
+
+1. **Review** — Run `/code-review-and-quality` against the working-tree changes.
+2. **Fix** — Address any Critical or Required findings. Lower-severity findings are at the agent's discretion (fix or note in the summary comment).
+3. **Commit + push** — Commit the reviewed version and push. An issue isn't Done if work only exists locally.
+4. **Summary comment** — Post a short comment on the Linear issue via `mcp__claude_ai_Linear__save_comment` with the review summary (count of findings by severity, plus what was fixed vs deferred).
+5. **Done** — Transition to Done via `mcp__claude_ai_Linear__save_issue`.
+
+Status updates happen at the moment of state change — not batched at the end of a session.
 
 ### Blocked
 
