@@ -1,7 +1,5 @@
 # pde-skills
 
-**Workflow skills for the small product-design-engineering team - including the team of one.**
-
 The planning and decision-making layer: get the *what* and the *why* right before any code is written, so implementation is as smooth as possible. Implementation is left to a separate pack of your choice — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack).
 
 Skills encode the discipline that experienced PDE teams apply at each decision point: which ideas to pursue, how to structure work, how to build it, and how to catch failure modes before they compound. Packaged so AI agents follow them consistently instead of taking shortcuts.
