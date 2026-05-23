@@ -2,7 +2,7 @@
 name: initiative-shape
 description: >
   Shapes a vague idea into a properly formed Linear initiative — goal sentence, 3 measurable
-  key results (each with baseline / target / window / source and a committed/aspirational tag),
+  key results (each with baseline / target / measured over / how we'll know and a commit/stretch tag),
   affected repos, appetite, kill condition, and project type — then creates the Linear project.
   OKR-shaped: the goal is the Objective, the key results are observable states. Use when
   starting any sustained body of work, converting a repo-aliased project into a goal-oriented
@@ -44,7 +44,7 @@ changed_from_predecessor: "n/a"
 
 ## Purpose
 
-initiative-shape is the entry point for creating a new initiative. It takes a vague idea — a sentence, a direction, a problem — and shapes it into a properly formed Linear project with a goal sentence (Objective), 3 measurable key results (each with baseline / target / window / source and a committed/aspirational tag), affected repos, bounded appetite, kill condition, and project type. The shaped initiative is then created in Linear.
+initiative-shape is the entry point for creating a new initiative. It takes a vague idea — a sentence, a direction, a problem — and shapes it into a properly formed Linear project with a goal sentence (Objective), 3 measurable key results (each with baseline / target / measured over / how we'll know and a commit/stretch tag), affected repos, bounded appetite, kill condition, and project type. The shaped initiative is then created in Linear.
 
 The skill exists because initiatives shaped without key results become repo-aliased backlogs, and backlogs without observable outcomes don't drive decisions. The Objective and KRs must be defined before the work begins — not inferred once the issues are closed (Rules P2, A3, C1, agentic Principle 3).
 
@@ -69,7 +69,7 @@ Optional: a list of existing open issues the user expects to belong to this init
 
 ## Outputs
 
-A Linear project (via `mcp__claude_ai_Linear__save_project`) whose description follows the six-field initiative format: Goal / Key results / Affected repos / Appetite / Kill condition / Project type. Each KR carries five sub-fields (state, baseline, target, window, source) and a `[committed|aspirational]` tag. The project starts in Planned state — it does not enter a cycle until cycle planning.
+A Linear project (via `mcp__claude_ai_Linear__save_project`) whose description follows the six-field initiative format: Goal / Key results / Affected repos / Appetite / Kill condition / Project type. The description must read as a product OKR, not as pack documentation — field names are PM-readable and the rubric vocabulary (Layer 1 dimension, Layer 2 template) is confined to an italic audit-footer, never the KR body. Each KR's headline is the observable claim; below it sit four sub-fields (baseline, target, measured over, how we'll know), a `(commit|stretch)` tag, and the audit-footer line. The project starts in Planned state — it does not enter a cycle until cycle planning.
 
 ## Workflow
 
@@ -105,13 +105,13 @@ Then ask explicitly. Do not infer. Wait for a response before synthesising.
 
 - **Who is affected?** Which users, operators, or contexts does this problem touch?
 - **What's the negative outcome if this isn't solved?** What task fails, what decision can't be made, what workflow breaks?
-- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For all six types, propose the default mix from the playbook (Type 1: invocation-rate + decision-quality + anti-output guard; Type 2: correctness + no-silent-failure + maintenance-burden, with availability as an optional 4th; Type 3: first-shot correctness + coverage + use-log discipline, with domain-specific quality as an optional 4th — and never omit the use-log discipline KR for Type 3, and require the use-log location be named as a file path or directory in the KR's source field; Type 4: knowledge-claim + critique-survivability + source-discipline, with adoption as a later-stage 4th — defer adoption KRs until critique-survivability has held; Type 5: pre-registration + calibration + hit-rate, with decision-quality postmortem as an optional 4th — and never omit the pre-registration KR for Type 5; Type 6: activation/retention/conversion + quality-pair + telemetry-discipline — every value KR must have a paired quality KR, and telemetry must be in place before the cycle starts) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
-- **For each KR, fill all four sub-fields:**
+- **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For all six types, propose the default mix from the playbook (Type 1: invocation-rate + decision-quality + anti-output guard; Type 2: correctness + no-silent-failure + maintenance-burden, with availability as an optional 4th; Type 3: first-shot correctness + coverage + use-log discipline, with domain-specific quality as an optional 4th — and never omit the use-log discipline KR for Type 3, and require the use-log location be named as a file path or directory in the KR's how-we'll-know field; Type 4: knowledge-claim + critique-survivability + source-discipline, with adoption as a later-stage 4th — defer adoption KRs until critique-survivability has held; Type 5: pre-registration + calibration + hit-rate, with decision-quality postmortem as an optional 4th — and never omit the pre-registration KR for Type 5; Type 6: activation/retention/conversion + quality-pair + telemetry-discipline — every value KR must have a paired quality KR, and telemetry must be in place before the cycle starts) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
+- **For each KR, fill all four sub-fields (PM-readable labels — these are what appear in the Linear description):**
   - **baseline** — current value or state (if unknown, the first issue in the initiative is to measure it)
   - **target** — value or state we expect at the end
-  - **window** — when this is judged ("by end of cycle", "across next 4 cycles", "within 30 days")
-  - **source** — where the evidence will live (a file path, a Linear query, a log, a cached report)
-  - And tag each KR `[committed]` (must hit 1.0 — operability, no-silent-failure, baseline tracking) or `[aspirational]` (0.6–0.7 is success — outcome KRs, behaviour change, forecast calibration). A mixed OKR with 1–2 committed + 1–2 aspirational is the common shape.
+  - **measured over** — when this is judged ("by end of cycle", "across next 4 cycles", "within 30 days")
+  - **how we'll know** — where the evidence will live (a file path, a Linear query, a log, a cached report; if grader-backed, the named file plus the one-sentence command that emits the verdict)
+  - And tag each KR `(commit)` (committed — must hit 1.0: operability, no-silent-failure, baseline tracking) or `(stretch)` (aspirational — 0.6–0.7 is success: outcome KRs, behaviour change, forecast calibration). The tags are PM-readable shorthand; the Wodtke grading-bar semantics are unchanged. A mixed OKR with 1–2 `(commit)` + 1–2 `(stretch)` is the common shape.
 - **Which repos does this touch?** Name them. Cross-repo scope is allowed; name it explicitly.
 
 **4. Probe — scope and kill condition.**
@@ -121,9 +121,9 @@ Two separate questions:
 - **Kill condition — when do we stop?** Name the observable state that says "the bet didn't work, walk away." An initiative with KRs but no kill condition becomes a zombie. Phrasing: "If [KR] fails for [N] consecutive cycles" / "If we ship [X] and [baseline metric] doesn't move" / "If we learn [Y] in research".
 
 **5. Synthesise into initiative format.**
-Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable states with full sub-field discipline). Use the template in the next section.
+Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable claims with full sub-field discipline). Use the template in the next section — write it so it reads as a product OKR: PM-readable field names, rubric vocabulary confined to the audit-footer.
 
-Each KR's state should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / window / source) and a `[committed|aspirational]` tag.
+Each KR's claim (its headline) should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / measured over / how we'll know) and a `(commit|stretch)` tag. Add the audit-footer line (`*Layer 1: … · Layer 2: …*`) under each KR, and the dimensions-summary line after the KR list — this is the rubric trace, kept out of the KR body so the OKR reads cleanly to a non-pack-author.
 
 Present the draft. Do not create the Linear project yet.
 
@@ -144,9 +144,9 @@ Run the following checks against the confirmed draft. Each rule is a binary pass
 | 5c | KRs are not Goal-restatements | Strip the Goal to its measurable noun-phrase; no KR's observable state matches it. Each KR must name a *measurable property of* the Goal — not the Goal itself |
 | 5d | KR matches its Layer 2 template | For each KR, name which Layer 1 dimension it sits in and confirm it matches the template (golden-path test / self-trial protocol / structural cap + revisit gate / artefact-exists + sections-complete) in `references/kr-quality-templates.md` |
 | 5e | Language ban | No KR contains "improve", "better", "enhance", or arbitrary "run N times" count thresholds without a correctness or quality dimension |
-| 5f | KR is grader-backed (or carved out with justification) | Each KR's `source:` points at a command / script / query that emits a verdict against the target — describable in one sentence at draft time. Manual grading is permitted only under the carve-out: (a) the initiative is genuinely one-shot or throwaway, OR (b) the verdict is irreducibly qualitative ("the prose reads naturally", "the diagram is legible") and no honest automatable proxy exists. The carve-out must be stated alongside the KR. Building the grader (write-side schema + read-side command) is scoped into the initiative as one or two user stories before it enters Active. See `references/kr-quality-templates.md` "The grader-backed KR pattern" |
-| 6 | Every KR has all four sub-fields, no placeholders, `source` is a concrete artefact | Each KR has baseline, target, window, source — none blank, none equal to `TBD`, `unknown`, `currently unknown`, `we'll measure it`, `we'll figure it out`, `various`, `the logs`, `the system`, `the dashboard`, `better than today`, `the report`. `source` points to a concrete artefact: a file path, a directory, a Linear query, a log query (e.g. `bigquery: events WHERE ...`), a cached report URL, or a metric name + system |
-| 7 | Every KR is tagged | Each KR carries exactly one of `[committed]` or `[aspirational]` |
+| 5f | KR is grader-backed (or carved out with justification) | Each KR's `how we'll know:` field points at a command / script / query that emits a verdict against the target — describable in one sentence at draft time. Manual grading is permitted only under the carve-out: (a) the initiative is genuinely one-shot or throwaway, OR (b) the verdict is irreducibly qualitative ("the prose reads naturally", "the diagram is legible") and no honest automatable proxy exists. The carve-out must be stated alongside the KR. Building the grader (write-side schema + read-side command) is scoped into the initiative as one or two user stories before it enters Active. See `references/kr-quality-templates.md` "The grader-backed KR pattern" |
+| 6 | Every KR has all four sub-fields, no placeholders, `how we'll know` is a concrete artefact | Each KR has baseline, target, measured over, how we'll know — none blank, none equal to `TBD`, `unknown`, `currently unknown`, `we'll measure it`, `we'll figure it out`, `various`, `the logs`, `the system`, `the dashboard`, `better than today`, `the report`. `how we'll know` points to a concrete artefact: a file path, a directory, a Linear query, a log query (e.g. `bigquery: events WHERE ...`), a cached report URL, or a metric name + system |
+| 7 | Every KR is tagged | Each KR carries exactly one of `(commit)` or `(stretch)` |
 | 8 | Kill condition is present | Non-empty; names an observable state, not a vague clause ("if it doesn't work") |
 | 9 | Project type is canonical | One of: 1, 2, 3, 4, 5, or 6 — not free text |
 | 10 | Appetite is in issues | Expressed as "~N issues" — not days, weeks, or sprints |
@@ -166,28 +166,38 @@ If the user listed existing issues for this initiative, list them and offer to r
 
 ## Initiative description template
 
+The output is the Linear project description. It must read as a product OKR — a non-pack-author should be able to grade each KR in 30 seconds. Each KR's headline *is* the observable claim (there is no separate `state:` field). The four sub-fields use PM-readable names; the rubric vocabulary lives only in the italic audit-footer under each KR and the dimensions-summary line after the list — never in the KR body.
+
 ```markdown
 **Goal:** For [who], we want to [solve problem / achieve outcome].
 
 **Key results:**
 
-**KR1 [committed|aspirational]** — [observable state — binary pass/fail, fitness function firing, or measurable delta]
+**KR1 (commit|stretch)** — [the observable claim as one readable sentence: binary pass/fail, fitness function firing, or measurable delta]
 - baseline: [current value/state]
 - target:   [target value/state]
-- window:   [time frame]
-- source:   [where the evidence will live — file path, Linear query, log, cached report]
+- measured over: [time frame or N units — "by cycle close", "next 10 listings", "within 30 days"]
+- how we'll know: [where the evidence lives — file path / query / log / cached report; if grader-backed, the named file plus the one-sentence command that emits the verdict]
 
-**KR2 [committed|aspirational]** — [observable state]
+*Layer 1: [dimension] · Layer 2: [template]*
+
+**KR2 (commit|stretch)** — [observable claim]
 - baseline: ...
 - target:   ...
-- window:   ...
-- source:   ...
+- measured over: ...
+- how we'll know: ...
 
-**KR3 [committed|aspirational]** — [observable state]
+*Layer 1: [dimension] · Layer 2: [template]*
+
+**KR3 (commit|stretch)** — [observable claim]
 - baseline: ...
 - target:   ...
-- window:   ...
-- source:   ...
+- measured over: ...
+- how we'll know: ...
+
+*Layer 1: [dimension] · Layer 2: [template]*
+
+*Dimensions: [d1] / [d2] / [d3] — all distinct per rule 5b.*
 
 (3 KRs default; cap at 5. When the key results hold — or are definitively ruled out — the initiative is Done.)
 
@@ -200,6 +210,8 @@ If the user listed existing issues for this initiative, list them and offer to r
 **Project type:** [1: methodology | 2: personal product | 3: utility skill pack | 4: research/thesis | 5: equity research | 6: production]
 ```
 
+The `*Layer 1 · Layer 2*` footer and the `*Dimensions: …*` summary line are the rubric trace (they back the Step 6.5 checks 5b and 5d). They sit *below* the KR body, set in italics, so the OKR itself reads cleanly. Do not put Layer/rule annotations inside a KR headline or sub-fields.
+
 ## Common rationalisations
 
 | Rationalisation | Rebuttal |
@@ -210,8 +222,8 @@ If the user listed existing issues for this initiative, list them and offer to r
 | "I need a 3rd KR — let me add one for documentation / tests / logging." | If your 3rd KR's only reason to exist is to clear rule #4, you have two real dimensions and you're padding. A meta-KR that wasn't load-bearing pre-gate is filler — and rule 5b will catch it as a duplicate of "discipline" if you already have a discipline KR. Two honest paths: (a) **reshape** — a real third Layer 1 dimension is hiding (typically maintenance or outcome, see `references/kr-quality-templates.md`); (b) **descope** — narrow the initiative until 2 KRs are honestly sufficient and the work fits an ops slot rather than an initiative slot. Padding to clear the gate is the failure mode the gate exists to catch. |
 | "I don't know the baseline — I'll add it later." | If baseline isn't known, the first issue in the initiative is to measure it. A KR without a baseline is an aspiration, not a result — you can't grade it at cycle close. |
 | "The target is obvious from the goal — I don't need to spell it out separately." | The target is what makes the KR scoreable. Without it, "we'll know it when we see it" replaces a binary pass/fail, and the post-launch review degrades to vibes. |
-| "I don't need a window — we'll just keep at it until it lands." | Without a window, a KR cannot be closed. Open-ended KRs become zombies — they neither succeed nor fail, they just live on the project page forever. |
-| "The source of evidence is obvious — it's just whether the feature works." | Name the artefact. A file path, a Linear query, a log line, a cached report. If you can't name where the evidence lives, the KR isn't inspectable — and an uninspectable KR is a feeling, not a result. |
+| "I don't need a measured-over window — we'll just keep at it until it lands." | Without a measured-over window, a KR cannot be closed. Open-ended KRs become zombies — they neither succeed nor fail, they just live on the project page forever. |
+| "How we'll know is obvious — it's just whether the feature works." | Name the artefact. A file path, a Linear query, a log line, a cached report. If you can't name where the evidence lives, the KR isn't inspectable — and an uninspectable KR is a feeling, not a result. |
 | "Why a kill condition? We're going to make this work." | Most bets don't pay off on the first try. The kill condition is what protects the next quarter from a sunk-cost zombie. Naming it up front costs one sentence; not naming it costs an entire cycle. |
 | "Project type is bureaucratic — we know what kind of thing this is." | The field exists so the next agent — or you in three weeks — can apply the right rubric without re-deriving the taxonomy. It's a one-token tag and a downstream skill needs it. |
 | "We just need to author N new skills this cycle — the pack is the deliverable." | For methodology skill packs (Type 1), volume of skills authored is output, not outcome. Success is invocation accuracy at the decision moment + decision quality when invoked. Reshape into invocation-rate + decision-quality KRs — see Type 1 playbook in `references/initiative-types.md`. |
@@ -237,14 +249,14 @@ If the user listed existing issues for this initiative, list them and offer to r
 - A KR says "improve X" or "better Y" with no observable state to verify.
 - KRs are arbitrary "run N times" thresholds rather than common-path correctness, no-silent-failure, or measurable-delta states.
 - Only 1 or 2 KRs — the initiative is probably under-specified along the dimensions that actually matter (default 3; cap 5).
-- A KR is missing one or more of baseline / target / window / source.
-- A KR is missing its `[committed]` or `[aspirational]` tag — the rubric for grading it at cycle close is undefined.
+- A KR is missing one or more of baseline / target / measured over / how we'll know.
+- A KR is missing its `(commit)` or `(stretch)` tag — the rubric for grading it at cycle close is undefined.
 - No kill condition — the initiative has no defined off-ramp and will become a zombie when the bet doesn't pay off.
 - The Project type field is missing or set to a free-text label that doesn't match the six-type taxonomy.
 - For Type 1 (methodology skill pack), every KR scores artefact volume (skills authored, lines written, files edited) — no invocation-rate (leading) or decision-quality (lagging) KR. The OKR is then measuring output, not outcome.
 - For Type 2 (personal product, single-user), any KR targets growth metrics (MAU, DAU, retention, signups) or feature volume — the type was misclassified, or growth metrics were imported from a product model that doesn't apply.
 - For Type 3 (utility skill pack), every KR scores skill volume ("N skills authored") or invocation count ("run N times this cycle") — the OKR is measuring output, not utility. Reshape into first-shot correctness (≤ one edit before posting/printing) and coverage (zero unhandled categories) KRs.
-- For Type 3, no use-log discipline KR (committed) and no source location named as a file path or directory for the first-shot correctness KR — the lagging KR is ungradable because there's no immutable per-invocation record to grade against.
+- For Type 3, no use-log discipline KR (committed) and no how-we'll-know location named as a file path or directory for the first-shot correctness KR — the lagging KR is ungradable because there's no immutable per-invocation record to grade against.
 - For Type 5 (equity research tooling), no pre-registration KR (committed) — every BUY/WATCH/AVOID call must be logged to a dated, immutable artefact (cached `reports/TICKER_YYYYMMDD.json` + git history) before outcomes are visible, or the lagging calibration and hit-rate KRs are ungradable by construction.
 - For Type 5, KRs target throughput ("run `/stock-screen` on N tickers", "produce N reports") or un-pre-registered outperformance ("BUY calls beat the S&P") — Type 5 grades on calibration of dated, locked cohorts, not on volume of analyses or post-hoc cherry-picked windows.
 - For Type 4 (research / thesis-driven), every KR scores essay count, reader count, or newsletter subscribers — no knowledge-claim or source-discipline KR. The OKR is measuring artefact volume or audience noise, not defensibility of the assertions.
@@ -263,14 +275,14 @@ The skill has run correctly when:
 1. A Linear project exists with a description containing all six canonical fields (Goal / Key results / Affected repos / Appetite / Kill condition / Project type).
 2. The goal sentence names who is affected and what the outcome is — not a solution.
 3. The Key results list contains 3 entries (cap 5), each an observable state (binary pass/fail, fitness function firing, or measurable delta) — no "improve X" / "better Y" / "run N times" language.
-4. Every KR carries all four sub-fields — baseline, target, window, source — and a `[committed]` or `[aspirational]` tag.
+4. Every KR carries all four sub-fields — baseline, target, measured over, how we'll know — and a `(commit)` or `(stretch)` tag.
 5. The kill condition is present and names an observable state that says "stop pursuing this Objective."
 6. The project type is set to one of the six values (1–6).
 7. The appetite is expressed in issues (not days or weeks).
 8. The user confirmed the draft before the project was created (Step 6 gate honoured).
 9. For type=1 (methodology skill pack), at least one KR is an invocation-rate (leading) indicator and at least one is a decision-quality (lagging) indicator — the OKR is not measuring only artefact volume.
 10. For type=2 (personal product), at least one KR scores correctness (lagging) and at least one KR scores operability (no-silent-failure, maintenance-burden, or availability) — the OKR is not measuring feature volume or growth metrics that don't apply.
-11. For type=3 (utility skill pack), at least one KR is a first-shot correctness KR (aspirational, lagging — ≥X of next N artefacts used without text edits) AND at least one KR is a use-log discipline KR (committed) naming the use-log location as a file path or directory in its source field — the OKR is gradable post-hoc from the use-log alone, without narration from the operator.
+11. For type=3 (utility skill pack), at least one KR is a first-shot correctness KR (aspirational, lagging — ≥X of next N artefacts used without text edits) AND at least one KR is a use-log discipline KR (committed) naming the use-log location as a file path or directory in its how-we'll-know field — the OKR is gradable post-hoc from the use-log alone, without narration from the operator.
 12. For type=4 (research / thesis-driven), at least one KR is a knowledge-claim KR (committed — N specific defensible assertions recorded in the thesis artefact) AND at least one KR is a source-discipline KR (committed — zero uncited load-bearing claims; sources file at a named path) — the OKR is gradable post-hoc from the thesis artefact alone, without narration from the author. Adoption KRs are absent or explicitly deferred until critique-survivability has held.
 13. For type=5 (equity research tooling), at least one KR is a pre-registration KR (committed) requiring every BUY/WATCH/AVOID call to be logged to a dated, immutable artefact (cached `reports/TICKER_YYYYMMDD.json` + git history) before outcomes are visible — the OKR is gradable post-hoc by a third party from artefacts alone, without narration from the original analyst.
 14. For type=6 (production / customer-facing), at least one KR is an activation/retention/conversion KR (aspirational, lagging — baseline → target on a named cohort) AND at least one KR is a paired quality KR (committed — NPS, p95 latency, error rate, or support volume per user, with a tolerance) AND at least one KR is a telemetry-discipline KR (committed — cohort + metric definitions recorded before cycle start with no retroactive edits). The OKR is gradable from production telemetry alone, without narration from the team.
@@ -278,7 +290,7 @@ The skill has run correctly when:
 ## References
 
 - `rules/linear-workflow.md` — initiative definition, lifecycle, cycle model, ops slot (source of truth; six-field shape and KR sub-field requirements)
-- `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/window/source discipline), C1 (appetite)
+- `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/measured-over/how-we'll-know discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
 - `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline), Layer 2 measurement templates, and the grader-backed KR pattern — cited by rules 5b, 5d, and 5f in Step 6.5

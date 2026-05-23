@@ -16,6 +16,8 @@ The `/initiative-shape` skill probes the project type before shaping KRs. The ty
 
 The six types below are the ones actually observed across this portfolio (`pde-skills`, `nestl`, `agent-skills`, paused `em-os`, `stock-review`) plus one anticipated type (production / customer-facing). If a new initiative doesn't fit any of the six, the taxonomy needs updating — flag rather than force-fit.
 
+**Worked-example convention.** Each example below uses the PM-readable KR shape `/initiative-shape` emits — `(commit)` / `(stretch)` tags with `baseline` / `target` / `measured over` / `how we'll know` sub-fields. The examples model KR *content* and the per-type dimension mix; the rubric trace (the `*Layer 1 · Layer 2*` audit-footer under each KR and the `*Dimensions: …*` summary line) is added per the template in `skills/initiative-shape/SKILL.md` and is left off here to keep the focus on phrasing.
+
 ## Type 1 — Methodology skill pack
 
 *Examples: `pde-skills`, `agent-skills`.* Markdown-encoded decision rules invoked by humans or agents at decision moments. The consumer is the author plus any agent that loads the pack. The theory of success is that the skill fires at the right decision moment, and when it fires, decision quality improves. Authoring more skills is output, not outcome — invocation accuracy at the right moment, and the downstream quality of decisions made under the skill's guidance, are what count. Leading-indicator KRs measure invocation rate; lagging-indicator KRs measure decision quality when invoked.
@@ -38,26 +40,26 @@ Goal:           For Anton (and any agent invoking pde-skills), make
                 so cycle planning works against goals and KRs rather than
                 repo-aliased backlogs.
 
-KR1 [committed] — initiative-shape fires (or is offered) in ≥80% of
-                  new-initiative moments across the next 4 cycles
-  baseline: unknown — first cycle of measurement
-  target:   ≥80% offered at new-initiative moments
-  window:   next 4 cycles
-  source:   transcript history (rtk discover), sampled
+KR1 (commit) — initiative-shape fires (or is offered) in ≥80% of
+               new-initiative moments across the next 4 cycles
+  baseline:        unknown — first cycle of measurement
+  target:          ≥80% offered at new-initiative moments
+  measured over:   next 4 cycles
+  how we'll know:  transcript history (rtk discover), sampled
 
-KR2 [committed] — in ≥4 of last 5 created initiatives, all six fields
-                  pass the verification rubric
-  baseline: 0/5 pass full rubric today
-  target:   4/5 pass full rubric
-  window:   next 4 cycles
-  source:   Linear project descriptions, manual audit
+KR2 (commit) — in ≥4 of last 5 created initiatives, all six fields
+               pass the verification rubric
+  baseline:        0/5 pass full rubric today
+  target:          4/5 pass full rubric
+  measured over:   next 4 cycles
+  how we'll know:  Linear project descriptions, manual audit
 
-KR3 [aspirational] — zero Linear projects created in the next 4 cycles
-                  that are repo-aliased rather than outcome-named
-  baseline: majority of historical projects repo-aliased
-  target:   0 repo-aliased in window
-  window:   next 4 cycles
-  source:   Linear project list
+KR3 (stretch) — zero Linear projects created in the next 4 cycles
+                that are repo-aliased rather than outcome-named
+  baseline:        majority of historical projects repo-aliased
+  target:          0 repo-aliased in window
+  measured over:   next 4 cycles
+  how we'll know:  Linear project list
 
 Kill condition: if KR2 isn't hit within 2 cycles of the skill update,
                 the template is wrong rather than the operator
@@ -95,27 +97,27 @@ Goal:           For Anton (single user), make the daily [recurring job]
                 run reliably without manual intervention — so the output
                 arrives on time without nagging the operator.
 
-KR1 [aspirational] — ≤1 missed event / false negative per 30-day window
-                  across the daily run
-  baseline: unknown — first cycle of measurement
-  target:   ≤1 missed event per 30 days
-  window:   next 4 cycles (3 × 30-day observation windows)
-  source:   production logs + sampled audit against source-of-truth
+KR1 (stretch) — ≤1 missed event / false negative per 30-day window
+                across the daily run
+  baseline:        unknown — first cycle of measurement
+  target:          ≤1 missed event per 30 days
+  measured over:   next 4 cycles (3 × 30-day observation windows)
+  how we'll know:  production logs + sampled audit against source-of-truth
 
-KR2 [committed] — every job failure surfaces in [alert channel] within
-                  5 minutes; zero silent failures in window
-  baseline: unknown — first cycle of measurement
-  target:   0 silent failures across 90 days
-  window:   next 4 cycles
-  source:   alert history vs job scheduler log diff
+KR2 (commit) — every job failure surfaces in [alert channel] within
+               5 minutes; zero silent failures in window
+  baseline:        unknown — first cycle of measurement
+  target:          0 silent failures across 90 days
+  measured over:   next 4 cycles
+  how we'll know:  alert history vs job scheduler log diff
 
-KR3 [committed] — zero manual restarts, redeploys, or production-data
-                  hotfixes across the 90-day window
-  baseline: estimate ~1 manual intervention/week today; first cycle
-            instruments the counter
-  target:   0 manual interventions across 90 days
-  window:   next 4 cycles
-  source:   deploy history + ssh/console session log
+KR3 (commit) — zero manual restarts, redeploys, or production-data
+               hotfixes across the 90-day window
+  baseline:        estimate ~1 manual intervention/week today; first
+                   cycle instruments the counter
+  target:          0 manual interventions across 90 days
+  measured over:   next 4 cycles
+  how we'll know:  deploy history + ssh/console session log
 
 Kill condition: if KR2 (no-silent-failure) cannot be hit within 2
                 cycles, the alerting fabric is wrong rather than the
@@ -155,31 +157,29 @@ Goal:           For Anton selling things on Facebook Marketplace, make the
                 skill pack produce a ready-to-post listing he posts without
                 editing — across the categories he actually sells.
 
-KR1 [aspirational] — in next 10 invocations of /resell-au or /garage-sale
-                  across mixed categories, ≥8 listings are posted without
-                  text edits (photo selection only is acceptable)
-  baseline: unknown — start by logging the next 5 invocations
-  target:   ≥8/10 first-shot success
-  window:   next 10 invocations (rolling)
-  source:   listings/<item>/listing.md + listings/use-log.md
-            with edit-or-not field per invocation
+KR1 (stretch) — in the next 10 listings from /resell-au or /garage-sale
+                across mixed categories, ≥8 are posted as-is, with no text
+                edits (choosing which photos to use is fine)
+  baseline:        unknown — start by tracking the next 5 listings
+  target:          ≥8/10 posted as-is
+  measured over:   next 10 listings (rolling)
+  how we'll know:  listings/<item>/listing.md + listings/use-log.md,
+                   with an edited / not-edited flag per listing
 
-KR2 [committed] — zero invocations where the skill fails to handle the
-                  category end-to-end and Anton falls back to writing the
-                  listing manually
-  baseline: unknown — needs first-window measurement
-  target:   0 manual fallbacks across the window
-  window:   next 10 invocations
-  source:   listings/use-log.md with fell-back-to-manual flag
+KR2 (commit) — zero listings where the skill can't handle the category
+               end-to-end and Anton has to write the listing by hand
+  baseline:        unknown — needs first-window measurement
+  target:          0 manual fallbacks across the window
+  measured over:   next 10 listings
+  how we'll know:  listings/use-log.md with a fell-back-to-manual flag
 
-KR3 [committed] — every invocation in the window is logged to listings/
-                  with input photos, generated listing, final posted
-                  listing, and edit-or-not outcome; zero invocations
-                  without a use-log entry
-  baseline: no use-log discipline today; ~0/10 invocations recorded
-  target:   10/10 invocations logged
-  window:   next 10 invocations
-  source:   listings/use-log.md + listings/<item>/ directories
+KR3 (commit) — every listing is tracked: each run records the input
+               photos, the generated listing, the final posted listing,
+               and whether it was edited; zero listings with no record
+  baseline:        no tracking today; ~0/10 listings recorded
+  target:          10/10 listings tracked
+  measured over:   next 10 listings
+  how we'll know:  listings/use-log.md + listings/<item>/ directories
 
 Kill condition: if KR2 fails twice in a row (two consecutive manual
                 fallbacks), the category-detection logic is wrong rather
@@ -217,27 +217,27 @@ Goal:           For VPEs/CTOs/Eng Directors at growth-stage companies,
                 make the EM OS thesis defensible — source-backed and
                 survivable under expert critique.
 
-KR1 [committed] — by end of cycle, thesis defends 8 claims of the form
-                  "we can assert X with [confidence] backed by [evidence
-                  type]", recorded in drafts/em-os-thesis.md
-  baseline: ~4 specific claims; rest is framing
-  target:   8 claims with confidence band + evidence type
-  window:   end of next active cycle
-  source:   drafts/em-os-thesis.md + drafts/em-os-sources.md
+KR1 (commit) — by end of cycle, thesis defends 8 claims of the form
+               "we can assert X with [confidence] backed by [evidence
+               type]", recorded in drafts/em-os-thesis.md
+  baseline:        ~4 specific claims; rest is framing
+  target:          8 claims with confidence band + evidence type
+  measured over:   end of next active cycle
+  how we'll know:  drafts/em-os-thesis.md + drafts/em-os-sources.md
 
-KR2 [aspirational] — in ≥3 of 4 expert reviews, the thesis survives
-                  without a load-bearing claim being overturned
-  baseline: 0 external reviews completed
-  target:   3/4 survive
-  window:   next 4 active cycles
-  source:   drafts/em-os-reviews.md
+KR2 (stretch) — in ≥3 of 4 expert reviews, the thesis survives
+                without a load-bearing claim being overturned
+  baseline:        0 external reviews completed
+  target:          3/4 survive
+  measured over:   next 4 active cycles
+  how we'll know:  drafts/em-os-reviews.md
 
-KR3 [committed] — zero load-bearing claims in drafts/em-os-thesis.md
-                  without an inline citation; sources file ≥20 entries
-  baseline: ~50% of load-bearing claims uncited; ~6 sources logged
-  target:   0 uncited claims; ≥20 sources
-  window:   end of next active cycle
-  source:   drafts/em-os-thesis.md + drafts/em-os-sources.md
+KR3 (commit) — zero load-bearing claims in drafts/em-os-thesis.md
+               without an inline citation; sources file ≥20 entries
+  baseline:        ~50% of load-bearing claims uncited; ~6 sources logged
+  target:          0 uncited claims; ≥20 sources
+  measured over:   end of next active cycle
+  how we'll know:  drafts/em-os-thesis.md + drafts/em-os-sources.md
 
 Kill condition: if KR2 fails — two consecutive expert reviews overturn
                 a load-bearing claim — pause demo/marketing and re-shape
@@ -276,30 +276,30 @@ Goal:           For Anton (and any downstream reader of cached reports),
                 and pre-registered — so 12-month outcomes can be graded
                 against immutable claims rather than rationalised after.
 
-KR1 [committed] — every BUY/WATCH/AVOID call this cycle is logged to a
-                  dated, immutable file before the next earnings release
-                  for each ticker; zero retroactive edits detected via
-                  git history across the window
-  baseline: pre-registration discipline not enforced; 0/7 calls dated
-  target:   7 calls timestamped + immutable across the window
-  window:   this cycle + 90-day no-edit period
-  source:   reports/TICKER_YYYYMMDD.json + git history (immutability)
+KR1 (commit) — every BUY/WATCH/AVOID call this cycle is logged to a
+               dated, immutable file before the next earnings release
+               for each ticker; zero retroactive edits detected via
+               git history across the window
+  baseline:        pre-registration discipline not enforced; 0/7 calls dated
+  target:          7 calls timestamped + immutable across the window
+  measured over:   this cycle + 90-day no-edit period
+  how we'll know:  reports/TICKER_YYYYMMDD.json + git history (immutability)
 
-KR2 [aspirational] — for ≥5 of 7 tickers whose 12-month window has
-                  closed, the bear–bull range from /stock-model
-                  bracketed the actual price at window close
-  baseline: unknown — first cohort with full 12-month windows
-  target:   5/7 calibration hits
-  window:   next 4 cycles (catches the first cohort's window closes)
-  source:   reports/TICKER_YYYYMMDD.json + current price feed
+KR2 (stretch) — for ≥5 of 7 tickers whose 12-month window has
+                closed, the bear–bull range from /stock-model
+                bracketed the actual price at window close
+  baseline:        unknown — first cohort with full 12-month windows
+  target:          5/7 calibration hits
+  measured over:   next 4 cycles (catches the first cohort's window closes)
+  how we'll know:  reports/TICKER_YYYYMMDD.json + current price feed
 
-KR3 [aspirational] — of BUY calls made ≥12 months ago, ≥60% are above
-                  entry by ≥10%; of AVOID calls, ≥60% are flat or down
-                  vs entry
-  baseline: zero graded calls — first cohort
-  target:   ≥60% BUY hit-rate, ≥60% AVOID hit-rate
-  window:   next 4 cycles
-  source:   reports/TICKER_YYYYMMDD.json + current price feed
+KR3 (stretch) — of BUY calls made ≥12 months ago, ≥60% are above
+                entry by ≥10%; of AVOID calls, ≥60% are flat or down
+                vs entry
+  baseline:        zero graded calls — first cohort
+  target:          ≥60% BUY hit-rate, ≥60% AVOID hit-rate
+  measured over:   next 4 cycles
+  how we'll know:  reports/TICKER_YYYYMMDD.json + current price feed
 
 Kill condition: if KR1 fails — any retroactive edit detected via git
                 history — the pre-registration discipline is broken

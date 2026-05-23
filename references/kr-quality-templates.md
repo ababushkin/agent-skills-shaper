@@ -41,9 +41,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > "Run `/initiative-shape` against the 5 fixture inputs in `fixtures/initiative-drafts/`; all 5 produce the 6-field structure verified by `diff` against checked-in expected outputs in `fixtures/initiative-drafts/expected/`; judged at cycle close."
 > - baseline: `0/5` pass (fixtures don't exist yet — first issue creates them)
 > - target: `5/5` pass
-> - window: cycle close
-> - grader: `bin/grade-initiative-shape fixtures/initiative-drafts/` runs each fixture, diffs against `fixtures/initiative-drafts/expected/<name>.md`, exits 0 only if all pass
-> - source: grader exit code + diff output cached at `fixtures/initiative-drafts/_runs/<cycle-id>.log`
+> - measured over: cycle close
+> - how we'll know: `bin/grade-initiative-shape fixtures/initiative-drafts/` runs each fixture, diffs against `fixtures/initiative-drafts/expected/<name>.md`, exits 0 only if all pass; exit code + diff output cached at `fixtures/initiative-drafts/_runs/<cycle-id>.log`
 
 **Bad example:**
 > "The skill works well."
@@ -63,9 +62,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > "Next 5 initiatives shaped with `/initiative-shape` after this lands: zero filler KRs in the created Linear projects, graded by `bin/grade-kr-quality` against rules 5a–5f."
 > - baseline: filler-KR rate is `~1 in 3` historically (eyeball estimate from past 9 projects)
 > - target: `0/5` filler KRs
-> - window: next 5 invocations
-> - grader: `bin/grade-kr-quality $(linear-project-list --since=cycle-start)` reads each project description and emits a per-project pass/fail across 5a–5f; the KR passes if total filler-KR count is 0
-> - source: grader output cached at `~/.initiative-shape/grades/cycle-<id>.log`
+> - measured over: next 5 invocations
+> - how we'll know: `bin/grade-kr-quality $(linear-project-list --since=cycle-start)` reads each project description and emits a per-project pass/fail across 5a–5f; the KR passes if total filler-KR count is 0; output cached at `~/.initiative-shape/grades/cycle-<id>.log`
 
 **Bad example:**
 > "Initiatives will be better shaped."
@@ -85,9 +83,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > "`skills/initiative-shape/SKILL.md` stays ≤ 320 lines; in 30 days from cycle close I can locate where rule 5c lives without grepping."
 > - baseline: 281 lines today
 > - target: ≤ 320 lines, navigation check passes
-> - window: 30 days from cycle close
-> - grader: `wc -l skills/initiative-shape/SKILL.md` returns ≤ 320 (cap check, automated); the 30-day navigation check is the manual half — captured in a one-paragraph retro note
-> - source: grader output + retro note in `retros/<cycle-id>.md`
+> - measured over: 30 days from cycle close
+> - how we'll know: `wc -l skills/initiative-shape/SKILL.md` returns ≤ 320 (cap check, automated); the 30-day navigation check is the manual half — captured in a one-paragraph retro note in `retros/<cycle-id>.md`
 
 **Bad example:**
 > "The skill stays maintainable."
@@ -108,9 +105,8 @@ One template per Layer 1 dimension. Every template is verifiable by one person, 
 > "ABA-191 closes only after `skills/initiative-shape/SKILL.md` has rule 5 enumerated as 5a/5b/5c/5d/5e each with a 1-line pass condition, rule 6 has the extended placeholder ban list and concrete-artefact requirement, the rationalisations table has the 'padding to 3' row, and `references/kr-quality-templates.md` exists with all four templates."
 > - baseline: rule 5 is one row, rule 6 has the short ban list, no kr-quality-templates reference
 > - target: all four artefact changes landed
-> - window: cycle close
-> - grader: `test -f references/kr-quality-templates.md && [ $(grep -cE '^\| 5[a-f] \|' skills/initiative-shape/SKILL.md) -ge 5 ] && ! grep -nE 'TBD|currently unknown|the logs|the system' skills/initiative-shape/SKILL.md references/kr-quality-templates.md`
-> - source: grader exit code + matched-line output
+> - measured over: cycle close
+> - how we'll know: `test -f references/kr-quality-templates.md && [ $(grep -cE '^\| 5[a-f] \|' skills/initiative-shape/SKILL.md) -ge 5 ] && ! grep -nE 'TBD|currently unknown|the logs|the system' skills/initiative-shape/SKILL.md references/kr-quality-templates.md` — exit code + matched-line output
 
 **Bad example:**
 > "The work will be documented."
@@ -129,7 +125,7 @@ A clean 3-KR draft typically picks 3 of the 4 dimensions, not 3 of the same one.
 
 ## The grader-backed KR pattern
 
-Every KR in this workspace is **grader-backed** by default: its `source:` points at a command (script, query, one-liner) that reads the write-side artefacts and emits a verdict. Manual cycle-close inspection is the carve-out, not the default. This is the load-bearing sub-check at rule 5f in `skills/initiative-shape/SKILL.md` Step 6.5 — sharper than 5b / 5c / 5d combined, because a KR that cannot name a one-sentence grader is filler regardless of how well it satisfies the other sub-rules.
+Every KR in this workspace is **grader-backed** by default: its `how we'll know:` field points at a command (script, query, one-liner) that reads the write-side artefacts and emits a verdict. Manual cycle-close inspection is the carve-out, not the default. This is the load-bearing sub-check at rule 5f in `skills/initiative-shape/SKILL.md` Step 6.5 — sharper than 5b / 5c / 5d combined, because a KR that cannot name a one-sentence grader is filler regardless of how well it satisfies the other sub-rules.
 
 ### Two-part shape
 
