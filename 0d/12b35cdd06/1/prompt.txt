@@ -1,0 +1,18 @@
+i want to transform this skill pack into a purely planning skill pack                                                                                          one that's opinionated and uses linear heavily
+
+what should we call it? how should we market it?
+
+---
+
+i agree descriptive names are forgettable, recently i came across a skill pack called "superpowers" and it really stuck with me - it's a great name
+their scope is bigger than mine but i'm ok with that for now
+
+---
+
+my push back on you is that this isn't just about being a "product-leader" but also a great "technical-leader" - my pack has two shapes in there directly (product shaping and technical shaping) -- i let the other packs focus on the execution layer
+
+---
+
+plan to create this as a new linear issuer - i want to do it as a discovery/experiment
+note in the issue that this will be done distinctly in a new branch
+use a sub-agent /writing-clearly-and-concisely after you've written the plan to perform a first-pass review and critique over it, adopt its recommendations right away and then present me the plan

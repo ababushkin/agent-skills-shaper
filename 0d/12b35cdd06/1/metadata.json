@@ -1,0 +1,49 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0d12b35cdd06",
+  "session_id": "89d38d6c-7aef-465c-abfe-52b837e50534",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-23T15:13:32.398713Z",
+  "branch": "experiment/shaper-rebrand",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "e883e6cba876",
+  "token_usage": {
+    "input_tokens": 18413,
+    "cache_creation_tokens": 255025,
+    "cache_read_tokens": 3947643,
+    "output_tokens": 64455,
+    "api_call_count": 37
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-23T15:13:32.386515Z",
+    "agent_lines": 21,
+    "agent_removed": 12,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 21,
+    "total_lines_changed": 33,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 97,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 97
+      }
+    }
+  ]
+}
