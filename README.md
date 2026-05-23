@@ -1,10 +1,19 @@
-# pde-skills
+# Shaper
 
-**Workflow skills for the small product-design-engineering team - including the team of one.**
+**The shaping layer for product and engineering — including the team of one.**
 
-The planning and decision-making layer: get the *what* and the *why* right before any code is written, so implementation is as smooth as possible. Implementation is left to a separate pack of your choice — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack).
+> *Shape the work before you build it.*
 
-Skills encode the discipline that experienced PDE teams apply at each decision point: which ideas to pursue, how to structure work, how to build it, and how to catch failure modes before they compound. Packaged so AI agents follow them consistently instead of taking shortcuts.
+Shaper turns a fuzzy idea into something bettable, sound, and ready to build — before a line of code exists. It covers two shapes and deliberately stops before execution:
+
+- **Product shaping** — which problems are worth solving, what the bet is, what "done" means.
+- **Technical shaping** — how to build it soundly: the design, the de-risking spike, the task breakdown, the pre-build review.
+
+Execution — implement, test, ship — is delegated to an execution pack of your choice. That's a scope decision, not a gap: Shaper's job is to hand that pack a clean, de-risked, bettable spec.
+
+Shaper is **Linear-first** — initiatives, cycles, key results, and the idea bank live in Linear — and degrades to plain markdown when Linear isn't connected.
+
+Skills encode the discipline experienced teams apply at each decision point, packaged so AI agents follow them consistently instead of taking shortcuts.
 
 ```
   DISCOVER         CURATE          DECIDE          DESIGN            PLAN
@@ -23,7 +32,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 
 ## Skills
 
-### Product
+### Product shaping
 
 | Skill | What it does | Use when |
 |---|---|---|
@@ -34,7 +43,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [roadmap-shape](skills/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
 | [initiative-shape](skills/initiative-shape/SKILL.md) | Probes a vague idea or roadmap item through the four-field check (goal / success criterion / affected repos / appetite) and creates a Linear project. Enforces the initiative model from `linear-workflow.md`. | Before creating a Linear project for goal-directed work |
 
-### Engineering
+### Technical shaping
 
 | Skill | What it does | Use when |
 |---|---|---|
@@ -57,15 +66,15 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 
 ## Pairing with an implementation pack
 
-pde-skills' job is planning and decision-making: discover, curate, decide, design, review-before-build. It deliberately stops at the point where implementation begins. For the implementation half — test, debug, build UI, harden, ship — pick a separate pack designed for that job, or skip the pack and drive implementation with your own prompting. Both are fine; the choice is yours.
+Shaper owns shaping — discover, curate, decide, design, review-before-build — and its deliverable is a clean, de-risked, bettable spec. Execution — test, debug, build UI, harden, ship — is a separate job by design. Pair Shaper with an execution pack built for that job, or drive execution with your own prompting. Either way, what Shaper hands off is a spec that's ready to build.
 
-[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example throughout this section because three of pde's skills trace their lineage from it (`predecessor` declarations in frontmatter). It's not a required pair — it's one option among the implementation packs that exist or will exist.
+[`addyosmani/agent-skills`](https://github.com/addyosmani/agent-skills) is the worked example throughout this section because three of Shaper's skills trace their lineage from it (`predecessor` declarations in frontmatter). It's not a required pair — it's one option among the implementation packs that exist or will exist.
 
 ### What an implementation pack covers
 
-Using addy's pack as the example. Empty cells on pde's side aren't gaps to be filled — they're scope decisions. pde will never ship a TDD or CI/CD skill; that's not its job.
+Using addy's pack as the example. Empty cells on Shaper's side aren't gaps to be filled — they're scope decisions. Shaper will never ship a TDD or CI/CD skill; that's not its job.
 
-| Phase | pde-skills (planning + decision) | Implementation pack (e.g. `agent-skills`) |
+| Phase | Shaper (shaping) | Implementation pack (e.g. `agent-skills`) |
 |---|---|---|
 | Discover / curate | `idea-triage`, `app-calibrate`, `backlog-manage` | — |
 | Decide / plan | `roadmap-shape`, `initiative-shape`, `planning-and-task-breakdown` | — |
@@ -80,9 +89,9 @@ Using addy's pack as the example. Empty cells on pde's side aren't gaps to be fi
 
 ### Where the two intentionally overlap
 
-Three pde skills have direct counterparts in addy's pack. They diverge intentionally; the divergences are declared in each skill's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
+Three Shaper skills have direct counterparts in addy's pack. They diverge intentionally; the divergences are declared in each skill's frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
 
-| pde skill ↔ addy skill | What pde changed | Why |
+| Shaper skill ↔ addy skill | What Shaper changed | Why |
 |---|---|---|
 | `idea-triage` ↔ `idea-refine` (adjacent) | Mandatory ICE scoring + Confidence Meter gates; Kano classification; routes low-confidence ideas to a validation slot, not the roadmap. | The product principles in `PRODUCT_RULES.md` demand evidence before commitment — `idea-refine` accepts framed ideas; `idea-triage` gates them. |
 | `design-doc` ↔ `spec-driven-development` (derivative) | NFRs as numbered measurable targets, not adjectives; mandatory Operability section (metrics, alerts, rollback); ADR pattern enforced. | Universal eng principles A1–A6 require this rigour; `spec-driven-development` is more permissive. |
