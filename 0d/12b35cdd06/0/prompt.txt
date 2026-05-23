@@ -1,0 +1,8 @@
+i want to transform this skill pack into a purely planning skill pack
+one that's opinionated and uses linear heavily
+
+i want to explore an idea now - which is to figure out how to measure the time an operator spends planning/refining/crafting plans and then how often those plans need to be re-worked or followed up on because of gaps/issues that we missed
+
+the problem i'm trying to solve is to identify gaps/issues in my workflow where i regularly miss certain failure cases or basic infrastructure building blocks (or other things for that matter) that require some kind of back and forth re-work (not including bugs as those are found during the usage of a tool)
+
+my underlying hypothesis right now is that using LLMs/agentic coding tools can help you only if you have meticulous planning and validation steps as well as a clearly understood problem definition with follow up metrics

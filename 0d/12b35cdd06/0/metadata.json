@@ -1,0 +1,32 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0d12b35cdd06",
+  "session_id": "0c2d42f0-e3bc-467e-9d4a-87b7ef3bbcf5",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-23T15:13:23.041347Z",
+  "branch": "experiment/shaper-rebrand",
+  "checkpoints_count": 0,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "e41a3c0122d5",
+  "token_usage": {
+    "input_tokens": 27481,
+    "cache_creation_tokens": 150300,
+    "cache_read_tokens": 523389,
+    "output_tokens": 29184,
+    "api_call_count": 9
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 97,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 97
+      }
+    }
+  ]
+}
