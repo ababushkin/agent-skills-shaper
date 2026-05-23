@@ -2,8 +2,9 @@
 name: initiative-shape
 description: >
   Shapes a vague idea into a properly formed Linear initiative — goal sentence, 3 measurable
-  key results (each with baseline / target / measured over / how we'll know and a commit/stretch tag),
-  affected repos, appetite, kill condition, and project type — then creates the Linear project.
+  key results (each with baseline / target / measured over / how we'll know, a commit/stretch tag,
+  and a bet/brake/foundation role), affected repos, appetite, kill condition, and project type — then
+  creates the Linear project.
   OKR-shaped: the goal is the Objective, the key results are observable states. Use when
   starting any sustained body of work, converting a repo-aliased project into a goal-oriented
   initiative, or preparing for cycle planning. Trigger phrases: "I want to work on",
@@ -44,7 +45,7 @@ changed_from_predecessor: "n/a"
 
 ## Purpose
 
-initiative-shape is the entry point for creating a new initiative. It takes a vague idea — a sentence, a direction, a problem — and shapes it into a properly formed Linear project with a goal sentence (Objective), 3 measurable key results (each with baseline / target / measured over / how we'll know and a commit/stretch tag), affected repos, bounded appetite, kill condition, and project type. The shaped initiative is then created in Linear.
+initiative-shape is the entry point for creating a new initiative. It takes a vague idea — a sentence, a direction, a problem — and shapes it into a properly formed Linear project with a goal sentence (Objective), 3 measurable key results (each with baseline / target / measured over / how we'll know, a commit/stretch tag, and a bet/brake/foundation role), affected repos, bounded appetite, kill condition, and project type. The shaped initiative is then created in Linear.
 
 The skill exists because initiatives shaped without key results become repo-aliased backlogs, and backlogs without observable outcomes don't drive decisions. The Objective and KRs must be defined before the work begins — not inferred once the issues are closed (Rules P2, A3, C1, agentic Principle 3).
 
@@ -69,7 +70,7 @@ Optional: a list of existing open issues the user expects to belong to this init
 
 ## Outputs
 
-A Linear project (via `mcp__claude_ai_Linear__save_project`) whose description follows the six-field initiative format: Goal / Key results / Affected repos / Appetite / Kill condition / Project type. The description must read as a product OKR, not as pack documentation — field names are PM-readable and the rubric vocabulary (Layer 1 dimension, Layer 2 template) is confined to an italic audit-footer, never the KR body. Each KR's headline is the observable claim; below it sit four sub-fields (baseline, target, measured over, how we'll know), a `(commit|stretch)` tag, and the audit-footer line. The project starts in Planned state — it does not enter a cycle until cycle planning.
+A Linear project (via `mcp__claude_ai_Linear__save_project`) whose description follows the six-field initiative format: Goal / Key results / Affected repos / Appetite / Kill condition / Project type. The description must read as a product OKR, not as pack documentation — field names are PM-readable and the rubric vocabulary (Layer 1 dimension, Layer 2 template) is confined to an italic audit-footer, never the KR body. Each KR's headline is the observable claim and carries a `(commit|stretch)` grading tag plus a `bet`/`brake`/`foundation` role tag; below it sit four sub-fields (baseline, target, measured over, how we'll know) and the audit-footer line. The project starts in Planned state — it does not enter a cycle until cycle planning.
 
 ## Workflow
 
@@ -105,6 +106,7 @@ Then ask explicitly. Do not infer. Wait for a response before synthesising.
 
 - **Who is affected?** Which users, operators, or contexts does this problem touch?
 - **What's the negative outcome if this isn't solved?** What task fails, what decision can't be made, what workflow breaks?
+- **Which KR is the bet, which are brakes, which is foundation?** Before drafting observable states, name the split. The **bet** is what you're actually pushing forward this cycle — its target is a delta or a new state. **Brakes** are things that already work and you only want to protect from regression in pursuit of the bet — target is "stay ≥ baseline" or "stay at 0". **Foundation** is the instrumentation, telemetry, or tracking that has to exist before the bet KR is even measurable. Most initiatives have at most 1–2 bets; if everything feels like a bet, the brakes haven't been named yet. (Roles defined in `references/kr-quality-templates.md` "Roles within an initiative".)
 - **What 3 observable states would tell you it worked?** (Cap at 5; default 3 — per Wodtke.) Each one should be something a future agent can verify by looking at the system — a binary pass/fail, a fitness function firing, or a measurable delta. Avoid "improve X" / "better Y" language and avoid arbitrary "run N times" thresholds. **For all six types, propose the default mix from the playbook (Type 1: invocation-rate + decision-quality + anti-output guard; Type 2: correctness + no-silent-failure + maintenance-burden, with availability as an optional 4th; Type 3: first-shot correctness + coverage + use-log discipline, with domain-specific quality as an optional 4th — and never omit the use-log discipline KR for Type 3, and require the use-log location be named as a file path or directory in the KR's how-we'll-know field; Type 4: knowledge-claim + critique-survivability + source-discipline, with adoption as a later-stage 4th — defer adoption KRs until critique-survivability has held; Type 5: pre-registration + calibration + hit-rate, with decision-quality postmortem as an optional 4th — and never omit the pre-registration KR for Type 5; Type 6: activation/retention/conversion + quality-pair + telemetry-discipline — every value KR must have a paired quality KR, and telemetry must be in place before the cycle starts) and ask the user to confirm or reshape — do not start from a blank page when a playbook applies.**
 - **For each KR, fill all four sub-fields (PM-readable labels — these are what appear in the Linear description):**
   - **baseline** — current value or state (if unknown, the first issue in the initiative is to measure it)
@@ -112,6 +114,7 @@ Then ask explicitly. Do not infer. Wait for a response before synthesising.
   - **measured over** — when this is judged ("by end of cycle", "across next 4 cycles", "within 30 days")
   - **how we'll know** — where the evidence will live (a file path, a Linear query, a log, a cached report; if grader-backed, the named file plus the one-sentence command that emits the verdict)
   - And tag each KR `(commit)` (committed — must hit 1.0: operability, no-silent-failure, baseline tracking) or `(stretch)` (aspirational — 0.6–0.7 is success: outcome KRs, behaviour change, forecast calibration). The tags are PM-readable shorthand; the Wodtke grading-bar semantics are unchanged. A mixed OKR with 1–2 `(commit)` + 1–2 `(stretch)` is the common shape.
+  - And tag each KR with its **role** — `bet` / `brake` / `foundation` (from the probe above), appended in italics to the KR headline (e.g. `*(bet)*`). The role is orthogonal to `(commit|stretch)`: a brake can be either, depending on how strict its target is.
 - **Which repos does this touch?** Name them. Cross-repo scope is allowed; name it explicitly.
 
 **4. Probe — scope and kill condition.**
@@ -123,15 +126,15 @@ Two separate questions:
 **5. Synthesise into initiative format.**
 Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable claims with full sub-field discipline). Use the template in the next section — write it so it reads as a product OKR: PM-readable field names, rubric vocabulary confined to the audit-footer.
 
-Each KR's claim (its headline) should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / measured over / how we'll know) and a `(commit|stretch)` tag. Add the audit-footer line (`*Layer 1: … · Layer 2: …*`) under each KR, and the dimensions-summary line after the KR list — this is the rubric trace, kept out of the KR body so the OKR reads cleanly to a non-pack-author.
+Each KR's claim (its headline) should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / measured over / how we'll know), a `(commit|stretch)` tag, and a `bet`/`brake`/`foundation` role appended to the headline. Add the audit-footer line (`*Layer 1: … · Layer 2: …*`) under each KR, and the dimensions-summary line after the KR list — this is the rubric trace, kept out of the KR body so the OKR reads cleanly to a non-pack-author.
 
 Present the draft. Do not create the Linear project yet.
 
 **6. [GATE] User confirms the draft.**
 Ask explicitly: "Does this capture the initiative correctly? Any changes to the Objective, the Key results, kill condition, or project type before I create the project?" Do not proceed until confirmed. Fixing a wrong problem statement, vague KR, or missing kill condition here takes one minute; fixing it mid-cycle costs days.
 
-**6.5. [GATE] Verification rubric — 10 cross-cutting rules.**
-Run the following checks against the confirmed draft. Each rule is a binary pass/fail. Any failure returns the draft to Step 5 for repair — the Linear project is NOT created until all 10 pass.
+**6.5. [GATE] Verification rubric — 11 cross-cutting rules.**
+Run the following checks against the confirmed draft. Each rule is a binary pass/fail. Any failure returns the draft to Step 5 for repair — the Linear project is NOT created until all 11 pass.
 
 | # | Rule | Pass condition |
 |---|---|---|
@@ -150,6 +153,9 @@ Run the following checks against the confirmed draft. Each rule is a binary pass
 | 8 | Kill condition is present | Non-empty; names an observable state, not a vague clause ("if it doesn't work") |
 | 9 | Project type is canonical | One of: 1, 2, 3, 4, 5, or 6 — not free text |
 | 10 | Appetite is in issues | Expressed as "~N issues" — not days, weeks, or sprints |
+| 11 | Every KR has a role tag | Each KR carries exactly one of `bet` / `brake` / `foundation` — roles defined in `references/kr-quality-templates.md` "Roles within an initiative" |
+
+**Soft check (warning, not a hard fail):** if every KR is tagged `bet`, surface a warning — most initiatives have at most 1–2 bets, and an all-bet draft usually means the brakes and foundation were silently omitted. This does not block project creation, but name it to the user and ask whether a brake (something that already works and shouldn't regress) or foundation (instrumentation the bet depends on to be measurable) KR is missing. Do not force one of each role — some shapes are honestly 2 bets + 1 foundation, or 1 bet + 2 brakes.
 
 Report each failing rule by number with the specific text that triggered the failure. For rule 5, name the specific sub-rule (5a / 5b / 5c / 5d / 5e / 5f) that failed, so the user knows whether to fix the baseline-equals-target problem (5a), the duplicate-dimension problem (5b), the Goal-restatement problem (5c), the template-mismatch problem (5d), the language problem (5e), or the missing-grader problem (5f). When all checks pass, proceed to Step 7.
 
@@ -166,14 +172,14 @@ If the user listed existing issues for this initiative, list them and offer to r
 
 ## Initiative description template
 
-The output is the Linear project description. It must read as a product OKR — a non-pack-author should be able to grade each KR in 30 seconds. Each KR's headline *is* the observable claim (there is no separate `state:` field). The four sub-fields use PM-readable names; the rubric vocabulary lives only in the italic audit-footer under each KR and the dimensions-summary line after the list — never in the KR body.
+The output is the Linear project description. It must read as a product OKR — a non-pack-author should be able to grade each KR in 30 seconds. Each KR's headline *is* the observable claim (there is no separate `state:` field). The four sub-fields use PM-readable names; the rubric vocabulary lives only in the italic audit-footer under each KR and the dimensions-summary line after the list — never in the KR body. The headline ends with a PM-readable `*(bet|brake|foundation)*` role tag (the push / a guardrail / an enabler) — plain English, so it stays on the headline, unlike the Layer 1/Layer 2 rubric vocabulary that lives in the footer.
 
 ```markdown
 **Goal:** For [who], we want to [solve problem / achieve outcome].
 
 **Key results:**
 
-**KR1 (commit|stretch)** — [the observable claim as one readable sentence: binary pass/fail, fitness function firing, or measurable delta]
+**KR1 (commit|stretch)** — [the observable claim as one readable sentence: binary pass/fail, fitness function firing, or measurable delta] *(bet|brake|foundation)*
 - baseline: [current value/state]
 - target:   [target value/state]
 - measured over: [time frame or N units — "by cycle close", "next 10 listings", "within 30 days"]
@@ -181,7 +187,7 @@ The output is the Linear project description. It must read as a product OKR — 
 
 *Layer 1: [dimension] · Layer 2: [template]*
 
-**KR2 (commit|stretch)** — [observable claim]
+**KR2 (commit|stretch)** — [observable claim] *(bet|brake|foundation)*
 - baseline: ...
 - target:   ...
 - measured over: ...
@@ -189,7 +195,7 @@ The output is the Linear project description. It must read as a product OKR — 
 
 *Layer 1: [dimension] · Layer 2: [template]*
 
-**KR3 (commit|stretch)** — [observable claim]
+**KR3 (commit|stretch)** — [observable claim] *(bet|brake|foundation)*
 - baseline: ...
 - target:   ...
 - measured over: ...
@@ -199,7 +205,7 @@ The output is the Linear project description. It must read as a product OKR — 
 
 *Dimensions: [d1] / [d2] / [d3] — all distinct per rule 5b.*
 
-(3 KRs default; cap at 5. When the key results hold — or are definitively ruled out — the initiative is Done.)
+(3 KRs default; cap at 5. When the key results hold — or are definitively ruled out — the initiative is Done. Each headline ends with a role — `bet` (the push), `brake` (don't regress), or `foundation` (makes the bet measurable); most initiatives have at most 1–2 bets.)
 
 **Affected repos:** [list]
 
@@ -251,6 +257,8 @@ The `*Layer 1 · Layer 2*` footer and the `*Dimensions: …*` summary line are t
 - Only 1 or 2 KRs — the initiative is probably under-specified along the dimensions that actually matter (default 3; cap 5).
 - A KR is missing one or more of baseline / target / measured over / how we'll know.
 - A KR is missing its `(commit)` or `(stretch)` tag — the rubric for grading it at cycle close is undefined.
+- A KR is missing its `bet` / `brake` / `foundation` role tag — the initiative hasn't said whether the KR is a push, a guardrail, or an enabler (rubric rule 11).
+- Every KR is framed as a forward push (no `brake`, no `foundation`) — usually a sign the initiative hasn't named what the actual bet is vs what's load-bearing as a guardrail. Reshape: identify which 1–2 KRs are the bet, mark the rest as brakes or foundation.
 - No kill condition — the initiative has no defined off-ramp and will become a zombie when the bet doesn't pay off.
 - The Project type field is missing or set to a free-text label that doesn't match the six-type taxonomy.
 - For Type 1 (methodology skill pack), every KR scores artefact volume (skills authored, lines written, files edited) — no invocation-rate (leading) or decision-quality (lagging) KR. The OKR is then measuring output, not outcome.
@@ -275,7 +283,7 @@ The skill has run correctly when:
 1. A Linear project exists with a description containing all six canonical fields (Goal / Key results / Affected repos / Appetite / Kill condition / Project type).
 2. The goal sentence names who is affected and what the outcome is — not a solution.
 3. The Key results list contains 3 entries (cap 5), each an observable state (binary pass/fail, fitness function firing, or measurable delta) — no "improve X" / "better Y" / "run N times" language.
-4. Every KR carries all four sub-fields — baseline, target, measured over, how we'll know — and a `(commit)` or `(stretch)` tag.
+4. Every KR carries all four sub-fields — baseline, target, measured over, how we'll know — a `(commit)` or `(stretch)` tag, and a `bet`/`brake`/`foundation` role tag.
 5. The kill condition is present and names an observable state that says "stop pursuing this Objective."
 6. The project type is set to one of the six values (1–6).
 7. The appetite is expressed in issues (not days or weeks).
@@ -293,7 +301,7 @@ The skill has run correctly when:
 - `rules/PRODUCT_RULES.md` — P2 (problems not solutions), P3 (bets), A2 (problem format), A3 (measurable success criteria — applied here as 3 KRs with baseline/target/measured-over/how-we'll-know discipline), C1 (appetite)
 - `rules/eng-principles-agentic.md` — Principle 3 (spec as seatbelt; goal must precede work)
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
-- `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline), Layer 2 measurement templates, and the grader-backed KR pattern — cited by rules 5b, 5d, and 5f in Step 6.5
-- Research Section 5 — 10 cross-cutting verification rules (inline copy at Step 6.5); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
+- `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline), Layer 2 measurement templates, KR roles (bet / brake / foundation), and the grader-backed KR pattern — cited by rules 5b, 5d, 5f, and 11 in Step 6.5
+- Research Section 5 — cross-cutting verification rules 1–10 (inline copy at Step 6.5; rule 11 added locally for KR roles); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues

@@ -60,7 +60,7 @@ If any of the six fields can't be filled, the initiative is not ready. Create it
 
 ### Creating an initiative
 
-Use the `/initiative-shape` skill. Do not create Linear projects by hand for goal-directed work — the skill enforces the six-field check (including the 10-rule verification rubric gate at Step 6.5) before creating the project.
+Use the `/initiative-shape` skill. Do not create Linear projects by hand for goal-directed work — the skill enforces the six-field check (including the 11-rule verification rubric gate at Step 6.5) before creating the project.
 
 Direct creation is permitted only for: maintenance buckets, ops slots, and one-off standalone issue groupings.
 

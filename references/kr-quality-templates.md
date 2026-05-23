@@ -123,6 +123,22 @@ A clean 3-KR draft typically picks 3 of the 4 dimensions, not 3 of the same one.
 - **Type 5 equity research** — discipline (pre-registration artefact exists, immutable) + correctness (per-call structure) + outcome (calibration trend across cohort).
 - **Type 6 production / customer-facing** — this is the type where SRE/DORA/AARRR vocabulary genuinely applies. Cite from there for the relevant KRs, but keep at least one Layer 1 dimension (typically discipline — telemetry exists, definitions locked).
 
+## Roles within an initiative
+
+Layer 1 says what a KR *measures* (correctness / outcome / maintenance / discipline). The **role** says what a KR *does for the bet* — and the two are orthogonal. Every KR carries exactly one role:
+
+| Role | What it is | Target shape |
+| -- | -- | -- |
+| **bet** | what the initiative is actually pushing forward this cycle | a delta or a new state ("p95 drops to ≤ X", "first-shot correctness ≥ 8/10") |
+| **brake** | catches regression in something that already works today | "don't drop below baseline" / "stay at 0" — paired with a bet to make the trade-off visible |
+| **foundation** | makes the bet and brakes measurable — instrumentation, telemetry, tracking, schema work | "the record exists at `<path>` for every run" — without it the lagging KRs are ungradable by construction |
+
+The role tag is orthogonal to the `(commit)` / `(stretch)` tag. A brake can be either: a strict brake ("stay at 0 silent failures") is usually `(commit)`; a soft brake ("stay within 5% of baseline") may be `(stretch)`. The two tags answer different questions — `(commit|stretch)` sets the grading bar at cycle close (Wodtke); the role says which way the KR points in the initiative's theory of change.
+
+**Most initiatives have at most 1–2 bets.** A draft where every KR is a `bet` usually means the brakes were silently omitted — the initiative is pushing on three fronts at once with nothing named as load-bearing-to-protect. When you see an all-bet draft, ask: what already works that this push could break? That's a brake. What has to exist before the bet is even measurable? That's the foundation. (This is the soft check behind Step 6.5 rule 11 in `skills/initiative-shape/SKILL.md`.) The roles are not a quota — some honest shapes are 2 bets + 1 foundation, or 1 bet + 2 brakes; the rubric does not force one of each.
+
+The bet/brake split generalises Type 6's quality-pair pattern (`references/initiative-types.md`) to all six types: a bet paired with a brake is the same move as a value KR paired with a quality KR — name the thing you're pushing and the thing you must not break in the process. Per-type role defaults are suggestions, not mandates; each type's playbook in `references/initiative-types.md` annotates its default KR mix with the usual bet / brake / foundation split.
+
 ## The grader-backed KR pattern
 
 Every KR in this workspace is **grader-backed** by default: its `how we'll know:` field points at a command (script, query, one-liner) that reads the write-side artefacts and emits a verdict. Manual cycle-close inspection is the carve-out, not the default. This is the load-bearing sub-check at rule 5f in `skills/initiative-shape/SKILL.md` Step 6.5 — sharper than 5b / 5c / 5d combined, because a KR that cannot name a one-sentence grader is filler regardless of how well it satisfies the other sub-rules.
