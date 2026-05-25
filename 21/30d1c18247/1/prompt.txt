@@ -1,0 +1,63 @@
+/agent-skills:idea-refine i want to either create or refine the existing /planning-and-task-breakdown skill a bit more. i've been finding that my workflow is currently looking like this:
+
+- set goals
+- create projects (initiatives) via /initiative-shape
+- define tasks -- but framed around user stories, capabilities, etc -- see full list below
+
+one problem i've been having is that i've had to manually prompt this every time
+if i just ask for tasks, the tasks are too low level or are missing a lot of core acceptance criteria
+
+another problem is for new projects, i often forget to plan in foundational work (setting up mise for package management, etc)
+
+i'm trying to make sure that when i "plan a project" that i plan it comprehensively top-->down and its natural to invoke different skills - i naturally think in terms of:
+
+- goals <--> projects --> project deliverables
+
+---
+
+this work shouldn't actually be coupled to Linear, it should be standalone. i have another project i'm working on (agent-skills-workflow) which would then enforce the Linear layer on top of this.
+
+---
+
+we should keep the delegation to inititiave-shape - i'm going to prioritize de-coupling it next anyway so this project won't run right away
+
+this project itself needs to have a "walking skeleton" or a "spike" as well - so that we can shape the right schema and outputs. the most simplest thing is that it's a set of markdown files, that have references to each other in hierarchical order. in essence the conversion of that to a set of linear artefacts is fairly straightforward
+
+the naming should follow the "shape" family name so shape-project
+
+i actually now think the "shape initiative" and "shape project" overlap a bit, don't they? 
+
+discoverability should certainly be there in the scope
+
+---
+
+the alternative is we can rename inititaive-shape to something else? what does inititaive-shape do? just define goals? KRs?
+
+---
+
+thats ok i might take on the work to rename it - what other names could i choose to describe it better? in more product terms?
+
+---
+
+ok lets keep inititiave for now, i'll make a separate plan to rename it to "outcome"
+
+the workflow i'm thinking will be as you described:
+
+idea-shape --> outcome-shape --> delivery-shape --> task-shape (planning-and-task-breakdown)
+
+---
+
+/shape:initiative
+
+---
+
+/elements-of-style:writing-clearly-and-concisely
+
+---
+
+go
+
+---
+
+now we need to create tasks in linear - just as per the work we've done to plan this project - i want to shape the delivery of it
+what's next? a spike? a walking skeleton?
