@@ -5,6 +5,9 @@
 .claire/
 .codex/
 .entire/
+.private-journal/
+
+.DS_Store
 
 # plan-review benchmark workspace: keep analysis files (benchmark.md/json,
 # aggregate.py, grader-prompt.md, feedback.json), drop raw per-cell runs.
