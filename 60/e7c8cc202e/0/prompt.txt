@@ -1,0 +1,7 @@
+looks like some of the skills here can't be invoked automatically and need to be invoked by me manually
+
+this one is affected: /initiative-shape - but there may be others too
+
+---
+
+build a plan for option 1
