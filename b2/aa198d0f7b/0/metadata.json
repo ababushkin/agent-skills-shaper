@@ -1,0 +1,40 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "b2aa198d0f7b",
+  "session_id": "0b5743c4-4826-4ab1-8931-016c4c5d1d93",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T09:13:36.346629Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "docs/delivery-shape-contract.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/C1-schema-and-contract/N01-hand-produce-fileset-and-read-off-contract.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/C1-schema-and-contract/_capability.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/C2-mechanical-conversion-and-architecture-decision/N02-walk-script-fileset-to-manifest.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/C2-mechanical-conversion-and-architecture-decision/N03-new-skill-vs-expand-task-breakdown.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/C2-mechanical-conversion-and-architecture-decision/_capability.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/_deliverable.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C3-decomposition-with-framing-baked-in/N04-decompose-with-acceptance-criteria.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C3-decomposition-with-framing-baked-in/N05-foundational-prompt-folded-into-skeleton.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C3-decomposition-with-framing-baked-in/N06-rule-a1-branch-and-delegation.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C3-decomposition-with-framing-baked-in/_capability.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C4-framing-validation/N07-self-trial-framing-baked-in.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/C4-framing-validation/_capability.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/_deliverable.md",
+    "examples/delivery-plans/top-down-delivery-planning/D3-trigger-reliability-and-discoverability/C5-trigger-reliability-and-discoverability/N08-trigger-eval-harness.md",
+    "examples/delivery-plans/top-down-delivery-planning/D3-trigger-reliability-and-discoverability/C5-trigger-reliability-and-discoverability/N09-register-in-readme-and-flowchart.md",
+    "examples/delivery-plans/top-down-delivery-planning/D3-trigger-reliability-and-discoverability/C5-trigger-reliability-and-discoverability/_capability.md",
+    "examples/delivery-plans/top-down-delivery-planning/D3-trigger-reliability-and-discoverability/_deliverable.md",
+    "examples/delivery-plans/top-down-delivery-planning/README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "4e4cd19792eb",
+  "token_usage": {
+    "input_tokens": 17188,
+    "cache_creation_tokens": 272642,
+    "cache_read_tokens": 6225399,
+    "output_tokens": 88131,
+    "api_call_count": 39
+  }
+}
