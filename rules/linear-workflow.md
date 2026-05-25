@@ -129,7 +129,7 @@ The backlog is not the idea bank. The idea bank (from `idea-triage`) holds unval
 
 Before an issue moves to **Done**, all of these must pass in order:
 
-1. **Review** — Run `/code-review-and-quality` against the working-tree changes.
+1. **Review** — Run `/code-review-and-quality` against the working-tree changes. Run using a sub-agent.
 2. **Fix** — Address any Critical or Required findings. Lower-severity findings are at the agent's discretion (fix or note in the summary comment).
 3. **Commit + push** — Commit the reviewed version and push. An issue isn't Done if work only exists locally.
 4. **Summary comment** — Post a short comment on the Linear issue via `mcp__claude_ai_Linear__save_comment` with the review summary (count of findings by severity, plus what was fixed vs deferred).
