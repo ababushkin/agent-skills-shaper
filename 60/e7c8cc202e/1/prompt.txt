@@ -1,0 +1,20 @@
+lets plan a fix to the way my project/workflow governance works
+
+i have some rules in this project
+
+as well as rules in the global claude.md file
+
+i want just one place to setup governance so that my projects don't diverge
+
+it should be minimal, concise and focused so that the agent doesn't hallucinate or forget
+
+---
+
+this should be something that can be installed on anyone's computer so that they can follow the same patterns as me. ideally though its not part of the "shaper" skill pack, as someone can install my shaper skill pack and not want to use Linear for their workflow
+
+---
+
+run another review of the plan - specifically the project names and issues
+review it using /writing-clearly-and-concisely 
+
+then give me a clean project name for this, as well as a name for the repo - i'm thinking something like agent-skills-linear-workflow - but push back if there's a better alternative
