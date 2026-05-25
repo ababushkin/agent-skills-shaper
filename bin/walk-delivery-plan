@@ -1,0 +1,319 @@
+#!/usr/bin/env python3
+"""walk-delivery-plan — walk a delivery-plan file-set into a tracker manifest.
+
+Reads a delivery plan laid out per `docs/delivery-shape-contract.md`
+(deliverable directories → node files → task checklist lines) and emits a
+tracker-shaped manifest: milestone-class ← deliverables, issue-class ← nodes,
+sub-issue-class ← tasks. The manifest is *derived* from directory structure +
+front-matter, never authored.
+
+The script is the mechanical-conversion half of the delivery-shape spike's kill
+gate. It is deliberately dependency-free (stdlib only, no YAML library): the
+front-matter the contract pins down is a small fixed set of keys, and a targeted
+reader for those keys is more boring — and more honest about what it relies on —
+than pulling in a parser. If a plan's front-matter ever outgrows this reader,
+that is itself signal the seam needs re-shaping.
+
+Usage:
+    bin/walk-delivery-plan <plan-dir> [--json]
+
+Exit codes:
+    0   walked cleanly and the derived counts equal the README oracle
+    1   counts diverge from the README hand-count oracle (drift)
+    2   a node/deliverable/oracle could not be parsed (seam not mechanical)
+    64  usage error
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import sys
+from pathlib import Path
+
+# --- schema constants (read off docs/delivery-shape-contract.md) -------------
+
+DELIVERABLE_DIR_RE = re.compile(r"^D(\d+)-")
+NODE_FILE_RE = re.compile(r"^N(\d+)-.*\.md$")
+DELIVERABLE_FILE = "_deliverable.md"
+TASK_RE = re.compile(r"^\s*- \[([ xX])\]\s*(.*)$")
+SKELETON_TAG = "`skeleton`"
+
+# Required front-matter keys per layer. A file missing any of these is
+# "unparseable" — the seam is not mechanical, so we stop the line (exit 2).
+REQUIRED = {
+    "deliverable": ("layer", "id", "serves_kr", "maps_to"),
+    "node": ("layer", "id", "type", "serves_kr", "maps_to", "completion.form"),
+}
+
+
+class PlanError(Exception):
+    """A structural / parse failure: the file-set does not walk mechanically."""
+
+
+# --- front-matter reader -----------------------------------------------------
+
+def _dequote(value: str) -> str:
+    if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+        return value[1:-1]
+    return value
+
+
+def read_front_matter(path: Path) -> dict[str, str]:
+    """Extract the contract's front-matter keys from a layer file.
+
+    Top-level scalars are read at column 0; the one nested key the manifest
+    needs (`completion.form`) is read from the indented `form:` line under
+    `completion:`. Block-scalar prose (`>` / `|`) is indented, so it never
+    matches the column-0 key pattern and cannot pollute the result.
+    """
+    try:
+        lines = path.read_text(encoding="utf-8").splitlines()
+    except OSError as exc:
+        raise PlanError(f"{path}: cannot read ({exc})") from exc
+
+    if not lines or lines[0].strip() != "---":
+        raise PlanError(f"{path}: missing opening '---' front-matter fence")
+
+    end = next((i for i in range(1, len(lines)) if lines[i].strip() == "---"), None)
+    if end is None:
+        raise PlanError(f"{path}: front-matter fence not closed with '---'")
+    block = lines[1:end]
+
+    fm: dict[str, str] = {}
+    for line in block:
+        m = re.match(r"^([A-Za-z_][\w]*):(?:[ \t]+(.*))?$", line)
+        if m and m.group(2):
+            value = m.group(2).strip()
+            if value not in (">", "|"):
+                fm[m.group(1)] = _dequote(value)
+
+    in_completion = False
+    for line in block:
+        if re.match(r"^completion:\s*$", line):
+            in_completion = True
+            continue
+        if in_completion:
+            if re.match(r"^\S", line):  # dedent to column 0 — left the block
+                break
+            m = re.match(r"^\s+form:[ \t]+(.+)$", line)
+            if m:
+                fm["completion.form"] = _dequote(m.group(1).strip())
+                break
+    return fm
+
+
+def require_keys(fm: dict[str, str], layer: str, path: Path) -> None:
+    missing = [k for k in REQUIRED[layer] if k not in fm]
+    if missing:
+        raise PlanError(f"{path}: {layer} missing required front-matter {missing}")
+
+
+# --- task (sub-issue) reader -------------------------------------------------
+
+def read_tasks(path: Path) -> list[dict]:
+    tasks: list[dict] = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        m = TASK_RE.match(line)
+        if not m:
+            continue
+        text = m.group(2).strip()
+        skeleton = text.startswith(SKELETON_TAG)
+        if skeleton:
+            # The inline marker is promoted to the structured `skeleton` field;
+            # strip it (and its `— ` / `- ` separator) so the text is the bare task.
+            text = text[len(SKELETON_TAG):].lstrip(" —-").strip()
+        tasks.append({
+            "done": m.group(1).lower() == "x",
+            "skeleton": skeleton,
+            "text": text,
+        })
+    return tasks
+
+
+# --- walk --------------------------------------------------------------------
+
+def _order(pattern: re.Pattern, name: str) -> int:
+    m = pattern.match(name)
+    return int(m.group(1)) if m else 0
+
+
+def walk(root: Path) -> list[dict]:
+    """Walk the plan into milestones → issues → sub-issues."""
+    deliverable_dirs = sorted(
+        (d for d in root.iterdir() if d.is_dir() and DELIVERABLE_DIR_RE.match(d.name)),
+        key=lambda d: _order(DELIVERABLE_DIR_RE, d.name),
+    )
+    if not deliverable_dirs:
+        raise PlanError(f"{root}: no deliverable directories (D<n>-*) found")
+
+    milestones: list[dict] = []
+    for ddir in deliverable_dirs:
+        dfile = ddir / DELIVERABLE_FILE
+        if not dfile.exists():
+            raise PlanError(f"{ddir}: missing {DELIVERABLE_FILE}")
+        dfm = read_front_matter(dfile)
+        if dfm.get("layer") != "deliverable":
+            raise PlanError(f"{dfile}: layer is not 'deliverable'")
+        require_keys(dfm, "deliverable", dfile)
+
+        node_files = sorted(
+            (f for f in ddir.iterdir() if NODE_FILE_RE.match(f.name)),
+            key=lambda f: _order(NODE_FILE_RE, f.name),
+        )
+        issues: list[dict] = []
+        for nfile in node_files:
+            nfm = read_front_matter(nfile)
+            if nfm.get("layer") != "node":
+                raise PlanError(f"{nfile}: layer is not 'node'")
+            require_keys(nfm, "node", nfile)
+            tasks = read_tasks(nfile)
+            issues.append({
+                "id": nfm["id"],
+                "title": nfm.get("title", ""),
+                "type": nfm["type"],
+                "serves_kr": nfm["serves_kr"],
+                "completion_form": nfm["completion.form"],
+                "maps_to": nfm["maps_to"],
+                "skeleton": nfm.get("skeleton", "").lower() == "true",
+                "tracker_ref": nfm.get("tracker_ref"),
+                "path": str(nfile.relative_to(root)),
+                "sub_issues": tasks,
+            })
+        milestones.append({
+            "id": dfm["id"],
+            "title": dfm.get("title", ""),
+            "serves_kr": dfm["serves_kr"],
+            "maps_to": dfm["maps_to"],
+            "path": str(dfile.relative_to(root)),
+            "issues": issues,
+        })
+    return milestones
+
+
+def counts(milestones: list[dict]) -> dict[str, int]:
+    issues = [i for m in milestones for i in m["issues"]]
+    return {
+        "milestones": len(milestones),
+        "issues": len(issues),
+        "sub_issues": sum(len(i["sub_issues"]) for i in issues),
+    }
+
+
+# --- README oracle -----------------------------------------------------------
+
+ORACLE_ROW_RE = re.compile(r"^\|([^|]+)\|[^|]*\|\s*\*\*(\d+)\*\*\s*\|")
+
+
+def read_oracle(root: Path) -> dict[str, int]:
+    """Read the hand-count manifest table from the plan's root README."""
+    readme = root / "README.md"
+    if not readme.exists():
+        raise PlanError(f"{root}: no README.md (the hand-count oracle is missing)")
+    expected: dict[str, int] = {}
+    for line in readme.read_text(encoding="utf-8").splitlines():
+        m = ORACLE_ROW_RE.match(line)
+        if not m:
+            continue
+        label = m.group(1).strip().lower()
+        n = int(m.group(2))
+        if "sub-issue" in label:
+            expected["sub_issues"] = n
+        elif "milestone" in label:
+            expected["milestones"] = n
+        elif "issue" in label:
+            expected["issues"] = n
+    missing = [k for k in ("milestones", "issues", "sub_issues") if k not in expected]
+    if missing:
+        raise PlanError(f"{readme}: hand-count manifest table missing rows {missing}")
+    return expected
+
+
+# --- rendering ---------------------------------------------------------------
+
+def render_text(root: Path, milestones: list[dict], derived: dict, oracle: dict, ok: bool) -> str:
+    out: list[str] = []
+    out.append(f"Delivery-plan manifest — {root.name}")
+    out.append(f"source: {root}")
+    out.append("")
+    for m in milestones:
+        out.append(f"MILESTONE  {m['id']}  {m['title']}")
+        out.append(f"           [{m['maps_to']} · serves {m['serves_kr']}]")
+        for i in m["issues"]:
+            flags = [i["type"], i["serves_kr"]]
+            if i["skeleton"]:
+                flags.append("skeleton")
+            if i["tracker_ref"]:
+                flags.append(i["tracker_ref"])
+            out.append(f"  ISSUE  {i['id']}  {i['title']}")
+            out.append(f"         [{i['maps_to']} · {' · '.join(flags)}]")
+            out.append(f"         completion: {i['completion_form']}")
+            for t in i["sub_issues"]:
+                box = "x" if t["done"] else " "
+                tag = " (skeleton)" if t["skeleton"] else ""
+                text = t["text"]
+                if len(text) > 76:
+                    text = text[:73] + "..."
+                out.append(f"    SUB-ISSUE  [{box}]{tag} {text}")
+        out.append("")
+    out.append(
+        f"Summary: {derived['milestones']} milestones / "
+        f"{derived['issues']} issues / {derived['sub_issues']} sub-issues"
+    )
+    out.append(
+        f"Oracle (README hand-count): {oracle['milestones']} / "
+        f"{oracle['issues']} / {oracle['sub_issues']}  -> {'MATCH' if ok else 'MISMATCH'}"
+    )
+    return "\n".join(out)
+
+
+def build_json(root: Path, milestones: list[dict], derived: dict, oracle: dict, ok: bool) -> str:
+    return json.dumps({
+        "source": str(root),
+        "milestones": milestones,
+        "summary": derived,
+        "oracle": oracle,
+        "oracle_match": ok,
+    }, indent=2)
+
+
+# --- entrypoint --------------------------------------------------------------
+
+def main(argv: list[str]) -> int:
+    args = [a for a in argv[1:] if not a.startswith("--")]
+    as_json = "--json" in argv[1:]
+    if len(args) != 1:
+        sys.stderr.write("usage: walk-delivery-plan <plan-dir> [--json]\n")
+        return 64
+    root = Path(args[0])
+    if not root.is_dir():
+        sys.stderr.write(f"error: {root} is not a directory\n")
+        return 64
+
+    try:
+        milestones = walk(root)
+        oracle = read_oracle(root)
+    except PlanError as exc:
+        sys.stderr.write(f"PARSE ERROR: {exc}\n")
+        return 2
+
+    derived = counts(milestones)
+    ok = derived == oracle
+
+    if as_json:
+        print(build_json(root, milestones, derived, oracle, ok))
+    else:
+        print(render_text(root, milestones, derived, oracle, ok))
+
+    if not ok:
+        sys.stderr.write(
+            f"\nDRIFT: derived {derived} != README oracle {oracle}. "
+            "The file-set drifted from its hand-count, or the layout does not "
+            "walk deterministically. Investigate before declaring the gate passed.\n"
+        )
+        return 1
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))

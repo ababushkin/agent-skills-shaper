@@ -33,8 +33,10 @@ A `story` node's completion criterion is its **acceptance criteria** — observa
 - **Done when:** each emitted issue carries its node `type`, its `serves_kr` link, and its
   completion criterion, read from front-matter — verified against N01–N09.
 
+Delivered: [`bin/walk-delivery-plan`](../../../../bin/walk-delivery-plan) (Python 3, stdlib only).
+
 ## Tasks
 
-- [ ] `skeleton` — Walk-script that descends the directory tree, reads each file's front-matter, and prints deliverable / node / task counts. *(Toolchain choice — language and front-matter parser — folded in here, not a silent pre-task.)*
-- [ ] Emit a tracker manifest (milestones ← deliverables, issues ← nodes, sub-issues ← tasks) from the parsed front-matter.
-- [ ] Mechanical-conversion proof: assert the emitted counts equal the README hand-count and that the script exits non-zero on any unparseable node.
+- [x] `skeleton` — Walk-script that descends the directory tree, reads each file's front-matter, and prints deliverable / node / task counts. *(Toolchain choice — language and front-matter parser — folded in here, not a silent pre-task.)*
+- [x] Emit a tracker manifest (milestones ← deliverables, issues ← nodes, sub-issues ← tasks) from the parsed front-matter.
+- [x] Mechanical-conversion proof: assert the emitted counts equal the README hand-count and that the script exits non-zero on any unparseable node.
