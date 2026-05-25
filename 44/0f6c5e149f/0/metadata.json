@@ -1,0 +1,60 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "440f6c5e149f",
+  "session_id": "7bc56f85-2bd6-4584-8c32-322a15830333",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T05:06:12.900707Z",
+  "branch": "experiment/shaper-rebrand",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude-plugin/plugin.json",
+    ".github/ISSUE_TEMPLATE/bug-report.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "README.md",
+    "docs/idea-bank/triage-baseline-data.md",
+    "docs/tasks/render-html.md",
+    "install.sh",
+    "references/initiative-types.md",
+    "rules/PRODUCT_RULES.md",
+    "rules/eng-principles-agentic.md",
+    "rules/eng-principles-universal.md",
+    "rules/linear-workflow.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-7[1m]",
+  "turn_id": "9716aaea56ed",
+  "token_usage": {
+    "input_tokens": 353,
+    "cache_creation_tokens": 93490,
+    "cache_read_tokens": 2475534,
+    "output_tokens": 20717,
+    "api_call_count": 30
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-25T05:06:12.888541Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 16,
+    "human_modified": 70,
+    "human_removed": 0,
+    "total_committed": 16,
+    "total_lines_changed": 102,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 509,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 98,
+        "README.html": 411
+      }
+    }
+  ]
+}

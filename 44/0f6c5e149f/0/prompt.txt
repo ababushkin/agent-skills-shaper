@@ -1,0 +1,9 @@
+lets go ahead and turn this rename into a reality
+
+shaper
+
+the repo i'll use will be called agent-skills-shaper
+
+so everything should be namespaced and renamed accordingly
+
+generate a plan

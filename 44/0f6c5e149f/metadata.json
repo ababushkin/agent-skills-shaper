@@ -1,0 +1,38 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "440f6c5e149f",
+  "strategy": "manual-commit",
+  "branch": "experiment/shaper-rebrand",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude-plugin/plugin.json",
+    ".github/ISSUE_TEMPLATE/bug-report.md",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
+    "README.md",
+    "docs/idea-bank/triage-baseline-data.md",
+    "docs/tasks/render-html.md",
+    "install.sh",
+    "references/initiative-types.md",
+    "rules/PRODUCT_RULES.md",
+    "rules/eng-principles-agentic.md",
+    "rules/eng-principles-universal.md",
+    "rules/linear-workflow.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/44/0f6c5e149f/0/metadata.json",
+      "transcript": "/44/0f6c5e149f/0/full.jsonl",
+      "content_hash": "/44/0f6c5e149f/0/content_hash.txt",
+      "prompt": "/44/0f6c5e149f/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 353,
+    "cache_creation_tokens": 93490,
+    "cache_read_tokens": 2475534,
+    "output_tokens": 20717,
+    "api_call_count": 30
+  }
+}
