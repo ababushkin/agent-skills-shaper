@@ -14,7 +14,7 @@ cited_by:
 
 The `/initiative-shape` skill probes the project type before shaping KRs. The type determines what "success" means for the initiative: a methodology skill pack and a personal product can both pass cycle close, but they pass on different KRs, because their theories of success are different. Naming the type up front lets the skill load the right Objective shape and verification rubric — and lets a downstream agent reading the Linear project description apply the right rubric without re-deriving the taxonomy.
 
-The six types below are the ones actually observed across this portfolio (`pde-skills`, `nestl`, `agent-skills`, paused `em-os`, `stock-review`) plus one anticipated type (production / customer-facing). If a new initiative doesn't fit any of the six, the taxonomy needs updating — flag rather than force-fit.
+The six types below are the ones actually observed across this portfolio (`agent-skills-shaper`, `nestl`, `agent-skills`, paused `em-os`, `stock-review`) plus one anticipated type (production / customer-facing). If a new initiative doesn't fit any of the six, the taxonomy needs updating — flag rather than force-fit.
 
 Each type's default KR mix is annotated with a **Role split** — which KR is the **bet** (the push), which are **brakes** (don't-regress guardrails), and which is **foundation** (instrumentation that makes the bet measurable). The role tags appended to each KR bullet (e.g. `· bet`, `· brake`, `· foundation`) sit alongside the leading/lagging and committed/aspirational descriptors. Roles are defined in `references/kr-quality-templates.md` "Roles within an initiative"; the splits below are defaults, not mandates.
 
@@ -22,7 +22,7 @@ Each type's default KR mix is annotated with a **Role split** — which KR is th
 
 ## Type 1 — Methodology skill pack
 
-*Examples: `pde-skills`, `agent-skills`.* Markdown-encoded decision rules invoked by humans or agents at decision moments. The consumer is the author plus any agent that loads the pack. The theory of success is that the skill fires at the right decision moment, and when it fires, decision quality improves. Authoring more skills is output, not outcome — invocation accuracy at the right moment, and the downstream quality of decisions made under the skill's guidance, are what count. Leading-indicator KRs measure invocation rate; lagging-indicator KRs measure decision quality when invoked.
+*Examples: `agent-skills-shaper`, `agent-skills`.* Markdown-encoded decision rules invoked by humans or agents at decision moments. The consumer is the author plus any agent that loads the pack. The theory of success is that the skill fires at the right decision moment, and when it fires, decision quality improves. Authoring more skills is output, not outcome — invocation accuracy at the right moment, and the downstream quality of decisions made under the skill's guidance, are what count. Leading-indicator KRs measure invocation rate; lagging-indicator KRs measure decision quality when invoked.
 
 **Objective shape.** "For [agent or human invoker], make [decision moment] happen correctly without prompting." The Objective sentence names the *decision moment*, not the artefact. Authoring is implementation; what the OKR scores is whether the decision moment is now handled.
 
@@ -39,7 +39,7 @@ Adoption KRs ("skill installed in N repos") are output unless cross-repo adoptio
 **Worked example — `/initiative-shape` itself.**
 
 ```
-Goal:           For Anton (and any agent invoking pde-skills), make
+Goal:           For Anton (and any agent invoking Shaper), make
                 initiatives properly shaped before they enter a cycle —
                 so cycle planning works against goals and KRs rather than
                 repo-aliased backlogs.

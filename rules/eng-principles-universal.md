@@ -1,6 +1,6 @@
 # Engineering principles — universal (tier 1)
 
-These are the universal engineering principles for the pde-skills pack. "Universal" means: a senior engineer in 2010 would have agreed with them. They predate AI agents and apply equally whether the implementer is a human or an agent.
+These are the universal engineering principles for the Shaper pack. "Universal" means: a senior engineer in 2010 would have agreed with them. They predate AI agents and apply equally whether the implementer is a human or an agent.
 
 The companion document `eng-principles-agentic.md` covers tier-2 principles — those specific to AI-agent failure modes (context-as-asset, hallucination-as-default, evidence-beats-vibes, and others). Skills, hooks, and sub-agent personas trace to principles in either tier; some trace to both.
 

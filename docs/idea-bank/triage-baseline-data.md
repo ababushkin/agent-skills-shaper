@@ -8,7 +8,7 @@
 
 The idea arrived as a solution ("a new calibration skill," "triage reaches into MCP-backed skills"). Restated as a problem:
 
-For pde-skills users triaging metric-driven improvement ideas (performance, conversion, engagement, reliability), we believe the absence of app-specific baseline data in the triage context is causing ICE Impact and Confidence scores that are unsupported assertions — and problem statements without measurable targets.
+For Shaper users triaging metric-driven improvement ideas (performance, conversion, engagement, reliability), we believe the absence of app-specific baseline data in the triage context is causing ICE Impact and Confidence scores that are unsupported assertions — and problem statements without measurable targets.
 
 ## Evidence
 

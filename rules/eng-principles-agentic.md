@@ -1,6 +1,6 @@
 # Engineering principles — agentic (tier 2)
 
-These are the agent-specific engineering principles for the pde-skills pack. "Agent-specific" means: these principles only have force, or only make sense, because the implementer is an AI agent rather than a human. They sit on top of the universal tier (`eng-principles-universal.md`) — they don't replace it.
+These are the agent-specific engineering principles for the Shaper pack. "Agent-specific" means: these principles only have force, or only make sense, because the implementer is an AI agent rather than a human. They sit on top of the universal tier (`eng-principles-universal.md`) — they don't replace it.
 
 The test for tier 2: would this principle survive a counterfactual world without AI coding agents? If no, it belongs here. If yes, it belongs in the universal file. Some universal principles (small batches, boring technology, review) bite harder under agents than under humans alone — those are noted at the end as amplifications, not duplicated as new principles.
 

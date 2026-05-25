@@ -97,7 +97,7 @@ Three Shaper skills have direct counterparts in addy's pack. They diverge intent
 | `design-doc` ↔ `spec-driven-development` (derivative) | NFRs as numbered measurable targets, not adjectives; mandatory Operability section (metrics, alerts, rollback); ADR pattern enforced. | Universal eng principles A1–A6 require this rigour; `spec-driven-development` is more permissive. |
 | `planning-and-task-breakdown` ↔ `planning-and-task-breakdown` (derivative) | Acceptance criteria required per task; explicit dependency-order surfacing before commitment. | Eng principle B7 requires cross-team dependency surfacing pre-commitment; addy's version leaves it implicit. |
 
-If you install both packs, the namespace prefix (`pde-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
+If you install both packs, the namespace prefix (`shape-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
 
 Install commands for both packs are in [How to install](#how-to-install).
 
@@ -139,60 +139,60 @@ Short reference files cited by skills. Load on demand.
 
 ## How to install
 
-pde-skills installs and runs on its own. To pair it with an implementation pack, see the [optional step](#optional--pair-with-an-implementation-pack) below.
+Shaper installs and runs on its own. To pair it with an implementation pack, see the [optional step](#optional--pair-with-an-implementation-pack) below.
 
 ### Claude Code — marketplace install (recommended)
 
 Install the plugin directly from GitHub:
 
 ```
-/plugin install github@ababushkin/pde-skills
+/plugin install github@ababushkin/agent-skills-shaper
 ```
 
 This gives you:
 
-- The 11 slash commands (`/pde:idea-triage`, `/pde:design-doc`, …)
-- The 12 auto-invocable Skills, namespaced as `pde-<name>` (model-triggered via the Skill tool)
+- The 11 slash commands (`/shape:idea-triage`, `/shape:design-doc`, …)
+- The 12 auto-invocable Skills, namespaced as `shape-<name>` (model-triggered via the Skill tool)
 
 Restart Claude Code after install. To load the rule files persistently, add four `@` references to your `~/.claude/CLAUDE.md`:
 
 ```
-@/path/to/pde-skills/rules/PRODUCT_RULES.md
-@/path/to/pde-skills/rules/eng-principles-universal.md
-@/path/to/pde-skills/rules/eng-principles-agentic.md
-@/path/to/pde-skills/rules/linear-workflow.md
+@/path/to/agent-skills-shaper/rules/PRODUCT_RULES.md
+@/path/to/agent-skills-shaper/rules/eng-principles-universal.md
+@/path/to/agent-skills-shaper/rules/eng-principles-agentic.md
+@/path/to/agent-skills-shaper/rules/linear-workflow.md
 ```
 
-Where `/path/to/pde-skills` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
+Where `/path/to/agent-skills-shaper` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
 
 ### Claude Code — local-dev install (`install.sh`)
 
 If you've cloned the repo and want edits to propagate live without re-installing the plugin, run:
 
 ```
-git clone https://github.com/ababushkin/pde-skills.git
-cd pde-skills
+git clone https://github.com/ababushkin/agent-skills-shaper.git
+cd agent-skills-shaper
 ./install.sh
 ```
 
 The script:
 
-1. Generates wrapper command files in `~/.claude/commands/pde/` (slash commands).
-2. Symlinks each skill dir into `~/.claude/skills/pde-<name>` (auto-invocable Skills, edits propagate live).
+1. Generates wrapper command files in `~/.claude/commands/shape/` (slash commands).
+2. Symlinks each skill dir into `~/.claude/skills/shape-<name>` (auto-invocable Skills, edits propagate live).
 3. Appends `@`-refs for the four rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old layout refs are migrated automatically).
 
 Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
 
 ### Optional — pair with an implementation pack
 
-`addyosmani/agent-skills` is the worked example for the implementation half (build, verify, review, ship — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack)). Install it alongside pde-skills:
+`addyosmani/agent-skills` is the worked example for the implementation half (build, verify, review, ship — see [Pairing with an implementation pack](#pairing-with-an-implementation-pack)). Install it alongside Shaper:
 
 ```
 /plugin marketplace add addyosmani/agent-skills
 /plugin install agent-skills@addy-agent-skills
 ```
 
-Either pack works on its own; both work together. For local-dev co-install, run each pack's installer independently — namespacing (`pde-*` vs the implementation pack's namespace) prevents symlink collisions in `~/.claude/skills/`.
+Either pack works on its own; both work together. For local-dev co-install, run each pack's installer independently — namespacing (`shape-*` vs the implementation pack's namespace) prevents symlink collisions in `~/.claude/skills/`.
 
 ### Other agents (Cursor, Gemini CLI, Windsurf, …)
 

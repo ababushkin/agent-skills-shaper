@@ -6,27 +6,27 @@ CLAUDE_DIR="${HOME}/.claude"
 COMMANDS_DIR="${CLAUDE_DIR}/commands"
 CLAUDE_MD="${CLAUDE_DIR}/CLAUDE.md"
 
-echo "Installing pde-skills from ${REPO_DIR}"
+echo "Installing Shaper from ${REPO_DIR}"
 
-# 1. Generate wrapper command files in ~/.claude/commands/pde/
+# 1. Generate wrapper command files in ~/.claude/commands/shape/
 #    A directory symlink breaks @include resolution: Claude Code resolves @../../ against
-#    the virtual path through the symlink (~/.claude/commands/pde/../../ = ~/.claude/),
+#    the virtual path through the symlink (~/.claude/commands/shape/../../ = ~/.claude/),
 #    not the real path. Generated wrappers use absolute @paths instead.
 mkdir -p "${COMMANDS_DIR}"
 
-if [ -L "${COMMANDS_DIR}/pde" ]; then
-  echo "Removing existing symlink: ${COMMANDS_DIR}/pde"
-  rm "${COMMANDS_DIR}/pde"
-elif [ -d "${COMMANDS_DIR}/pde" ]; then
-  echo "Refreshing: ${COMMANDS_DIR}/pde"
-  rm -rf "${COMMANDS_DIR}/pde"
+if [ -L "${COMMANDS_DIR}/shape" ]; then
+  echo "Removing existing symlink: ${COMMANDS_DIR}/shape"
+  rm "${COMMANDS_DIR}/shape"
+elif [ -d "${COMMANDS_DIR}/shape" ]; then
+  echo "Refreshing: ${COMMANDS_DIR}/shape"
+  rm -rf "${COMMANDS_DIR}/shape"
 fi
 
-mkdir -p "${COMMANDS_DIR}/pde"
+mkdir -p "${COMMANDS_DIR}/shape"
 
 for src in "${REPO_DIR}/.claude/commands/"*.md; do
   fname="$(basename "$src")"
-  dest="${COMMANDS_DIR}/pde/${fname}"
+  dest="${COMMANDS_DIR}/shape/${fname}"
   sed "s|@../../|@${REPO_DIR}/|g" "$src" > "$dest"
   echo "Generated: ${dest}"
 done
@@ -67,7 +67,7 @@ for ref in "${RULE_REFS[@]}"; do
   fi
 done
 
-# 3. Symlink each skill dir into ~/.claude/skills/ as pde-<name>
+# 3. Symlink each skill dir into ~/.claude/skills/ as shape-<name>
 #    Enables Claude Code's auto-discovery of model-invocable Skills.
 #    Symlinks (not generated files) are correct here — SKILL.md is loaded by
 #    the runtime through the symlink and doesn't use the relative @../../
@@ -75,8 +75,8 @@ done
 SKILLS_DIR="${CLAUDE_DIR}/skills"
 mkdir -p "${SKILLS_DIR}"
 
-# Prune stale pde-* symlinks (target removed/renamed in the repo).
-for link in "${SKILLS_DIR}"/pde-*; do
+# Prune stale shape-* symlinks (target removed/renamed in the repo).
+for link in "${SKILLS_DIR}"/shape-*; do
   [ -L "${link}" ] || continue
   if [ ! -e "${link}" ]; then
     echo "Pruning stale symlink: ${link}"
@@ -89,7 +89,7 @@ done
 for skill_dir in "${REPO_DIR}/skills/"*/; do
   [ -f "${skill_dir}SKILL.md" ] || continue
   name="$(basename "${skill_dir}")"
-  link="${SKILLS_DIR}/pde-${name}"
+  link="${SKILLS_DIR}/shape-${name}"
   if [ -e "${link}" ] && [ ! -L "${link}" ]; then
     echo "WARNING: ${link} exists and is not a symlink — skipping"
     continue
@@ -107,23 +107,23 @@ echo ""
 echo "Done. Restart Claude Code to pick up changes."
 echo ""
 echo "Available commands:"
-echo "  /pde:idea-triage           Triage an incoming idea"
-echo "  /pde:roadmap-shape         Shape a planning-cycle roadmap"
-echo "  /pde:product-spike         Answer a product question before designing"
-echo "  /pde:backend-spike         Investigate a backend correctness question before implementing"
-echo "  /pde:design-doc            Structure significant engineering work"
-echo "  /pde:planning-and-task-breakdown  Break a design into tasks"
-echo "  /pde:initiative-shape      Shape an idea into a Linear initiative"
-echo "  /pde:plan-review           Review a plan/spec/design before approval"
-echo "  /pde:render-html           Render a markdown doc as a reviewable HTML file"
-echo "  /pde:stop-the-line         Scan a diff for quality red flags"
-echo "  /pde:backlog-manage        Review and curate the idea bank"
+echo "  /shape:idea-triage                  Triage an incoming idea"
+echo "  /shape:roadmap                      Shape a planning-cycle roadmap"
+echo "  /shape:product-spike                Answer a product question before designing"
+echo "  /shape:backend-spike                Investigate a backend correctness question before implementing"
+echo "  /shape:design-doc                   Structure significant engineering work"
+echo "  /shape:planning-and-task-breakdown  Break a design into tasks"
+echo "  /shape:initiative                   Shape an idea into a Linear initiative"
+echo "  /shape:plan-review                  Review a plan/spec/design before approval"
+echo "  /shape:render-html                  Render a markdown doc as a reviewable HTML file"
+echo "  /shape:stop-the-line                Scan a diff for quality red flags"
+echo "  /shape:backlog-manage               Review and curate the idea bank"
 echo ""
-echo "Auto-invocable skills (model-triggered, namespaced as pde-<name>):"
-for link in "${SKILLS_DIR}"/pde-*; do
+echo "Auto-invocable skills (model-triggered, namespaced as shape-<name>):"
+for link in "${SKILLS_DIR}"/shape-*; do
   [ -L "${link}" ] || continue
   echo "  $(basename "${link}")"
 done
 echo ""
 echo "To install via Claude Code marketplace instead:"
-echo "  /plugin install github@ababushkin/pde-skills"
+echo "  /plugin install github@ababushkin/agent-skills-shaper"

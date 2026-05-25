@@ -51,9 +51,9 @@ Meta:
 
 ### Install paths
 
-- Marketplace: `/plugin install github@ababushkin/pde-skills` (from a Claude Code session).
-- Local dev: `./install.sh` from a clone — generates command wrappers, symlinks skills as `pde-<name>`, appends rule-file `@`-refs to `~/.claude/CLAUDE.md`. Idempotent.
+- Marketplace: `/plugin install github@ababushkin/agent-skills-shaper` (from a Claude Code session).
+- Local dev: `./install.sh` from a clone — generates command wrappers, symlinks skills as `shape-<name>`, appends rule-file `@`-refs to `~/.claude/CLAUDE.md`. Idempotent.
 - Other agents (Cursor, Gemini CLI, Windsurf, …): paste rule files into the agent's instructions; load skills situationally.
 
-[Unreleased]: https://github.com/ababushkin/pde-skills/compare/v0.1.0...HEAD
-[0.1.0]: https://github.com/ababushkin/pde-skills/releases/tag/v0.1.0
+[Unreleased]: https://github.com/ababushkin/agent-skills-shaper/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/ababushkin/agent-skills-shaper/releases/tag/v0.1.0

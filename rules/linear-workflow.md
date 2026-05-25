@@ -1,6 +1,6 @@
 # Linear workflow — initiative model
 
-This document is the canonical governance model for how work is tracked in Linear across all repos in this workspace. It applies to: pde-skills, stock-review, agent-skills, nestl, adyen-onboarding.
+This document is the canonical governance model for how work is tracked in Linear across all repos in this workspace. It applies to: agent-skills-shaper, stock-review, agent-skills, nestl, adyen-onboarding.
 
 ---
 
@@ -154,7 +154,7 @@ Two cases:
 
 - **Project name**: goal or problem name, not a solution name and not a repo name.
   - Good: "Equity analysis report — usability for non-analysts"
-  - Bad: "stock-review", "stock-explain feature", "pde-skills v2"
+  - Bad: "stock-review", "stock-explain feature", "agent-skills-shaper v2"
 - **Project description**: always uses the six-field initiative format (goal / key results with sub-fields / affected repos / appetite / kill condition / project type).
 - **Project state**: Planned until it enters a cycle; In Progress when active; Completed or Cancelled on close.
 

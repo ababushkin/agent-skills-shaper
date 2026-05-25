@@ -1,7 +1,7 @@
 ---
 name: using-this-pack
 description: >
-  Meta-skill for navigating pde-skills. Identifies which skill applies to the current task
+  Meta-skill for navigating Shaper. Identifies which skill applies to the current task
   and explains the core operating behaviours that apply across all skills. Load at session
   start or when uncertain which skill to invoke.
 pack: meta
@@ -15,7 +15,7 @@ author: Anton Babushkin
 
 ## Purpose
 
-This skill is the entry point to pde-skills. It answers "which skill should I invoke right now?" and defines the operating behaviours that apply to every skill in the pack. Load it at the start of a product or engineering session, or when you're uncertain which skill fires for the current task.
+This skill is the entry point to Shaper. It answers "which skill should I invoke right now?" and defines the operating behaviours that apply to every skill in the pack. Load it at the start of a product or engineering session, or when you're uncertain which skill fires for the current task.
 
 ## Skill discovery
 

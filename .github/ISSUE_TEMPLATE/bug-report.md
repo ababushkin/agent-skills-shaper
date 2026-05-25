@@ -27,7 +27,7 @@ labels: bug
 
 - Agent runtime: <!-- Claude Code / Cursor / Gemini CLI / Windsurf / other -->
 - Install path: <!-- marketplace / local install.sh / manual paste -->
-- pde-skills commit: <!-- output of `git rev-parse HEAD` if cloned locally -->
+- Shaper commit: <!-- output of `git rev-parse HEAD` if cloned locally -->
 
 ## Anything else
 

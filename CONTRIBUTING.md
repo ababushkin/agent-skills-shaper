@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in pde-skills. Contributions are welcome — bug reports, skill proposals, principle gaps, or improvements to existing artefacts.
+Thanks for your interest in Shaper. Contributions are welcome — bug reports, skill proposals, principle gaps, or improvements to existing artefacts.
 
 This pack is a Markdown-only skill library. There's no build system, no tests, no CI. Every artefact is a `.md` file. The work is well-authored prose, not running code.
 
@@ -77,15 +77,15 @@ The non-negotiable rule: **fail criteria must be deterministic.** Non-determinis
 To work on this pack with the symlinks pointing at your clone (so edits propagate without re-running the install):
 
 ```bash
-git clone https://github.com/ababushkin/pde-skills.git
-cd pde-skills
+git clone https://github.com/ababushkin/agent-skills-shaper.git
+cd agent-skills-shaper
 ./install.sh
 ```
 
 This wires up:
 
-1. Slash commands in `~/.claude/commands/pde/`
-2. Auto-invocable skill symlinks in `~/.claude/skills/pde-<name>`
+1. Slash commands in `~/.claude/commands/shape/`
+2. Auto-invocable skill symlinks in `~/.claude/skills/shape-<name>`
 3. `@`-refs to the rule files in `~/.claude/CLAUDE.md`
 
 Re-run `./install.sh` after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
