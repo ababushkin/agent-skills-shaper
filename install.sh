@@ -103,6 +103,54 @@ for skill_dir in "${REPO_DIR}/skills/"*/; do
   fi
 done
 
+# 4. Install SessionStart hook into ~/.claude/settings.json so shape skills
+#    auto-invoke in any repo, not just agent-skills-shaper.
+HOOKS_DIR="${CLAUDE_DIR}/hooks"
+HOOK_SRC="${REPO_DIR}/hooks/session-start.sh"
+HOOK_DEST="${HOOKS_DIR}/shape-session-start.sh"
+GLOBAL_SETTINGS="${CLAUDE_DIR}/settings.json"
+HOOK_COMMAND="bash ${HOOK_DEST}"
+
+mkdir -p "${HOOKS_DIR}"
+cp "${HOOK_SRC}" "${HOOK_DEST}"
+chmod +x "${HOOK_DEST}"
+
+python3 - "${GLOBAL_SETTINGS}" "${HOOK_COMMAND}" <<'PYEOF'
+import json, sys, os
+
+settings_path = sys.argv[1]
+hook_command = sys.argv[2]
+
+if os.path.exists(settings_path):
+    with open(settings_path) as f:
+        settings = json.load(f)
+else:
+    settings = {}
+
+hooks = settings.setdefault("hooks", {})
+session_start = hooks.setdefault("SessionStart", [])
+
+# Idempotency: skip if an entry with this exact command already exists.
+for entry in session_start:
+    for h in entry.get("hooks", []):
+        if h.get("command") == hook_command:
+            print(f"Already present: {hook_command}")
+            sys.exit(0)
+
+session_start.append({
+    "matcher": "",
+    "hooks": [{"type": "command", "command": hook_command}]
+})
+
+with open(settings_path, "w") as f:
+    json.dump(settings, f, indent=2)
+    f.write("\n")
+
+print(f"Added SessionStart hook → {hook_command}")
+PYEOF
+
+echo "✓ SessionStart hook installed → ${HOOK_DEST}"
+
 echo ""
 echo "Done. Restart Claude Code to pick up changes."
 echo ""

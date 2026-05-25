@@ -8,5 +8,6 @@
   "homepage": "https://github.com/ababushkin/agent-skills-shaper",
   "repository": "https://github.com/ababushkin/agent-skills-shaper",
   "license": "MIT",
-  "commands": "./.claude/commands"
+  "commands": "./.claude/commands",
+  "hooks": "./hooks/hooks.json"
 }
