@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "60e26a09d05c",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "rules/linear-workflow.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/60/e26a09d05c/0/metadata.json",
+      "transcript": "/60/e26a09d05c/0/full.jsonl",
+      "content_hash": "/60/e26a09d05c/0/content_hash.txt",
+      "prompt": "/60/e26a09d05c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 16418,
+    "cache_creation_tokens": 136841,
+    "cache_read_tokens": 467690,
+    "output_tokens": 9404,
+    "api_call_count": 9
+  }
+}

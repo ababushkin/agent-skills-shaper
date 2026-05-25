@@ -1,0 +1,63 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "60e26a09d05c",
+  "session_id": "eb41b75e-55b8-46ea-b21c-8336746e009e",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T12:44:38.923605Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "rules/linear-workflow.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "26339960f716",
+  "token_usage": {
+    "input_tokens": 16418,
+    "cache_creation_tokens": 136841,
+    "cache_read_tokens": 467690,
+    "output_tokens": 9404,
+    "api_call_count": 9
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-25T12:44:38.913415Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 1,
+    "total_committed": 0,
+    "total_lines_changed": 1,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 110,
+      "user_lines_removed": 1,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 109,
+        "rules/linear-workflow.md": 1
+      },
+      "user_removed_per_file": {
+        "rules/linear-workflow.md": 1
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 109,
+      "user_lines_removed": 0,
+      "agent_lines_added": 1,
+      "agent_lines_removed": 1,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 109
+      }
+    }
+  ]
+}
