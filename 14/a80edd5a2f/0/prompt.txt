@@ -1,0 +1,64 @@
+Work on Linear issue ABA-283:
+
+<issue identifier="ABA-283">
+<title>Collapse delivery plan to 3 levels: capability becomes a node type, drop the structural label layer</title>
+<description>
+## Problem
+
+The contract + worked file-set from <issue id="baa17af9-84fe-4edc-b366-b87248fea8b6">ABA-281</issue> use a **four-level** hierarchy: deliverable → capability → node → task, with `capability → label-class`. Two things are wrong with that:
+
+* A label is **stateless** (name + colour, no done-state, no target), yet each `_capability.md` asserts a `completion.form: the-capability-spec` with a real criterion — a stateful claim mapped onto an artefact that can't hold or check it.
+* It's **asymmetric**: deliverables also carry a completion criterion and get a milestone (stateful, descriptive); capabilities — same kind of object — get only a tag.
+
+Root cause: four plan layers squeezed into a tracker's three *stateful* nesting levels (milestone / issue / sub-issue) + stateless labels. The squeeze landed at the capability layer.
+
+## Decision (confirmed)
+
+Collapse to **three levels** — deliverable → node → task — and make `capability` a **polymorphic node *type*** (a peer of `story`/`spike`/`adr`/…), completion form `the-capability-spec`. A capability-node is just a spec-shaped node broken into task-slices.
+
+Result: layers map 1:1 to **milestone / issue / sub-issue**. No structural label layer (labels stay available for *orthogonal* tagging — theme/area — just not for the hierarchy). The squeeze disappears; so does the stateless-label type mismatch.
+
+This tightens the polymorphic-node thesis the contract already argues, rather than fighting it.
+
+## Scope of change
+
+**Contract —** `docs/delivery-shape-contract.md`
+
+* "Four layers" table → three layers (deliverable / node / task); drop `label-class` as a structural mapping.
+* Fold `capability` into the node-type vocabulary (completion form `the-capability-spec`); remove the separate "capability layer is not a node type" carve-out.
+* Schema element 1 (directory layout): drop the `C*/_capability.md` level; nodes sit directly under `D*/`.
+* Schema element 2 + walkability contract: remove "labels = `C*` directories" from the countable manifest.
+* Design notes: replace the "capability → label vs parent-issue" note with the layer-collapse rationale.
+
+**Worked example —** `examples/delivery-plans/top-down-delivery-planning/`
+
+* Collapse all 5 `C*/_capability.md`; promote their nodes to direct children of `D*/`; update each node's `parent:` (`C*` → `D*`) and the "exercises every layer" prose (`deliverable → node → task`).
+* README: update tree, how-to-read, node-type coverage table, and **hand-count manifest** → `3 milestones / 9 issues / 19 sub-issues` (drop the 5-labels row).
+
+D1 has already been rendered in the new structure as the reference for the rework.
+
+## Two decisions to resolve in this issue
+
+1. **Absorbing capability content.** In this example the capability layer carried little unique info (C1 wrapped a single node; C2 was just a cluster name). Confirm it's safe to absorb into deliverable prose — and define what happens when a capability's spec *isn't* reducible to its children.
+2. **Grounding the** `capability` **type.** This example exercises no `capability`-type node (all spike/story/adr/experiment/ktlo). Either re-type one node as a genuine capability (spec-shaped, task-sliced) so the type is grounded per the "don't define what the example doesn't exercise" rule, or move `capability` to the to-fill appendix.
+
+## Relationships / sequencing
+
+* **Supersedes** the four-level structure produced in <issue id="baa17af9-84fe-4edc-b366-b87248fea8b6">ABA-281</issue>.
+* **Blocks** <issue id="a0c62c58-38cb-4102-bbe4-f0013234c52e">ABA-282</issue> (walk-script + new-skill-vs-expand ADR): the three-level model simplifies the walk-script to a clean three-count and changes what N02/N03 must handle — do this first.
+* The **project summary + KR text** still read "deliverables → capabilities → stories → tasks". Decide whether to update the project description to match (likely yes — separate small edit).
+
+## Appetite
+
+\~1 issue (markdown-only rework of existing contract + example).
+</description>
+<team name="Personal"/>
+<label>repo:agent-skills-shaper</label>
+<label>review:high</label>
+<label>model:opus</label>
+<project name="Top-down delivery planning — framing baked in, foundational work never silent">Standalone delivery-planning skill: turn a committed initiative into a hierarchical markdown delivery plan (deliverables→capabilities→stories→tasks) with framing + foundational work baked in. Parked behind the initiative-shape Linear-decouple.</project>
+<issue-relations>
+<blocking><issue-ref identifier="ABA-282" title="Walk-script + mechanical-conversion proof + A-vs-B decision [GATE]"/></blocking>
+<related><issue-ref identifier="ABA-281" title="Walking-skeleton spike: hand-produce the plan file-set + read off the contract"/></related>
+</issue-relations>
+</issue>
