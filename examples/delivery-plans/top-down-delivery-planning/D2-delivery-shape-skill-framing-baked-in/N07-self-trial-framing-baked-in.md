@@ -3,7 +3,7 @@ layer: node
 id: N07
 type: experiment
 title: Self-trial against 2 already-shaped initiatives
-parent: C4
+parent: D2
 serves_kr: KR2
 maps_to: linear-issue
 external_window: none

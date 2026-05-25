@@ -1,33 +1,33 @@
 # delivery-shape — plan-artefact contract
 
 The schema for a **delivery plan**: the set of cross-referenced markdown files that turn one
-committed initiative into an ordered, verifiable delivery hierarchy — deliverable → capability →
-node → task — that a human reads top-down and a deterministic reader walks bottom-up into a
-tracker manifest.
+committed initiative into an ordered, verifiable delivery hierarchy — deliverable → node → task —
+that a human reads top-down and a deterministic reader walks bottom-up into a tracker manifest.
 
 This contract was **read off a worked example**, not designed in the abstract:
 [`examples/delivery-plans/top-down-delivery-planning/`](../examples/delivery-plans/top-down-delivery-planning/).
 Read that example alongside this spec — every rule here points at a node that demonstrates it.
 
 > **Tool-agnostic by rule.** This contract names no tracker, language, or runtime. It describes
-> *file-set structure* and *tracker-artefact classes* (milestone-class / label-class / issue-class /
+> *file-set structure* and *tracker-artefact classes* (milestone-class / issue-class /
 > sub-issue-class). Binding those classes to a concrete tracker is the **adapter's** job and lives
 > in another repo. Emitted plans (the example) may name concrete tools; this contract may not.
 
 ---
 
-## The four layers
+## The three layers
 
 | Layer | Lives as | Tracker-artefact class | Completion criterion |
 |-------|----------|------------------------|----------------------|
 | **Deliverable** | a directory `D*/` with `_deliverable.md` | milestone-class | its served KR is observed |
-| **Capability** | a directory `C*/` with `_capability.md` | label-class | the capability spec itself |
 | **Node** | a file `N*.md` | issue-class | **type-dependent** (see vocabulary) |
 | **Task** | a `- [ ]` / `- [x]` line inside a node | sub-issue-class | the checkbox + its description |
 
 A node is **polymorphic**: it is not always a user story. It carries whichever completion
 criterion its work calls for — a story carries acceptance criteria, a spike carries a decision and
-a stop condition, and so on. This is the central claim the example exists to prove.
+a stop condition, a capability carries its own spec, and so on. This is the central claim the
+example exists to prove. (A capability is one of these node types, not a separate structural
+layer — see *Design notes* for why the earlier four-layer model was collapsed.)
 
 ---
 
@@ -40,18 +40,16 @@ Directory nesting **is** the hierarchy. Depth encodes layer; nothing else needs 
 ├── README.md                  initiative root: goal + KRs + how-to-read + tree + hand-count manifest
 ├── D<n>-<slug>/               deliverable      → milestone-class
 │   ├── _deliverable.md        the deliverable's own front-matter + statement
-│   ├── C<n>-<slug>/           capability       → label-class
-│   │   ├── _capability.md     the capability's own front-matter + spec
-│   │   └── N<nn>-<slug>.md    node             → issue-class
+│   ├── N<nn>-<slug>.md        node             → issue-class
 │   └── …
 └── …
 ```
 
 Rules:
 
-- **Numeric prefixes** (`D1`, `C2`, `N03`) give a deterministic reading and walking order. Pad node
+- **Numeric prefixes** (`D1`, `N03`) give a deterministic reading and walking order. Pad node
   numbers (`N01`) so lexical sort = intended sort past nine nodes.
-- **Layer-header files** are underscore-prefixed (`_deliverable.md`, `_capability.md`) so they sort
+- **Layer-header files** are underscore-prefixed (`_deliverable.md`) so they sort
   first within their directory and are unambiguously the layer object, not a node.
 - **Node files** are the only `N*.md` files; one node per file.
 - The **root `README.md`** is the single top-down entry point: it carries the goal + KRs verbatim
@@ -64,7 +62,7 @@ Rules:
 hand-maintained index:
 
 - **Down** — a parent links to each child by relative path (`_deliverable.md` lists its
-  capabilities; `_capability.md` lists its nodes; `README.md` renders the whole tree).
+  nodes; `README.md` renders the whole tree).
 - **Up** — every file's front-matter carries `parent:` (the enclosing layer) so a reader that
   starts at any node can climb without scanning directories.
 - **To the bet** — every deliverable and node carries `serves_kr:` naming the KR it serves, so the
@@ -80,13 +78,13 @@ considered and rejected — it is a second source of truth that drifts; see *Des
 Every layer file opens with YAML front-matter. The load-bearing tags:
 
 ```yaml
-layer:        deliverable | capability | node     # which layer this file is
-id:           D1 | C2 | N03                        # stable within the plan
-type:         <node-type>                          # NODE FILES ONLY — the polymorphic node discriminator (see vocabulary). Capability files use 'layer: capability'; their completion form is always the-capability-spec.
+layer:        deliverable | node                   # which layer this file is
+id:           D1 | N03                              # stable within the plan
+type:         <node-type>                          # NODE FILES ONLY — the polymorphic node discriminator (see vocabulary); `capability` is one of these types
 title:        <one line>
 parent:       <relative path or id of enclosing layer>
 serves_kr:    KR<n>                                # deliverable↔KR and node↔KR trace
-maps_to:      <tracker-artefact class>             # milestone/label/issue/sub-issue class
+maps_to:      <tracker-artefact class>             # milestone/issue/sub-issue class
 skeleton:     true | (absent)                      # NODE-LEVEL: is this the walking-skeleton node?
 external_window: <external constraint> | none      # see constraints — never effort-in-days
 completion:
@@ -136,21 +134,26 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `product-spike` (experiment discipline) | `N07` |
 | `ktlo` | **none** — carve-out | ops slot (no outcome framing; roadmap A5) | `N09` |
 
-The **capability layer is not a node `type`** and is not polymorphic: every capability's completion
-criterion is its own spec (`completion.form: the-capability-spec`), identified by `layer: capability`
-and demonstrated by `C1`–`C5`. It is listed here only so the full deliverable → capability → node →
-task completion picture sits in one place.
+`capability` **is** a node `type` — a spec-shaped node broken into task-slices, completion form
+`the-capability-spec`. This initiative exercises none: every capability in the worked example was
+reducible to its child nodes and was absorbed into deliverable prose (see *Design notes*), so
+`capability` sits in the to-fill appendix below rather than the grounded table. It grounds the
+moment a capability carries a spec *not* reducible to its children — at which point it becomes a
+node, a peer of the `story` / `spike` / … nodes under its deliverable.
 
 ### To-fill appendix — not exercised by this initiative
 
 These types are **named, not fabricated**: this methodology-pack initiative has no runtime SLO, no
 production migration, no incident, no deprecation, and no external compliance obligation, so the
-worked example contains none. The completion-criterion form and delegation target are recorded so
-the vocabulary is ready when an initiative that genuinely exercises them is shaped — at which point
-the row moves up to *Grounded* with a citation.
+worked example contains none. `capability` is here for a different reason — not domain absence but
+**structural reducibility** (every capability collapsed into its child nodes, as noted above). The
+completion-criterion form and delegation target are recorded so the vocabulary is ready when an
+initiative that genuinely exercises them is shaped — at which point the row moves up to *Grounded*
+with a citation.
 
 | `type` | Completion-criterion form | Delegates to | Ground when… |
 |--------|---------------------------|--------------|--------------|
+| `capability` | `the-capability-spec` | `planning-and-task-breakdown` (slice the capability spec into tasks) | a capability carries a spec not reducible to its child nodes |
 | `slo` | numeric target (latency/availability/error-budget) | `eng-principles-universal.md` Rule A4 (measurable NFR) + A5 (fitness function) | a production/observability initiative is planned |
 | `migration` | rollback plan **per phase** + cutover criterion | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | a data/system migration is planned |
 | `deprecation` | removal criterion + external **notice period** | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | an API/feature sunset is planned |
@@ -199,11 +202,11 @@ the row moves up to *Grounded* with a citation.
 This is the half of the kill condition the gate issue tests with an actual walk-script. A reader
 may assume, without parsing prose:
 
-1. **Layers are directory depth.** `D*/` = deliverable, `D*/C*/` = capability, `D*/C*/N*.md` = node.
+1. **Layers are directory depth.** `D*/` = deliverable, `D*/N*.md` = node.
 2. **Front-matter is the source of structured truth.** Every layer file opens with a `---` YAML
    block carrying at least `layer`, `id`, and (for nodes) `type` + `completion.form`.
 3. **The manifest is countable.** milestones = `D*` directories; issues = `N*.md` files;
-   sub-issues = `- [ ]`/`- [x]` lines inside node files; labels = `C*` directories.
+   sub-issues = `- [ ]`/`- [x]` lines inside node files.
 4. **The oracle is the README.** The derived manifest is correct iff its counts equal the
    hand-count manifest in the root README; a mismatch means drift or a non-deterministic layout.
 
@@ -213,14 +216,22 @@ seam must be re-shaped before the skill is built (the initiative kill condition)
 ## Design notes / alternatives considered
 
 - **File-per-node vs section-per-node.** Chosen: one file per node, structure carried by directory
-  depth + front-matter. Rejected: nodes as `##` sections inside a capability file with fenced
-  metadata blocks — fewer files, but it forces the reader to parse headings and extract fenced
+  depth + front-matter. Rejected: nodes as `##` sections inside the `_deliverable.md` file with
+  fenced metadata blocks — fewer files, but it forces the reader to parse headings and extract fenced
   blocks, which is more fragile than reading front-matter from a known file path. If a future
   walk-script finds front-matter parsing insufficient, section-per-node is the documented fallback —
   but the burden is on showing front-matter failed first.
 - **Derived vs hand-maintained manifest.** Chosen: derive the manifest from structure; keep only a
   hand-count *oracle* in the README. Rejected: a checked-in manifest file enumerating every
   milestone/issue/sub-issue — a second source of truth that drifts from the files it indexes.
-- **Capability → label vs parent-issue.** Chosen: label-class, so the tracker manifest stays a clean
-  three-count (milestones / issues / sub-issues) and capabilities are a grouping tag, not a counted
-  artefact. An adapter that prefers parent-issues can still map the same `C*` directory.
+- **Four structural layers vs three.** Chosen: three — deliverable → node → task, mapping 1:1 to
+  milestone / issue / sub-issue. Rejected: a fourth `capability` layer mapped to a label. A label is
+  *stateless* (name + colour, no done-state, no target), yet a capability asserts a real completion
+  criterion — a stateful claim a label can't hold or check; and the mapping was asymmetric
+  (deliverables, the same kind of object, get a stateful milestone). The fix folds `capability` into
+  the polymorphic node vocabulary as a node *type* (completion form `the-capability-spec`): a
+  capability that carries its own irreducible spec is a node, broken into task-slices, sitting beside
+  the `story` / `spike` / … nodes under its deliverable. Labels remain available for *orthogonal*
+  tagging (theme / area), just not as a hierarchy layer. In this worked example every capability was
+  reducible to its child nodes, so all five were absorbed into deliverable prose and no
+  `capability`-type node appears — it grounds when one carries a spec its children don't.

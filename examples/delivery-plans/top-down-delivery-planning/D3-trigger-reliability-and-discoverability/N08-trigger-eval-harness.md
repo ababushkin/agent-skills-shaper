@@ -3,7 +3,7 @@ layer: node
 id: N08
 type: story
 title: Trigger-eval set + harness, 0 collisions
-parent: C5
+parent: D3
 serves_kr: KR3
 maps_to: linear-issue
 external_window: none

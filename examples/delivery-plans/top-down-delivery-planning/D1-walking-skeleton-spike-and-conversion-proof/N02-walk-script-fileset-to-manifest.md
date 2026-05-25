@@ -3,7 +3,7 @@ layer: node
 id: N02
 type: story
 title: Walk-script — file-set → tracker manifest
-parent: C2
+parent: D1
 serves_kr: KR1
 maps_to: linear-issue
 tracker_ref: ABA-282
@@ -28,13 +28,13 @@ A `story` node's completion criterion is its **acceptance criteria** — observa
 ## Acceptance criteria
 
 - **Done when:** `bin/walk-delivery-plan examples/delivery-plans/top-down-delivery-planning/`
-  prints `3 milestones / 9 issues / 19 sub-issues` and lists the `5` capability labels — all equal
-  to the hand-count manifest in the example [README](../../README.md#hand-count-manifest) — and exits 0.
-- **Done when:** each emitted issue carries its node `type`, its capability label, its
-  `serves_kr` link, and its completion criterion, read from front-matter — verified against N01–N09.
+  prints `3 milestones / 9 issues / 19 sub-issues` — all equal to the hand-count manifest in the
+  example [README](../README.md#hand-count-manifest) — and exits 0.
+- **Done when:** each emitted issue carries its node `type`, its `serves_kr` link, and its
+  completion criterion, read from front-matter — verified against N01–N09.
 
 ## Tasks
 
 - [ ] `skeleton` — Walk-script that descends the directory tree, reads each file's front-matter, and prints deliverable / node / task counts. *(Toolchain choice — language and front-matter parser — folded in here, not a silent pre-task.)*
-- [ ] Emit a tracker manifest (milestones ← deliverables, issues ← nodes, sub-issues ← tasks; capability labels listed) from the parsed front-matter.
+- [ ] Emit a tracker manifest (milestones ← deliverables, issues ← nodes, sub-issues ← tasks) from the parsed front-matter.
 - [ ] Mechanical-conversion proof: assert the emitted counts equal the README hand-count and that the script exits non-zero on any unparseable node.

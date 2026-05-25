@@ -21,12 +21,14 @@ initiative-shape or planning-and-task-breakdown."
 
 This is the guardrail deliverable: a third `-shape` skill that sits between `initiative-shape`
 and `planning-and-task-breakdown` is worthless if it fires for the wrong prompts or steals
-theirs. The eval set protects the two neighbours from regression, and the README/flowchart
-registration makes the new skill discoverable.
+theirs. **N08** (story) is the brake — the eval set that protects the two neighbours from
+regression; **N09** (ktlo) is the keep-the-lights-on registration that makes the new skill
+discoverable.
 
-## Capabilities
+## Nodes
 
-- [C5 — Trigger reliability & discoverability](C5-trigger-reliability-and-discoverability/_capability.md)
+- [N08 — Trigger-eval set + harness, 0 collisions](N08-trigger-eval-harness.md) · `story`
+- [N09 — Register delivery-shape in README + using-this-pack flowchart](N09-register-in-readme-and-flowchart.md) · `ktlo`
 
 ## Done when
 

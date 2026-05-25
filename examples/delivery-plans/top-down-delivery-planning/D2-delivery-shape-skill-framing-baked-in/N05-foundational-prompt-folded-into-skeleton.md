@@ -3,7 +3,7 @@ layer: node
 id: N05
 type: story
 title: Foundational-work prompt folded into the walking skeleton
-parent: C3
+parent: D2
 serves_kr: KR2
 maps_to: linear-issue
 external_window: none

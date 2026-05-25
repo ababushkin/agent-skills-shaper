@@ -3,7 +3,7 @@ layer: node
 id: N01
 type: spike
 title: Hand-produce the plan file-set + read off the contract
-parent: C1
+parent: D1
 serves_kr: KR1
 maps_to: linear-issue
 tracker_ref: ABA-281
@@ -31,7 +31,7 @@ initiative, produce the full delivery hierarchy as a markdown file-set, then rea
 the example into the contract — and decide whether the standalone-markdown premise holds.
 
 This node *is* the thinnest end-to-end slice of the initiative: it exercises every layer
-(deliverable → capability → node → task) and the cross-reference convention on real content,
+(deliverable → node → task) and the cross-reference convention on real content,
 before a single line of skill prose is written. Foundational/toolchain work — choosing the
 cross-reference convention and standing up the `examples/` directory — is **folded into the
 skeleton task below, never a silent pre-task**.
@@ -49,6 +49,6 @@ did not fire.
 
 ## Tasks
 
-- [x] `skeleton` — Pick one real already-shaped initiative; lay out the deliverable → capability → node → task file-set end-to-end. *(Foundational work folded in here: choose the cross-reference convention and create `examples/delivery-plans/<initiative>/` — not a separate silent setup task.)*
+- [x] `skeleton` — Pick one real already-shaped initiative; lay out the deliverable → node → task file-set end-to-end. *(Foundational work folded in here: choose the cross-reference convention and create `examples/delivery-plans/<initiative>/` — not a separate silent setup task.)*
 - [x] Read the schema off the example into `docs/delivery-shape-contract.md`: directory layout · cross-reference convention · per-node tags.
 - [x] Define the node-type vocabulary grounded in the types this example exercises; list the unexercised types as a to-fill appendix.

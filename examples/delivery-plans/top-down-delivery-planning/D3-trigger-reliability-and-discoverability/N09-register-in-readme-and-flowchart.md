@@ -3,7 +3,7 @@ layer: node
 id: N09
 type: ktlo
 title: Register delivery-shape in README + using-this-pack flowchart
-parent: C5
+parent: D3
 serves_kr: KR3
 maps_to: linear-issue
 external_window: none

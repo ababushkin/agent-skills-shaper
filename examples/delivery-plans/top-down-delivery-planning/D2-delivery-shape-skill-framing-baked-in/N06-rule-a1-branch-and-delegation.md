@@ -3,7 +3,7 @@ layer: node
 id: N06
 type: story
 title: Rule A1 design-doc branch + up/down delegation
-parent: C3
+parent: D2
 serves_kr: KR2
 maps_to: linear-issue
 external_window: none
@@ -34,4 +34,4 @@ delegates_to: design-doc (Rule A1 trigger); initiative-shape (upstream goal+KRs)
 ## Tasks
 
 - [ ] Implement the Rule A1 branch (trigger met → delegate to design-doc; else proceed).
-- [ ] Wire up delegation: consume `initiative-shape` output; hand each capability to `planning-and-task-breakdown`.
+- [ ] Wire up delegation: consume `initiative-shape` output; hand each node to `planning-and-task-breakdown`.

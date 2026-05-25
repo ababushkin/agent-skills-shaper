@@ -3,7 +3,7 @@ layer: node
 id: N03
 type: adr
 title: New skill vs expand planning-and-task-breakdown
-parent: C2
+parent: D1
 serves_kr: KR1
 maps_to: linear-issue
 tracker_ref: ABA-282
@@ -25,12 +25,13 @@ new skill directory or extends an existing skill's territory). Its completion cr
 Authoring and supersession are delegated to `documentation-and-adrs`.
 
 > This node decides the **form of deliverable D2**. D2 cannot start until this ADR is accepted —
-> see the dependency note in [D2's `_deliverable.md`](../../D2-delivery-shape-skill-framing-baked-in/_deliverable.md).
+> see the dependency note in [D2's `_deliverable.md`](../D2-delivery-shape-skill-framing-baked-in/_deliverable.md).
 
 ## Context (to be completed at the gate)
 
-How much unique structure did the upper layers (deliverable, capability) actually carry in the
-worked example? Signal toward **B (expand)** if every good name for a new skill crowds
+How much unique structure did the upper layers — the deliverable, and the capability grouping
+(now a node *type* rather than a structural layer) — actually carry in the worked example? Signal
+toward **B (expand)** if every good name for a new skill crowds
 `planning-and-task-breakdown`'s territory; signal toward **A (new skill)** if the
 initiative-decomposition + framing + delegation logic is large enough to stand alone.
 

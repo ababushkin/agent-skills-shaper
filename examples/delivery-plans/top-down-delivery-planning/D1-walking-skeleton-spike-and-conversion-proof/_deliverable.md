@@ -25,10 +25,17 @@ as cross-referenced markdown a human reads top-down and a script walks determini
 it can't, the standalone-markdown premise is wrong and the initiative is re-shaped or killed
 (see the initiative kill condition).
 
-## Capabilities
+Its three nodes carry the proof end-to-end: **N01** (spike) hand-produces the file-set and reads
+the schema off it; **N02** (story) supplies the mechanical-conversion half of the kill condition
+with a walk-script; **N03** (ADR) records whether the upper layers carried enough unique structure
+to justify a new skill or an expansion of `planning-and-task-breakdown`. N02 + N03 are the gate
+(Linear ABA-282).
 
-- [C1 — Schema & contract](C1-schema-and-contract/_capability.md)
-- [C2 — Mechanical conversion & architecture decision](C2-mechanical-conversion-and-architecture-decision/_capability.md)
+## Nodes
+
+- [N01 — Hand-produce the plan file-set + read off the contract](N01-hand-produce-fileset-and-read-off-contract.md) · `spike` · `skeleton`
+- [N02 — Walk-script: file-set → tracker manifest](N02-walk-script-fileset-to-manifest.md) · `story`
+- [N03 — ADR: new skill vs expand planning-and-task-breakdown](N03-new-skill-vs-expand-task-breakdown.md) · `adr`
 
 ## Done when
 

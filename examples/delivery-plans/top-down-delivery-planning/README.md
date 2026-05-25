@@ -16,8 +16,8 @@ silent](https://linear.app/ababushkin/project/top-down-delivery-planning-framing
 ## The bet (read this first — top-down starts at the outcome)
 
 **Goal:** For Anton and any agent invoking Shaper, make a committed initiative produce its full
-delivery plan top-down — deliverables → capabilities → stories → verifiable tasks — with framing
-baked in and foundational work never silently dropped.
+delivery plan top-down — deliverables → nodes (stories, capabilities, spikes, …) → verifiable
+tasks — with framing baked in and foundational work never silently dropped.
 
 | KR | Claim | Role | Served by |
 |----|-------|------|-----------|
@@ -34,17 +34,16 @@ and re-shape the seam.
 
 ## How to read this plan top-down
 
-Four layers, each mapping to one tracker artefact. Read outward from the bet above:
+Three layers, each mapping to one tracker artefact. Read outward from the bet above:
 
 ```
 initiative (this README)            ← goal + KRs
 └── deliverable  D*/_deliverable.md  → milestone   (tagged serves_kr)
-    └── capability  C*/_capability.md → label       (groups nodes)
-        └── node  N*.md               → issue        (polymorphic: spike/story/adr/experiment/ktlo/…)
-            └── task  - [ ] in node    → sub-issue    (walking-skeleton task flagged `skeleton`)
+    └── node  N*.md                   → issue        (polymorphic: spike/story/adr/experiment/ktlo/capability/…)
+        └── task  - [ ] in node        → sub-issue    (walking-skeleton task flagged `skeleton`)
 ```
 
-Directory nesting **is** the hierarchy; numeric `D*/C*/N*` prefixes give deterministic ordering.
+Directory nesting **is** the hierarchy; numeric `D*/N*` prefixes give deterministic ordering.
 Cross-references are relative paths plus front-matter `parent` / `serves_kr` back-links — so a
 human descends by clicking and a script walks by reading front-matter. The schema is specified in
 [`docs/delivery-shape-contract.md`](../../../docs/delivery-shape-contract.md).
@@ -56,35 +55,25 @@ top-down-delivery-planning/
 ├── README.md                                              ← you are here (initiative root)
 ├── D1-walking-skeleton-spike-and-conversion-proof/        → milestone · serves KR1
 │   ├── _deliverable.md
-│   ├── C1-schema-and-contract/                            → label
-│   │   ├── _capability.md
-│   │   └── N01 … hand-produce file-set + read off contract   · spike · skeleton
-│   └── C2-mechanical-conversion-and-architecture-decision/   → label
-│       ├── _capability.md
-│       ├── N02 … walk-script: file-set → manifest             · story
-│       └── N03 … ADR: new skill vs expand task-breakdown      · adr
+│   ├── N01 … hand-produce file-set + read off contract       · spike · skeleton
+│   ├── N02 … walk-script: file-set → manifest                · story
+│   └── N03 … ADR: new skill vs expand task-breakdown         · adr
 ├── D2-delivery-shape-skill-framing-baked-in/              → milestone · serves KR2
 │   ├── _deliverable.md
-│   ├── C3-decomposition-with-framing-baked-in/            → label
-│   │   ├── _capability.md
-│   │   ├── N04 … decompose, AC by default                     · story
-│   │   ├── N05 … foundational prompt folded into skeleton     · story
-│   │   └── N06 … Rule A1 branch + up/down delegation          · story
-│   └── C4-framing-validation/                             → label
-│       ├── _capability.md
-│       └── N07 … self-trial against 2 initiatives             · experiment
+│   ├── N04 … decompose, AC by default                        · story
+│   ├── N05 … foundational prompt folded into skeleton        · story
+│   ├── N06 … Rule A1 branch + up/down delegation             · story
+│   └── N07 … self-trial against 2 initiatives                · experiment
 └── D3-trigger-reliability-and-discoverability/           → milestone · serves KR3
     ├── _deliverable.md
-    └── C5-trigger-reliability-and-discoverability/        → label
-        ├── _capability.md
-        ├── N08 … trigger-eval set + harness, 0 collisions     · story
-        └── N09 … register in README + flowchart               · ktlo
+    ├── N08 … trigger-eval set + harness, 0 collisions        · story
+    └── N09 … register in README + flowchart                  · ktlo
 ```
 
 ## Node-type coverage (grounded — not fabricated)
 
 Nodes are **polymorphic**: each carries the completion criterion its work calls for, not always a
-story. This example genuinely exercises six node types. The types it does *not* exercise are not
+story. This example genuinely exercises five node types. The types it does *not* exercise are not
 invented here — they live in the contract's to-fill appendix, to be grounded when an initiative
 that uses them is shaped.
 
@@ -95,12 +84,12 @@ that uses them is shaped.
 | `adr` | accepted decision record | N03 |
 | `experiment` | hypothesis + success metric | N07 |
 | `ktlo` | none (roadmap A5 carve-out) | N09 |
-| `capability-statement`† | the capability spec itself | C1–C5 |
-| _slo, migration, incident, deprecation, compliance_ | _see contract appendix_ | _not exercised by this initiative_ |
+| _capability, slo, migration, incident, deprecation, compliance_ | _see contract appendix_ | _not exercised by this initiative_ |
 
-† `capability-statement` is the **capability layer's** fixed completion form (identified by
-`layer: capability`), not a polymorphic node `type`. The five rows above it are genuine node
-`type`s carried on `N*.md` files.
+`capability` is a genuine node `type` (completion form `the-capability-spec`), but this initiative
+exercises none: every capability here was reducible to its child nodes and was absorbed into the
+deliverable prose (see the contract's *Design notes*). It grounds when a capability carries a spec
+its children don't.
 
 ## Hand-count manifest
 
@@ -112,8 +101,6 @@ counts equal to these hand-counted totals:
 | Milestones | deliverables (`D*`) | **3** |
 | Issues | nodes (`N*`) | **9** |
 | Sub-issues | tasks (`- [ ]` / `- [x]` lines) | **19** |
-| Labels | capabilities (`C*`) | **5** |
 
-If the walk-script prints anything other than `3 / 9 / 19` (+ 5 capability labels), either the
-file-set drifted from this count or the schema doesn't walk deterministically — investigate
-before declaring the gate passed.
+If the walk-script prints anything other than `3 / 9 / 19`, either the file-set drifted from this
+count or the schema doesn't walk deterministically — investigate before declaring the gate passed.
