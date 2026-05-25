@@ -1,0 +1,11 @@
+lets plan another feature to this skill pack
+everytime we plan a project and subsequently the user stories/capabilities/tasks within it i want there to be a consistent and systematic way to:
+
+- specify which agent model should be used (using claude for now)
+- estimate the size of the task: taking into account cognitive complexity for the operator to review the artifacts, chances of hallucinations or mistakes and domain complexity which may result in failure cases or scope drift
+
+first lets brainstorm this and refine this idea
+
+---
+
+i want you to explore what other criteria to use when determining the right model to use. the criteria i gave you was just something i made up

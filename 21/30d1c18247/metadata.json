@@ -3,7 +3,7 @@
   "checkpoint_id": "2130d1c18247",
   "strategy": "manual-commit",
   "branch": "main",
-  "checkpoints_count": 2,
+  "checkpoints_count": 4,
   "files_touched": [
     "docs/ideas/delivery-shape.md"
   ],
@@ -19,13 +19,19 @@
       "transcript": "/21/30d1c18247/1/full.jsonl",
       "content_hash": "/21/30d1c18247/1/content_hash.txt",
       "prompt": "/21/30d1c18247/1/prompt.txt"
+    },
+    {
+      "metadata": "/21/30d1c18247/2/metadata.json",
+      "transcript": "/21/30d1c18247/2/full.jsonl",
+      "content_hash": "/21/30d1c18247/2/content_hash.txt",
+      "prompt": "/21/30d1c18247/2/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 90640,
-    "cache_creation_tokens": 757769,
-    "cache_read_tokens": 9029100,
-    "output_tokens": 205404,
-    "api_call_count": 72
+    "input_tokens": 150467,
+    "cache_creation_tokens": 1231221,
+    "cache_read_tokens": 15684838,
+    "output_tokens": 312628,
+    "api_call_count": 124
   }
 }
