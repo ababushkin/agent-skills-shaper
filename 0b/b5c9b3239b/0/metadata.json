@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "0bb5c9b3239b",
+  "session_id": "25a1e7bf-2240-41f5-b7ef-c1920db6b59c",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T10:42:36.134378Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "bin/walk-delivery-plan",
+    "docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/N03-new-skill-vs-expand-task-breakdown.md",
+    "examples/delivery-plans/top-down-delivery-planning/D1-walking-skeleton-spike-and-conversion-proof/N02-walk-script-fileset-to-manifest.md",
+    ".gitignore"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "71e755064464",
+  "token_usage": {
+    "input_tokens": 16754,
+    "cache_creation_tokens": 180012,
+    "cache_read_tokens": 3516251,
+    "output_tokens": 46408,
+    "api_call_count": 36
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-25T10:42:36.121613Z",
+    "agent_lines": 459,
+    "agent_removed": 18,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 459,
+    "total_lines_changed": 477,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 109,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 109
+      }
+    }
+  ]
+}
