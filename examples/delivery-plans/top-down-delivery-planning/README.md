@@ -40,7 +40,7 @@ Three layers, each mapping to one tracker artefact. Read outward from the bet ab
 initiative (this README)            ← goal + KRs
 └── deliverable  D*/_deliverable.md  → milestone   (tagged serves_kr)
     └── node  N*.md                   → issue        (polymorphic: spike/story/adr/experiment/ktlo/capability/…)
-        └── task  - [ ] in node        → sub-issue    (walking-skeleton task flagged `skeleton`)
+        └── task  - [ ] in node        → sub-issue    (`skeleton` task opens the path; `acceptance` task closes it)
 ```
 
 Directory nesting **is** the hierarchy; numeric `D*/N*` prefixes give deterministic ordering.
@@ -63,7 +63,7 @@ top-down-delivery-planning/
 │   ├── N04 … decompose, AC by default                        · story
 │   ├── N05 … foundational prompt folded into skeleton        · story
 │   ├── N06 … Rule A1 branch + up/down delegation             · story
-│   └── N07 … self-trial against 2 initiatives                · experiment
+│   └── N07 … self-trial against 2 initiatives                · experiment · [acceptance]
 └── D3-trigger-reliability-and-discoverability/           → milestone · serves KR3
     ├── _deliverable.md
     ├── N08 … trigger-eval set + harness, 0 collisions        · story
@@ -90,6 +90,17 @@ that uses them is shaped.
 exercises none: every capability here was reducible to its child nodes and was absorbed into the
 deliverable prose (see the contract's *Design notes*). It grounds when a capability carries a spec
 its children don't.
+
+**Flags** (orthogonal to type — applied on top of any node type):
+
+| Flag | Forms | When it applies |
+|------|-------|-----------------|
+| `skeleton` | front-matter `skeleton: true` + task tag `` `skeleton` `` | Opens the end-to-end path; foundational work folded in |
+| `acceptance` | front-matter `acceptance: true` + task tag `` `acceptance` `` | Closes the parent's cross-seam criterion. Exists only when parent's Done is irreducible to ∀child.done. Never re-runs child criteria. |
+
+`acceptance` in this plan: **N07** carries `acceptance: true` (verifies D2). Its experiment finding
+— confirmed or falsified — is D2's aggregate Done condition (KR2 observed). The acceptance task
+closes last, making D2's milestone reaching 100% coincide with the KR observation.
 
 ## Hand-count manifest
 

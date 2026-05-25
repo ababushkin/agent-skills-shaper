@@ -86,14 +86,16 @@ parent:       <relative path or id of enclosing layer>
 serves_kr:    KR<n>                                # deliverable↔KR and node↔KR trace
 maps_to:      <tracker-artefact class>             # milestone/issue/sub-issue class
 skeleton:     true | (absent)                      # NODE-LEVEL: is this the walking-skeleton node?
+acceptance:   true | (absent)                      # NODE-LEVEL: does this node verify its parent's cross-seam criterion?
 external_window: <external constraint> | none      # see constraints — never effort-in-days
 completion:
   form:       <completion-criterion form>          # the type-appropriate form (see vocabulary)
   criterion:  <the observable criterion, by form>
+  verifies_parent: <parent-layer-id> | (absent)   # when acceptance: true — which parent's criterion this node closes
 delegates_to: <rule or skill that owns this node type's discipline>
 ```
 
-The four tags the contract is required to pin down:
+The five tags the contract is required to pin down:
 
 1. **node `type`** — selects the completion-criterion form and the delegation target (vocabulary below).
 2. **deliverable↔KR** — `serves_kr:` on each `_deliverable.md` (and echoed on nodes). Every
@@ -106,9 +108,31 @@ The four tags the contract is required to pin down:
    before it (mirrors `planning-and-task-breakdown`'s walking-skeleton-first rule). There is no
    `foundational` node type: foundational work is a property of the skeleton **task**, not a node.
 
-Task lines are the sub-issue layer. A task is `- [ ] ` or `- [x] `; an optional leading
-`` `skeleton` `` code-span marks it as the walking-skeleton/foundational task. Example:
+5. **task↔acceptance flag** — at the **task** level, the aggregate/cross-seam-verification task is
+   marked with a leading `` `acceptance` `` tag inside its checklist line, mirroring `` `skeleton` ``
+   exactly. At the **node** level, a node that verifies its **parent's** emergent or cross-seam
+   completion criterion carries `acceptance: true` in front-matter plus
+   `completion.verifies_parent: <parent-id>` naming which parent layer it closes. `skeleton` opens
+   the end-to-end path; `acceptance` closes it.
+
+   **Grounding rule (reducibility-gated):** an `acceptance` node or task exists **only when the
+   parent's "Done when" is irreducible to ∀child.done** — a KR moving, a journey crossing child
+   seams, an integration no single child owns. When the criterion is the sum of its children, there
+   is no acceptance node — the parent closing is the verification. (Same reducibility test used to
+   decide when `capability` is a node vs absorbed prose, applied to the completion axis instead of
+   the structure axis.) An acceptance node **never re-runs child criteria** — that is the redundancy
+   guard.
+
+   **Linear mapping:** the `acceptance` flag maps to a Linear label (orthogonal to structure, like
+   `skeleton`). Close the acceptance node **last**: this makes the milestone reaching 100% coincide
+   with aggregate verification passing — no special field or tooling required. See `N07` for the
+   worked example.
+
+Task lines are the sub-issue layer. A task is `- [ ] ` or `- [x] `; an optional leading code-span
+flags it. `` `skeleton` `` marks the walking-skeleton/foundational task; `` `acceptance` `` marks
+the aggregate-verification task (flag 5 above). Examples:
 `` - [ ] `skeleton` — walk the tree, read front-matter, print counts (toolchain folded in) ``.
+`` - [ ] `acceptance` — evaluate aggregate result; write finding (confirmed / falsified) ``.
 
 ---
 

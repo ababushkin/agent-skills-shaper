@@ -6,9 +6,11 @@ title: Self-trial against 2 already-shaped initiatives
 parent: D2
 serves_kr: KR2
 maps_to: linear-issue
+acceptance: true
 external_window: none
 completion:
   form: hypothesis+success-metric
+  verifies_parent: D2
   hypothesis: >
     delivery-shape, fed only an initiative's goal + KRs as text, emits a plan that
     carries acceptance criteria on every story node and at least one foundational /
@@ -38,4 +40,4 @@ framing re-prompts. The trial note records the re-prompt count per trial.
 ## Tasks
 
 - [ ] `skeleton` — Run delivery-shape against one already-shaped initiative; record AC-coverage, foundational-task presence, and re-prompt count in a trial note.
-- [ ] Repeat against a second initiative; evaluate against the 2/2-at-0-re-prompts success metric; write the finding (confirmed / falsified).
+- [ ] `acceptance` — Repeat against a second initiative; evaluate aggregate result against the 2/2-at-0-re-prompts success metric; write the finding (confirmed / falsified) — this finding is D2's Done condition.
