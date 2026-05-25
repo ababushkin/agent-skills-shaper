@@ -1,0 +1,44 @@
+/agent-skills:source-driven-development Work on Linear issue ABA-284:
+
+<issue identifier="ABA-284">
+<title>delivery-shape: add `acceptance` flag for aggregate / cross-seam verification</title>
+<description>
+Follow-on contract refinement to <issue id="200d4483-7d46-416f-b469-b79d64bfdd6c">ABA-283</issue> (the 3-level collapse). **Blocked by** <issue id="a0c62c58-38cb-4102-bbe4-f0013234c52e">ABA-282</issue> — the `acceptance` flag is a schema refinement that is moot if the gate fails: if the standalone-markdown premise doesn't hold (<issue id="a0c62c58-38cb-4102-bbe4-f0013234c52e">ABA-282</issue> kill condition), there is no schema to refine. Do <issue id="a0c62c58-38cb-4102-bbe4-f0013234c52e">ABA-282</issue> first; this rides on a proven premise.
+
+## Problem
+
+The contract gives every layer a `completion.criterion` but names no *bearer* for a deliverable's aggregate "Done when". A `kr-observed` milestone criterion with no node responsible for observing it means "all children closed" silently substitutes for "the KR moved" — the agentic-P4 hole (universal P1: observed is done). Same gap at story level: each sub-task verifies its own slice; nothing verifies the whole story end-to-end across the seams between sub-tasks.
+
+## Change
+
+Introduce an `acceptance` flag — a node-level boolean (`acceptance: true`) plus an inline task tag (`` `acceptance` ``), mirroring the existing `skeleton` flag exactly. An `acceptance` node/task verifies the **parent's** emergent / cross-seam criterion, and explicitly **never re-runs child criteria** (that is the redundancy guard). `skeleton` opens the end-to-end path; `acceptance` closes it.
+
+## Grounding rule (reducibility-gated)
+
+An `acceptance` node/task exists **only when the parent's "Done when" is irreducible to ∀child.done** — a KR moving, a journey crossing child seams, an integration no single child owns. When the criterion is just the sum of its children (many CRUD / theme milestones), there is no acceptance node — the milestone closing **is** the verification. This is the same reducibility test <issue id="200d4483-7d46-416f-b469-b79d64bfdd6c">ABA-283</issue> used to decide when `capability` is a node vs absorbed prose, reused on the completion axis instead of the structure axis.
+
+## Linear mapping
+
+Flag → **label** (orthogonal to structure, like `skeleton`). The `acceptance` issue closing **last** makes the milestone hitting 100% coincide with aggregate verification passing — no special field or tooling required.
+
+## Done when
+
+- [ ] Contract (`docs/delivery-shape-contract.md`): `acceptance` added to the flag vocabulary + the reducibility grounding rule; node-boolean and task-tag forms documented; the Linear label + close-last mapping noted.
+- [ ] Worked example: `N07` retagged `acceptance: true` with a `verifies_parent` criterion; its aggregate task labelled `` `acceptance` ``; README how-to-read diagram, tree (`[acceptance]` marker), and flag/coverage notes updated.
+- [ ] Counts unchanged — **3 / 9 / 19** (`acceptance` is a label, not a new node or task); verified by `bin/walk-delivery-plan` once <issue id="a0c62c58-38cb-4102-bbe4-f0013234c52e">ABA-282</issue> lands.
+- [ ] Review → commit + push → summary comment → Done (repo workflow).
+
+## Open question (resolve in-issue or split)
+
+The sub-issue-vs-checklist task-mapping fork that surfaced alongside this: Linear sub-issues are full issues, whereas a markdown `- [ ]` task is a lightweight checklist item — so "task → sub-issue" promotes every task to a real issue, and Linear checklists may be the lighter fit for trivial tasks. Decide whether to fold the contract's Linear-mapping guidance in here, or split it to its own backlog issue. Orthogonal to the `acceptance` flag itself.
+</description>
+<team name="Personal"/>
+<label>review:high</label>
+<label>skill:source-driven-development</label>
+<label>model:sonnet</label>
+<project name="Top-down delivery planning — framing baked in, foundational work never silent">Standalone delivery-planning skill: turn a committed initiative into a hierarchical markdown delivery plan (deliverables→capabilities/stories→tasks) with framing + foundational work baked in. Parked behind the initiative-shape Linear-decouple.</project>
+<issue-relations>
+<blocked-by><issue-ref identifier="ABA-282" title="Walk-script + mechanical-conversion proof + A-vs-B decision [GATE]"/></blocked-by>
+<related><issue-ref identifier="ABA-283" title="Collapse delivery plan to 3 levels: capability becomes a node type, drop the structural label layer"/></related>
+</issue-relations>
+</issue>

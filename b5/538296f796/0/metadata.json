@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "b5538296f796",
+  "session_id": "a9c64919-06d0-4714-a496-a8d4ee761d65",
+  "strategy": "manual-commit",
+  "created_at": "2026-05-25T12:38:32.152472Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "docs/delivery-shape-contract.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/N07-self-trial-framing-baked-in.md",
+    "examples/delivery-plans/top-down-delivery-planning/README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "b9abc857b7eb",
+  "token_usage": {
+    "input_tokens": 35,
+    "cache_creation_tokens": 84053,
+    "cache_read_tokens": 1729056,
+    "output_tokens": 17339,
+    "api_call_count": 26
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-05-25T12:38:32.142745Z",
+    "agent_lines": 43,
+    "agent_removed": 6,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 43,
+    "total_lines_changed": 49,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 109,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 109
+      }
+    }
+  ]
+}

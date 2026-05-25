@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.6.2",
+  "checkpoint_id": "b5538296f796",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "docs/delivery-shape-contract.md",
+    "examples/delivery-plans/top-down-delivery-planning/D2-delivery-shape-skill-framing-baked-in/N07-self-trial-framing-baked-in.md",
+    "examples/delivery-plans/top-down-delivery-planning/README.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b5/538296f796/0/metadata.json",
+      "transcript": "/b5/538296f796/0/full.jsonl",
+      "content_hash": "/b5/538296f796/0/content_hash.txt",
+      "prompt": "/b5/538296f796/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 35,
+    "cache_creation_tokens": 84053,
+    "cache_read_tokens": 1729056,
+    "output_tokens": 17339,
+    "api_call_count": 26
+  }
+}
