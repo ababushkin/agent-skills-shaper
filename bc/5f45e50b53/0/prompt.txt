@@ -1,0 +1,26 @@
+create the deliverables outstanding, in appropriate order in linear
+
+be sure to estimate the work in terms of complexity that it will be for me (the reviewer) and subsequently the claude model we should use to execute it, as well as the specific skill (if required) - these should be labels against the issues
+
+ideally you can just use the manifest we created as part of this project to create the issues/milestones/etc directly but take note if something is amiss
+
+---
+
+right so will the /planning-and-task-breakdown skill be automatically fired from /delivery-shape ?
+
+---
+
+i'm ok with it to happen right before build, but that means that needs to be clearly encapsulated in the task so that when it gets picked up, the agent knows what to do
+
+---
+
+i've already commited that change
+how are we going to make sure that this rule is encoded correctly for the future when ever a new project is shaped?
+
+---
+
+make a plan for all the necessary changes to support this
+
+---
+
+continue where we left off
