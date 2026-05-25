@@ -92,7 +92,7 @@ completion:
   form:       <completion-criterion form>          # the type-appropriate form (see vocabulary)
   criterion:  <the observable criterion, by form>
   verifies_parent: <parent-layer-id> | (absent)   # when acceptance: true — which parent's criterion this node closes
-delegates_to: <rule or skill that owns this node type's discipline>
+delegates_to: <rule or skill that owns this node type's discipline>   # REQUIRED on every node — fires at pickup, not at emission
 ```
 
 The five tags the contract is required to pin down:
@@ -218,6 +218,26 @@ with a citation.
   `delegates_to` at the owning rule/skill. The discipline of each type lives at its source. If a
   node's completion criterion starts duplicating Rule C5 or the ADR template inline, that is drift —
   link instead.
+
+---
+
+## Delegation — timing & surfacing
+
+`delegates_to` names the discipline that owns a node, but it fires **at issue-pickup (build time),
+not during plan emission.** `delivery-shape` emits the hierarchy and stops; the delegate (e.g.
+`planning-and-task-breakdown` for a `story`) runs when the issue-class artefact is picked up to be
+built. Rationale: small batches + certainty-decays-with-horizon — expanding every node's
+fine-grained tasks at plan time front-loads detail that decays before the node is reached
+(agentic P8).
+
+There is no programmatic skill-to-skill trigger. "Fires automatically" means the **emitted
+issue-class artefact carries an explicit on-pickup instruction naming its `delegates_to`**, which
+the picking-up agent follows (consumer side enforced by the `linear-workflow` on-start step). The
+**adapter** binding nodes to a concrete tracker therefore **must surface each node's `delegates_to`
+on the emitted artefact**; a `ktlo` node surfaces "no breakdown step." `delegates_to` is **required
+on every node** — the walk-script enforces presence (exit 2 if missing). This is the one delegation
+obligation the contract places on the adapter, and it stays tool-agnostic: which skill, not which
+tracker.
 
 ---
 

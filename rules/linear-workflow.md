@@ -124,6 +124,7 @@ The backlog is not the idea bank. The idea bank (from `idea-triage`) holds unval
 - Move to **In Progress** via `mcp__claude_ai_Linear__save_issue`.
 - If the issue isn't yet in the current cycle and you intend to ship it this cycle, assign it to the current cycle.
 - Every issue must be either (a) assigned to an initiative project, or (b) explicitly in the ops slot — meaning either no project assigned, or in the ops container project. An issue with neither an initiative nor an ops home is untracked — don't let this happen.
+- If the issue names a delegate (a `Delegates to` / `▶ On pickup` line), invoke that skill **before writing code** to expand the node into its build tasks — `planning-and-task-breakdown` for build stories, the named skill otherwise. Issues with no delegate, and `ktlo` issues, carry no breakdown step. This is the build-time half of `delivery-shape`'s deferred delegation (see `docs/delivery-shape-contract.md` § *Delegation — timing & surfacing*).
 
 ### On completion
 

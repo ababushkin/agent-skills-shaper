@@ -22,6 +22,7 @@ Linear is authoritative for status. Local task lists are fine for within-session
 - Move to **In Progress** via `mcp__claude_ai_Linear__save_issue`.
 - If the issue isn't yet in the current cycle and you intend to ship it this cycle, assign it to the current cycle.
 - Every issue must be either assigned to an initiative project or explicitly in the ops slot (no project). An unprojeceted issue with no cycle assignment is untracked — don't let this happen.
+- If the issue names a delegate (`Delegates to` / `On pickup`), invoke that skill first to break the node into build tasks before coding (ktlo issues carry no breakdown step). See `rules/linear-workflow.md`.
 
 **On completion:**
 - Move to **Done** only after the work is committed AND pushed to main. An issue isn't Done if the work only exists locally. (This repo pushes directly to main; PRs only when the owner asks.)
