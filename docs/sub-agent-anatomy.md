@@ -13,6 +13,7 @@ description: <1-2 sentences>
 category: sub-agent
 pack: <product | engineering | meta>
 review_target: <design-doc | implementation | spec | other>
+model: <Fast|Balanced|Frontier>
 principles_implemented:
   - source: <eng-universal | eng-agentic | roadmap | product>
     id: <principle or rule id>
@@ -45,12 +46,25 @@ In this exact order:
 11. **Out of scope** — what other artefacts cover; this persona's specific lane
 12. **References** — principles enforced
 
+## Model tier
+
+Every persona declares `model:` in frontmatter. The tier follows the orchestrator/worker distinction from `references/task-sizing.md`:
+
+| Role | Tier |
+|---|---|
+| Orchestrating review — integrates findings across multiple axes or sub-passes | **Frontier** |
+| Focused worker — one bounded review lane, single axis | **Balanced** |
+| Mechanical leaf — deterministic checks with enumerable pass/fail criteria | **Fast** |
+
+The rule of thumb: if this persona's verdict propagates to downstream decisions (the next agent acts on it), route **Frontier**. Single-axis, bounded-lane personas route **Balanced**; deterministic pass/fail checks route **Fast**. The tier mapping — `Fast = Haiku 4.5 · Balanced = Sonnet 4.6 · Frontier = Opus 4.7` — is canonical in `references/task-sizing.md`; a model bump is a one-line edit there.
+
 ## Length
 
 Target 150–200 lines. Hard cap 250.
 
 ## Reject triggers specific to sub-agents
 
+- `model:` field absent from frontmatter, or tier not justified against the orchestrator/worker distinction.
 - Missing the "Review posture" section.
 - Missing the "Context to load" section, or context loading happens after seeing the original work (this pollutes the independent view).
 - The persona's lane overlaps another sub-agent's without an explicit `Out of scope` boundary.
