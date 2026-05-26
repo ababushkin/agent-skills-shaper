@@ -136,16 +136,19 @@ Last updated: <date>
 ### Task 1 — Walking skeleton
 **Description:** [one sentence — what does the skeleton do?]
 **Done when:** [acceptance criterion]
+**Model:** [routing annotation per references/task-sizing.md — Fast|Balanced|Frontier · risk · review · axes]
 **Dependencies:** none
 
 ### Task 2 — [name]
 **Description:** [one sentence]
 **Done when:** [acceptance criterion]
+**Model:** [routing annotation per references/task-sizing.md]
 **Dependencies:** Task 1
 
 ### Task N — [name]
 **Description:** [one sentence]
 **Done when:** [acceptance criterion]
+**Model:** [routing annotation per references/task-sizing.md]
 **Dependencies:** [list, or "none"]
 
 ## Open questions
@@ -189,10 +192,12 @@ The skill has run correctly when:
 6. Any external or cross-team dependency has been surfaced explicitly in the open questions section.
 7. No "setup" or "scaffolding" task precedes the walking skeleton — if infrastructure is needed before the skeleton, the skeleton task encompasses it.
 8. The open questions section is either populated with owners and resolution dates, or explicitly marked empty because no unresolved questions remain.
+9. Every task includes a Model field with a routing annotation per `references/task-sizing.md`.
 
 ## References
 
 - `rules/eng-principles-universal.md` — Rule A1 (design doc trigger), Rule B1 (YAGNI per slice), Rule B2 (walking skeleton first), Rule C4 (dependencies before commitment)
 - `rules/eng-principles-agentic.md` — P3 (no drift from design doc)
+- `references/task-sizing.md` — Model routing annotation format for tasks
 - `skills/design-doc/SKILL.md` — the upstream output that this skill consumes
 - Ryan Singer — "Shape Up" (appetite and scope as planning primitives)
