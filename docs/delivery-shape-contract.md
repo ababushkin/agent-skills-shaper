@@ -67,6 +67,13 @@ hand-maintained index:
   starts at any node can climb without scanning directories.
 - **To the bet** — every deliverable and node carries `serves_kr:` naming the KR it serves, so the
   outcome trace is explicit at every layer, not inferred from position.
+- **Ordering within a deliverable** — numeric `N*` prefixes give the default reading/working order.
+  A hard dependency beyond that order is named in prose as a `> **Blocked by:** <node-id>` callout
+  in the dependent node's body — e.g. the build nodes of a Rule A1 deliverable are *blocked by* its
+  `design-doc` node. This is **intentionally prose-only**: it is a human-read sequencing signal, not
+  a structured front-matter key, and the walk-script does not parse or enforce it (the manifest is
+  order-independent). If inter-node dependencies ever need machine enforcement, that is the trigger
+  to add a structured key — until then, the prose callout is the convention.
 
 The **manifest is derived, never authored**: a walk-script reconstructs milestone/issue/sub-issue
 counts from the directory structure + front-matter. The hand-count in the README exists only as
@@ -154,9 +161,22 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 |--------|---------------------------|--------------|-----------------|
 | `spike` | decision + stop condition | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
 | `story` | acceptance criteria, in a grounded story form | `planning-and-task-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
 | `adr` | an accepted decision record (Context / Decision / Consequences) | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `product-spike` (experiment discipline) | `N07` |
 | `ktlo` | **none** — carve-out | ops slot (no outcome framing; roadmap A5) | `N09` |
+
+`design-doc` is the **Rule A1 branch**: `delivery-shape` tests each deliverable against Rule A1's
+triggers (more than ~5 nodes, a one-way-door decision, shared infrastructure, or meaningful
+user/cost/compliance impact — agentic P8's slice-count reading of the "four weeks" trigger) and,
+when one holds, emits a `design-doc` node as the deliverable's **first** node, blocking the build
+nodes' task breakdown until the design doc is accepted. It is distinct from `adr`: a full design
+doc (delegated to the `design-doc` skill) versus a single accepted decision record (delegated to
+the ADR discipline) — Rule A1's "a short ADR may suffice" is the lesser branch. The worked example
+does not exercise it (none of its deliverables trips a Rule A1 trigger), so it is grounded by the
+[`_tests/rule-a1-branch/`](../examples/delivery-plans/_tests/rule-a1-branch/) fixture, which
+exercises both arms of the branch — one deliverable that triggers a design-doc node and one that
+does not.
 
 `capability` **is** a node `type` — a spec-shaped node broken into task-slices, completion form
 `the-capability-spec`. This initiative exercises none: every capability in the worked example was
@@ -190,9 +210,9 @@ with a citation.
 
 ### Completion-criterion forms (the menu)
 
-`acceptance-criteria` · `decision+stop-condition` · `decision-record` · `hypothesis+success-metric`
-· `numeric-target` · `rollback-per-phase` · `the-capability-spec` · `none` (carve-out). A node's
-`completion.form` is one of these, fixed by its `type`.
+`acceptance-criteria` · `decision+stop-condition` · `decision-record` · `the-design-doc` ·
+`hypothesis+success-metric` · `numeric-target` · `rollback-per-phase` · `the-capability-spec` ·
+`none` (carve-out). A node's `completion.form` is one of these, fixed by its `type`.
 
 ---
 

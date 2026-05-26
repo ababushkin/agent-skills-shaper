@@ -27,6 +27,9 @@ principles_implemented:
   - source: eng-universal
     id: Rule B2
     bucket: embedded
+  - source: eng-universal
+    id: Rule A1
+    bucket: embedded
   - source: product
     id: A3
     bucket: embedded
@@ -73,27 +76,30 @@ A delivery-plan file-set under `examples/delivery-plans/<initiative-slug>/` (or 
 Before decomposing, write one sentence: "This initiative wants [outcome] for [who]." Anchoring to the stated outcome — not to "what would make a plausible plan" — is the seatbelt against drifting into a tidy-looking hierarchy that doesn't serve the bet (agentic P3).
 
 **2. [GATE] Confirm the input is a committed initiative.**
-Read the goal and KRs. If there is no goal sentence, or fewer than the KRs the initiative was shaped with, the input is an idea, not an initiative — stop and route to `initiative-shape`. Do not invent KRs to proceed; deliverables with nothing to serve are the failure this gate prevents.
+Read the goal and KRs. This is the **up-delegation**: delivery-shape *consumes* the committed initiative `initiative-shape` produces — it does not re-run that skill's goal/KR-shaping gates (re-authoring them guarantees drift, agentic P7). If there is no goal sentence, or fewer than the KRs the initiative was shaped with, the input is an idea, not an initiative — stop and route to `initiative-shape`. Do not invent KRs to proceed; deliverables with nothing to serve are the failure this gate prevents.
 
 **3. [GATE] Map deliverables to KRs.**
 Group the work into deliverables, each a milestone-class chunk that serves **exactly one KR**. Tag every `_deliverable.md` with `serves_kr:`. Two checks must hold before continuing: every deliverable serves one KR, and every KR is served by at least one deliverable. A KR with no deliverable is an unplanned outcome; a deliverable serving no KR is output without a bet (product A3).
 
-**4. Decompose each deliverable into nodes; select the type and the delegate.**
+**4. [GATE] Rule A1 — a design-doc-worthy deliverable gets a design doc before build.**
+For each deliverable, test the Rule A1 triggers (eng-universal Rule A1, with agentic P8's slice-count translation of the "four weeks" trigger): does it break into **more than ~5 nodes**, contain a **one-way-door** decision, touch **shared infrastructure**, or carry **meaningful user / cost / compliance** impact? If any holds, the deliverable's **first** node is a `design-doc` node (`type: design-doc`, `delegates_to: design-doc`); the build nodes under it are **blocked by** that node and their task breakdown waits until the design doc is accepted — the design doc comes *before* task breakdown, not alongside it. If none holds, proceed straight to nodes on goal + deliverable, with no design-doc node. delivery-shape selects the branch and delegates the design-doc discipline to the `design-doc` skill; it does not re-author the design-doc structure inline (agentic P7). A smaller architecturally-significant decision that is not design-doc-worthy takes an `adr` node instead — Rule A1's "a short ADR may suffice."
+
+**5. Decompose each deliverable into nodes; select the type and the delegate.**
 A node is polymorphic — it is not always a story. For each unit of work, select the node `type` from the vocabulary in `docs/delivery-shape-contract.md` (`story`, `spike`, `adr`, `experiment`, `ktlo`, …), which fixes its completion form. Tag every node with `type`, `serves_kr`, `maps_to`, and `delegates_to` — the rule or skill that owns that type's discipline. **Do not re-author that discipline inline.** Copying a spike protocol or an ADR template into the node guarantees drift from its source (agentic P7); link and delegate instead.
 
-**5. [GATE] Acceptance criteria by default on every `story` node.**
+**6. [GATE] Acceptance criteria by default on every `story` node.**
 For each node typed `story`, emit an `## Acceptance criteria` block — a list of `Done when:` conditions, each a verifiable state, not a description of work. This is not optional and not deferred: a story without acceptance criteria does not pass this gate. If you cannot write the "done" check, the node is not understood well enough to be a story — reshape it or change its type. This gate is enforced mechanically by `bin/check-plan-framing` (every story carries the block; an empty block fails too).
 
-**6. Break each node into tasks — walking skeleton first, foundational work folded in.**
+**7. Break each node into tasks — walking skeleton first, foundational work folded in.**
 List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one — which is the exact failure this prompt prevents. Each task is one observable outcome. The skeleton-and-folding rule is enforced mechanically by `bin/check-plan-framing` (≥1 skeleton task in the plan; no node with a task before its skeleton).
 
-**7. Surface deferred, build-time delegation on every node.**
+**8. Surface deferred, build-time delegation on every node.**
 `delegates_to` fires at **pickup**, not at emission — expanding every node's fine-grained tasks now front-loads detail that decays before the node is reached (agentic P8). So delivery-shape stops at the node; it does not run the delegate. On each emitted issue-class artefact, write an explicit on-pickup instruction naming its `delegates_to` (a `story` says "expand via `planning-and-task-breakdown` before coding"; a `ktlo` node says "no breakdown step"). The picking-up agent follows that line. This is the one delegation obligation the contract places on the emitted artefact — see `docs/delivery-shape-contract.md` § *Delegation — timing & surfacing*.
 
-**8. Emit the file-set.**
+**9. Emit the file-set.**
 Write the directory layout from the template below: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the **hand-count manifest** (milestones / issues / sub-issues), one `D<n>/` per deliverable, one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
 
-**9. [GATE] Verify the emitted plan.**
+**10. [GATE] Verify the emitted plan.**
 Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `delegates_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every story carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton. If either fails, the plan is not done; fix the file-set, do not relax the gate.
 
 ## Artefact template
@@ -140,6 +146,29 @@ delegates_to: planning-and-task-breakdown (per-node task breakdown)
 - [ ] <one observable outcome>
 ```
 
+A `design-doc` node file — emitted as the **first** node of a deliverable that met a Rule A1 trigger (step 4); the build nodes that follow it carry a `Blocked by:` line naming it:
+
+```markdown
+---
+layer: node
+id: N01
+type: design-doc
+title: <deliverable> design doc (before build)
+parent: D1
+serves_kr: KR<n>
+maps_to: <issue-class>
+external_window: none
+completion:
+  form: the-design-doc
+delegates_to: design-doc (Rule A1 design doc — produced before the build nodes are picked up)
+---
+
+# N01 — <title>
+
+> **▶ On pickup — before any build node here:** produce the design doc via the `design-doc`
+> skill. The build nodes under this deliverable are blocked by this node.
+```
+
 The root `README.md` ends with the hand-count manifest the walk-script reproduces:
 
 ```markdown
@@ -161,13 +190,16 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 | "A flat task list straight from the goal is faster than a three-layer hierarchy." | Faster to write, slower to verify. A flat list has no outcome trace (which KR does this serve?) and no per-story completion check. The hierarchy is what makes the plan walkable and gradable. |
 | "This deliverable serves two KRs — I'll tag both." | A deliverable serving two KRs is two deliverables. One-KR-per-deliverable is what keeps the outcome spine legible; split it. |
 | "The skeleton needs a setup task before it to install the toolchain." | A setup task before the skeleton defers integration discovery — the thing the skeleton exists to surface on day one. Fold the toolchain work into the skeleton task's description instead. |
+| "This deliverable is clearly design-doc-worthy — I'll sketch the design inline so the plan is complete." | That re-authors the `design-doc` skill's discipline and rots the moment it updates (agentic P7). Emit a `design-doc` node, point `delegates_to` at the skill, and let the design doc be produced at pickup — before the build nodes' task breakdown. |
+| "Every deliverable should get a design-doc node, to be safe." | No — that buries the signal. The branch is conditional on a Rule A1 trigger; a reversible, single-surface deliverable proceeds straight to nodes. A design-doc node on work that doesn't need one is the same waste as skipping one on work that does. |
 
 ## Red flags
 
 - A `story` node has no `## Acceptance criteria` block, or the block is an empty heading.
 - A deliverable has no `serves_kr`, or serves more than one KR.
 - A node is missing `type`, `delegates_to`, or `maps_to`.
-- A node's body re-states a spike protocol, ADR structure, or test discipline inline instead of delegating to its owner.
+- A node's body re-states a spike protocol, ADR structure, design-doc structure, or test discipline inline instead of delegating to its owner.
+- A deliverable that meets a Rule A1 trigger has no `design-doc` node before its build nodes — or a reversible, single-surface deliverable was given one it doesn't need.
 - `external_window` carries a duration in days or weeks rather than a genuine external constraint (or `none`).
 - A node's fine-grained build tasks were expanded at emission time rather than left to the on-pickup delegate.
 - A "setup" or "scaffolding" task precedes the walking-skeleton task in a node.
@@ -181,19 +213,21 @@ The skill has run correctly when:
 1. A delivery-plan file-set exists with a root `README.md`, one `D<n>/` per deliverable, and one `N<nn>.md` per node.
 2. Every deliverable carries `serves_kr`, and every KR is served by at least one deliverable.
 3. Every node carries `type`, `serves_kr`, `maps_to`, and `delegates_to`.
-4. Every `story` node carries an `## Acceptance criteria` block with at least one `Done when:` condition.
-5. Each node's first task is the walking skeleton (`` `skeleton` `` tag), with foundational work folded in and no preceding setup task.
-6. Every emitted issue-class artefact carries an on-pickup instruction naming its `delegates_to` (or "no breakdown step" for `ktlo`).
-7. `bin/walk-delivery-plan <plan>` exits 0 — the plan walks deterministically and the derived manifest equals the README hand-count oracle.
-8. `bin/check-plan-framing <plan>` exits 0 — every story node carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a task before its skeleton.
+4. Every deliverable meeting a Rule A1 trigger has a `design-doc` node (`delegates_to: design-doc`) as its first node, with build nodes blocked by it; deliverables meeting no trigger have none.
+5. Every `story` node carries an `## Acceptance criteria` block with at least one `Done when:` condition.
+6. Each node's first task is the walking skeleton (`` `skeleton` `` tag), with foundational work folded in and no preceding setup task.
+7. Every emitted issue-class artefact carries an on-pickup instruction naming its `delegates_to` (or "no breakdown step" for `ktlo`).
+8. `bin/walk-delivery-plan <plan>` exits 0 — the plan walks deterministically and the derived manifest equals the README hand-count oracle.
+9. `bin/check-plan-framing <plan>` exits 0 — every story node carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a task before its skeleton.
 
 ## References
 
 - `docs/delivery-shape-contract.md` — the plan-artefact contract: three layers, cross-reference convention, per-node tags, node-type vocabulary, and the *Delegation — timing & surfacing* section this skill implements
 - `bin/walk-delivery-plan` — the deterministic reader that walks the emitted file-set into a manifest and enforces `serves_kr` / `type` / `delegates_to` presence
 - `bin/check-plan-framing` — the framing gate that asserts every story node carries acceptance criteria, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
-- `skills/initiative-shape/SKILL.md` — upstream: produces the committed initiative (goal + KRs) this skill consumes
-- `skills/planning-and-task-breakdown/SKILL.md` — downstream: the per-node task-breakdown delegate that fires at pickup
+- `skills/initiative-shape/SKILL.md` — **up-delegation**: produces the committed initiative (goal + KRs) this skill consumes; delivery-shape does not re-run its shaping gates
+- `skills/planning-and-task-breakdown/SKILL.md` — **down-delegation**: the per-node task-breakdown delegate that fires at pickup
+- `skills/design-doc/SKILL.md` — the Rule A1 branch delegate: produces the design doc a design-doc-worthy deliverable needs before its build nodes' task breakdown
 - `rules/eng-principles-agentic.md` — P3 (spec as seatbelt), P4 (evidence/acceptance by default), P7 (select and delegate, never re-author), P8 (slices and gates, deferred delegation)
-- `rules/eng-principles-universal.md` — Rule B2 (walking skeleton first)
+- `rules/eng-principles-universal.md` — Rule B2 (walking skeleton first), Rule A1 (design-doc trigger)
 - `rules/PRODUCT_RULES.md` — A3 (measurable success criterion: deliverable ↔ KR trace)
