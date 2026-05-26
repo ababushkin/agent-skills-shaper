@@ -84,8 +84,8 @@ A node is polymorphic — it is not always a story. For each unit of work, selec
 **5. [GATE] Acceptance criteria by default on every `story` node.**
 For each node typed `story`, emit an `## Acceptance criteria` block — a list of `Done when:` conditions, each a verifiable state, not a description of work. This is not optional and not deferred: a story without acceptance criteria does not pass this gate. If you cannot write the "done" check, the node is not understood well enough to be a story — reshape it or change its type. This gate is enforced mechanically by `bin/check-plan-framing` (every story carries the block; an empty block fails too).
 
-**6. Break each node into tasks — walking skeleton first.**
-List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Foundational and toolchain work is **folded into** the skeleton task's description — never emitted as a separate setup task before it (eng-universal Rule B2). Each task is one observable outcome.
+**6. Break each node into tasks — walking skeleton first, foundational work folded in.**
+List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one — which is the exact failure this prompt prevents. Each task is one observable outcome. The skeleton-and-folding rule is enforced mechanically by `bin/check-plan-framing` (≥1 skeleton task in the plan; no node with a task before its skeleton).
 
 **7. Surface deferred, build-time delegation on every node.**
 `delegates_to` fires at **pickup**, not at emission — expanding every node's fine-grained tasks now front-loads detail that decays before the node is reached (agentic P8). So delivery-shape stops at the node; it does not run the delegate. On each emitted issue-class artefact, write an explicit on-pickup instruction naming its `delegates_to` (a `story` says "expand via `planning-and-task-breakdown` before coding"; a `ktlo` node says "no breakdown step"). The picking-up agent follows that line. This is the one delegation obligation the contract places on the emitted artefact — see `docs/delivery-shape-contract.md` § *Delegation — timing & surfacing*.
@@ -94,7 +94,7 @@ List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: 
 Write the directory layout from the template below: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the **hand-count manifest** (milestones / issues / sub-issues), one `D<n>/` per deliverable, one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
 
 **9. [GATE] Verify the emitted plan.**
-Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `delegates_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every story carries acceptance criteria. If either fails, the plan is not done; fix the file-set, do not relax the gate.
+Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `delegates_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every story carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton. If either fails, the plan is not done; fix the file-set, do not relax the gate.
 
 ## Artefact template
 
@@ -185,13 +185,13 @@ The skill has run correctly when:
 5. Each node's first task is the walking skeleton (`` `skeleton` `` tag), with foundational work folded in and no preceding setup task.
 6. Every emitted issue-class artefact carries an on-pickup instruction naming its `delegates_to` (or "no breakdown step" for `ktlo`).
 7. `bin/walk-delivery-plan <plan>` exits 0 — the plan walks deterministically and the derived manifest equals the README hand-count oracle.
-8. `bin/check-plan-framing <plan>` exits 0 — every story node carries acceptance criteria.
+8. `bin/check-plan-framing <plan>` exits 0 — every story node carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a task before its skeleton.
 
 ## References
 
 - `docs/delivery-shape-contract.md` — the plan-artefact contract: three layers, cross-reference convention, per-node tags, node-type vocabulary, and the *Delegation — timing & surfacing* section this skill implements
 - `bin/walk-delivery-plan` — the deterministic reader that walks the emitted file-set into a manifest and enforces `serves_kr` / `type` / `delegates_to` presence
-- `bin/check-plan-framing` — the framing gate that asserts every story node carries acceptance criteria
+- `bin/check-plan-framing` — the framing gate that asserts every story node carries acceptance criteria, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
 - `skills/initiative-shape/SKILL.md` — upstream: produces the committed initiative (goal + KRs) this skill consumes
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: the per-node task-breakdown delegate that fires at pickup
 - `rules/eng-principles-agentic.md` — P3 (spec as seatbelt), P4 (evidence/acceptance by default), P7 (select and delegate, never re-author), P8 (slices and gates, deferred delegation)

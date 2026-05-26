@@ -8,28 +8,44 @@ default*. This is the framing gate; it is orthogonal to `bin/walk-delivery-plan`
 side: walk-script proves the plan converts to a manifest, this proves the plan
 carries its completion framing.
 
-Check implemented here (the N04 slice):
+Two framing checks are implemented, each guarding a piece of framing the skill
+must emit by default rather than the user re-prompting for:
 
-    Every `type: story` node carries an Acceptance-criteria block — a
-    `## Acceptance criteria` heading with at least one list item under it.
+  1. Acceptance criteria — every `type: story` node carries an
+     `## Acceptance criteria` heading with at least one list item under it. A
+     story's whole reason to exist is "how do I know this is done?", so a story
+     with no acceptance criteria is the exact failure this catches. Other node
+     types (spike, adr, experiment, ktlo, …) carry different completion forms
+     and are not checked — only stories must carry acceptance criteria.
 
-A `story` node's whole reason to exist is "how do I know this is done?", so a
-story with no acceptance criteria is the exact failure this gate catches. Other
-node types (spike, adr, experiment, ktlo, …) carry different completion forms
-and are not checked here — only stories are required to carry acceptance
-criteria.
+  2. Foundational work folded into the skeleton — the plan carries at least one
+     `` `skeleton` ``-flagged task, and no node places any task *before* its
+     first skeleton task. Foundational / toolchain work belongs folded into the
+     skeleton task's description; a task that precedes the skeleton is a setup
+     task in disguise, deferring the integration discovery the skeleton exists
+     to surface on day one (mirrors planning-and-task-breakdown's
+     walking-skeleton-first rule). The pre-skeleton check is structural, not
+     keyword-based: any task before the first skeleton task fails, whatever it
+     is named — that is the only deterministic reading of "no setup task first."
 
 Like the walk-script, this reader is deliberately dependency-free (stdlib only,
-no YAML library): it needs just two front-matter keys (`layer`, `type`) plus a
-heading scan, so a targeted reader is more boring — and more honest about what
-it relies on — than pulling in a parser.
+no YAML library): it needs just two front-matter keys (`layer`, `type`), a
+heading scan, and the walk-script's task-line *regex* (`TASK_RE`) — so a
+targeted reader is more boring, and more honest about what it relies on, than
+pulling in a parser. It shares only the regex with the walk-script, not the
+fence policy: this reader skips task lines inside fenced code blocks (matching
+its own `has_acceptance_block`), whereas `walk-delivery-plan` reads them. Plan
+node files do not fence their checklists, so the two agree in practice; the
+skip just keeps a quoted example block from being mistaken for plan structure.
 
 Usage:
     bin/check-plan-framing <plan-dir> [--json]
 
 Exit codes:
-    0   every story node carries an acceptance-criteria block
-    1   one or more story nodes are missing acceptance criteria
+    0   every story carries acceptance criteria; >=1 skeleton task; no node has
+        a task before its skeleton
+    1   a framing check failed: a story is missing acceptance criteria, the plan
+        has no skeleton task, or a node places a task before its skeleton
     2   a node could not be parsed / no nodes found (seam not mechanical)
     64  usage error
 """
@@ -49,6 +65,8 @@ HEADING_RE = re.compile(r"^#{1,6}\s+(.*?)\s*#*\s*$")  # ATX headings at column 0
 ACCEPTANCE_HEADING_RE = re.compile(r"^acceptance criteria$", re.IGNORECASE)
 LIST_ITEM_RE = re.compile(r"^\s*[-*]\s+\S")
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
+TASK_RE = re.compile(r"^\s*- \[([ xX])\]\s*(.*)$")  # same task grammar as walk-delivery-plan
+SKELETON_TAG = "`skeleton`"
 
 
 class PlanError(Exception):
@@ -119,6 +137,31 @@ def has_acceptance_block(body: list[str]) -> bool:
     return False
 
 
+def read_tasks(body: list[str]) -> list[dict]:
+    """Return the node's checklist tasks in order: [{skeleton: bool, text: str}].
+
+    Matches the walk-script's task-line regex (`TASK_RE`). Task lines inside a
+    fenced code block are literal text (e.g. a template in a SKILL), not plan
+    structure, so they are skipped — consistent with this file's
+    `has_acceptance_block` (the walk-script does not skip fences; see module
+    docstring).
+    """
+    tasks: list[dict] = []
+    in_fence = False
+    for line in body:
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = TASK_RE.match(line)
+        if not m:
+            continue
+        text = m.group(2).strip()
+        tasks.append({"skeleton": text.startswith(SKELETON_TAG), "text": text})
+    return tasks
+
+
 # --- walk --------------------------------------------------------------------
 
 def _order(pattern: re.Pattern, name: str) -> int:
@@ -126,8 +169,14 @@ def _order(pattern: re.Pattern, name: str) -> int:
     return int(m.group(1)) if m else 0
 
 
-def collect_stories(root: Path) -> list[dict]:
-    """Find every `type: story` node and record whether it carries an AC block."""
+def collect_nodes(root: Path) -> list[dict]:
+    """Find every node and record its type, AC-block presence, and task list.
+
+    Walks the same deliverable→node layout as the walk-script. Each record
+    carries enough for the framing sub-checks: `type` (which nodes the AC check
+    applies to), `has_acceptance` (the AC check), and `tasks` in order (the
+    skeleton / pre-skeleton check).
+    """
     deliverable_dirs = sorted(
         (d for d in root.iterdir() if d.is_dir() and DELIVERABLE_DIR_RE.match(d.name)),
         key=lambda d: _order(DELIVERABLE_DIR_RE, d.name),
@@ -144,21 +193,36 @@ def collect_stories(root: Path) -> list[dict]:
     if not node_files:
         raise PlanError(f"{root}: no node files (N<nn>-*.md) found")
 
-    stories: list[dict] = []
+    nodes: list[dict] = []
     for nfile in node_files:
         fm, body = split_front_matter(nfile)
         if fm.get("layer") != "node":
             raise PlanError(f"{nfile}: layer is not 'node'")
         if "type" not in fm:
             raise PlanError(f"{nfile}: node missing required front-matter 'type'")
-        if fm["type"] != "story":
-            continue
-        stories.append({
+        nodes.append({
             "id": fm.get("id", nfile.stem),
             "path": str(nfile.relative_to(root)),
+            "type": fm["type"],
             "has_acceptance": has_acceptance_block(body),
+            "tasks": read_tasks(body),
         })
-    return stories
+    return nodes
+
+
+def pre_skeleton_tasks(node: dict) -> list[str]:
+    """Tasks that precede the node's first skeleton task — empty if none/no skeleton.
+
+    A node with no skeleton task has nothing for a task to be "pre" to, so it
+    never contributes a violation (plan-level "at least one skeleton" is checked
+    separately). When a skeleton task exists, every task before it is a
+    pre-skeleton setup task, whatever it is named.
+    """
+    tasks = node["tasks"]
+    first = next((i for i, t in enumerate(tasks) if t["skeleton"]), None)
+    if first is None or first == 0:
+        return []
+    return [t["text"] for t in tasks[:first]]
 
 
 # --- entrypoint --------------------------------------------------------------
@@ -175,19 +239,32 @@ def main(argv: list[str]) -> int:
         return 64
 
     try:
-        stories = collect_stories(root)
+        nodes = collect_nodes(root)
     except PlanError as exc:
         sys.stderr.write(f"PARSE ERROR: {exc}\n")
         return 2
 
-    missing = [s for s in stories if not s["has_acceptance"]]
-    ok = not missing
+    stories = [n for n in nodes if n["type"] == "story"]
+    missing_ac = [n for n in stories if not n["has_acceptance"]]
+
+    skeleton_total = sum(1 for n in nodes for t in n["tasks"] if t["skeleton"])
+    no_skeleton = skeleton_total == 0
+    pre_skeleton = [
+        {"id": n["id"], "path": n["path"], "tasks": pre}
+        for n in nodes if (pre := pre_skeleton_tasks(n))
+    ]
+
+    ok = not missing_ac and not no_skeleton and not pre_skeleton
 
     if as_json:
         print(json.dumps({
             "source": str(root),
             "stories_checked": len(stories),
-            "missing_acceptance": [s["path"] for s in missing],
+            "missing_acceptance": [s["path"] for s in missing_ac],
+            "skeleton_tasks": skeleton_total,
+            "pre_skeleton_setup": [
+                {"id": p["id"], "path": p["path"], "tasks": p["tasks"]} for p in pre_skeleton
+            ],
             "ok": ok,
         }, indent=2))
     else:
@@ -197,18 +274,41 @@ def main(argv: list[str]) -> int:
         for s in stories:
             mark = "ok " if s["has_acceptance"] else "MISSING"
             print(f"  [{mark}] {s['id']}  {s['path']}")
-        verdict = "PASS — every story carries acceptance criteria" if ok else (
-            f"FAIL — {len(missing)} story node(s) missing an acceptance-criteria block"
+        print(f"skeleton tasks in plan: {skeleton_total}")
+        for p in pre_skeleton:
+            print(f"  [PRE-SKELETON] {p['id']}  {p['path']}: {len(p['tasks'])} task(s) before skeleton")
+        verdict = "PASS — acceptance criteria, skeleton task, and no pre-skeleton setup" if ok else (
+            "FAIL — " + "; ".join(filter(None, [
+                f"{len(missing_ac)} story node(s) missing acceptance criteria" if missing_ac else "",
+                "no skeleton task in plan" if no_skeleton else "",
+                f"{len(pre_skeleton)} node(s) with a task before the skeleton" if pre_skeleton else "",
+            ]))
         )
         print(verdict)
 
     if not ok:
-        sys.stderr.write(
-            "\nFRAMING DROPPED: the story nodes below have no '## Acceptance criteria' "
-            "block (heading + >=1 list item). delivery-shape must emit acceptance "
-            "criteria on every story by default:\n"
-            + "".join(f"  - {s['path']}\n" for s in missing)
-        )
+        sys.stderr.write("\nFRAMING DROPPED:\n")
+        if missing_ac:
+            sys.stderr.write(
+                "  story nodes with no '## Acceptance criteria' block (heading + >=1 list "
+                "item) — delivery-shape must emit acceptance criteria on every story by default:\n"
+                + "".join(f"    - {s['path']}\n" for s in missing_ac)
+            )
+        if no_skeleton:
+            sys.stderr.write(
+                "  the plan carries no `skeleton`-flagged task — at least one node must mark its "
+                "thinnest end-to-end slice with a leading `skeleton` tag, foundational work folded in.\n"
+            )
+        if pre_skeleton:
+            sys.stderr.write(
+                "  nodes that place a task before their skeleton — the skeleton must be the first "
+                "task; if the preceding task is setup/toolchain work, fold it into the skeleton's "
+                "description rather than emitting it before:\n"
+                + "".join(
+                    f"    - {p['path']}: " + " | ".join(p["tasks"]) + "\n"
+                    for p in pre_skeleton
+                )
+            )
         return 1
     return 0
 
