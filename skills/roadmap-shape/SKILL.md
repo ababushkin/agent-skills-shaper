@@ -214,9 +214,9 @@ Cycle: <period>
 
 ## Theme distribution
 
-| Item | Theme | ICE | Confidence | Kano | Slot |
-|---|---|---|---|---|---|
-| | | | | | |
+| Item | Theme | ICE | Confidence | Kano | Model tier | Slot |
+|---|---|---|---|---|---|---|
+| | | | | | | |
 
 ## Now
 
@@ -297,6 +297,7 @@ The skill has run correctly when:
 - `references/confidence-meter.md` — Gilad's scale for evidence quality scoring
 - `references/ice-scoring.md` — ICE = Impact × Confidence × Ease mechanics
 - `references/kano-classification.md` — five-category feature taxonomy for customer-facing work
+- `references/task-sizing.md` — model tier / risk routing rubric for roadmap item prioritisation
 - Janna Bastow — Now-Next-Later roadmap format
 - Ryan Singer — "Shape Up" (appetite and fixed-time planning)
 - Shreyas Doshi — portfolio themes framework
