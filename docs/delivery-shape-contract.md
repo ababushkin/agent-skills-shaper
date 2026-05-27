@@ -252,7 +252,7 @@ fine-grained tasks at plan time front-loads detail that decays before the node i
 
 There is no programmatic skill-to-skill trigger. "Fires automatically" means the **emitted
 issue-class artefact carries an explicit on-pickup instruction naming its `delegates_to`**, which
-the picking-up agent follows (consumer side enforced by the `linear-workflow` on-start step). The
+the picking-up agent follows (consumer side enforced by the Workflow pack's on-start step). The
 **adapter** binding nodes to a concrete tracker therefore **must surface each node's `delegates_to`
 on the emitted artefact**; a `ktlo` node surfaces "no breakdown step." `delegates_to` is **required
 on every node** — the walk-script enforces presence (exit 2 if missing). This is the one delegation

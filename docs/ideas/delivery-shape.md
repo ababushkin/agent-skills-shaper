@@ -13,7 +13,7 @@ The target `-shape` vocabulary (renames tracked separately — see Dependencies)
 > shape the idea → shape the outcome → **shape the delivery** → shape the tasks
 > `idea-triage` → `initiative-shape` → **`delivery-shape`** *(new)* → `planning-and-task-breakdown`
 
-`delivery-shape` owns **the plan**: how a committed initiative gets delivered. It is *not* the initiative (the bet) — the plan belongs to the initiative. This is why it isn't named `project-shape`: in this workspace `linear-workflow.md` hard-codes Projects ≡ initiatives, so "project" already names the bet layer.
+`delivery-shape` owns **the plan**: how a committed initiative gets delivered. It is *not* the initiative (the bet) — the plan belongs to the initiative. This is why it isn't named `project-shape`: in this workspace the tracker governance hard-codes Projects ≡ initiatives, so "project" already names the bet layer.
 
 ## Recommended Direction
 A `-shape`-family skill that takes a shaped initiative (goal + KRs) and emits **a set of cross-referencing markdown files** representing the full delivery hierarchy. It delegates up and down rather than re-implementing (avoids gate-drift, agentic P7):

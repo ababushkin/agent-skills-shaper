@@ -32,19 +32,20 @@ for src in "${REPO_DIR}/.claude/commands/"*.md; do
 done
 
 # 2. Add rule file references to ~/.claude/CLAUDE.md if not already present.
-#    Also strips stale refs from the pre-flatten layout
+#    Also strips refs to files Shaper no longer ships: the pre-flatten layout
 #    (skills/engineering/eng-principles-*.md, skills/product/PRODUCT_RULES.md)
-#    so re-runners don't end up with broken @-includes.
+#    and any ref into rules/ that's no longer in RULE_REFS (e.g. a rule file
+#    relocated to another pack) — so re-runners don't keep a broken @-include.
 RULE_REFS=(
   "@${REPO_DIR}/rules/PRODUCT_RULES.md"
   "@${REPO_DIR}/rules/eng-principles-universal.md"
   "@${REPO_DIR}/rules/eng-principles-agentic.md"
-  "@${REPO_DIR}/rules/linear-workflow.md"
 )
 
 touch "${CLAUDE_MD}"
 
-# Strip stale refs from pre-flatten layout.
+# Strip stale refs from pre-flatten layout (these live outside rules/, so the
+# rules/ sweep below won't catch them).
 STALE_PATTERNS=(
   "@${REPO_DIR}/skills/product/PRODUCT_RULES.md"
   "@${REPO_DIR}/skills/engineering/eng-principles-universal.md"
@@ -57,6 +58,25 @@ for stale in "${STALE_PATTERNS[@]}"; do
     echo "Removed stale ref: ${stale}"
   fi
 done
+
+# Prune any ref into this repo's rules/ dir that is no longer in RULE_REFS — e.g.
+# a rule file relocated to another pack. Keeping only the current set means a
+# re-run after a rule file moves out drops its dangling @-include instead of
+# leaving it broken. Reads the file via a fixed fd, so in-loop deletes are safe.
+while IFS= read -r line; do
+  case "${line}" in
+    "@${REPO_DIR}/rules/"*.md)
+      keep=false
+      for ref in "${RULE_REFS[@]}"; do
+        if [ "${line}" = "${ref}" ]; then keep=true; break; fi
+      done
+      if [ "${keep}" = false ]; then
+        sed -i '' "\|^${line}\$|d" "${CLAUDE_MD}"
+        echo "Pruned relocated rule ref: ${line}"
+      fi
+      ;;
+  esac
+done < "${CLAUDE_MD}"
 
 for ref in "${RULE_REFS[@]}"; do
   if grep -qF "${ref}" "${CLAUDE_MD}"; then
@@ -161,7 +181,7 @@ echo "  /shape:product-spike                Answer a product question before des
 echo "  /shape:backend-spike                Investigate a backend correctness question before implementing"
 echo "  /shape:design-doc                   Structure significant engineering work"
 echo "  /shape:planning-and-task-breakdown  Break a design into tasks"
-echo "  /shape:initiative                   Shape an idea into a Linear initiative"
+echo "  /shape:initiative                   Shape an idea into an initiative"
 echo "  /shape:plan-review                  Review a plan/spec/design before approval"
 echo "  /shape:render-html                  Render a markdown doc as a reviewable HTML file"
 echo "  /shape:stop-the-line                Scan a diff for quality red flags"

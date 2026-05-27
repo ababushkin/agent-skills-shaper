@@ -11,7 +11,7 @@ Shaper turns a fuzzy idea into something bettable, sound, and ready to build —
 
 Execution — implement, test, ship — is delegated to an execution pack of your choice. That's a scope decision, not a gap: Shaper's job is to hand that pack a clean, de-risked, bettable spec.
 
-Shaper is **Linear-first** — initiatives, cycles, key results, and the idea bank live in Linear — and degrades to plain markdown when Linear isn't connected.
+Shaper is **tracker-agnostic** — initiatives, key results, and the idea bank are plain markdown by default. Install the [Workflow pack](#how-to-install) (plugin `workflow`) to record them in a Linear-based initiative/cycle model; without it, every artefact is a paste-ready markdown shape.
 
 Skills encode the discipline experienced teams apply at each decision point, packaged so AI agents follow them consistently instead of taking shortcuts.
 
@@ -41,7 +41,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [app-calibrate](skills/app-calibrate/SKILL.md) | Captures app-specific context (audience, value props, constraints) so Impact scores in `idea-triage` are grounded in this product, not a generic one. | Before running `idea-triage` for the first time on a product; product context shifts |
 | [backlog-manage](skills/backlog-manage/SKILL.md) | Maintains the idea bank between triage and planning. Promotes validated items, kills stale ones, updates confidence scores with new evidence, and tracks KTLO work. Run before `roadmap-shape` so it reads a clean input. | Idea bank needs curation; validation result arrived; adding KTLO work; feeding post-launch evidence back |
 | [roadmap-shape](skills/roadmap-shape/SKILL.md) | Reads the curated idea bank and builds a Now/Next/Later roadmap with explicit portfolio-theme mix and capacity allocation. Assumes the idea bank is clean. | Planning cycle; roadmap review |
-| [initiative-shape](skills/initiative-shape/SKILL.md) | Probes a vague idea or roadmap item through the four-field check (goal / success criterion / affected repos / appetite) and creates a Linear project. Enforces the initiative model from `linear-workflow.md`. | Before creating a Linear project for goal-directed work |
+| [initiative-shape](skills/initiative-shape/SKILL.md) | Shapes a vague idea or roadmap item into a properly formed initiative — goal, 3 measurable key results, affected repos, appetite, kill condition, project type — gated by an 11-rule quality rubric. Records it via your tracker if a binding is installed (e.g. the Workflow pack), else emits a paste-ready markdown shape. | Committing to goal-directed work; preparing initiatives for cycle planning |
 
 ### Technical shaping
 
@@ -154,16 +154,17 @@ This gives you:
 - The 11 slash commands (`/shape:idea-triage`, `/shape:design-doc`, …)
 - The 12 auto-invocable Skills, namespaced as `shape-<name>` (model-triggered via the Skill tool)
 
-Restart Claude Code after install. To load the rule files persistently, add four `@` references to your `~/.claude/CLAUDE.md`:
+Restart Claude Code after install. To load the rule files persistently, add three `@` references to your `~/.claude/CLAUDE.md`:
 
 ```
 @/path/to/agent-skills-shaper/rules/PRODUCT_RULES.md
 @/path/to/agent-skills-shaper/rules/eng-principles-universal.md
 @/path/to/agent-skills-shaper/rules/eng-principles-agentic.md
-@/path/to/agent-skills-shaper/rules/linear-workflow.md
 ```
 
 Where `/path/to/agent-skills-shaper` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
+
+The tracker workflow — the Linear initiative/cycle cadence, the code-review-before-Done gate, and the issue-comment standard — lives in the **Workflow pack** (plugin `workflow`), not in Shaper. Install it for the tracker workflow; its SessionStart hook then loads that governance and points at the three principle files above, making these manual imports optional. Shaper installed on its own keeps the three principle `@`-refs as its persistent-load path.
 
 ### Claude Code — local-dev install (`install.sh`)
 
@@ -179,7 +180,7 @@ The script:
 
 1. Generates wrapper command files in `~/.claude/commands/shape/` (slash commands).
 2. Symlinks each skill dir into `~/.claude/skills/shape-<name>` (auto-invocable Skills, edits propagate live).
-3. Appends `@`-refs for the four rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old layout refs are migrated automatically).
+3. Appends `@`-refs for the three principle rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old-layout refs and any ref to a rule file Shaper no longer ships are pruned automatically).
 
 Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
 

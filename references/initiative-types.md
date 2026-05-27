@@ -359,5 +359,5 @@ Project type:   5 — Equity research tooling
 ## Sources
 
 - Internal research: Linear document "Research and implementation plan — OKR shapes by project type" (Section 1.1, project `Initiative quality — type-aware OKRs with KRs`)
-- `rules/linear-workflow.md` — initiative format the type field is added to
+- `skills/initiative-shape/SKILL.md` — the six-field initiative format the type field is added to (defined inline in the skill); tracker capture is owned by the Workflow pack when installed
 - `skills/initiative-shape/SKILL.md` — invokes the type probe at Step 2.5
