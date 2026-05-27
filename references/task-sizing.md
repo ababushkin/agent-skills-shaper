@@ -7,6 +7,7 @@ description: >
 type: reference
 cited_by:
   - skills/planning-and-task-breakdown/SKILL.md
+  - skills/roadmap-shape/SKILL.md
 ---
 
 # Task sizing — the 5-axis routing rubric
