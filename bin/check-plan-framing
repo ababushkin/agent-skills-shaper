@@ -8,17 +8,23 @@ default*. This is the framing gate; it is orthogonal to `bin/walk-delivery-plan`
 side: walk-script proves the plan converts to a manifest, this proves the plan
 carries its completion framing.
 
-Two framing checks are implemented, each guarding a piece of framing the skill
+Three framing checks are implemented, each guarding a piece of framing the skill
 must emit by default rather than the user re-prompting for:
 
-  1. Acceptance criteria — every `type: story` node carries an
-     `## Acceptance criteria` heading with at least one list item under it. A
-     story's whole reason to exist is "how do I know this is done?", so a story
-     with no acceptance criteria is the exact failure this catches. Other node
-     types (spike, adr, experiment, ktlo, …) carry different completion forms
-     and are not checked — only stories must carry acceptance criteria.
+  1. Five body sections — every node carries the five headings: What, Why,
+     Completion, Assumptions, Key Risks (in any order; presence is the gate).
+     A node missing any heading fails and names the absent section(s). This
+     replaces the earlier story-only acceptance-criteria check: the uniform
+     template applies to all node types (Completion content varies by type;
+     the heading is required on all of them).
 
-  2. Foundational work folded into the skeleton — the plan carries at least one
+  2. Assumption tags — every list item under a node's `## Assumptions` heading
+     carries a `(verified)` or `(to-verify)` tag anywhere in the line. An
+     item without a tag is an untested claim being treated as a known fact.
+     An empty Assumptions section (no list items, e.g. `*(none)*`) passes
+     trivially — the tag rule only applies to explicit list items.
+
+  3. Foundational work folded into the skeleton — the plan carries at least one
      `` `skeleton` ``-flagged task, and no node places any task *before* its
      first skeleton task. Foundational / toolchain work belongs folded into the
      skeleton task's description; a task that precedes the skeleton is a setup
@@ -32,20 +38,19 @@ Like the walk-script, this reader is deliberately dependency-free (stdlib only,
 no YAML library): it needs just two front-matter keys (`layer`, `type`), a
 heading scan, and the walk-script's task-line *regex* (`TASK_RE`) — so a
 targeted reader is more boring, and more honest about what it relies on, than
-pulling in a parser. It shares only the regex with the walk-script, not the
-fence policy: this reader skips task lines inside fenced code blocks (matching
-its own `has_acceptance_block`), whereas `walk-delivery-plan` reads them. Plan
-node files do not fence their checklists, so the two agree in practice; the
-skip just keeps a quoted example block from being mistaken for plan structure.
+pulling in a parser. Headings and list items inside fenced code blocks are
+literal text, not structure — the scanner skips them, consistent across all
+three checks.
 
 Usage:
     bin/check-plan-framing <plan-dir> [--json]
 
 Exit codes:
-    0   every story carries acceptance criteria; >=1 skeleton task; no node has
-        a task before its skeleton
-    1   a framing check failed: a story is missing acceptance criteria, the plan
-        has no skeleton task, or a node places a task before its skeleton
+    0   every node carries the five sections; no untagged assumption items;
+        >=1 skeleton task; no node has a task before its skeleton
+    1   a framing check failed: a node is missing a section, an assumption item
+        lacks a tag, the plan has no skeleton task, or a node places a task
+        before its skeleton
     2   a node could not be parsed / no nodes found (seam not mechanical)
     64  usage error
 """
@@ -62,11 +67,21 @@ from pathlib import Path
 DELIVERABLE_DIR_RE = re.compile(r"^D(\d+)-")
 NODE_FILE_RE = re.compile(r"^N(\d+)-.*\.md$")
 HEADING_RE = re.compile(r"^#{1,6}\s+(.*?)\s*#*\s*$")  # ATX headings at column 0 (the contract emits them there)
-ACCEPTANCE_HEADING_RE = re.compile(r"^acceptance criteria$", re.IGNORECASE)
 LIST_ITEM_RE = re.compile(r"^\s*[-*]\s+\S")
 FENCE_RE = re.compile(r"^\s*(```|~~~)")
 TASK_RE = re.compile(r"^\s*- \[([ xX])\]\s*(.*)$")  # same task grammar as walk-delivery-plan
 SKELETON_TAG = "`skeleton`"
+
+# Five body sections required on every node (order-independent; presence is the gate).
+REQUIRED_SECTIONS = ("What", "Why", "Completion", "Assumptions", "Key Risks")
+REQUIRED_SECTION_RES = tuple(
+    re.compile(rf"^{re.escape(s)}$", re.IGNORECASE) for s in REQUIRED_SECTIONS
+)
+
+# Assumption-tag check — every list item under ## Assumptions must contain one.
+# Matches `(verified)`, `(verified — explanation)`, `(to-verify)`, `(to-verify — explanation)`.
+ASSUMPTION_TAG_RE = re.compile(r"\((verified|to-verify)\b", re.IGNORECASE)
+ASSUMPTIONS_HEADING_RE = re.compile(r"^assumptions$", re.IGNORECASE)
 
 
 class PlanError(Exception):
@@ -104,18 +119,40 @@ def split_front_matter(path: Path) -> tuple[dict[str, str], list[str]]:
     return fm, lines[end + 1:]
 
 
-def has_acceptance_block(body: list[str]) -> bool:
-    """True iff the body has an `## Acceptance criteria` heading with >=1 list item.
+def missing_five_sections(body: list[str]) -> list[str]:
+    """Return the required section headings absent from the body.
 
-    The block runs from its heading to the next heading of the same or shallower
-    level (or end of file). An empty block — heading with no list items — does
-    not count: a story with the header but no criteria has still dropped the
-    framing. Headings and list items inside a fenced code block are literal text,
-    not structure, so a fenced fake acceptance block does not satisfy the gate.
+    Checks only headings outside fenced code blocks (a heading inside a code
+    block is literal text, not structure).
+    """
+    found: set[str] = set()
+    in_fence = False
+    for line in body:
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = HEADING_RE.match(line)
+        if not m:
+            continue
+        text = m.group(1).strip()
+        for name, section_re in zip(REQUIRED_SECTIONS, REQUIRED_SECTION_RES):
+            if section_re.match(text):
+                found.add(name)
+    return [s for s in REQUIRED_SECTIONS if s not in found]
+
+
+def untagged_assumptions(body: list[str]) -> list[str]:
+    """Return Assumptions list items that lack a (verified) or (to-verify) tag.
+
+    Reads only the `## Assumptions` section (heading to next same-or-shallower
+    heading). An empty section (no list items) passes trivially.
     """
     in_block = False
     in_fence = False
     block_level = 0
+    violations: list[str] = []
     for line in body:
         if FENCE_RE.match(line):
             in_fence = not in_fence
@@ -125,16 +162,17 @@ def has_acceptance_block(body: list[str]) -> bool:
         m = HEADING_RE.match(line)
         if m:
             level = len(line) - len(line.lstrip("#"))
-            if ACCEPTANCE_HEADING_RE.match(m.group(1).strip()):
+            if ASSUMPTIONS_HEADING_RE.match(m.group(1).strip()):
                 in_block = True
                 block_level = level
                 continue
             if in_block and level <= block_level:
-                in_block = False  # left the acceptance block at a sibling/parent heading
+                in_block = False
             continue
         if in_block and LIST_ITEM_RE.match(line):
-            return True
-    return False
+            if not ASSUMPTION_TAG_RE.search(line):
+                violations.append(line.strip())
+    return violations
 
 
 def read_tasks(body: list[str]) -> list[dict]:
@@ -142,9 +180,7 @@ def read_tasks(body: list[str]) -> list[dict]:
 
     Matches the walk-script's task-line regex (`TASK_RE`). Task lines inside a
     fenced code block are literal text (e.g. a template in a SKILL), not plan
-    structure, so they are skipped — consistent with this file's
-    `has_acceptance_block` (the walk-script does not skip fences; see module
-    docstring).
+    structure, so they are skipped.
     """
     tasks: list[dict] = []
     in_fence = False
@@ -170,12 +206,10 @@ def _order(pattern: re.Pattern, name: str) -> int:
 
 
 def collect_nodes(root: Path) -> list[dict]:
-    """Find every node and record its type, AC-block presence, and task list.
+    """Find every node and record its type, section presence, assumption tags, and tasks.
 
     Walks the same deliverable→node layout as the walk-script. Each record
-    carries enough for the framing sub-checks: `type` (which nodes the AC check
-    applies to), `has_acceptance` (the AC check), and `tasks` in order (the
-    skeleton / pre-skeleton check).
+    carries enough for all three framing sub-checks.
     """
     deliverable_dirs = sorted(
         (d for d in root.iterdir() if d.is_dir() and DELIVERABLE_DIR_RE.match(d.name)),
@@ -204,7 +238,8 @@ def collect_nodes(root: Path) -> list[dict]:
             "id": fm.get("id", nfile.stem),
             "path": str(nfile.relative_to(root)),
             "type": fm["type"],
-            "has_acceptance": has_acceptance_block(body),
+            "missing_sections": missing_five_sections(body),
+            "assumption_violations": untagged_assumptions(body),
             "tasks": read_tasks(body),
         })
     return nodes
@@ -244,8 +279,8 @@ def main(argv: list[str]) -> int:
         sys.stderr.write(f"PARSE ERROR: {exc}\n")
         return 2
 
-    stories = [n for n in nodes if n["type"] == "story"]
-    missing_ac = [n for n in stories if not n["has_acceptance"]]
+    nodes_missing = [n for n in nodes if n["missing_sections"]]
+    nodes_untagged = [n for n in nodes if n["assumption_violations"]]
 
     skeleton_total = sum(1 for n in nodes for t in n["tasks"] if t["skeleton"])
     no_skeleton = skeleton_total == 0
@@ -254,13 +289,20 @@ def main(argv: list[str]) -> int:
         for n in nodes if (pre := pre_skeleton_tasks(n))
     ]
 
-    ok = not missing_ac and not no_skeleton and not pre_skeleton
+    ok = not nodes_missing and not nodes_untagged and not no_skeleton and not pre_skeleton
 
     if as_json:
         print(json.dumps({
             "source": str(root),
-            "stories_checked": len(stories),
-            "missing_acceptance": [s["path"] for s in missing_ac],
+            "nodes_checked": len(nodes),
+            "missing_sections": [
+                {"id": n["id"], "path": n["path"], "type": n["type"], "missing": n["missing_sections"]}
+                for n in nodes_missing
+            ],
+            "untagged_assumptions": [
+                {"id": n["id"], "path": n["path"], "type": n["type"], "items": n["assumption_violations"]}
+                for n in nodes_untagged
+            ],
             "skeleton_tasks": skeleton_total,
             "pre_skeleton_setup": [
                 {"id": p["id"], "path": p["path"], "tasks": p["tasks"]} for p in pre_skeleton
@@ -270,16 +312,24 @@ def main(argv: list[str]) -> int:
     else:
         print(f"check-plan-framing — {root.name}")
         print(f"source: {root}")
-        print(f"story nodes checked: {len(stories)}")
-        for s in stories:
-            mark = "ok " if s["has_acceptance"] else "MISSING"
-            print(f"  [{mark}] {s['id']}  {s['path']}")
+        print(f"nodes checked: {len(nodes)}")
+        for n in nodes:
+            if n["missing_sections"]:
+                missing_str = ", ".join(n["missing_sections"])
+                print(f"  [MISSING {missing_str}] {n['id']}  {n['path']}  ({n['type']})")
+            elif n["assumption_violations"]:
+                print(f"  [UNTAGGED ASSUMPTION] {n['id']}  {n['path']}  ({n['type']})")
+            else:
+                print(f"  [ok ] {n['id']}  {n['path']}  ({n['type']})")
         print(f"skeleton tasks in plan: {skeleton_total}")
         for p in pre_skeleton:
             print(f"  [PRE-SKELETON] {p['id']}  {p['path']}: {len(p['tasks'])} task(s) before skeleton")
-        verdict = "PASS — acceptance criteria, skeleton task, and no pre-skeleton setup" if ok else (
+        verdict = (
+            "PASS — five sections, assumption tags, skeleton task, no pre-skeleton setup"
+            if ok else
             "FAIL — " + "; ".join(filter(None, [
-                f"{len(missing_ac)} story node(s) missing acceptance criteria" if missing_ac else "",
+                f"{len(nodes_missing)} node(s) missing required sections" if nodes_missing else "",
+                f"{len(nodes_untagged)} node(s) with untagged assumption items" if nodes_untagged else "",
                 "no skeleton task in plan" if no_skeleton else "",
                 f"{len(pre_skeleton)} node(s) with a task before the skeleton" if pre_skeleton else "",
             ]))
@@ -288,11 +338,24 @@ def main(argv: list[str]) -> int:
 
     if not ok:
         sys.stderr.write("\nFRAMING DROPPED:\n")
-        if missing_ac:
+        if nodes_missing:
             sys.stderr.write(
-                "  story nodes with no '## Acceptance criteria' block (heading + >=1 list "
-                "item) — delivery-shape must emit acceptance criteria on every story by default:\n"
-                + "".join(f"    - {s['path']}\n" for s in missing_ac)
+                "  nodes missing one or more of the five required body sections "
+                "(What / Why / Completion / Assumptions / Key Risks):\n"
+                + "".join(
+                    f"    - {n['path']}  missing: {', '.join(n['missing_sections'])}\n"
+                    for n in nodes_missing
+                )
+            )
+        if nodes_untagged:
+            sys.stderr.write(
+                "  Assumptions list items without a (verified) or (to-verify) tag — "
+                "every assumption must be explicitly verified or marked for verification:\n"
+                + "".join(
+                    f"    - {n['path']}:\n"
+                    + "".join(f"        {item}\n" for item in n["assumption_violations"])
+                    for n in nodes_untagged
+                )
             )
         if no_skeleton:
             sys.stderr.write(

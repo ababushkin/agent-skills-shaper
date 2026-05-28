@@ -20,33 +20,55 @@ adr_ref: ../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-a
 
 # N03 — ADR: new skill vs expand planning-and-task-breakdown
 
-**Type:** `adr`. An architecturally significant decision (it determines whether the pack grows a
-new skill directory or extends an existing skill's territory). Its completion criterion is the
-**accepted decision record itself** — Context / Decision / Consequences — not an acceptance test.
-Authoring and supersession are delegated to `documentation-and-adrs`.
+**Type:** `adr`.
 
-> This node decides the **form of deliverable D2**. D2 cannot start until this ADR is accepted —
-> see the dependency note in [D2's `_deliverable.md`](../D2-delivery-shape-skill-framing-baked-in/_deliverable.md).
+> **▶ On pickup:** author the decision record via `documentation-and-adrs`; set `status: accepted`
+> when the decision is made. This ADR gates D2 — the build nodes under D2 cannot start until this
+> is accepted.
 
-## Decision
+## What
 
-**Accepted: A — a standalone `delivery-shape` skill.** The full Context / Decision / Consequences
-record lives in [`docs/adr/0001`](../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md).
+An ADR deciding whether delivery-shape is a new standalone skill (`delivery-shape/`) or an
+expansion of `planning-and-task-breakdown`. The choice determines the pack's directory layout
+and whether two adjacent skills exist whose triggers must be disambiguated.
 
-In brief, on the spike's evidence: the **upper layers carried little unique structure** (the
-fourth `capability` layer collapsed entirely; the deliverable layer adds only milestone-grouping +
-a `serves_kr` tag — the B-signal), but the **polymorphic node layer carries large unique
-structure** (eight completion-forms with delegation targets, five exercised on real content) that
-PTB has no concept of and that is too far from "task breakdown" to bolt on. DS *delegates* per-node
-breakdown back down to PTB, so the two compose rather than merge; and the initiative's own KR3
-("0 collisions against planning-and-task-breakdown") already presupposes two distinct skills.
+## Why
 
-## Consequences
+D2 cannot start without this decision — the right structure cannot be chosen without examining
+how much unique structure the upper hierarchy layers carry (from N01's evidence). Building on
+the wrong premise requires a rewrite. Rule A1 flags this as design-doc-worthy in adjacent cases
+but an ADR suffices here: one-way-door decision, single surface, bounded consequences.
 
-Directory/skill layout: a new `skills/delivery-shape/`; PTB is unchanged and becomes DS's
-delegation target. The `using-this-pack` flowchart gains a routing entry (node N09). D2's nodes
-keep their shape — they build the chosen skill A. Cost: two adjacent skills whose triggers must be
-disambiguated (gated by KR3). Full positive/negative ledger in the ADR.
+Rejected alternative: deciding by intuition before seeing the N01 evidence. Rejected because the
+upper layers' reducibility (whether capabilities collapse into deliverables) is not predictable in
+advance — the spike must run first.
+
+## Completion
+
+**Decision:** Accepted — A, a standalone `delivery-shape` skill.
+
+The polymorphic node layer carries large unique structure (eight completion forms with delegation
+targets) that PTB has no concept of and that is too far from "task breakdown" to bolt on. DS
+delegates per-node breakdown back down to PTB, so the two compose rather than merge; and the
+initiative's own KR3 ("0 collisions against planning-and-task-breakdown") already presupposes two
+distinct skills.
+
+Full Context / Decision / Consequences record: [`docs/adr/0001`](../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md).
+
+**Consequences:** New `skills/delivery-shape/`; PTB unchanged and becomes DS's delegation target.
+Cost: two adjacent skills whose triggers must be disambiguated (gated by KR3 / N08).
+
+## Assumptions
+
+- N01's spike adequately quantifies the unique structure the upper layers carry — sufficient to make the call. *(verified — capability layer fully collapsible; deliverable layer adds only milestone-grouping + serves_kr; node layer carries 8 completion forms)*
+- The two skills' triggers can be disambiguated (KR3). *(to-verify — gated by N08)*
+
+## Key Risks
+
+- **Risk:** The trigger boundary between DS and PTB blurs in practice and DS fires on PTB
+  prompts (or vice versa), eroding trust in the pack.
+  *Falsifier:* N08's trigger eval set shows 0 collisions in either direction. If it cannot reach
+  0 collisions, the skills should merge — the ADR decision was wrong.
 
 ## Tasks
 

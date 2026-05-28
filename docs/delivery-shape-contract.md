@@ -141,6 +141,20 @@ the aggregate-verification task (flag 5 above). Examples:
 `` - [ ] `skeleton` — walk the tree, read front-matter, print counts (toolchain folded in) ``.
 `` - [ ] `acceptance` — evaluate aggregate result; write finding (confirmed / falsified) ``.
 
+### Five body sections
+
+Every node body carries exactly **five sections** in addition to its front-matter, regardless of
+`type`. `delivery-shape` emits all five by default; `bin/check-plan-framing` enforces their
+presence (exits 1 if any heading is absent):
+
+| Section | Content | Discipline rule |
+|---------|---------|-----------------|
+| **What** | For `story`: the grounded Cohn form ("As <role>, I want…, so that…") as the first sentence. For other types: what the node investigates, decides, or maintains. | The Cohn story line is re-housed here, not deleted. |
+| **Why** | Per-node rationale beyond `serves_kr`: the specific bet, the alternative rejected, what unlocks downstream. Does not re-state the KR. | Names the bet AND the rejected alternative — both are required. |
+| **Completion** | Type-dependent content (see vocabulary table). Heading is required on all types, including `ktlo`. | See vocabulary below for what each type holds. |
+| **Assumptions** | List items (`- …`), each tagged `(verified)` or `(to-verify)`. Empty section (`*(none)*`) is valid. | `bin/check-plan-framing` enforces the tag on every list item. `(to-verify)` items block pickup. |
+| **Key Risks** | List items (`- **Risk:** …`), each carrying `*Mitigation:* …` or `*Falsifier:* …`. Empty section (`*(none)*`) is valid. | A risk with neither a mitigation nor a falsifier is an unresolved worry, not a governed risk. |
+
 ---
 
 ## Node-type vocabulary
@@ -157,14 +171,14 @@ discriminator carried on `N*.md` files. A delegation target is either a **Shaper
 present in this repo) or a **skill** — skills marked *(skill where available)* are not yet
 Shaper-native, so the rule beside them is the durable fallback a future agent can rely on.
 
-| `type` | Completion-criterion form | Delegates to | Demonstrated by |
-|--------|---------------------------|--------------|-----------------|
-| `spike` | decision + stop condition | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
-| `story` | acceptance criteria, in a grounded story form | `planning-and-task-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
-| `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
-| `adr` | an accepted decision record (Context / Decision / Consequences) | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
-| `experiment` | hypothesis + success metric (confirmed / falsified) | `product-spike` (experiment discipline) | `N07` |
-| `ktlo` | **none** — carve-out | ops slot (no outcome framing; roadmap A5) | `N09` |
+| `type` | Completion-criterion form | `## Completion` section holds | Delegates to | Demonstrated by |
+|--------|---------------------------|-------------------------------|--------------|-----------------|
+| `spike` | decision + stop condition | `**Decision:** <question>` + `**Stop condition:** <when to stop>` | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
+| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | `planning-and-task-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | prose naming what the accepted design doc covers | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
+| `adr` | an accepted decision record (Context / Decision / Consequences) | `**Decision:** <accepted decision>` + context/consequences summary + ADR reference | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
+| `experiment` | hypothesis + success metric (confirmed / falsified) | `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition | `product-spike` (experiment discipline) | `N07` |
+| `ktlo` | **none** — carve-out | `None — roadmap A5 carve-out.` | ops slot (no outcome framing; roadmap A5) | `N09` |
 
 `design-doc` is the **Rule A1 branch**: `delivery-shape` tests each deliverable against Rule A1's
 triggers (more than ~5 nodes, a one-way-door decision, shared infrastructure, or meaningful

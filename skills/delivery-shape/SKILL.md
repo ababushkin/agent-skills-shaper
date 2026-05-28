@@ -4,8 +4,9 @@ description: >
   Decomposes a committed initiative (goal + key results) into an ordered, verifiable delivery
   hierarchy — deliverables → nodes → tasks — that a human reads top-down and a deterministic
   reader walks bottom-up into a tracker manifest. Every deliverable traces to a KR; every node
-  carries a type and a delegation target; every `story` node carries acceptance criteria emitted
-  by default. Use after an initiative is shaped and before any node is picked up to build.
+  carries a type, a delegation target, and a uniform five-section body (What / Why / Completion /
+  Assumptions / Key Risks) with type-appropriate Completion content emitted by default. Use after
+  an initiative is shaped and before any node is picked up to build.
   Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative",
   "break the initiative into deliverables", "plan the delivery for this", "shape the delivery",
   "what are the deliverables for this initiative".
@@ -49,12 +50,12 @@ changed_from_predecessor: "n/a"
 
 delivery-shape takes a committed initiative — its goal and key results — and emits the full delivery hierarchy that sits between "we have an initiative" and "we know what to build, in what order, and how we'll know each piece is done." The hierarchy has three layers: deliverables (each serving one KR), nodes (polymorphic units of work — a story, a spike, an ADR, an experiment, …), and tasks (the checklist inside a node). A human reads it top-down, starting at the outcome; a deterministic reader walks it bottom-up into a tracker manifest.
 
-The skill exists to bake the framing in so the user never re-prompts for it. Every deliverable traces to a KR, every node names its completion form and the discipline that owns it, and **every `story` node carries acceptance criteria by default** — because a story whose "how do I know this is done?" is missing is the exact gap that produces low-level task lists nobody can verify (agentic P4). delivery-shape *selects and delegates*; it does not re-author the disciplines it points at (agentic P7).
+The skill exists to bake the framing in so the user never re-prompts for it. Every deliverable traces to a KR, every node names its completion form and the discipline that owns it, and **every node carries a uniform five-section body** (What / Why / Completion / Assumptions / Key Risks) with type-appropriate Completion content by default — because a node whose "how do I know this is done?" is missing is the exact gap that produces low-level task lists nobody can verify (agentic P4). delivery-shape *selects and delegates*; it does not re-author the disciplines it points at (agentic P7).
 
 ## When to use
 
 - A committed initiative exists (goal + 3–5 KRs) and you need to turn it into the deliverable → node → task hierarchy before work starts.
-- You are about to write a flat task list straight from an initiative and want the outcome trace (deliverable ↔ KR) and the completion framing (acceptance criteria per story) baked in instead.
+- You are about to write a flat task list straight from an initiative and want the outcome trace (deliverable ↔ KR) and the per-node completion framing (uniform five-section body) baked in instead.
 
 ## When not to use
 
@@ -87,8 +88,8 @@ For each deliverable, test the Rule A1 triggers (eng-universal Rule A1, with age
 **5. Decompose each deliverable into nodes; select the type and the delegate.**
 A node is polymorphic — it is not always a story. For each unit of work, select the node `type` from the vocabulary in `docs/delivery-shape-contract.md` (`story`, `spike`, `adr`, `experiment`, `ktlo`, …), which fixes its completion form. Tag every node with `type`, `serves_kr`, `maps_to`, and `delegates_to` — the rule or skill that owns that type's discipline. **Do not re-author that discipline inline.** Copying a spike protocol or an ADR template into the node guarantees drift from its source (agentic P7); link and delegate instead.
 
-**6. [GATE] Acceptance criteria by default on every `story` node.**
-For each node typed `story`, emit an `## Acceptance criteria` block — a list of `Done when:` conditions, each a verifiable state, not a description of work. This is not optional and not deferred: a story without acceptance criteria does not pass this gate. If you cannot write the "done" check, the node is not understood well enough to be a story — reshape it or change its type. This gate is enforced mechanically by `bin/check-plan-framing` (every story carries the block; an empty block fails too).
+**6. [GATE] Five-section body on every node, with type-appropriate Completion.**
+Emit all five body sections — **What / Why / Completion / Assumptions / Key Risks** — on every node, regardless of type. The Cohn story form ("As <role>, I want…, so that…") is the first sentence of `## What` on story nodes — re-housed, not deleted. Completion content is type-dependent (story → `Done when:` list; spike → decision + stop condition; experiment → hypothesis + success metric; adr → decision record; design-doc → what the accepted doc covers; ktlo → none). Every Assumptions list item carries a `(verified)` or `(to-verify)` tag; `(to-verify)` items block pickup. Every Key Risk carries a mitigation step or a falsifier. This gate is enforced mechanically by `bin/check-plan-framing` (every node carries all five headings; every Assumptions item carries a tag).
 
 **7. Break each node into tasks — walking skeleton first, foundational work folded in.**
 List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one — which is the exact failure this prompt prevents. Each task is one observable outcome. The skeleton-and-folding rule is enforced mechanically by `bin/check-plan-framing` (≥1 skeleton task in the plan; no node with a task before its skeleton).
@@ -100,7 +101,7 @@ List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: 
 Write the directory layout from the template below: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the **hand-count manifest** (milestones / issues / sub-issues), one `D<n>/` per deliverable, one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
 
 **10. [GATE] Verify the emitted plan.**
-Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `delegates_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every story carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton. If either fails, the plan is not done; fix the file-set, do not relax the gate.
+Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `delegates_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five body sections (What / Why / Completion / Assumptions / Key Risks), every Assumptions list item carries a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton. If either fails, the plan is not done; fix the file-set, do not relax the gate.
 
 ## Artefact template
 
@@ -115,58 +116,75 @@ The emitted file-set (paths relative to the plan root):
 └── …
 ```
 
-A `story` node file:
+Every node — regardless of type — uses the **same five-section body**. Completion content
+varies by `type`; the heading is required on all of them.
 
 ```markdown
 ---
 layer: node
 id: N01
-type: story
+type: <story | spike | adr | experiment | ktlo | design-doc>
 title: <one line>
 parent: D1
 serves_kr: KR<n>
 maps_to: <issue-class>
 external_window: none          # never effort-in-days (agentic P8)
 completion:
-  form: acceptance-criteria
-delegates_to: planning-and-task-breakdown (per-node task breakdown)
+  form: <completion-criterion form — see vocabulary in contract>
+delegates_to: <rule or skill owning this type's discipline>
 ---
 
 # N01 — <title>
 
-> **As** <role>, **I want** <capability>, **so that** <benefit>.   ← grounded story form (Cohn)
+> **▶ On pickup:** <type-appropriate on-pickup instruction, e.g. "expand via
+> `planning-and-task-breakdown`" for story, "no breakdown step" for ktlo>
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+## What
 
-## Acceptance criteria
-- **Done when:** <verifiable state, checked by …>
+<For `story`: the grounded story form (Cohn) — "As <role>, I want <capability>, so that
+<benefit>" — as the first sentence, followed by any clarifying context.>
+<For other types: what this node investigates, decides, or maintains.>
+
+## Why
+
+Per-node rationale **beyond `serves_kr`**: what bet this node makes, what alternative was
+rejected and why, what downstream work it unlocks. Do not re-state the KR.
+
+*Discipline rule: Why names the specific bet, the rejected alternative, and what becomes
+unblocked — not a general description of why the type exists.*
+
+## Completion
+
+<Content varies by `type`:>
+<`story` → `- **Done when:** <verifiable state>` list (at least one item).>
+<`spike` → `**Decision:** <question>` + `**Stop condition:** <when to stop>`.>
+<`adr` → `**Decision:** <accepted decision>` + context/consequences summary + ADR reference.>
+<`design-doc` → prose naming what the accepted design doc covers.>
+<`experiment` → `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition.>
+<`ktlo` → `None — roadmap A5 carve-out.`>
+
+## Assumptions
+
+<List of `- <assumption> *(verified)* ` or `- <assumption> *(to-verify)*` items.>
+<An empty section (no list items, e.g. `*(none)*`) is valid for ktlo and simple nodes.>
+
+*Discipline rule: every list item carries either `(verified)` or `(to-verify)` as a trailing
+tag. `(to-verify)` items block pickup or surface as the first tasks the implementation-plan
+skill addresses. `bin/check-plan-framing` enforces tag presence on every list item.*
+
+## Key Risks
+
+<List of `- **Risk:** <…>` items, each carrying either a mitigation step OR a falsifier:>
+<`*Mitigation:* <step that reduces or eliminates the risk>.`>
+<`*Falsifier:* <observable outcome that would confirm this is not actually a risk>.`>
+<An empty section (`*(none)*`) is valid when no risks are identified.>
+
+*Discipline rule: every risk carries one of the two — a mitigation or a falsifier. A risk
+with neither is an unresolved worry, not a governed risk.*
 
 ## Tasks
 - [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in>
 - [ ] <one observable outcome>
-```
-
-A `design-doc` node file — emitted as the **first** node of a deliverable that met a Rule A1 trigger (step 4); the build nodes that follow it carry a `Blocked by:` line naming it:
-
-```markdown
----
-layer: node
-id: N01
-type: design-doc
-title: <deliverable> design doc (before build)
-parent: D1
-serves_kr: KR<n>
-maps_to: <issue-class>
-external_window: none
-completion:
-  form: the-design-doc
-delegates_to: design-doc (Rule A1 design doc — produced before the build nodes are picked up)
----
-
-# N01 — <title>
-
-> **▶ On pickup — before any build node here:** produce the design doc via the `design-doc`
-> skill. The build nodes under this deliverable are blocked by this node.
 ```
 
 The root `README.md` ends with the hand-count manifest the walk-script reproduces:
@@ -195,7 +213,8 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 
 ## Red flags
 
-- A `story` node has no `## Acceptance criteria` block, or the block is an empty heading.
+- A node is missing any of the five body sections (What / Why / Completion / Assumptions / Key Risks), or the Completion section is absent on a story node.
+- An Assumptions list item lacks a `(verified)` or `(to-verify)` tag, or a Key Risk carries neither a mitigation step nor a falsifier.
 - A deliverable has no `serves_kr`, or serves more than one KR.
 - A node is missing `type`, `delegates_to`, or `maps_to`.
 - A node's body re-states a spike protocol, ADR structure, design-doc structure, or test discipline inline instead of delegating to its owner.
@@ -214,17 +233,17 @@ The skill has run correctly when:
 2. Every deliverable carries `serves_kr`, and every KR is served by at least one deliverable.
 3. Every node carries `type`, `serves_kr`, `maps_to`, and `delegates_to`.
 4. Every deliverable meeting a Rule A1 trigger has a `design-doc` node (`delegates_to: design-doc`) as its first node, with build nodes blocked by it; deliverables meeting no trigger have none.
-5. Every `story` node carries an `## Acceptance criteria` block with at least one `Done when:` condition.
+5. Every node carries the five body sections (What / Why / Completion / Assumptions / Key Risks), with Completion populated per its `type`, every Assumptions list item tagged `(verified)` or `(to-verify)`, and every Key Risk carrying a mitigation step or falsifier.
 6. Each node's first task is the walking skeleton (`` `skeleton` `` tag), with foundational work folded in and no preceding setup task.
 7. Every emitted issue-class artefact carries an on-pickup instruction naming its `delegates_to` (or "no breakdown step" for `ktlo`).
 8. `bin/walk-delivery-plan <plan>` exits 0 — the plan walks deterministically and the derived manifest equals the README hand-count oracle.
-9. `bin/check-plan-framing <plan>` exits 0 — every story node carries acceptance criteria, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a task before its skeleton.
+9. `bin/check-plan-framing <plan>` exits 0 — every node carries the five body sections, every Assumptions list item has a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton.
 
 ## References
 
 - `docs/delivery-shape-contract.md` — the plan-artefact contract: three layers, cross-reference convention, per-node tags, node-type vocabulary, and the *Delegation — timing & surfacing* section this skill implements
 - `bin/walk-delivery-plan` — the deterministic reader that walks the emitted file-set into a manifest and enforces `serves_kr` / `type` / `delegates_to` presence
-- `bin/check-plan-framing` — the framing gate that asserts every story node carries acceptance criteria, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
+- `bin/check-plan-framing` — the framing gate that asserts every node carries the five body sections, every Assumptions item is tagged, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
 - `skills/initiative-shape/SKILL.md` — **up-delegation**: produces the committed initiative (goal + KRs) this skill consumes; delivery-shape does not re-run its shaping gates
 - `skills/planning-and-task-breakdown/SKILL.md` — **down-delegation**: the per-node task-breakdown delegate that fires at pickup
 - `skills/design-doc/SKILL.md` — the Rule A1 branch delegate: produces the design doc a design-doc-worthy deliverable needs before its build nodes' task breakdown

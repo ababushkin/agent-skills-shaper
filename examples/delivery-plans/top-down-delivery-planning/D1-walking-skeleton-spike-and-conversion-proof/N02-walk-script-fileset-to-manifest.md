@@ -15,17 +15,24 @@ delegates_to: planning-and-task-breakdown (task breakdown + walking-skeleton-fir
 
 # N02 — Walk-script: file-set → tracker manifest
 
-**Type:** `story` (Cohn form).
+**Type:** `story`.
 
-> **As** an adapter author wiring delivery plans into a tracker,
-> **I want** a script that walks the markdown file-set and emits a tracker manifest,
-> **so that** the seam to Linear (milestones / issues / sub-issues) is mechanical and I never
-> hand-transcribe the hierarchy.
+> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
 
-A `story` node's completion criterion is its **acceptance criteria** — observable behaviour, not
-"the script is written."
+## What
 
-## Acceptance criteria
+As an adapter author wiring delivery plans into a tracker, I want a script that walks the
+markdown file-set and emits a tracker manifest, so that the seam to Linear (milestones /
+issues / sub-issues) is mechanical and I never hand-transcribe the hierarchy.
+
+## Why
+
+A hand-transcribed manifest drifts from the file-set within one sprint. A mechanically-derived
+manifest is always current and gives the kill-condition proof that the standalone-markdown premise
+holds end-to-end — every layer (deliverable → node → task) reads out by structure alone, not by
+human copying. This is the second half of KR1.
+
+## Completion
 
 - **Done when:** `bin/walk-delivery-plan examples/delivery-plans/top-down-delivery-planning/`
   prints `3 milestones / 9 issues / 19 sub-issues` — all equal to the hand-count manifest in the
@@ -34,6 +41,18 @@ A `story` node's completion criterion is its **acceptance criteria** — observa
   completion criterion, read from front-matter — verified against N01–N09.
 
 Delivered: [`bin/walk-delivery-plan`](../../../../bin/walk-delivery-plan) (Python 3, stdlib only).
+
+## Assumptions
+
+- Front-matter scalar-key parsing (no YAML library) is sufficient for the contract's keys. *(verified — stdlib reader passes on all 9 nodes)*
+- Node count is 9; task count is 19 — consistent with the README oracle. *(verified — walk-script confirms)*
+
+## Key Risks
+
+- **Risk:** The README hand-count oracle drifts from the actual file-set as nodes are added or
+  removed.
+  *Mitigation:* `bin/walk-delivery-plan` exits 1 on any mismatch; the oracle is the gate, not
+  a doc. Any drift is caught immediately.
 
 ## Tasks
 

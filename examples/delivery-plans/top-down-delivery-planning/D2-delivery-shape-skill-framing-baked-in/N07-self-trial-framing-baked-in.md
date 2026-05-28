@@ -28,14 +28,46 @@ success metric**, and its honest outcomes are *confirmed* or *falsified*, not *s
 the node that grades the bet (KR2) — it can fail, and a falsified result re-shapes D2 rather than
 extending it.
 
-## Hypothesis
+> **▶ On pickup:** run the experiment and write the finding (confirmed / falsified) via
+> `product-spike`.
 
-See front-matter `completion.hypothesis`: the framing is genuinely baked in, not re-prompted.
+## What
 
-## Success metric
+Run delivery-shape against 2 already-shaped initiatives (not edge cases — normal shaped
+initiatives) and record whether the emitted plan carries AC on every story and ≥1 skeleton task
+at zero framing re-prompts. Write the finding.
 
-2/2 trial plans under `examples/delivery-plans/_trials/` pass `bin/check-plan-framing` at 0
-framing re-prompts. The trial note records the re-prompt count per trial.
+## Why
+
+A skill that requires re-prompting to emit its framing is not doing its job. The self-trial is
+the KR2 grader: it can falsify the bet. If it falsifies, D2's nodes need rework — not an
+extension. A passing self-trial on 2 real initiatives is the minimum credible evidence that
+framing is baked in, not re-prompted in.
+
+This node carries `acceptance: true` because it verifies D2's aggregate done condition — whether
+the KR2 bet is confirmed. Close it last: D2 reaching 100% coincides with the KR observation.
+
+## Completion
+
+**Hypothesis:** delivery-shape, fed only an initiative's goal + KRs, emits a plan with AC on
+every story and ≥1 skeleton task — at zero framing re-prompts.
+
+**Success metric:** 2/2 trial initiatives pass `bin/check-plan-framing` at 0 re-prompts.
+Trials live under `examples/delivery-plans/_trials/` with a re-prompt count per trial.
+
+< 2/2, or any re-prompt, **falsifies** the bet. D2 is re-shaped, not extended.
+
+## Assumptions
+
+- 2 trials is a sufficient first-pass sample for a stretch KR. *(verified — this is not a production gate; 2 trials confirms the hypothesis is testable and the framing is not accidental)*
+- Already-shaped initiatives (not edge cases) are the right input for the framing trial. *(verified — if framing fails on normal inputs, it fails the bet; edge cases test robustness, not the core claim)*
+
+## Key Risks
+
+- **Risk:** The trial initiatives chosen are too simple and don't surface framing gaps, making
+  the 2/2 result a false positive.
+  *Falsifier:* if a more complex initiative (>5 nodes, multiple types) later requires re-prompting,
+  the trial criteria were underspecified — the 2/2 is a first-pass gate, not a proof.
 
 ## Tasks
 
