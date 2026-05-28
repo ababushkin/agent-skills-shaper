@@ -1,0 +1,8 @@
+when we worked on ABA-269 from linear
+it looks like the installation scripts weren't updated in this repo
+
+review what needs to change in addition to support the lazy loading that we implemented in the Workflow governance — single source, installable on any machine project
+
+---
+
+yes
