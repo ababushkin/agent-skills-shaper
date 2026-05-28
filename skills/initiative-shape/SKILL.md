@@ -126,6 +126,8 @@ Two separate questions:
 **5. Synthesise into initiative format.**
 Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable claims with full sub-field discipline). Use the template in the next section — write it so it reads as a product OKR: PM-readable field names, rubric vocabulary confined to the audit-footer.
 
+**Dominant model tier (optional note, not a gate).** Scan the initiative's expected task profile: if most tasks are mechanical rewrites with no external API surface, note `Fast`; if most require bounded reasoning or touch reversible-but-non-trivial paths, note `Balanced`; if the initiative contains one-way doors (schema migrations, public APIs, auth, production data) or orchestrator-level decomposition, note `Frontier`. This is a planning-time signal; individual tasks are routed per-task at `planning-and-task-breakdown` Step 5. See `references/task-sizing.md`.
+
 Each KR's claim (its headline) should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / measured over / how we'll know), a `(commit|stretch)` tag, and a `bet`/`brake`/`foundation` role appended to the headline. Add the audit-footer line (`*Layer 1: … · Layer 2: …*`) under each KR, and the dimensions-summary line after the KR list — this is the rubric trace, kept out of the KR body so the OKR reads cleanly to a non-pack-author.
 
 Present the draft. Do not create the Linear project yet.
@@ -214,6 +216,8 @@ The output is the Linear project description. It must read as a product OKR — 
 **Kill condition:** [the observable state that says "stop pursuing this Objective"]
 
 **Project type:** [1: methodology | 2: personal product | 3: utility skill pack | 4: research/thesis | 5: equity research | 6: production]
+
+**Dominant model tier:** [Fast|Balanced|Frontier] — expected tier for the majority of tasks in this initiative; informational, not a gate. See `references/task-sizing.md`.
 ```
 
 The `*Layer 1 · Layer 2*` footer and the `*Dimensions: …*` summary line are the rubric trace (they back the Step 6.5 checks 5b and 5d). They sit *below* the KR body, set in italics, so the OKR itself reads cleanly. Do not put Layer/rule annotations inside a KR headline or sub-fields.
@@ -303,5 +307,6 @@ The skill has run correctly when:
 - `references/initiative-types.md` — six-type taxonomy and per-type playbooks (Objective shape, default KR mix, anti-patterns, verification rubric) — loaded at Step 2.5 and Step 3
 - `references/kr-quality-templates.md` — Layer 1 dimensions (correctness / outcome / maintenance / discipline), Layer 2 measurement templates, KR roles (bet / brake / foundation), and the grader-backed KR pattern — cited by rules 5b, 5d, 5f, and 11 in Step 6.5
 - Research Section 5 — cross-cutting verification rules 1–10 (inline copy at Step 6.5; rule 11 added locally for KR roles); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
+- `references/task-sizing.md` — model-tier routing rubric; the dominant-tier field in the template draws from this rubric at planning time
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
 - `skills/planning-and-task-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
