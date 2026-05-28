@@ -36,6 +36,8 @@ Task arrives
     │       └── Idea bank clean — ready to plan?           → roadmap-shape
     ├── Building or reviewing a roadmap?                   → roadmap-shape
     │       └── reads from idea bank (docs/idea-bank/)
+    ├── Committed initiative (goal + KRs) exists?          → delivery-shape
+    │       └── Have a node from delivery plan?            → planning-and-task-breakdown
     ├── Significant engineering work — how to build it?   → design-doc
     ├── Have a plan/spec/design — should I trust it?       → plan-review
     ├── Have a design or spec — need implementable tasks?  → planning-and-task-breakdown
