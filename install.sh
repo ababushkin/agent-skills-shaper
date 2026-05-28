@@ -31,21 +31,13 @@ for src in "${REPO_DIR}/.claude/commands/"*.md; do
   echo "Generated: ${dest}"
 done
 
-# 2. Add rule file references to ~/.claude/CLAUDE.md if not already present.
-#    Also strips refs to files Shaper no longer ships: the pre-flatten layout
-#    (skills/engineering/eng-principles-*.md, skills/product/PRODUCT_RULES.md)
-#    and any ref into rules/ that's no longer in RULE_REFS (e.g. a rule file
-#    relocated to another pack) — so re-runners don't keep a broken @-include.
-RULE_REFS=(
-  "@${REPO_DIR}/rules/PRODUCT_RULES.md"
-  "@${REPO_DIR}/rules/eng-principles-universal.md"
-  "@${REPO_DIR}/rules/eng-principles-agentic.md"
-)
-
+# 2. Prune stale rule-file @-refs from ~/.claude/CLAUDE.md.
+#    Rule files are now lazy-loaded: the session-start hook injects
+#    using-this-pack/SKILL.md which tells the model when to read each file.
+#    This step removes refs that older installs may have written.
 touch "${CLAUDE_MD}"
 
-# Strip stale refs from pre-flatten layout (these live outside rules/, so the
-# rules/ sweep below won't catch them).
+# Strip stale refs from pre-flatten layout (outside rules/, not caught below).
 STALE_PATTERNS=(
   "@${REPO_DIR}/skills/product/PRODUCT_RULES.md"
   "@${REPO_DIR}/skills/engineering/eng-principles-universal.md"
@@ -53,39 +45,17 @@ STALE_PATTERNS=(
 )
 for stale in "${STALE_PATTERNS[@]}"; do
   if grep -qF "${stale}" "${CLAUDE_MD}"; then
-    # Use sed with | as delimiter since paths contain /
     sed -i '' "\|^${stale}\$|d" "${CLAUDE_MD}"
     echo "Removed stale ref: ${stale}"
   fi
 done
 
-# Prune any ref into this repo's rules/ dir that is no longer in RULE_REFS — e.g.
-# a rule file relocated to another pack. Keeping only the current set means a
-# re-run after a rule file moves out drops its dangling @-include instead of
-# leaving it broken. Reads the file via a fixed fd, so in-loop deletes are safe.
-while IFS= read -r line; do
-  case "${line}" in
-    "@${REPO_DIR}/rules/"*.md)
-      keep=false
-      for ref in "${RULE_REFS[@]}"; do
-        if [ "${line}" = "${ref}" ]; then keep=true; break; fi
-      done
-      if [ "${keep}" = false ]; then
-        sed -i '' "\|^${line}\$|d" "${CLAUDE_MD}"
-        echo "Pruned relocated rule ref: ${line}"
-      fi
-      ;;
-  esac
-done < "${CLAUDE_MD}"
-
-for ref in "${RULE_REFS[@]}"; do
-  if grep -qF "${ref}" "${CLAUDE_MD}"; then
-    echo "Already present: ${ref}"
-  else
-    echo "${ref}" >> "${CLAUDE_MD}"
-    echo "Added: ${ref}"
-  fi
-done
+# Prune any ref into this repo's rules/ dir — previously written by this
+# script; now lazy-loaded via the session-start hook instead.
+if grep -qE "^@${REPO_DIR}/rules/.*\.md$" "${CLAUDE_MD}" 2>/dev/null; then
+  sed -i '' -E "\|^@${REPO_DIR}/rules/.*\.md$|d" "${CLAUDE_MD}"
+  echo "Pruned lazy-loaded rule refs from ${CLAUDE_MD}"
+fi
 
 # 3. Symlink each skill dir into ~/.claude/skills/ as shape-<name>
 #    Enables Claude Code's auto-discovery of model-invocable Skills.

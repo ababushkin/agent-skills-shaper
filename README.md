@@ -155,17 +155,9 @@ This gives you:
 - The 11 slash commands (`/shape:idea-triage`, `/shape:design-doc`, …)
 - The 12 auto-invocable Skills, namespaced as `shape-<name>` (model-triggered via the Skill tool)
 
-Restart Claude Code after install. To load the rule files persistently, add three `@` references to your `~/.claude/CLAUDE.md`:
+Restart Claude Code after install. The rule files (`PRODUCT_RULES.md`, `eng-principles-universal.md`, `eng-principles-agentic.md`) are lazy-loaded: the SessionStart hook injects `using-this-pack/SKILL.md`, which tells the model when to read each file. No manual `@`-imports are needed.
 
-```
-@/path/to/agent-skills-shaper/rules/PRODUCT_RULES.md
-@/path/to/agent-skills-shaper/rules/eng-principles-universal.md
-@/path/to/agent-skills-shaper/rules/eng-principles-agentic.md
-```
-
-Where `/path/to/agent-skills-shaper` is the install path printed by Claude Code, typically under `~/.claude/plugins/cache/...`.
-
-The tracker workflow — the Linear initiative/cycle cadence, the code-review-before-Done gate, and the issue-comment standard — lives in the **Workflow pack** (plugin `workflow`), not in Shaper. Install it for the tracker workflow; its SessionStart hook then loads that governance and points at the three principle files above, making these manual imports optional. Shaper installed on its own keeps the three principle `@`-refs as its persistent-load path.
+The tracker workflow — the Linear initiative/cycle cadence, the code-review-before-Done gate, and the issue-comment standard — lives in the **Workflow pack** (plugin `workflow`), not in Shaper. Install it alongside Shaper; its SessionStart hook injects governance and also indexes the Shaper principle files for lazy loading.
 
 ### Claude Code — local-dev install (`install.sh`)
 
@@ -181,7 +173,8 @@ The script:
 
 1. Generates wrapper command files in `~/.claude/commands/shape/` (slash commands).
 2. Symlinks each skill dir into `~/.claude/skills/shape-<name>` (auto-invocable Skills, edits propagate live).
-3. Appends `@`-refs for the three principle rule files to `~/.claude/CLAUDE.md` (persistent rule loading; idempotent — old-layout refs and any ref to a rule file Shaper no longer ships are pruned automatically).
+3. Prunes any previously-written principle-file `@`-refs from `~/.claude/CLAUDE.md` — rule files are now lazy-loaded via the session-start hook.
+4. Installs the SessionStart hook into `~/.claude/settings.json` so the skill discovery flowchart fires in every repo.
 
 Re-run the script after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.
 
