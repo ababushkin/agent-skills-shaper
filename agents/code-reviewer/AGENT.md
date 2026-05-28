@@ -58,7 +58,7 @@ Form an independent view of what the change should look like before opening the 
 
 ## Trigger
 
-- On completion of any issue before it transitions to Done (per `rules/linear-workflow.md`)
+- On completion of any issue before it transitions to Done (per the tracker workflow loaded by the Workflow pack, plugin `workflow`)
 - When an implementing agent has produced a working-tree change and is about to commit
 
 ## Inputs
@@ -128,4 +128,4 @@ Severity definitions:
 - `rules/eng-principles-agentic.md` — P4 (evidence beats vibes), P6 (stop the line on first failure)
 - `rules/eng-principles-universal.md` — P1 (shipped is not done; observed is done), P5 (code is a liability), P8 (small batches)
 - `references/task-sizing.md` — model tier mapping (Frontier for orchestrating review)
-- `rules/linear-workflow.md` — issue completion sequence (review before Done)
+- Workflow pack (plugin `workflow`) — owns the issue completion sequence (review before Done) once installed
