@@ -1,0 +1,133 @@
+#!/usr/bin/env bash
+# bin/eval-triggers
+#
+# Evaluates the delivery-shape trigger eval set against three candidate skills.
+# Reads eval/delivery-shape-triggers.md, scores each phrasing against trigger-phrase
+# lists extracted from the three skills' SKILL.md description frontmatter, and reports
+# matched-skill vs expected-skill per row.
+#
+# Matching: longest trigger phrase that appears as a case-insensitive substring of the
+# test phrasing wins. Ties go to the first skill in the candidate list (delivery-shape).
+#
+# Exit codes:
+#   0  — 0 collisions (all phrasings matched expected)
+#   1  — one or more collisions
+#
+# Options:
+#   --debug   print extracted trigger phrases per skill before the results table
+
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
+# Script-scoped so the EXIT trap can reference it after main() returns.
+_CLEANUP_DIR=""
+cleanup() { [[ -n "$_CLEANUP_DIR" ]] && rm -rf "$_CLEANUP_DIR"; }
+trap cleanup EXIT
+EVAL_FILE="$REPO_ROOT/eval/delivery-shape-triggers.md"
+SKILLS_DIR="$REPO_ROOT/skills"
+DEBUG=0
+[[ "${1:-}" == "--debug" ]] && DEBUG=1
+
+CANDIDATE_SKILLS=(
+    "delivery-shape"
+    "initiative-shape"
+    "planning-and-task-breakdown"
+)
+
+# Extract trigger phrases from a skill's SKILL.md description frontmatter.
+# The description is a YAML > block scalar that may span multiple lines; joining all
+# frontmatter lines into one string handles that before extracting quoted phrases.
+# Output: one phrase per line, lowercased, stripped of quotes.
+extract_triggers() {
+    local skill_file="$1"
+    awk '/^---$/ { count++; if (count == 2) exit; next }
+         count == 1 { printf "%s ", $0 }' "$skill_file" |
+        tr -s ' ' |
+        grep -Eo '"[^"]+"' |
+        tr '[:upper:]' '[:lower:]' |
+        sed 's/^"//; s/"$//'
+}
+
+# Score a phrasing against a trigger-phrase file (one lowercased phrase per line).
+# Prints the length of the longest trigger that appears as a substring of the
+# lowercased phrasing. Prints 0 if no trigger matches.
+best_score() {
+    local phrasing_lower triggers_file best len trigger
+    phrasing_lower="$(echo "$1" | tr '[:upper:]' '[:lower:]')"
+    triggers_file="$2"
+    best=0
+    while IFS= read -r trigger; do
+        [[ -z "$trigger" ]] && continue
+        if [[ "$phrasing_lower" == *"$trigger"* ]]; then
+            len="${#trigger}"
+            (( len > best )) && best=$len
+        fi
+    done < "$triggers_file"
+    echo "$best"
+}
+
+main() {
+    local collisions total sep skill score best_skill best_score_val result
+    local raw_id raw_phrasing raw_expected _rest id phrasing expected
+
+    _CLEANUP_DIR="$(mktemp -d)"
+    local tmpdir="$_CLEANUP_DIR"
+
+    for skill in "${CANDIDATE_SKILLS[@]}"; do
+        extract_triggers "$SKILLS_DIR/$skill/SKILL.md" > "$tmpdir/$skill.triggers"
+        if (( DEBUG )); then
+            printf '=== %s ===\n' "$skill"
+            cat "$tmpdir/$skill.triggers"
+            echo
+        fi
+    done
+
+    collisions=0
+    total=0
+    sep="$(printf '%125s' '' | tr ' ' '-')"
+
+    printf '%-6s %-52s %-30s %-30s %s\n' ID Phrasing Expected Matched Result
+    echo "$sep"
+
+    while IFS='|' read -r _ raw_id raw_phrasing raw_expected _rest; do
+        id="${raw_id//[[:space:]]/}"
+        [[ "$id" =~ ^P[0-9]+$ ]] || continue
+
+        phrasing="${raw_phrasing#"${raw_phrasing%%[![:space:]]*}"}"
+        phrasing="${phrasing%"${phrasing##*[![:space:]]}"}"
+        expected="${raw_expected#"${raw_expected%%[![:space:]]*}"}"
+        expected="${expected%"${expected##*[![:space:]]}"}"
+        [[ -z "$phrasing" || -z "$expected" ]] && continue
+
+        total=$((total + 1))
+        best_skill="(no match)"
+        best_score_val=0
+
+        for skill in "${CANDIDATE_SKILLS[@]}"; do
+            score="$(best_score "$phrasing" "$tmpdir/$skill.triggers")"
+            if (( score > best_score_val )); then
+                best_score_val=$score
+                best_skill="$skill"
+            fi
+        done
+
+        result=OK
+        if [[ "$best_skill" != "$expected" ]]; then
+            result=COLLISION
+            collisions=$((collisions + 1))
+        fi
+
+        printf '%-6s %-52s %-30s %-30s %s\n' \
+            "$id" "$phrasing" "$expected" "$best_skill" "$result"
+    done < "$EVAL_FILE"
+
+    echo "$sep"
+    printf '\nTotal: %d  Collisions: %d\n' "$total" "$collisions"
+
+    if (( collisions > 0 )); then
+        exit 1
+    fi
+}
+
+main "$@"
