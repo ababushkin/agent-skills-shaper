@@ -1,0 +1,42 @@
+# `/shape:verify-implementation` skill: produces structured pass/fail verdict against ticket AC
+
+## What
+
+A new skill `/shape:verify-implementation` exists in `agent-skills-shaper` that reads the ticket body (including Task Shaper AC checklist), the diff, and the run log, and produces a structured verdict: `{result: pass|fail, findings: [], invoked_at: ...}`.
+
+## Why
+
+This is the Outcome Verifier role — the brake that prevents silent Done on hard tickets. Without a verdict recorded in the run log, KR2 (zero silent Dones) cannot be satisfied mechanically.
+
+## Assumptions
+
+* The skill has access to the git diff of the worktree and the current run-log entry.
+* A "finding" is a specific AC item that the diff does not satisfy, with enough detail for the operator to understand the gap.
+* The verdict schema matches the `outcome_verdict` field shape defined in the run-log schema issue.
+* If the Task Shaper output is absent, the skill falls back to the raw ticket body AC.
+
+## Key Risks
+
+* False positives (fail verdict when AC is actually met) will trigger unnecessary halts — the skill must err toward precision over recall.
+* The skill is a key correctness gate; if it can be bypassed or crashes silently, the whole initiative's value collapses.
+
+## Definition of Done
+
+* The skill exists in `agent-skills-shaper` and is registered.
+* Given a diff where all AC items are met: produces `{result: "pass", findings: []}`.
+* Given a diff where at least one AC item is unmet: produces `{result: "fail", findings: [{...}]}` with one finding per unmet AC item.
+* The verdict schema matches the `outcome_verdict` spec from the run-log schema issue.
+
+---
+
+Execution instructions:
+- Working directory: /Users/anton/src/agent-skills-shaper/.worktrees/ABA-325
+- Base branch: main
+- Completion sequence for issue ABA-325 (run in this order, before marking Done):
+  1. Run `/code-review-and-quality` against the working-tree changes.
+  2. Fix any Critical or Required findings. Lower-severity findings are at your discretion.
+  3. Commit and push to main.
+  4. Post a short review-summary comment on the Linear issue via `mcp__claude_ai_Linear__save_comment` (count of findings by severity, fixed vs deferred).
+  5. Transition issue to Done via `mcp__claude_ai_Linear__save_issue` (state: "Done").
+
+before marking Done: run /code-review-and-quality on the working-tree changes, fix Critical/Required findings, commit + push, then post a review-summary comment on the issue and transition to Done.
