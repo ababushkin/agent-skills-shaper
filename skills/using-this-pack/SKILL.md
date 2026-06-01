@@ -37,7 +37,8 @@ Task arrives
     ├── Building or reviewing a roadmap?                   → roadmap-shape
     │       └── reads from idea bank (docs/idea-bank/)
     ├── Committed initiative (goal + KRs) exists?          → delivery-shape
-    │       └── Have a node from delivery plan?            → execution-breakdown
+    │       └── Have a node from delivery plan?            → task-shaper (enrich AC + size)
+    │               └── AC enriched, tasks sized?          → execution-breakdown
     ├── Significant engineering work — how to build it?   → design-doc
     ├── Have a plan/spec/design — should I trust it?       → plan-review
     ├── Have a design or spec — need implementable tasks?  → execution-breakdown
@@ -105,6 +106,7 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 | `product-spike` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
 | `backend-spike` | "What's the right threshold for", "How should we detect", "Spike on", "What guard should we add" | Recommendation with rejected-alternatives table + follow-up ticket |
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
+| `task-shaper` | "Shape the tasks for this issue", "Enrich the AC", "Size the tasks", "Add routing annotations" | Linear issue body updated with enriched AC checklist and Model routing annotations |
 | `execution-breakdown` | "Break this down into tasks", "What order should we build this in?", "Give me a task list" | Ordered task list with acceptance criteria |
 | `design-doc` | "How should we build X?", "Architecture for Y", "Technical approach to Z" | Accepted design doc |
 | `plan-review` | "Review this plan", "Before I approve", "What's missing here", "Should we go with this" | Review record with APPROVE / REVISE / KILL recommendation |
