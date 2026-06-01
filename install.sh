@@ -102,7 +102,12 @@ GLOBAL_SETTINGS="${CLAUDE_DIR}/settings.json"
 HOOK_COMMAND="bash ${HOOK_DEST}"
 
 mkdir -p "${HOOKS_DIR}"
-cp "${HOOK_SRC}" "${HOOK_DEST}"
+# Rewrite the meta-skill path to absolute. The source hook resolves it relative
+# to its own dir ($SCRIPT_DIR/../skills/...), which is correct under the plugin
+# install (${CLAUDE_PLUGIN_ROOT}/hooks/) but wrong here: install.sh copies the
+# hook to ~/.claude/hooks/, where ../skills/ points at ~/.claude/skills, not the
+# repo. Same fix as the command wrappers above.
+sed "s|\$SCRIPT_DIR/../skills/|${REPO_DIR}/skills/|g" "${HOOK_SRC}" > "${HOOK_DEST}"
 chmod +x "${HOOK_DEST}"
 
 python3 - "${GLOBAL_SETTINGS}" "${HOOK_COMMAND}" <<'PYEOF'
