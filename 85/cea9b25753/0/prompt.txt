@@ -1,0 +1,1 @@
+check if all the skills in this repo are installed correctly and that the install script is up to date
