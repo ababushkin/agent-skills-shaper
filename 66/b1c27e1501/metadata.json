@@ -1,0 +1,28 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "66b1c27e1501",
+  "strategy": "manual-commit",
+  "branch": "ABA-326",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude/commands/task.md",
+    "README.md",
+    "skills/task-shaper/SKILL.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/66/b1c27e1501/0/metadata.json",
+      "transcript": "/66/b1c27e1501/0/full.jsonl",
+      "content_hash": "/66/b1c27e1501/0/content_hash.txt",
+      "prompt": "/66/b1c27e1501/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 38,
+    "cache_creation_tokens": 84102,
+    "cache_read_tokens": 2145158,
+    "output_tokens": 22712,
+    "api_call_count": 29
+  }
+}
