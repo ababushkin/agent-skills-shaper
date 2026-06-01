@@ -1,0 +1,40 @@
+# `/shape:task` skill: takes a Linear issue → enriched AC checklist + sizing decision + per-stack task list
+
+## What
+
+A new skill `/shape:task` exists in `agent-skills-shaper` that takes a Linear issue as input and produces: an enriched AC checklist (gaps and ambiguities surfaced), a sizing decision (single stack vs N stacks), and a per-stack ordered task list.
+
+## Why
+
+This is the Task Shaper role — the first step in the verify flow that runs before the implementer. Without it, workers begin implementation without a verified AC checklist and without knowing whether the ticket needs to be split across multiple stacks.
+
+## Assumptions
+
+* `/shape:task` is distinct from `/shape:planning-and-task-breakdown`: the former shapes a single Linear issue at implementation time; the latter shapes a whole design doc at planning time.
+* The sizing decision format is stable enough to be consumed by the worker session and written to the issue body.
+* `/shape:task` runs inside the worker session at implementation time — design decision §17 in `docs/design-decisions.md` records this decision, the rejected alternative (pre-computation via `/shape:planning-and-task-breakdown`), and the full input/output contract.
+
+## Key Risks
+
+* If the skill's output format is not agreed before the worker integration is built, the two will be built to incompatible schemas.
+* The skill may surface genuine AC gaps that are irresolvable — the "AC is incomplete" case must be handled without hanging.
+
+## Definition of Done
+
+* The skill file exists in `agent-skills-shaper` and is registered.
+* Invoking `/shape:task` on a real Linear issue produces: a structured AC checklist (with gaps noted), a sizing decision (single or N stacks), and a per-stack ordered task list.
+* The skill's description clearly distinguishes it from `/shape:planning-and-task-breakdown`.
+
+---
+
+Execution instructions:
+- Working directory: /Users/anton/src/agent-skills-shaper/.worktrees/ABA-324
+- Base branch: main
+- Completion sequence for issue ABA-324 (run in this order, before marking Done):
+  1. Run `/code-review-and-quality` against the working-tree changes.
+  2. Fix any Critical or Required findings. Lower-severity findings are at your discretion.
+  3. Commit and push to main.
+  4. Post a short review-summary comment on the Linear issue via `mcp__claude_ai_Linear__save_comment` (count of findings by severity, fixed vs deferred).
+  5. Transition issue to Done via `mcp__claude_ai_Linear__save_issue` (state: "Done").
+
+before marking Done: run /code-review-and-quality on the working-tree changes, fix Critical/Required findings, commit + push, then post a review-summary comment on the issue and transition to Done.
