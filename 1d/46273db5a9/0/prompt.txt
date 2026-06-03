@@ -1,0 +1,33 @@
+the shape:task skill i worked on as part of the verify-flow agents skills project, which supports multi-agent collaboration for correctness is wrong
+
+really what i want to make sure is that i can:
+
+- create lots of "what" tasks quickly and easily, using a consistent format (delivery-shape should do that)
+- create individual "what" tasks on-demand when ever I want
+- these "what" tasks should be sliced vertically (eg similar to https://github.com/addyosmani/agent-skills/blob/main/skills/planning-and-task-breakdown/SKILL.md)
+- these what tasks might have lots of complexity, so that work can be broken up into individual stacked graphite PRs
+- they should be estimated based on the type of agentic model to be used (anchored to anthropic models for now)
+
+when drain-cycle runs it will pick up these tasks and implement them 
+
+lets figure out how to reconcile this problem
+
+---
+
+i'm not really sure to be honest
+delivery-shape can't just make up work that should be done - it needs to take input from me
+so i'd rather see delivery-shape something that can work on a bulk set of ideas or a single idea -- ideally related to a specific goal but not necessarily, it's possible i just have an adhoc idea and no specific OKR or project setup for it
+
+what i really want is something that can just shape tickets for me in a consistent way and consider the shape of the work so that my agents don't pick up tickets that are too big -- in theory planning-and-task-breakdown should be able to do this but i found it doesn't always do it the way i want it to do it so requires a lot of work on my behalf
+
+the other thing is i want artefacts that are produced in a way that are human-friendly for review -- they should be written in customer/business/product language and sliced up in a format that's easy to review when i go through it
+
+feels like the things i'm working on are overlapping too much and its causing confusion
+
+---
+
+i'd also like to rename the planning-and-task-breakdown skill so that it a) its not confusing with another skill pack https://github.com/addyosmani/agent-skills/blob/main/skills/planning-and-task-breakdown/SKILL.md and b) so that it's obvious this one is something for an agent and is to be done right before execution
+
+---
+
+yes lets go ahead and write up a design doc, remember the audience here is me so use customer/business/product centric language - if not sure refer to the guidelines by /writing-clearly-and-concisely skill as well - close the PR as well
