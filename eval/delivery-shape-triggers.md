@@ -1,7 +1,7 @@
 # delivery-shape trigger eval set
 
 Validates trigger-phrase exclusivity between `delivery-shape`, `initiative-shape`, and
-`planning-and-task-breakdown` in both directions. `bin/eval-triggers` reads this table,
+`execution-breakdown` in both directions. `bin/eval-triggers` reads this table,
 scores each phrasing against the trigger-phrase lists extracted from the three skills'
 SKILL.md descriptions, and prints matched-skill vs expected-skill per row. Exits 0 only
 on 0 collisions.
@@ -14,7 +14,7 @@ on 0 collisions.
 - **initiative-shape** fires when defining or shaping a new initiative from a vague idea.
   Key markers: "I want to work on", "new initiative", "create a project",
   "shape this for the next cycle".
-- **planning-and-task-breakdown** fires when a single design or spec needs task-level
+- **execution-breakdown** fires when a single design or spec needs task-level
   breakdown. Key markers: "tasks", "task list", "build this in order", "steps".
 
 ## Eval table
@@ -28,6 +28,6 @@ on 0 collisions.
 | P05 | I want to work on improving onboarding quality      | initiative-shape            | "I want to work on" substring             |
 | P06 | Create a new initiative for the authentication work | initiative-shape            | "new initiative" substring                |
 | P07 | Shape this for the next cycle                       | initiative-shape            | exact trigger phrase                      |
-| P08 | Break this down into tasks                          | planning-and-task-breakdown | exact trigger phrase                      |
-| P09 | Give me a task list for this node                   | planning-and-task-breakdown | "give me a task list" substring           |
-| P10 | What order should we build this in                  | planning-and-task-breakdown | exact trigger phrase                      |
+| P08 | Break this down into tasks                          | execution-breakdown | exact trigger phrase                      |
+| P09 | Give me a task list for this node                   | execution-breakdown | "give me a task list" substring           |
+| P10 | What order should we build this in                  | execution-breakdown | exact trigger phrase                      |

@@ -9,14 +9,14 @@ maps_to: linear-issue
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: planning-and-task-breakdown (per-node task breakdown)
+delegates_to: execution-breakdown (per-node task breakdown)
 ---
 
 # N04 — Decompose initiative → deliverables → nodes → tasks, AC by default
 
 **Type:** `story`.
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
 
 ## What
 

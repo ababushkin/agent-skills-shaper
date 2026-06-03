@@ -1,13 +1,15 @@
 ---
-name: planning-and-task-breakdown
+name: execution-breakdown
 description: >
-  Decomposes a design or spec into small, verifiable tasks with acceptance criteria
-  and dependency ordering — so implementation can proceed one confirmed slice at a
-  time. Use before starting any non-trivial implementation. Trigger phrases: "break
-  this down into tasks", "what do we need to build", "give me a task list", "sequence
-  the work", "plan the implementation", "what order should we build this in",
-  "decompose this into steps". Use this skill whenever the sequence of work isn't
-  obvious before implementation begins.
+  The agent-facing breakdown that runs at pickup — right before the build. Takes one
+  sized work item and decomposes it into small, verifiable tasks with acceptance
+  criteria and dependency ordering, so an agent implements one confirmed slice at a
+  time. This is the engineering breakdown an agent runs, not the product plan a human
+  reviews (that is `delivery-shape`). Trigger phrases: "break this ticket down into
+  tasks", "what do we need to build", "give me a task list", "sequence the work",
+  "plan the implementation", "what order should we build this in", "decompose this
+  into steps". Use at pickup, whenever an agent is about to implement a work item and
+  the sequence of work isn't obvious.
 pack: engineering
 lifecycle_stage: plan
 principles_implemented:
@@ -43,16 +45,19 @@ changed_from_predecessor:
   - Drift from design doc is an explicit failure mode
 ---
 
-# Planning and task breakdown
+# Execution breakdown
 
 ## Purpose
 
-This skill takes an accepted design doc and produces an ordered task list where each task is small enough to complete and verify independently. It bridges the gap between "we have an accepted design" and "we know exactly what to build in what order." The output is a sequence of well-scoped tasks, each with acceptance criteria, that whichever build skill the team uses will pick up one at a time.
+This is the agent's breakdown step, and it runs at pickup — the moment an agent takes a sized work item to build, not weeks earlier at planning time. It produces an ordered task list where each task is small enough to complete and verify independently. It bridges the gap between "we have a sized ticket" and "we know exactly what to build in what order." The output is a sequence of well-scoped tasks, each with acceptance criteria, that the build picks up one at a time.
+
+This skill is the engineering counterpart to `delivery-shape`: `delivery-shape` produces the product-language ticket a human reviews; execution-breakdown turns that ticket into the technical task sequence an agent executes. They split by audience and never overlap.
 
 The goal is not comprehensiveness — it is clarity and verifiability. A task list that looks thorough but whose tasks are too big to verify will not survive contact with implementation. Every task must answer: "how do I know this is done?"
 
 ## When to use
 
+- An agent picks up a sized ticket (a `delivery-shape` node carries an "expand via `execution-breakdown`" instruction) and implementation is about to begin.
 - A design doc has been accepted and implementation is ready to begin.
 - A well-scoped spec exists for a change that doesn't meet the Rule A1 design-doc trigger, but is complex enough that sequencing and acceptance criteria are non-obvious.
 
@@ -63,7 +68,7 @@ The goal is not comprehensiveness — it is clarity and verifiability. A task li
 
 ## Inputs
 
-An accepted design doc covering at minimum: the problem being solved, the chosen approach, the components being changed or created, and the constraints. The design doc does not need to be perfect; it needs to be stable enough that the approach won't change during implementation.
+A sized work item at pickup — most often a `delivery-shape` ticket/node, or an accepted design doc, or a well-scoped spec — covering at minimum: the problem being solved, the chosen approach, the components being changed or created, and the constraints. The input does not need to be perfect; it needs to be stable enough that the approach won't change during implementation.
 
 ## Outputs
 

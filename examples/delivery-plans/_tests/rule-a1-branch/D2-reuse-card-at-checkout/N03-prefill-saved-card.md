@@ -9,7 +9,7 @@ maps_to: linear-issue
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: planning-and-task-breakdown (per-node task breakdown)
+delegates_to: execution-breakdown (per-node task breakdown)
 ---
 
 # N03 — Pre-fill the saved card at checkout
@@ -17,7 +17,7 @@ delegates_to: planning-and-task-breakdown (per-node task breakdown)
 > **As** a returning shopper, **I want** my saved card shown pre-filled at checkout, **so that**
 > I do not re-enter details I have already stored.
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
 
 ## Acceptance criteria
 

@@ -4,6 +4,10 @@ All notable changes to this project are documented in this file. Format follows 
 
 ## [Unreleased]
 
+### Changed
+
+- Renamed `planning-and-task-breakdown` → `execution-breakdown` and repositioned it as the agent-facing breakdown that runs at pickup, right before the build. Ends the name clash with the upstream `addyosmani/agent-skills` skill it derives from, and signals the audience split: `-shape` skills (e.g. `delivery-shape`) are the product-facing artefacts a human reviews; `execution-breakdown` is the engineering breakdown an agent runs. See `docs/designs/shaping-pipeline.md`.
+
 ## [0.1.0] — 2026-05-07
 
 First public release. Soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) — the structural conventions (frontmatter, anatomy specs, the `SKILL.md` pattern) are inherited; no paragraphs are copied verbatim.

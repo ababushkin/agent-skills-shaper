@@ -2,7 +2,7 @@
 layer: node
 id: N03
 type: adr
-title: New skill vs expand planning-and-task-breakdown
+title: New skill vs expand execution-breakdown
 parent: D1
 serves_kr: KR1
 maps_to: linear-issue
@@ -12,13 +12,13 @@ completion:
   form: decision-record
   criterion: >
     An accepted ADR exists recording Context / Decision / Consequences for choosing
-    (A) a new delivery-shape skill or (B) an expansion of planning-and-task-breakdown.
+    (A) a new delivery-shape skill or (B) an expansion of execution-breakdown.
 delegates_to: documentation-and-adrs (ADR authoring + supersession discipline)
 status: accepted
-adr_ref: ../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md
+adr_ref: ../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-execution-breakdown.md
 ---
 
-# N03 — ADR: new skill vs expand planning-and-task-breakdown
+# N03 — ADR: new skill vs expand execution-breakdown
 
 **Type:** `adr`.
 
@@ -29,7 +29,7 @@ adr_ref: ../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-a
 ## What
 
 An ADR deciding whether delivery-shape is a new standalone skill (`delivery-shape/`) or an
-expansion of `planning-and-task-breakdown`. The choice determines the pack's directory layout
+expansion of `execution-breakdown`. The choice determines the pack's directory layout
 and whether two adjacent skills exist whose triggers must be disambiguated.
 
 ## Why
@@ -50,10 +50,10 @@ advance — the spike must run first.
 The polymorphic node layer carries large unique structure (eight completion forms with delegation
 targets) that PTB has no concept of and that is too far from "task breakdown" to bolt on. DS
 delegates per-node breakdown back down to PTB, so the two compose rather than merge; and the
-initiative's own KR3 ("0 collisions against planning-and-task-breakdown") already presupposes two
+initiative's own KR3 ("0 collisions against execution-breakdown") already presupposes two
 distinct skills.
 
-Full Context / Decision / Consequences record: [`docs/adr/0001`](../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md).
+Full Context / Decision / Consequences record: [`docs/adr/0001`](../../../../docs/adr/0001-delivery-shape-new-skill-vs-expand-execution-breakdown.md).
 
 **Consequences:** New `skills/delivery-shape/`; PTB unchanged and becomes DS's delegation target.
 Cost: two adjacent skills whose triggers must be disambiguated (gated by KR3 / N08).

@@ -1,6 +1,6 @@
 # Tasks: delivery-shape (decompose + AC-by-default slice)
 
-Design basis: `docs/delivery-shape-contract.md` + `docs/adr/0001-delivery-shape-new-skill-vs-expand-planning-and-task-breakdown.md` (decision A — standalone skill)
+Design basis: `docs/delivery-shape-contract.md` + `docs/adr/0001-delivery-shape-new-skill-vs-expand-execution-breakdown.md` (decision A — standalone skill)
 Scope: the N04 node only — decompose an initiative into deliverables → nodes → tasks with acceptance criteria emitted by default on every `story` node, plus the `bin/check-plan-framing` gate. Foundational-folding prompt, the Rule A1 design-doc branch, full up/down delegation wiring, the self-trial, and README/flowchart registration are separate nodes and out of scope here.
 Last updated: 2026-05-26
 

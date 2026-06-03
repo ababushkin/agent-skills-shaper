@@ -32,7 +32,7 @@ DEBUG=0
 CANDIDATE_SKILLS=(
     "delivery-shape"
     "initiative-shape"
-    "planning-and-task-breakdown"
+    "execution-breakdown"
 )
 
 # Extract trigger phrases from a skill's SKILL.md description frontmatter.

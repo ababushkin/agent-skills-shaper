@@ -60,7 +60,7 @@ The skill exists to bake the framing in so the user never re-prompts for it. Eve
 ## When not to use
 
 - **No committed initiative yet** — the input is a vague idea or a problem with no goal/KRs. Run `initiative-shape` first; delivery-shape consumes its output, it does not produce a goal.
-- **A single node is ready to build** — you already have one issue and need its task breakdown. Use `planning-and-task-breakdown`; that is the per-node delegate delivery-shape points at, not a substitute for it.
+- **A single node is ready to build** — you already have one issue and need its task breakdown. Use `execution-breakdown`; that is the per-node delegate delivery-shape points at, not a substitute for it.
 - **Single-issue, bug, or KTLO work** — create the issue directly in the ops slot. A bug fix does not need a deliverable hierarchy.
 
 ## Inputs
@@ -95,7 +95,7 @@ Emit all five body sections — **What / Why / Completion / Assumptions / Key Ri
 List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one — which is the exact failure this prompt prevents. Each task is one observable outcome. The skeleton-and-folding rule is enforced mechanically by `bin/check-plan-framing` (≥1 skeleton task in the plan; no node with a task before its skeleton).
 
 **8. Surface deferred, build-time delegation on every node.**
-`delegates_to` fires at **pickup**, not at emission — expanding every node's fine-grained tasks now front-loads detail that decays before the node is reached (agentic P8). So delivery-shape stops at the node; it does not run the delegate. On each emitted issue-class artefact, write an explicit on-pickup instruction naming its `delegates_to` (a `story` says "expand via `planning-and-task-breakdown` before coding"; a `ktlo` node says "no breakdown step"). The picking-up agent follows that line. This is the one delegation obligation the contract places on the emitted artefact — see `docs/delivery-shape-contract.md` § *Delegation — timing & surfacing*.
+`delegates_to` fires at **pickup**, not at emission — expanding every node's fine-grained tasks now front-loads detail that decays before the node is reached (agentic P8). So delivery-shape stops at the node; it does not run the delegate. On each emitted issue-class artefact, write an explicit on-pickup instruction naming its `delegates_to` (a `story` says "expand via `execution-breakdown` before coding"; a `ktlo` node says "no breakdown step"). The picking-up agent follows that line. This is the one delegation obligation the contract places on the emitted artefact — see `docs/delivery-shape-contract.md` § *Delegation — timing & surfacing*.
 
 **9. Emit the file-set.**
 Write the directory layout from the template below: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the **hand-count manifest** (milestones / issues / sub-issues), one `D<n>/` per deliverable, one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
@@ -137,7 +137,7 @@ delegates_to: <rule or skill owning this type's discipline>
 # N01 — <title>
 
 > **▶ On pickup:** <type-appropriate on-pickup instruction, e.g. "expand via
-> `planning-and-task-breakdown`" for story, "no breakdown step" for ktlo>
+> `execution-breakdown`" for story, "no breakdown step" for ktlo>
 
 ## What
 
@@ -245,7 +245,7 @@ The skill has run correctly when:
 - `bin/walk-delivery-plan` — the deterministic reader that walks the emitted file-set into a manifest and enforces `serves_kr` / `type` / `delegates_to` presence
 - `bin/check-plan-framing` — the framing gate that asserts every node carries the five body sections, every Assumptions item is tagged, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
 - `skills/initiative-shape/SKILL.md` — **up-delegation**: produces the committed initiative (goal + KRs) this skill consumes; delivery-shape does not re-run its shaping gates
-- `skills/planning-and-task-breakdown/SKILL.md` — **down-delegation**: the per-node task-breakdown delegate that fires at pickup
+- `skills/execution-breakdown/SKILL.md` — **down-delegation**: the per-node task-breakdown delegate that fires at pickup
 - `skills/design-doc/SKILL.md` — the Rule A1 branch delegate: produces the design doc a design-doc-worthy deliverable needs before its build nodes' task breakdown
 - `rules/eng-principles-agentic.md` — P3 (spec as seatbelt), P4 (evidence/acceptance by default), P7 (select and delegate, never re-author), P8 (slices and gates, deferred delegation)
 - `rules/eng-principles-universal.md` — Rule B2 (walking skeleton first), Rule A1 (design-doc trigger)
