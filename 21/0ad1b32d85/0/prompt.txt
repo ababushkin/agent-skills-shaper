@@ -1,0 +1,9 @@
+yes
+
+---
+
+review all the installation scripts now
+
+---
+
+lets fix all 3 things things, delivery-shape should be shape:delivery
