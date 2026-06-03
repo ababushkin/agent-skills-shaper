@@ -39,10 +39,11 @@ kept_from_predecessor:
   - Acceptance criteria per task
   - Dependency ordering before sequencing
 changed_from_predecessor:
-  - Accepted design doc is a required input; the skill does not accept vague specs
+  - Input is a sized work item (a delivery-shape ticket, an accepted design doc, or a well-scoped spec) — never a vague idea
+  - Runs at pickup, in the agent session that will build — not as an up-front planning pass
   - Walking skeleton is the mandatory first task, not an optional starting point
   - Task size is bounded: any task that can't be described in one sentence is too big
-  - Drift from design doc is an explicit failure mode
+  - Drift from the input spec is an explicit failure mode
 ---
 
 # Execution breakdown
@@ -63,8 +64,8 @@ The goal is not comprehensiveness — it is clarity and verifiability. A task li
 
 ## When not to use
 
-- **No accepted design doc and the work exceeds a Rule A1 trigger** — run `design-doc` first. A draft or in-flight doc does not count as accepted.
-- **The scope is unclear or contested** — resolve scope ambiguity in the design doc before breaking down tasks. Task breakdown from a vague spec produces tasks nobody believes in.
+- **The work exceeds a Rule A1 trigger and has no accepted design** — run `design-doc` first. A draft or in-flight doc does not count as accepted; a large undesigned change should not be decomposed straight into tasks.
+- **The scope is unclear or contested** — resolve the ambiguity in the source ticket or design before breaking down tasks. A breakdown from a vague input produces tasks nobody believes in.
 
 ## Inputs
 
@@ -76,11 +77,11 @@ An ordered task list at `docs/tasks/<feature-slug>.md`. Each task has: a one-sen
 
 ## Workflow
 
-**1. Read the design doc end-to-end.**
-Do not start decomposing until you have read the full document. The most common task breakdown error is starting with the first section and ignoring the constraints and operability sections at the end. Those sections often constrain the sequencing.
+**1. Read the work item end-to-end.**
+Do not start decomposing until you have read the full input — the ticket (and any design doc it links), or the design doc or spec itself. The most common task breakdown error is starting with the first section and ignoring the constraints and operability detail at the end. Those often constrain the sequencing.
 
 **2. Identify the walking skeleton.**
-The walking skeleton is the thinnest possible slice that exercises the full path end-to-end — from input to output — without filling in the real functionality. It is always task 1. If you cannot identify a walking skeleton (a slice that makes the system run, however crudely), the design doc is missing something. Stop and resolve it before proceeding.
+The walking skeleton is the thinnest possible slice that exercises the full path end-to-end — from input to output — without filling in the real functionality. It is always task 1. If you cannot identify a walking skeleton (a slice that makes the system run, however crudely), the input is missing something. Stop and resolve it before proceeding.
 
 Examples:
 - API endpoint: a handler that accepts the request, returns a hardcoded response, passes a smoke test — no real logic yet.
@@ -133,7 +134,7 @@ Use the template below. File at `docs/tasks/<feature-slug>.md`.
 ```markdown
 # Tasks: <feature-slug>
 
-Design doc: docs/designs/<feature-slug>.md
+Source: <ticket ID, or docs/designs/<feature-slug>.md>
 Last updated: <date>
 
 ## Task list
@@ -168,7 +169,7 @@ Last updated: <date>
 | "The tasks are obvious from the design doc — no need to write them out." | If they're obvious, writing them out takes 15 minutes. If it takes more, they weren't as obvious as assumed. The acceptance criteria are worth the time even if the tasks aren't. |
 | "We'll figure out the order as we go." | Unordered tasks produce surprise dependencies mid-implementation. Dependency discovery during a build is expensive; discovery before the build is cheap. |
 | "This task is a bit big but we know what we're doing." | Task size is not a trust issue — it is a verification issue. Big tasks fail silently. Small tasks fail loudly and early. |
-| "The design doc isn't fully accepted but it's close enough." | An almost-accepted design doc means the approach is still negotiable. Tasks broken down from a negotiable design are likely to be redone. |
+| "The input isn't fully settled but it's close enough." | An unsettled ticket or an almost-accepted design means the approach is still negotiable. Tasks broken down from a negotiable input are likely to be redone. |
 | "We don't need a walking skeleton — we'll integrate at the end." | Integration at the end is the most expensive integration there is. The walking skeleton exists to find integration problems on day 1, not day 29. |
 | "We already know the dependencies — no need to list them." | Dependencies change during implementation; listing them before forces you to verify each one rather than discover them when they block you. A listed dependency that turns out not to exist costs nothing. An unlisted dependency that surfaces mid-sprint costs days. |
 | "I'll write acceptance criteria after I implement so I know what 'done' looks like." | By then you've already built the wrong thing. Acceptance criteria written before implementation are a spec — they constrain what you build. Criteria written after implementation describe what you built. The goal is the former. |
@@ -180,9 +181,9 @@ Last updated: <date>
 - Any task has more than one independent acceptance criterion.
 - Acceptance criteria say "feature is implemented" or "code is written" rather than describing a verifiable condition.
 - Acceptance criteria reference implementation details ("the function is written") rather than observable behaviour ("the endpoint returns X for input Y").
-- The task list was written before reading the constraints section of the design doc.
+- The task list was written before reading the constraints section of the input.
 - A task depends on unresolved external work that hasn't been flagged.
-- The list was generated from the design doc introduction without reading the full document.
+- The list was generated from the input's introduction without reading it in full.
 - A "setup" or "scaffolding" task appears before the walking skeleton, deferring integration discovery.
 
 ## Verification / exit criteria
@@ -202,7 +203,8 @@ The skill has run correctly when:
 ## References
 
 - `rules/eng-principles-universal.md` — Rule A1 (design doc trigger), Rule B1 (YAGNI per slice), Rule B2 (walking skeleton first), Rule C4 (dependencies before commitment)
-- `rules/eng-principles-agentic.md` — P3 (no drift from design doc)
+- `rules/eng-principles-agentic.md` — P3 (no drift from the input spec)
 - `references/task-sizing.md` — Model routing annotation format for tasks
-- `skills/design-doc/SKILL.md` — the upstream output that this skill consumes
+- `skills/delivery-shape/SKILL.md` — upstream: emits the sized ticket whose on-pickup line points here
+- `skills/design-doc/SKILL.md` — upstream: an accepted design doc is one valid input
 - Ryan Singer — "Shape Up" (appetite and scope as planning primitives)
