@@ -6,6 +6,15 @@ CLAUDE_DIR="${HOME}/.claude"
 COMMANDS_DIR="${CLAUDE_DIR}/commands"
 CLAUDE_MD="${CLAUDE_DIR}/CLAUDE.md"
 
+# Portable in-place sed: GNU sed wants `-i` with no arg, BSD/macOS sed wants
+# `-i ''`. Detect once (GNU sed answers --version; BSD sed errors) and route
+# accordingly so this script runs on both Linux and macOS.
+if sed --version >/dev/null 2>&1; then
+  sedi() { sed -i "$@"; }
+else
+  sedi() { sed -i '' "$@"; }
+fi
+
 echo "Installing Shaper from ${REPO_DIR}"
 
 # 1. Generate wrapper command files in ~/.claude/commands/shape/
@@ -45,7 +54,7 @@ STALE_PATTERNS=(
 )
 for stale in "${STALE_PATTERNS[@]}"; do
   if grep -qF "${stale}" "${CLAUDE_MD}"; then
-    sed -i '' "\|^${stale}\$|d" "${CLAUDE_MD}"
+    sedi "\|^${stale}\$|d" "${CLAUDE_MD}"
     echo "Removed stale ref: ${stale}"
   fi
 done
@@ -53,7 +62,7 @@ done
 # Prune any ref into this repo's rules/ dir — previously written by this
 # script; now lazy-loaded via the session-start hook instead.
 if grep -qE "^@${REPO_DIR}/rules/.*\.md$" "${CLAUDE_MD}" 2>/dev/null; then
-  sed -i '' -E "\|^@${REPO_DIR}/rules/.*\.md$|d" "${CLAUDE_MD}"
+  sedi -E "\|^@${REPO_DIR}/rules/.*\.md$|d" "${CLAUDE_MD}"
   echo "Pruned lazy-loaded rule refs from ${CLAUDE_MD}"
 fi
 
@@ -155,11 +164,13 @@ echo "  /shape:roadmap                      Shape a planning-cycle roadmap"
 echo "  /shape:product-spike                Answer a product question before designing"
 echo "  /shape:backend-spike                Investigate a backend correctness question before implementing"
 echo "  /shape:design-doc                   Structure significant engineering work"
+echo "  /shape:delivery                     Decompose an initiative into a delivery plan"
 echo "  /shape:execution-breakdown          Agent breakdown at pickup, right before the build"
 echo "  /shape:initiative                   Shape an idea into an initiative"
 echo "  /shape:plan-review                  Review a plan/spec/design before approval"
 echo "  /shape:render-html                  Render a markdown doc as a reviewable HTML file"
 echo "  /shape:stop-the-line                Scan a diff for quality red flags"
+echo "  /shape:task-annotation-check        Check docs/tasks/*.md for model-tier annotations"
 echo "  /shape:backlog-manage               Review and curate the idea bank"
 echo ""
 echo "Auto-invocable skills (model-triggered, namespaced as shape-<name>):"

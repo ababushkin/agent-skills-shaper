@@ -152,7 +152,7 @@ Install the plugin directly from GitHub:
 
 This gives you:
 
-- The 11 slash commands (`/shape:idea-triage`, `/shape:design-doc`, …)
+- The 13 slash commands (`/shape:idea-triage`, `/shape:design-doc`, `/shape:delivery`, …)
 - The 12 auto-invocable Skills, namespaced as `shape-<name>` (model-triggered via the Skill tool)
 
 Restart Claude Code after install. The rule files (`PRODUCT_RULES.md`, `eng-principles-universal.md`, `eng-principles-agentic.md`) are lazy-loaded: the SessionStart hook injects `using-this-pack/SKILL.md`, which tells the model when to read each file. No manual `@`-imports are needed.
