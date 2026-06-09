@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "58c351ca9cd0",
+  "session_id": "1877d397-9e6a-4e5d-b1b7-8af63dc5d29a",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-09T01:48:36.207899Z",
+  "branch": "ABA-358",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "README.md",
+    "hooks/task-annotation-check/HOOK.md",
+    "references/task-sizing.md",
+    "skills/delivery-shape/SKILL.md",
+    "skills/execution-breakdown/SKILL.md",
+    "skills/initiative-shape/SKILL.md",
+    "skills/roadmap-shape/SKILL.md",
+    "skills/using-this-pack/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "d91babdf4c36",
+  "token_usage": {
+    "input_tokens": 335,
+    "cache_creation_tokens": 105795,
+    "cache_read_tokens": 3936899,
+    "output_tokens": 29256,
+    "api_call_count": 47
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-09T01:48:36.19169Z",
+    "agent_lines": 19,
+    "agent_removed": 237,
+    "human_added": 7,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 28,
+    "total_lines_changed": 290,
+    "agent_percentage": 88.27586206896552,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
