@@ -56,6 +56,7 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [delivery-shape](skills/delivery-shape/SKILL.md) | Decomposes a committed initiative (goal + key results) into an ordered, verifiable delivery hierarchy — deliverables → nodes → tasks — with outcomes traced to KRs and completion criteria on every node. | Committed initiative exists; need the deliverable → node → task hierarchy before work starts |
 | [plan-review](skills/plan-review/SKILL.md) | Reviews a plan, spec, or design before approval. Eight MECE attack buckets plus a Cynefin classifier; surfaces unstated assumptions, missing alternatives, and reversibility blind spots. Calibrated against a [5-scenario benchmark](docs/benchmarks.md): 93% with-skill vs 19% baseline (n=3, Sonnet 4.6). | Plan/spec/design needs a second pass before commitment |
 | [render-html](skills/render-html/SKILL.md) | Converts a markdown design doc, plan, ADR, or roadmap into a single self-contained HTML file for human review. Preserves spatial content (alternatives tables, dependency graphs, timelines) that flat markdown collapses. | Artefact is about to go to review or sign-off and reviewer experience matters |
+| [verify-implementation](skills/verify-implementation/SKILL.md) | Outcome verifier — maps every AC item in the ticket against the working-tree diff and produces a structured `pass/fail` verdict with one finding per unmet item. Blocks the issue from Done on fail. | Implementation claimed complete; about to mark an issue Done |
 
 ### Meta
 
