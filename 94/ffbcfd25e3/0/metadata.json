@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "94ffbcfd25e3",
+  "session_id": "923a6d88-a95e-4f26-ab87-933d075ba77f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-09T01:38:02.597162Z",
+  "branch": "ABA-356",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "bin/walk-delivery-plan"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "56b12ce2bdae",
+  "token_usage": {
+    "input_tokens": 88,
+    "cache_creation_tokens": 24157,
+    "cache_read_tokens": 447889,
+    "output_tokens": 3124,
+    "api_call_count": 12
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-09T01:38:02.590425Z",
+    "agent_lines": 1,
+    "agent_removed": 3,
+    "human_added": 1,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 2,
+    "total_lines_changed": 5,
+    "agent_percentage": 80,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
