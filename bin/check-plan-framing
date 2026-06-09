@@ -29,8 +29,7 @@ must emit by default rather than the user re-prompting for:
      first skeleton task. Foundational / toolchain work belongs folded into the
      skeleton task's description; a task that precedes the skeleton is a setup
      task in disguise, deferring the integration discovery the skeleton exists
-     to surface on day one (mirrors execution-breakdown's
-     walking-skeleton-first rule). The pre-skeleton check is structural, not
+     to surface on day one. The pre-skeleton check is structural, not
      keyword-based: any task before the first skeleton task fails, whatever it
      is named — that is the only deterministic reading of "no setup task first."
 

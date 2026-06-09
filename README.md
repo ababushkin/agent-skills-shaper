@@ -51,7 +51,6 @@ Calibrated where it counts: the [`plan-review`](skills/plan-review/SKILL.md) ski
 | [eng-principles-agentic.md](rules/eng-principles-agentic.md) | Agentic-specific constraints: scope discipline, no speculative refactoring, confirmation before destructive action. | Load alongside universal for agent-driven work |
 | [product-spike](skills/product-spike/SKILL.md) | Throwaway artefact (narrative, clickable, or code) to answer one product question before committing to a design. Time-boxed; exits with a written finding: proceed / reshape / kill. | Idea approved; dominant unknown is product feel or interaction |
 | [backend-spike](skills/backend-spike/SKILL.md) | Time-boxed investigation of a backend correctness question (detection threshold, substitution strategy, algorithmic safeguard). Produces a recommendation with a rejected-alternatives table and a named follow-up implementation ticket. | Design-doc stalls on a correctness sub-question; ≥2 plausible approaches with different edge-case behaviour |
-| [execution-breakdown](skills/execution-breakdown/SKILL.md) | The agent-facing breakdown that runs at pickup: turns one sized ticket into small, verifiable tasks with acceptance criteria and dependency order, right before the build. | Agent picks up a sized ticket; implementation about to begin |
 | [design-doc](skills/design-doc/SKILL.md) | Structures significant work before building: problem statement, approach options, chosen design, NFR constraints, operability plan. | Work exceeds 4 weeks, reused capability, or meaningful user/cost/compliance impact |
 | [delivery-shape](skills/delivery-shape/SKILL.md) | Decomposes a committed initiative (goal + key results) into an ordered, verifiable delivery hierarchy — deliverables → nodes → tasks — with outcomes traced to KRs and completion criteria on every node. | Committed initiative exists; need the deliverable → node → task hierarchy before work starts |
 | [plan-review](skills/plan-review/SKILL.md) | Reviews a plan, spec, or design before approval. Eight MECE attack buckets plus a Cynefin classifier; surfaces unstated assumptions, missing alternatives, and reversibility blind spots. Calibrated against a [5-scenario benchmark](docs/benchmarks.md): 93% with-skill vs 19% baseline (n=3, Sonnet 4.6). | Plan/spec/design needs a second pass before commitment |
@@ -80,7 +79,7 @@ Using addy's pack as the example. Empty cells on Shaper's side aren't gaps to be
 | Phase | Shaper (shaping) | Implementation pack (e.g. `agent-skills`) |
 |---|---|---|
 | Discover / curate | `idea-triage`, `app-calibrate`, `backlog-manage` | — |
-| Decide / plan | `roadmap-shape`, `initiative-shape`, `execution-breakdown` | — |
+| Decide / plan | `roadmap-shape`, `initiative-shape`, `delivery-shape` | — |
 | Design | `design-doc`, `product-spike`, `backend-spike` | — |
 | Pre-build review | `plan-review` (calibrated, [benchmarks](docs/benchmarks.md)) | — |
 | Build | — | `incremental-implementation`, `frontend-ui-engineering`, `source-driven-development`, `context-engineering`, `api-and-interface-design` |
@@ -98,7 +97,6 @@ Three Shaper skills have direct counterparts in addy's pack. They diverge intent
 |---|---|---|
 | `idea-triage` ↔ `idea-refine` (adjacent) | Mandatory ICE scoring + Confidence Meter gates; Kano classification; routes low-confidence ideas to a validation slot, not the roadmap. | The product principles in `PRODUCT_RULES.md` demand evidence before commitment — `idea-refine` accepts framed ideas; `idea-triage` gates them. |
 | `design-doc` ↔ `spec-driven-development` (derivative) | NFRs as numbered measurable targets, not adjectives; mandatory Operability section (metrics, alerts, rollback); ADR pattern enforced. | Universal eng principles A1–A6 require this rigour; `spec-driven-development` is more permissive. |
-| `execution-breakdown` ↔ `planning-and-task-breakdown` (derivative) | Acceptance criteria required per task; explicit dependency-order surfacing before commitment; renamed and repositioned as the agent-facing at-pickup breakdown (the human-facing shaper is `delivery-shape`). | Eng principle B7 requires cross-team dependency surfacing pre-commitment; addy's version leaves it implicit. The rename ends a name clash with the upstream skill and signals the audience split. |
 
 If you install both packs, the namespace prefix (`shape-*` vs the implementation pack's namespace) means both versions coexist; pick which one fires by which trigger language you use, or by loading only one.
 

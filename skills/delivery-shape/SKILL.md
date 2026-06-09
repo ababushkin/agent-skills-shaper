@@ -57,7 +57,7 @@ The skill exists to bake the framing in so the user never re-prompts for it. Eve
 ## When not to use
 
 - **No committed initiative yet** — the input is a vague idea or a problem with no goal/KRs. Run `initiative-shape` first; delivery-shape consumes its output, it does not produce a goal.
-- **A single node is ready to build** — you already have one issue and need its task breakdown. Use `execution-breakdown`; that is the per-node delegate delivery-shape points at, not a substitute for it.
+- **A single node is ready to build** — you already have one issue and need its task breakdown. delivery-shape is not the right entry point; use the at-pickup breakdown phase of your build agent or hand off the node directly to your build skill.
 - **Single-issue, bug, or KTLO work** — create the issue directly in the ops slot. A bug fix does not need a deliverable hierarchy.
 
 ## Inputs
@@ -260,7 +260,6 @@ The skill has run correctly when:
 - `bin/walk-delivery-plan` — the deterministic reader that walks the emitted file-set into a manifest and enforces `serves_kr` / `type` / `maps_to` presence
 - `bin/check-plan-framing` — the framing gate that asserts every node carries the five body sections, every Assumptions item is tagged, the plan has at least one walking-skeleton task, and no node precedes its skeleton with a setup task
 - `skills/initiative-shape/SKILL.md` — **up-delegation**: produces the committed initiative (goal + KRs) this skill consumes; delivery-shape does not re-run its shaping gates
-- `skills/execution-breakdown/SKILL.md` — **down-delegation**: the per-node task-breakdown delegate that fires at pickup
 - `skills/design-doc/SKILL.md` — the Rule A1 branch delegate: produces the design doc a design-doc-worthy deliverable needs before its build nodes' task breakdown
 - `rules/eng-principles-agentic.md` — P3 (spec as seatbelt), P4 (evidence/acceptance by default), P7 (select and delegate, never re-author)
 - `rules/eng-principles-universal.md` — Rule B2 (walking skeleton first), Rule A1 (design-doc trigger)

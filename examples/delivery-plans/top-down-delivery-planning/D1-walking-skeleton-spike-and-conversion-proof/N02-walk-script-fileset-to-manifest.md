@@ -10,14 +10,14 @@ tracker_ref: ABA-282
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: execution-breakdown (task breakdown + walking-skeleton-first sequencing)
+delegates_to: at-pickup task breakdown (task breakdown + walking-skeleton-first sequencing)
 ---
 
 # N02 — Walk-script: file-set → tracker manifest
 
 **Type:** `story`.
 
-> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
+> **▶ On pickup — before coding:** break this node into task-sized pieces using your build agent's at-pickup task breakdown phase.
 
 ## What
 

@@ -6,7 +6,6 @@ description: >
   estimation; a second lens on the verification-granularity Size check.
 type: reference
 cited_by:
-  - skills/execution-breakdown/SKILL.md
   - skills/roadmap-shape/SKILL.md
   - skills/initiative-shape/SKILL.md
 ---
@@ -17,7 +16,7 @@ This rubric routes a single task to a **model tier** and a **review-attention fl
 
 Routing is not cascading. **Routing** is planning-time pre-classification — one model is chosen per task *before* it runs. **Cascading** is runtime escalation — start on a cheap model and retry on a bigger one mid-execution when the cheap one fails. This rubric only does routing; cascading is a named, separate, out-of-scope layer (see *What this is not for*).
 
-**Reconciliation with eng-agentic P8.** P8 says effort is measured in slices and gates, not calendar time, and warns against importing a "how long will this take" frame. A sizing rubric could look like it smuggles effort estimation back in. It does not: it emits a capability tier keyed to *risk*, never a duration or a size. It is orthogonal to — and applied *after* — the slice-based Size check in `execution-breakdown` Step 5. Two lenses on the same already-sized slice: one asks "is this one verifiable change" (Size), the other asks "what does it cost to get it wrong, and what capability does it need" (this rubric). Neither uses calendar time.
+**Reconciliation with eng-agentic P8.** P8 says effort is measured in slices and gates, not calendar time, and warns against importing a "how long will this take" frame. A sizing rubric could look like it smuggles effort estimation back in. It does not: it emits a capability tier keyed to *risk*, never a duration or a size. It is orthogonal to — and applied *after* — the slice-based Size check performed during at-pickup task breakdown. Two lenses on the same already-sized slice: one asks "is this one verifiable change" (Size), the other asks "what does it cost to get it wrong, and what capability does it need" (this rubric). Neither uses calendar time.
 
 ## The 5 active axes
 
@@ -119,7 +118,7 @@ Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR
 
 - **Not effort or time estimation.** The output is a tier and a flag — never hours, days, or story points (eng-agentic P8). Reaching for "this'll take a while" means you are in the wrong rubric.
 - **Not a runtime cascade.** This is planning-time routing: one model chosen per task before it runs. Mid-execution escalation to a bigger model is a separate, named, out-of-scope layer.
-- **Not a replacement for the verification-granularity Size check.** `execution-breakdown` Step 5 still sizes each task by whether it is one verifiable slice. This rubric is a second lens applied *after* that check passes — it routes the already-sized slice. A task that is too big is split first, then each slice is routed.
+- **Not a replacement for the verification-granularity Size check.** The at-pickup task breakdown phase sizes each task by whether it is one verifiable slice. This rubric is a second lens applied *after* that check passes — it routes the already-sized slice. A task that is too big is split first, then each slice is routed.
 
 ## Sources
 
@@ -128,4 +127,4 @@ Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR
 - Augment — "AI model routing guide"; TianPan — "LLM routing vs model cascades" (routing vs cascading distinction)
 - `rules/eng-principles-universal.md` — P3 (architecture is the expensive-to-change decisions; one-way vs two-way doors; reversibility-gated deliberation)
 - `rules/eng-principles-agentic.md` — P2 (hallucination is the default, sources are the brake), P8 (effort is measured in slices and gates, not calendar time)
-- `skills/execution-breakdown/SKILL.md` — Step 5 Size check (verification granularity), the lens this rubric complements
+- `skills/delivery-shape/SKILL.md` — at-pickup task breakdown (verification granularity), the discipline this rubric routes to
