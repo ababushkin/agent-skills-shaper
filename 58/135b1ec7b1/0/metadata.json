@@ -1,0 +1,43 @@
+{
+  "cli_version": "0.6.3",
+  "checkpoint_id": "58135b1ec7b1",
+  "session_id": "35646832-305c-468b-8c4f-9d2cfe34f03c",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-09T01:36:06.578354Z",
+  "branch": "ABA-357",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "bin/check-plan-framing"
+  ],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "ea0189bf6465",
+  "token_usage": {
+    "input_tokens": 279,
+    "cache_creation_tokens": 46508,
+    "cache_read_tokens": 2044690,
+    "output_tokens": 15111,
+    "api_call_count": 39
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-09T01:36:06.570211Z",
+    "agent_lines": 43,
+    "agent_removed": 10,
+    "human_added": 1,
+    "human_modified": 7,
+    "human_removed": 0,
+    "total_committed": 51,
+    "total_lines_changed": 61,
+    "agent_percentage": 86.88524590163934,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    }
+  ]
+}
