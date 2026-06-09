@@ -88,14 +88,33 @@ A node is polymorphic — it is not always a story. For each unit of work, selec
 **6. [GATE] Five-section body on every node, with type-appropriate Completion.**
 Emit all five body sections — **What / Why / Completion / Assumptions / Key Risks** — on every node, regardless of type. The Cohn story form ("As <role>, I want…, so that…") is the first sentence of `## What` on story nodes — re-housed, not deleted. Completion content is type-dependent (story → `Done when:` list; spike → decision + stop condition; experiment → hypothesis + success metric; adr → decision record; design-doc → what the accepted doc covers; ktlo → none). Every Assumptions list item carries a `(verified)` or `(to-verify)` tag; `(to-verify)` items block pickup. Every Key Risk carries a mitigation step or a falsifier. This gate is enforced mechanically by `bin/check-plan-framing` (every node carries all five headings; every Assumptions item carries a tag).
 
-**7. Break each node into tasks — walking skeleton first, foundational work folded in.**
-List the node's tasks as `- [ ]` lines. The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one — which is the exact failure this prompt prevents. Each task is one observable outcome. The skeleton-and-folding rule is enforced mechanically by `bin/check-plan-framing` (≥1 skeleton task in the plan; no node with a task before its skeleton).
+**7. Break each node into tasks — skeleton first, feature slices, AC gate, size-check gate, dependency ordering, model routing.**
+
+Work through six sub-steps in order. Every task line ends up on a single `- [ ]` line in the format shown in the artefact template.
+
+**7a. Walking skeleton first, foundational work folded in.**
+The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before you write it, ask explicitly: **"what toolchain or setup must exist for this skeleton to run?"** — the language, parser, scaffold, fixture, account, or environment the end-to-end slice depends on. **Fold that answer into the skeleton task's description** (a parenthetical naming the folded work is enough); never emit it as a separate setup or scaffolding task *before* the skeleton (eng-universal Rule B2). A task placed before the skeleton defers the integration discovery the skeleton exists to surface on day one.
+
+**7b. Feature slices — each increment extends one direction and is independently deployable.**
+After the skeleton, add one task per feature slice. Each slice extends the skeleton in exactly one direction (one user-visible capability, one layer of the stack, one error path). A slice must be independently testable in isolation and must leave the system in a deployable state on its own — a half-wired slice that requires the next task to compile or pass is not a slice, it is a fragment. Name each slice as one observable outcome.
+
+**7c. [GATE] Acceptance criterion on every task — written before ordering.**
+Write a `Done when:` clause on every task (skeleton included) before you sequence them. The clause must be a verifiable condition — something you can observe or assert — not a description of the work performed. "Done when: the endpoint returns 200 for a valid request" is a criterion; "Done when: the handler is wired up" is a description. A task whose criterion cannot be written in one sentence is not yet well-scoped; clarify the scope before continuing. Do not reorder tasks until every task carries a criterion.
+
+**7d. [GATE] Size check — one sentence, one verifiable outcome.**
+Review every task against two tests: (1) the description fits in one sentence, and (2) the task has exactly one `Done when:` clause. A task that needs more than one sentence to describe contains multiple concerns. A task with more than one independent `Done when:` clause is multiple tasks. Split any that fail either test. This is a verification-granularity check (from `references/task-sizing.md`) — not effort estimation; a task that takes minutes but requires multiple verification steps still splits.
+
+**7e. Dependency ordering — sequence tasks; flag external blocks immediately.**
+Sequence the tasks so that each builds only on completed prior tasks. Place the skeleton first, then order feature slices by dependency, not by perceived difficulty. For any task that depends on a cross-team deliverable, an external API credential, a third-party environment, or a shared-infrastructure change outside this node, flag it explicitly with a `⚠ blocks on: <dependency>` note inline. External blocks surface immediately rather than surfacing mid-sprint (Rule C4).
+
+**7f. Model routing — apply the 5-axis rubric and append a `Model:` annotation to every task.**
+For each task score the five axes from `references/task-sizing.md` (RC, SC, HS, SR, OR) Low/Med/High and derive the tier and review flag using the reversibility-gated routing rule. Append the result inline on the task line. The annotation must begin with `Model:` (enforced by `grep -L 'Model:' docs/tasks/*.md` returning nothing). When SR = High, also append `companions code-review-and-quality`; when HS = High, also append `companions source-driven-development`. A task whose `Model:` annotation is absent is not complete.
 
 **8. Emit the file-set.**
 Write the directory layout from the template below: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the **hand-count manifest** (milestones / issues / sub-issues), one `D<n>/` per deliverable, one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
 
 **9. [GATE] Verify the emitted plan.**
-Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `maps_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five body sections (What / Why / Completion / Assumptions / Key Risks), every Assumptions list item carries a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton. If either fails, the plan is not done; fix the file-set, do not relax the gate.
+Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (this also enforces `serves_kr`, `type`, and `maps_to` presence; a missing one exits 2). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five body sections (What / Why / Completion / Assumptions / Key Risks), every Assumptions list item carries a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, no node places a setup task before its skeleton, every task carries a `Done when:` clause, and every task carries a `Model:` annotation. If either fails, the plan is not done; fix the file-set, do not relax the gate.
 
 ## Artefact template
 
@@ -172,8 +191,8 @@ skill addresses. `bin/check-plan-framing` enforces tag presence on every list it
 with neither is an unresolved worry, not a governed risk.*
 
 ## Tasks
-- [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in>
-- [ ] <one observable outcome>
+- [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in> · Done when: <verifiable condition> · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
+- [ ] <one observable outcome> · Done when: <verifiable condition> · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = L·L·L·L·L
 ```
 
 The root `README.md` ends with the hand-count manifest the walk-script reproduces:
@@ -197,12 +216,21 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 | "A flat task list straight from the goal is faster than a three-layer hierarchy." | Faster to write, slower to verify. A flat list has no outcome trace (which KR does this serve?) and no per-story completion check. The hierarchy is what makes the plan walkable and gradable. |
 | "This deliverable serves two KRs — I'll tag both." | A deliverable serving two KRs is two deliverables. One-KR-per-deliverable is what keeps the outcome spine legible; split it. |
 | "The skeleton needs a setup task before it to install the toolchain." | A setup task before the skeleton defers integration discovery — the thing the skeleton exists to surface on day one. Fold the toolchain work into the skeleton task's description instead. |
-| "This deliverable is clearly design-doc-worthy — I'll sketch the design inline so the plan is complete." | That re-authors the `design-doc` skill's discipline and rots the moment it updates (agentic P7). Emit a `design-doc` node and let the design doc be produced at pickup — before the build nodes' task breakdown. |
+| "I'll write the acceptance criteria after I order the tasks — I need to see the sequence first." | AC written after ordering is a description of what you planned to build, not a constraint on what gets built. Write `Done when:` before sequencing; the criteria expose scope ambiguities that would otherwise surface mid-build. |
+| "This task is obvious — the Done when is implicit." | If the criterion is obvious it takes five words to write. If it can't be written in five words, the task isn't obvious. The gate exists for both cases. |
+| "These two tasks are tightly coupled — I'll keep them together as one." | Coupling is an implementation observation, not a verification property. If the combined task has two independent `Done when:` clauses it is two tasks — split on the criterion boundary, not on the coupling boundary. |
+| "I'll skip the Model: annotation for the quick tasks." | The rubric is applied per-task, not per-feeling-of-effort. A "quick" task whose SR = High routes to Frontier; a "quick" task whose all axes are Low routes to Fast. Skipping the annotation means the routing decision was never made, not that it defaulted to Fast. |
+| "This deliverable is clearly design-doc-worthy — I'll sketch the design inline so the plan is complete." | That re-authors the `design-doc` skill's discipline and rots the moment it updates (agentic P7). Emit a `design-doc` node, point `delegates_to` at the skill, and let the design doc be produced at pickup — before the build nodes' task breakdown. |
 | "Every deliverable should get a design-doc node, to be safe." | No — that buries the signal. The branch is conditional on a Rule A1 trigger; a reversible, single-surface deliverable proceeds straight to nodes. A design-doc node on work that doesn't need one is the same waste as skipping one on work that does. |
 
 ## Red flags
 
 - A node is missing any of the five body sections (What / Why / Completion / Assumptions / Key Risks), or the Completion section is absent on a story node.
+- A task's `Done when:` clause describes the work performed rather than a verifiable outcome, or is absent.
+- A task description requires more than one sentence, or a task carries more than one independent `Done when:` clause — both are size-check failures requiring a split.
+- A feature slice leaves the system in a non-deployable state, or depends on a subsequent task to pass its own criterion — it is a fragment, not a slice.
+- A cross-team or external dependency is not flagged inline on the task that blocks on it.
+- Any task line is missing a `Model:` annotation from the 5-axis rubric.
 - An Assumptions list item lacks a `(verified)` or `(to-verify)` tag, or a Key Risk carries neither a mitigation step nor a falsifier.
 - A deliverable has no `serves_kr`, or serves more than one KR.
 - A node is missing `type` or `maps_to`.
@@ -222,9 +250,9 @@ The skill has run correctly when:
 3. Every node carries `type`, `serves_kr`, and `maps_to`.
 4. Every deliverable meeting a Rule A1 trigger has a `design-doc` node as its first node, with build nodes blocked by it; deliverables meeting no trigger have none.
 5. Every node carries the five body sections (What / Why / Completion / Assumptions / Key Risks), with Completion populated per its `type`, every Assumptions list item tagged `(verified)` or `(to-verify)`, and every Key Risk carrying a mitigation step or falsifier.
-6. Each node's first task is the walking skeleton (`` `skeleton` `` tag), with foundational work folded in and no preceding setup task.
+6. Each node's first task is the walking skeleton (`` `skeleton` `` tag), foundational work folded in, no preceding setup task; remaining tasks are feature slices each independently testable and deployable; every task carries a `Done when:` verifiable criterion; every task description fits one sentence with exactly one criterion (size-check pass); tasks are sequenced by dependency with cross-team/external blocks flagged inline; every task carries a `Model:` annotation derived from the 5-axis rubric.
 7. `bin/walk-delivery-plan <plan>` exits 0 — the plan walks deterministically and the derived manifest equals the README hand-count oracle.
-8. `bin/check-plan-framing <plan>` exits 0 — every node carries the five body sections, every Assumptions list item has a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, and no node places a setup task before its skeleton.
+8. `bin/check-plan-framing <plan>` exits 0 — every node carries the five body sections, every Assumptions list item has a `(verified)` or `(to-verify)` tag, the plan carries at least one `` `skeleton` ``-flagged task, no node places a setup task before its skeleton, every task carries a `Done when:` clause, and every task carries a `Model:` annotation.
 
 ## References
 
