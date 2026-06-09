@@ -23,7 +23,7 @@ tasks — with framing baked in and foundational work never silently dropped.
 |----|-------|------|-----------|
 | **KR1** *(commit)* | A documented plan-artefact contract + a worked file-set exist, and a walk-script converts the file-set into the expected tracker manifest. | foundation | **D1** |
 | **KR2** *(stretch)* | On a self-trial against 2 already-shaped initiatives, the emitted plan carries AC on every story and ≥1 explicit foundational/walking-skeleton task, at 0 framing re-prompts. | bet | **D2** |
-| **KR3** *(commit)* | On a fixed eval set of 8–10 "plan a project" phrasings, delivery-shape is the selected skill, with 0 collisions against initiative-shape or planning-and-task-breakdown. | brake | **D3** |
+| **KR3** *(commit)* | On a fixed eval set of 8–10 "plan a project" phrasings, delivery-shape is the selected skill, with 0 collisions against initiative-shape or execution-breakdown. | brake | **D3** |
 
 **Appetite:** ~9 issues (= 9 nodes below). **Kill condition:** if the walking-skeleton spike (KR1)
 can't produce a markdown file-set that walks deterministically and converts mechanically — i.e.

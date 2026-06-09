@@ -10,17 +10,17 @@ completion:
   criterion: >
     KR3 holds — on a fixed eval set of 8–10 "plan a project"-style phrasings,
     delivery-shape is the selected skill with zero collisions in either direction
-    against initiative-shape or planning-and-task-breakdown.
+    against initiative-shape or execution-breakdown.
 ---
 
 # D3 — Trigger reliability & discoverability
 
 **Serves:** KR3 *(brake)* — "On a fixed eval set of 8–10 'plan a project'-style phrasings,
 delivery-shape is the selected skill, with zero collisions in either direction against
-initiative-shape or planning-and-task-breakdown."
+initiative-shape or execution-breakdown."
 
 This is the guardrail deliverable: a third `-shape` skill that sits between `initiative-shape`
-and `planning-and-task-breakdown` is worthless if it fires for the wrong prompts or steals
+and `execution-breakdown` is worthless if it fires for the wrong prompts or steals
 theirs. **N08** (story) is the brake — the eval set that protects the two neighbours from
 regression; **N09** (ktlo) is the keep-the-lights-on registration that makes the new skill
 discoverable.

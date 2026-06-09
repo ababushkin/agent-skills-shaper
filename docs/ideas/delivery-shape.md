@@ -69,4 +69,4 @@ By hand, take **one real, already-shaped initiative** and produce the hierarchic
 
 ## Dependencies / sequencing
 1. `initiative-shape` Linear-decoupling lands first (separate work). This skill is parked until then.
-2. Vocabulary unification (`idea-triage`→`idea-shape`, `initiative`→`outcome`, `planning-and-task-breakdown`→`task-shape`) is an **independent initiative** — does not block this; `delivery-shape` tracks current names in the interim.
+2. Vocabulary unification is an **independent initiative** — does not block this. Reconciled 2026-06-03 (see `docs/designs/shaping-pipeline.md`): the organising rule is that `-shape` names the *human* shaping family (`idea-shape` / `outcome-shape` / `delivery-shape`), and agent-facing skills are named distinctly. So the parked `planning-and-task-breakdown`→`task-shape` rename is **superseded** — that skill is now `execution-breakdown` (agent-facing, outside the `-shape` family), and `task-shape` is retired. The remaining `idea-triage`→`idea-shape` and `initiative-shape`→`outcome-shape` calls stay parked for that initiative (note the `initiative`↔tracker "Projects ≡ initiatives" clash to resolve there).

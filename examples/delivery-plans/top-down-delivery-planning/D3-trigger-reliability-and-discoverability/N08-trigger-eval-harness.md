@@ -16,14 +16,14 @@ delegates_to: skill-creator (external plugin — description-tuning + trigger ev
 
 **Type:** `story`.
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
 
 ## What
 
 As Anton relying on shape skills to fire at the right decision moment, I want a fixed eval set
 of "plan a project"-style phrasings and a harness that checks which skill each one selects, so
 that delivery-shape never steals a bet-definition prompt from `initiative-shape` or a
-task-breakdown prompt from `planning-and-task-breakdown`, in either direction.
+task-breakdown prompt from `execution-breakdown`, in either direction.
 
 ## Why
 

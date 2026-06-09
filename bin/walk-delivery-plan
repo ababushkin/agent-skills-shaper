@@ -43,7 +43,7 @@ SKELETON_TAG = "`skeleton`"
 # "unparseable" — the seam is not mechanical, so we stop the line (exit 2).
 REQUIRED = {
     "deliverable": ("layer", "id", "serves_kr", "maps_to"),
-    "node": ("layer", "id", "type", "serves_kr", "maps_to", "completion.form", "delegates_to"),
+    "node": ("layer", "id", "type", "serves_kr", "maps_to", "completion.form"),
 }
 
 
@@ -174,7 +174,6 @@ def walk(root: Path) -> list[dict]:
                 "type": nfm["type"],
                 "serves_kr": nfm["serves_kr"],
                 "completion_form": nfm["completion.form"],
-                "delegates_to": nfm["delegates_to"],
                 "maps_to": nfm["maps_to"],
                 "skeleton": nfm.get("skeleton", "").lower() == "true",
                 "tracker_ref": nfm.get("tracker_ref"),
@@ -249,7 +248,6 @@ def render_text(root: Path, milestones: list[dict], derived: dict, oracle: dict,
             out.append(f"  ISSUE  {i['id']}  {i['title']}")
             out.append(f"         [{i['maps_to']} · {' · '.join(flags)}]")
             out.append(f"         completion: {i['completion_form']}")
-            out.append(f"         delegates_to: {i['delegates_to']}")
             for t in i["sub_issues"]:
                 box = "x" if t["done"] else " "
                 tag = " (skeleton)" if t["skeleton"] else ""

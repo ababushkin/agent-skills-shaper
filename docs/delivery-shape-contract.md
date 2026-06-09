@@ -112,7 +112,7 @@ The five tags the contract is required to pin down:
    with a leading `` `skeleton` `` tag inside its checklist line. At the **node** level, the node
    that *is* the initiative's walking skeleton carries `skeleton: true` in front-matter. Foundational
    / toolchain work is **folded into** the skeleton task's description — never a silent setup task
-   before it (mirrors `planning-and-task-breakdown`'s walking-skeleton-first rule). There is no
+   before it (mirrors `execution-breakdown`'s walking-skeleton-first rule). There is no
    `foundational` node type: foundational work is a property of the skeleton **task**, not a node.
 
 5. **task↔acceptance flag** — at the **task** level, the aggregate/cross-seam-verification task is
@@ -174,7 +174,7 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 | `type` | Completion-criterion form | `## Completion` section holds | Delegates to | Demonstrated by |
 |--------|---------------------------|-------------------------------|--------------|-----------------|
 | `spike` | decision + stop condition | `**Decision:** <question>` + `**Stop condition:** <when to stop>` | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
-| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | `planning-and-task-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | `execution-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
 | `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | prose naming what the accepted design doc covers | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
 | `adr` | an accepted decision record (Context / Decision / Consequences) | `**Decision:** <accepted decision>` + context/consequences summary + ADR reference | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition | `product-spike` (experiment discipline) | `N07` |
@@ -211,7 +211,7 @@ with a citation.
 
 | `type` | Completion-criterion form | Delegates to | Ground when… |
 |--------|---------------------------|--------------|--------------|
-| `capability` | `the-capability-spec` | `planning-and-task-breakdown` (slice the capability spec into tasks) | a capability carries a spec not reducible to its child nodes |
+| `capability` | `the-capability-spec` | `execution-breakdown` (slice the capability spec into tasks) | a capability carries a spec not reducible to its child nodes |
 | `slo` | numeric target (latency/availability/error-budget) | `eng-principles-universal.md` Rule A4 (measurable NFR) + A5 (fitness function) | a production/observability initiative is planned |
 | `migration` | rollback plan **per phase** + cutover criterion | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | a data/system migration is planned |
 | `deprecation` | removal criterion + external **notice period** | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | an API/feature sunset is planned |
@@ -259,7 +259,7 @@ with a citation.
 
 `delegates_to` names the discipline that owns a node, but it fires **at issue-pickup (build time),
 not during plan emission.** `delivery-shape` emits the hierarchy and stops; the delegate (e.g.
-`planning-and-task-breakdown` for a `story`) runs when the issue-class artefact is picked up to be
+`execution-breakdown` for a `story`) runs when the issue-class artefact is picked up to be
 built. Rationale: small batches + certainty-decays-with-horizon — expanding every node's
 fine-grained tasks at plan time front-loads detail that decays before the node is reached
 (agentic P8).

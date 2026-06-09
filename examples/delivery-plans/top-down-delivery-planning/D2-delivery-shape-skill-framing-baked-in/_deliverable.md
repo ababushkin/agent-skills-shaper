@@ -22,11 +22,11 @@ walking-skeleton task, with zero framing re-prompts."
 This deliverable is the actual bet: a skill that takes a committed initiative and emits the full
 deliverable → node → task hierarchy with the framing baked in (so the user never
 re-prompts it) and foundational/toolchain work never silently dropped. The skill **delegates**
-up to `initiative-shape` (goal + KRs) and down to `planning-and-task-breakdown` (tasks per
+up to `initiative-shape` (goal + KRs) and down to `execution-breakdown` (tasks per
 node) rather than re-authoring their gates.
 
 > The form this deliverable takes — a new skill **or** an expansion of
-> `planning-and-task-breakdown` — is decided by the ADR in
+> `execution-breakdown` — is decided by the ADR in
 > [N03](../D1-walking-skeleton-spike-and-conversion-proof/N03-new-skill-vs-expand-task-breakdown.md).
 > D2 is gated on that decision.
 

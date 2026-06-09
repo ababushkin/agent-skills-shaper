@@ -9,14 +9,14 @@ maps_to: linear-issue
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: planning-and-task-breakdown (walking-skeleton-first rule; no pre-skeleton setup task)
+delegates_to: execution-breakdown (walking-skeleton-first rule; no pre-skeleton setup task)
 ---
 
 # N05 — Foundational-work prompt folded into the walking skeleton
 
 **Type:** `story`.
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
 
 ## What
 

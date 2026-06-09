@@ -10,7 +10,7 @@ skeleton: true
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: planning-and-task-breakdown (per-node task breakdown)
+delegates_to: execution-breakdown (per-node task breakdown)
 ---
 
 # N02 — Store and replay a card token
@@ -18,7 +18,7 @@ delegates_to: planning-and-task-breakdown (per-node task breakdown)
 > **As** a returning shopper, **I want** my saved card replayed from a stored token, **so that**
 > I complete checkout without re-entering card details.
 
-> **▶ On pickup — before coding:** expand this node via `planning-and-task-breakdown`.
+> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
 > **Blocked by:** N01 (the card-vault design doc must be accepted first).
 
 ## Acceptance criteria
