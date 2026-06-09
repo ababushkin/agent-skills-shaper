@@ -112,7 +112,7 @@ The five tags the contract is required to pin down:
    with a leading `` `skeleton` `` tag inside its checklist line. At the **node** level, the node
    that *is* the initiative's walking skeleton carries `skeleton: true` in front-matter. Foundational
    / toolchain work is **folded into** the skeleton task's description — never a silent setup task
-   before it (mirrors `execution-breakdown`'s walking-skeleton-first rule). There is no
+   before it (the walking-skeleton-first principle: integration discovery must happen on day one). There is no
    `foundational` node type: foundational work is a property of the skeleton **task**, not a node.
 
 5. **task↔acceptance flag** — at the **task** level, the aggregate/cross-seam-verification task is

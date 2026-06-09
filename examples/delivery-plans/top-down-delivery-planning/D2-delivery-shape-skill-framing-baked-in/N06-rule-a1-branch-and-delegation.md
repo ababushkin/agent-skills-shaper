@@ -9,19 +9,19 @@ maps_to: linear-issue
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: design-doc (Rule A1 trigger); initiative-shape (upstream goal+KRs); execution-breakdown (downstream tasks)
+delegates_to: design-doc (Rule A1 trigger); initiative-shape (upstream goal+KRs); at-pickup task breakdown (downstream tasks)
 ---
 
 # N06 — Rule A1 design-doc branch + up/down delegation
 
 **Type:** `story`.
 
-> **▶ On pickup — before coding:** expand this node via `execution-breakdown`.
+> **▶ On pickup — before coding:** break this node into task-sized pieces using your build agent's at-pickup task breakdown phase.
 
 ## What
 
 As an agent invoking delivery-shape, I want the skill to branch on the Rule A1 design-doc
-trigger and to delegate up to `initiative-shape` and down to `execution-breakdown`, so
+trigger and to delegate up to `initiative-shape` and down to at-pickup task breakdown, so
 that it never re-authors sub-skill gates (which guarantees drift, agentic P7) and a
 design-doc-worthy deliverable gets a design doc before tasks.
 
@@ -40,9 +40,8 @@ self-contained. Rejected — self-contained is drift waiting to happen; link and
 - **Done when:** a deliverable that meets a Rule A1 trigger routes to `design-doc` before task
   breakdown; one that does not proceeds on goal + deliverables. Both branches exercised in a test
   plan.
-- **Done when:** the skill cites `initiative-shape` (up) and `execution-breakdown` (down)
-  by current name and contains no copied gate text from either — checked by grep against the two
-  SKILL.md files.
+- **Done when:** the skill cites `initiative-shape` (up) and the at-pickup task breakdown discipline (down)
+  by current name and contains no copied gate text from either source.
 
 ## Assumptions
 
@@ -59,4 +58,4 @@ self-contained. Rejected — self-contained is drift waiting to happen; link and
 ## Tasks
 
 - [ ] Implement the Rule A1 branch (trigger met → delegate to design-doc; else proceed).
-- [ ] Wire up delegation: consume `initiative-shape` output; hand each node to `execution-breakdown`.
+- [ ] Wire up delegation: consume `initiative-shape` output; surface the at-pickup task breakdown discipline on each node's `delegates_to` tag.
