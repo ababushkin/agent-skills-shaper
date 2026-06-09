@@ -6,7 +6,6 @@ description: >
   estimation; a second lens on the verification-granularity Size check.
 type: reference
 cited_by:
-  - skills/execution-breakdown/SKILL.md
   - skills/roadmap-shape/SKILL.md
   - skills/initiative-shape/SKILL.md
 ---

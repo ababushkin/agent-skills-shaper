@@ -37,10 +37,8 @@ Task arrives
     ├── Building or reviewing a roadmap?                   → roadmap-shape
     │       └── reads from idea bank (docs/idea-bank/)
     ├── Committed initiative (goal + KRs) exists?          → delivery-shape
-    │       └── Have a node from delivery plan?            → execution-breakdown
     ├── Significant engineering work — how to build it?   → design-doc
     ├── Have a plan/spec/design — should I trust it?       → plan-review
-    ├── Have a design or spec — need implementable tasks?  → execution-breakdown
     └── Agent signals it's done?                          → stop-the-line (hook — fires on claims)
 ```
 
@@ -71,7 +69,7 @@ These apply across every skill in the pack. They are not optional.
 
 ## Common mistake: skipping skills
 
-Skills are not ceremony — they encode the checks that prevent the most common and expensive failure modes. Skipping idea-triage produces a roadmap full of unvalidated opinions. Skipping design-doc produces implementations that solve the wrong problem or the right problem in an unmaintainable way. Skipping execution-breakdown produces an implementation plan that falls apart at the first unexpected dependency.
+Skills are not ceremony — they encode the checks that prevent the most common and expensive failure modes. Skipping idea-triage produces a roadmap full of unvalidated opinions. Skipping design-doc produces implementations that solve the wrong problem or the right problem in an unmaintainable way. Skipping delivery-shape produces a task list with no outcome trace and no per-node completion framing.
 
 The value of a skill is highest the first time you skip it and something breaks. After that, the cost of not skipping it is obvious.
 
@@ -86,15 +84,15 @@ idea arrives → idea-triage → idea bank (confidence ≥ 5)
 idea bank clean → backlog-manage → roadmap-shape
 ```
 
-**Engineering track — from design to task list:**
+**Engineering track — from design to delivery plan:**
 ```
-significant work → design-doc → execution-breakdown → [hand off to your build skill]
-unknown risk    → backend-spike → design-doc → execution-breakdown → [hand off]
+significant work → design-doc → delivery-shape → [hand off to your build skill]
+unknown risk    → backend-spike → design-doc → delivery-shape → [hand off]
 ```
 
 **Every PR:** `stop-the-line` hook fires automatically on PR open/update — no manual invocation.
 
-Skills at adjacent stages hand off directly: idea-triage records are read by backlog-manage, which feeds roadmap-shape; design-doc output feeds execution-breakdown, whose task list feeds whichever build skill the team uses. Following the chain is not optional — jumping ahead skips the checks that catch expensive errors early. The persistent rule files (`eng-principles-universal.md`, `eng-principles-agentic.md`) and the `stop-the-line` hook keep applying during execution regardless of which build skill picks up the task list.
+Skills at adjacent stages hand off directly: idea-triage records are read by backlog-manage, which feeds roadmap-shape; design-doc output feeds delivery-shape, whose delivery hierarchy feeds whichever build skill the team uses. Following the chain is not optional — jumping ahead skips the checks that catch expensive errors early. The persistent rule files (`eng-principles-universal.md`, `eng-principles-agentic.md`) and the `stop-the-line` hook keep applying during execution regardless of which build skill picks up the work.
 
 ## Quick reference
 
@@ -105,7 +103,7 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 | `product-spike` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
 | `backend-spike` | "What's the right threshold for", "How should we detect", "Spike on", "What guard should we add" | Recommendation with rejected-alternatives table + follow-up ticket |
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
-| `execution-breakdown` | "Break this down into tasks", "What order should we build this in?", "Give me a task list" | Ordered task list with acceptance criteria |
+| `delivery-shape` | "Turn this initiative into a delivery plan", "Decompose this initiative", "Plan the delivery" | Delivery hierarchy with deliverables, nodes, and tasks; outcomes traced to KRs |
 | `design-doc` | "How should we build X?", "Architecture for Y", "Technical approach to Z" | Accepted design doc |
 | `plan-review` | "Review this plan", "Before I approve", "What's missing here", "Should we go with this" | Review record with APPROVE / REVISE / KILL recommendation |
 | `stop-the-line` | Fires on PR open/update — catches signal-suppression moves | Completion verified or halt raised |

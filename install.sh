@@ -165,7 +165,6 @@ echo "  /shape:product-spike                Answer a product question before des
 echo "  /shape:backend-spike                Investigate a backend correctness question before implementing"
 echo "  /shape:design-doc                   Structure significant engineering work"
 echo "  /shape:delivery                     Decompose an initiative into a delivery plan"
-echo "  /shape:execution-breakdown          Agent breakdown at pickup, right before the build"
 echo "  /shape:initiative                   Shape an idea into an initiative"
 echo "  /shape:plan-review                  Review a plan/spec/design before approval"
 echo "  /shape:render-html                  Render a markdown doc as a reviewable HTML file"

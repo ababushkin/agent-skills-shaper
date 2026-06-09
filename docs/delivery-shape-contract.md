@@ -174,7 +174,7 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 | `type` | Completion-criterion form | `## Completion` section holds | Delegates to | Demonstrated by |
 |--------|---------------------------|-------------------------------|--------------|-----------------|
 | `spike` | decision + stop condition | `**Decision:** <question>` + `**Stop condition:** <when to stop>` | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
-| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | `execution-breakdown` (per-node task breakdown) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | At-pickup task breakdown (per node type) | `N02`, `N04`, `N05`, `N06`, `N08` |
 | `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | prose naming what the accepted design doc covers | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
 | `adr` | an accepted decision record (Context / Decision / Consequences) | `**Decision:** <accepted decision>` + context/consequences summary + ADR reference | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition | `product-spike` (experiment discipline) | `N07` |
@@ -211,7 +211,7 @@ with a citation.
 
 | `type` | Completion-criterion form | Delegates to | Ground when… |
 |--------|---------------------------|--------------|--------------|
-| `capability` | `the-capability-spec` | `execution-breakdown` (slice the capability spec into tasks) | a capability carries a spec not reducible to its child nodes |
+| `capability` | `the-capability-spec` | At-pickup task breakdown (slice the capability spec into tasks) | a capability carries a spec not reducible to its child nodes |
 | `slo` | numeric target (latency/availability/error-budget) | `eng-principles-universal.md` Rule A4 (measurable NFR) + A5 (fitness function) | a production/observability initiative is planned |
 | `migration` | rollback plan **per phase** + cutover criterion | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | a data/system migration is planned |
 | `deprecation` | removal criterion + external **notice period** | `eng-principles-universal.md` Rule A6 (rollback); `deprecation-and-migration` *(skill where available)* | an API/feature sunset is planned |

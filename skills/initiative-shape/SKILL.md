@@ -61,7 +61,7 @@ The skill exists because initiatives shaped without key results become repo-alia
 
 - **Single-issue, bug, or KTLO work** — create the issue directly and put it in the ops slot. The ops slot has no goal/KR requirement.
 - **Unvalidated ideas that haven't cleared idea-triage** — run `idea-triage` first if you're unsure the problem is worth pursuing at all.
-- **Scoping an already-formed initiative** — use `execution-breakdown` once goal + key results are confirmed.
+- **Scoping an already-formed initiative into deliverables and nodes** — use `delivery-shape` once goal + key results are confirmed.
 
 ## Inputs
 
@@ -127,7 +127,7 @@ Two separate questions:
 **5. Synthesise into initiative format.**
 Draft the six fields (OKR-shaped — Goal is the Objective; Key results are 3 observable claims with full sub-field discipline). Use the template in the next section — write it so it reads as a product OKR: PM-readable field names, rubric vocabulary confined to the audit-footer.
 
-**Dominant model tier (optional note, not a gate).** Scan the initiative's expected task profile: if most tasks are mechanical rewrites with no external API surface, note `Fast`; if most require bounded reasoning or touch reversible-but-non-trivial paths, note `Balanced`; if the initiative contains one-way doors (schema migrations, public APIs, auth, production data) or orchestrator-level decomposition, note `Frontier`. This is a planning-time signal; individual tasks are routed per-task at `execution-breakdown` Step 5. See `references/task-sizing.md`.
+**Dominant model tier (optional note, not a gate).** Scan the initiative's expected task profile: if most tasks are mechanical rewrites with no external API surface, note `Fast`; if most require bounded reasoning or touch reversible-but-non-trivial paths, note `Balanced`; if the initiative contains one-way doors (schema migrations, public APIs, auth, production data) or orchestrator-level decomposition, note `Frontier`. This is a planning-time signal; individual tasks are routed using the five-axis rubric in `references/task-sizing.md`.
 
 Each KR's claim (its headline) should be one of: a binary pass/fail ("X works on the common path with no manual intervention"), a fitness function firing ("the guard fails the run loudly when Y"), or a measurable delta ("token footprint drops vs baseline"). No "improve X" / "better Y" / "run N times" language. Every KR must have all four sub-fields (baseline / target / measured over / how we'll know), a `(commit|stretch)` tag, and a `bet`/`brake`/`foundation` role appended to the headline. Add the audit-footer line (`*Layer 1: … · Layer 2: …*`) under each KR, and the dimensions-summary line after the KR list — this is the rubric trace, kept out of the KR body so the OKR reads cleanly to a non-pack-author.
 
@@ -307,4 +307,4 @@ The skill has run correctly when:
 - Research Section 5 — cross-cutting verification rules 1–10 (inline copy at Step 6.5; rule 11 added locally for KR roles); original source: Linear document "Research and implementation plan — OKR shapes by project type", Section 5 (project `Initiative quality — type-aware OKRs with KRs`)
 - `references/task-sizing.md` — model-tier routing rubric; the dominant-tier field in the template draws from this rubric at planning time
 - `skills/idea-triage/SKILL.md` — upstream: run when confidence is low before committing to an initiative
-- `skills/execution-breakdown/SKILL.md` — downstream: breaks a confirmed initiative into issues
+- `skills/delivery-shape/SKILL.md` — downstream: shapes a confirmed initiative into deliverables, nodes, and tasks

@@ -29,7 +29,7 @@ changed_from_predecessor: n/a
 
 ## Purpose
 
-The `Model:` routing annotation on each task is the durable planning-time record that routes a slice to the right model tier and review-attention level. Without it, the five-axis rubric from `references/task-sizing.md` may have been applied during `execution-breakdown` but leave no trace in the filed task list, making the routing invisible to the agent that picks up the work. Agents will silently omit the field when a template placeholder goes unfilled. Human reviewers miss it reliably across long task lists. This hook catches it mechanically: it counts task headers and valid `Model:` lines, compares the two, and fails the commit when they diverge. No prose interpretation is required.
+The `Model:` routing annotation on each task is the durable planning-time record that routes a slice to the right model tier and review-attention level. Without it, the five-axis rubric from `references/task-sizing.md` may have been applied during planning but leave no trace in the filed task list, making the routing invisible to the agent that picks up the work. Agents will silently omit the field when a template placeholder goes unfilled. Human reviewers miss it reliably across long task lists. This hook catches it mechanically: it counts task headers and valid `Model:` lines, compares the two, and fails the commit when they diverge. No prose interpretation is required.
 
 ## Trigger event
 
@@ -81,6 +81,5 @@ Unfilled template placeholders must be replaced with a real scored annotation �
 ## References
 
 - `references/task-sizing.md` — defines the `Model:` line format this hook enforces
-- `skills/execution-breakdown/SKILL.md` — verification criterion 9 (every task has a Model: field)
 - `rules/eng-principles-agentic.md` — P8 (effort is measured in slices and gates; annotation is the gate record)
 - `rules/eng-principles-universal.md` — Rule A3 (every architecturally significant decision produces an ADR / durable record)

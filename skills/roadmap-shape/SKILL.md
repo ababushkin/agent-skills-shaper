@@ -77,7 +77,7 @@ The key moves this skill enforces: problems on the roadmap, not solutions (Rule 
 
 - **A single incoming idea** — run `idea-triage` first. roadmap-shape assumes candidates have already been triaged.
 - **Evaluating feasibility of a specific solution** — that is design-doc territory. roadmap-shape operates at the problem/outcome level.
-- **Scoping or estimating work already on the roadmap** — that is execution-breakdown territory.
+- **Decomposing a committed initiative into deliverables and nodes** — that is delivery-shape territory.
 
 ## Inputs
 
