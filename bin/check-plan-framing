@@ -8,7 +8,7 @@ default*. This is the framing gate; it is orthogonal to `bin/walk-delivery-plan`
 side: walk-script proves the plan converts to a manifest, this proves the plan
 carries its completion framing.
 
-Three framing checks are implemented, each guarding a piece of framing the skill
+Four framing checks are implemented, each guarding a piece of framing the skill
 must emit by default rather than the user re-prompting for:
 
   1. Five body sections — every node carries the five headings: What, Why,
@@ -34,6 +34,11 @@ must emit by default rather than the user re-prompting for:
      keyword-based: any task before the first skeleton task fails, whatever it
      is named — that is the only deterministic reading of "no setup task first."
 
+  4. Model annotations on every task — every task line (`` - [ ] ``) must contain
+     a `Model:` annotation somewhere in the task text. This ensures each task
+     explicitly names the model (e.g., Opus, Sonnet, Haiku) or tool that will
+     execute it, preventing ambiguous task assignment.
+
 Like the walk-script, this reader is deliberately dependency-free (stdlib only,
 no YAML library): it needs just two front-matter keys (`layer`, `type`), a
 heading scan, and the walk-script's task-line *regex* (`TASK_RE`) — so a
@@ -47,10 +52,11 @@ Usage:
 
 Exit codes:
     0   every node carries the five sections; no untagged assumption items;
-        >=1 skeleton task; no node has a task before its skeleton
+        >=1 skeleton task; no node has a task before its skeleton; every task
+        carries a Model: annotation
     1   a framing check failed: a node is missing a section, an assumption item
-        lacks a tag, the plan has no skeleton task, or a node places a task
-        before its skeleton
+        lacks a tag, the plan has no skeleton task, a node places a task
+        before its skeleton, or a task lacks a Model: annotation
     2   a node could not be parsed / no nodes found (seam not mechanical)
     64  usage error
 """
@@ -176,11 +182,12 @@ def untagged_assumptions(body: list[str]) -> list[str]:
 
 
 def read_tasks(body: list[str]) -> list[dict]:
-    """Return the node's checklist tasks in order: [{skeleton: bool, text: str}].
+    """Return the node's checklist tasks in order: [{skeleton: bool, has_model: bool, text: str}].
 
     Matches the walk-script's task-line regex (`TASK_RE`). Task lines inside a
     fenced code block are literal text (e.g. a template in a SKILL), not plan
-    structure, so they are skipped.
+    structure, so they are skipped. Each task dict records whether the task
+    text contains the `Model:` annotation.
     """
     tasks: list[dict] = []
     in_fence = False
@@ -194,7 +201,11 @@ def read_tasks(body: list[str]) -> list[dict]:
         if not m:
             continue
         text = m.group(2).strip()
-        tasks.append({"skeleton": text.startswith(SKELETON_TAG), "text": text})
+        tasks.append({
+            "skeleton": text.startswith(SKELETON_TAG),
+            "has_model": "Model:" in text,
+            "text": text
+        })
     return tasks
 
 
@@ -209,7 +220,7 @@ def collect_nodes(root: Path) -> list[dict]:
     """Find every node and record its type, section presence, assumption tags, and tasks.
 
     Walks the same deliverable→node layout as the walk-script. Each record
-    carries enough for all three framing sub-checks.
+    carries enough for all four framing sub-checks.
     """
     deliverable_dirs = sorted(
         (d for d in root.iterdir() if d.is_dir() and DELIVERABLE_DIR_RE.match(d.name)),
@@ -234,13 +245,15 @@ def collect_nodes(root: Path) -> list[dict]:
             raise PlanError(f"{nfile}: layer is not 'node'")
         if "type" not in fm:
             raise PlanError(f"{nfile}: node missing required front-matter 'type'")
+        tasks = read_tasks(body)
         nodes.append({
             "id": fm.get("id", nfile.stem),
             "path": str(nfile.relative_to(root)),
             "type": fm["type"],
             "missing_sections": missing_five_sections(body),
             "assumption_violations": untagged_assumptions(body),
-            "tasks": read_tasks(body),
+            "missing_model": [t["text"] for t in tasks if not t["has_model"]],
+            "tasks": tasks,
         })
     return nodes
 
@@ -258,6 +271,15 @@ def pre_skeleton_tasks(node: dict) -> list[str]:
     if first is None or first == 0:
         return []
     return [t["text"] for t in tasks[:first]]
+
+
+def missing_model_annotations(node: dict) -> list[str]:
+    """Tasks that lack a Model: annotation — empty if all carry one.
+
+    A task must contain `Model:` anywhere in its text to specify which model
+    or tool will execute it.
+    """
+    return [t["text"] for t in node["tasks"] if not t["has_model"]]
 
 
 # --- entrypoint --------------------------------------------------------------
@@ -281,6 +303,7 @@ def main(argv: list[str]) -> int:
 
     nodes_missing = [n for n in nodes if n["missing_sections"]]
     nodes_untagged = [n for n in nodes if n["assumption_violations"]]
+    nodes_missing_model = [n for n in nodes if n["missing_model"]]
 
     skeleton_total = sum(1 for n in nodes for t in n["tasks"] if t["skeleton"])
     no_skeleton = skeleton_total == 0
@@ -289,7 +312,7 @@ def main(argv: list[str]) -> int:
         for n in nodes if (pre := pre_skeleton_tasks(n))
     ]
 
-    ok = not nodes_missing and not nodes_untagged and not no_skeleton and not pre_skeleton
+    ok = not nodes_missing and not nodes_untagged and not no_skeleton and not pre_skeleton and not nodes_missing_model
 
     if as_json:
         print(json.dumps({
@@ -307,6 +330,9 @@ def main(argv: list[str]) -> int:
             "pre_skeleton_setup": [
                 {"id": p["id"], "path": p["path"], "tasks": p["tasks"]} for p in pre_skeleton
             ],
+            "missing_model_annotations": [
+                {"id": n["id"], "path": n["path"], "type": n["type"], "tasks": n["missing_model"]} for n in nodes_missing_model
+            ],
             "ok": ok,
         }, indent=2))
     else:
@@ -319,19 +345,24 @@ def main(argv: list[str]) -> int:
                 print(f"  [MISSING {missing_str}] {n['id']}  {n['path']}  ({n['type']})")
             elif n["assumption_violations"]:
                 print(f"  [UNTAGGED ASSUMPTION] {n['id']}  {n['path']}  ({n['type']})")
+            elif n["missing_model"]:
+                print(f"  [MISSING MODEL] {n['id']}  {n['path']}  ({n['type']})")
             else:
                 print(f"  [ok ] {n['id']}  {n['path']}  ({n['type']})")
         print(f"skeleton tasks in plan: {skeleton_total}")
         for p in pre_skeleton:
             print(f"  [PRE-SKELETON] {p['id']}  {p['path']}: {len(p['tasks'])} task(s) before skeleton")
+        for m in nodes_missing_model:
+            print(f"  [MISSING MODEL] {m['id']}  {m['path']}: {len(m['tasks'])} task(s) without Model: annotation")
         verdict = (
-            "PASS — five sections, assumption tags, skeleton task, no pre-skeleton setup"
+            "PASS — five sections, assumption tags, skeleton task, no pre-skeleton setup, Model: annotations"
             if ok else
             "FAIL — " + "; ".join(filter(None, [
                 f"{len(nodes_missing)} node(s) missing required sections" if nodes_missing else "",
                 f"{len(nodes_untagged)} node(s) with untagged assumption items" if nodes_untagged else "",
                 "no skeleton task in plan" if no_skeleton else "",
                 f"{len(pre_skeleton)} node(s) with a task before the skeleton" if pre_skeleton else "",
+                f"{len(nodes_missing_model)} node(s) with tasks lacking Model: annotation" if nodes_missing_model else "",
             ]))
         )
         print(verdict)
@@ -370,6 +401,16 @@ def main(argv: list[str]) -> int:
                 + "".join(
                     f"    - {p['path']}: " + " | ".join(p["tasks"]) + "\n"
                     for p in pre_skeleton
+                )
+            )
+        if nodes_missing_model:
+            sys.stderr.write(
+                "  tasks without a Model: annotation — every task must explicitly specify which "
+                "model or tool will execute it:\n"
+                + "".join(
+                    f"    - {n['path']}:\n"
+                    + "".join(f"        {task}\n" for task in n["missing_model"])
+                    for n in nodes_missing_model
                 )
             )
         return 1
