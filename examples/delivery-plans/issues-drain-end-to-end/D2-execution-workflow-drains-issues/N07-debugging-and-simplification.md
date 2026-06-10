@@ -21,7 +21,8 @@ delegates_to: at-pickup task breakdown (story); authoring per docs/skill-anatomy
 **Type:** `story`.
 
 > **Blocked by:** [N04](N04-execution-workflow-design-doc.md) — task breakdown waits until the
-> design doc is accepted.
+> design doc is accepted. Also [N06](N06-build-skill-red-green-commit.md) — the wiring task edits
+> the build skill's escalation/exit points, so N07's branch must chain onto N06's in the PR stack.
 
 > **▶ On pickup:** break into build tasks per the at-pickup breakdown; author per
 > `docs/skill-anatomy.md`; declare each skill's predecessor relation in frontmatter (no verbatim

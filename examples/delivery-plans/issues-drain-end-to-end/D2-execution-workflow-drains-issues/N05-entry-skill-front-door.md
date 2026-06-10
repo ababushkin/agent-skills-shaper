@@ -21,7 +21,10 @@ delegates_to: at-pickup task breakdown (story); authoring per docs/skill-anatomy
 **Type:** `story`.
 
 > **Blocked by:** [N04](N04-execution-workflow-design-doc.md) — task breakdown waits until the
-> design doc is accepted.
+> design doc is accepted. Also [N06](N06-build-skill-red-green-commit.md),
+> [N07](N07-debugging-and-simplification.md), and [N08](N08-pr-finishing-graphite-first.md) — the
+> front door's Done-when (a dry run reaching the PR step with every step a *named* delegation)
+> needs those delegation targets to exist, so N05 closes the D2 skill stack.
 
 > **▶ On pickup:** break into build tasks per the at-pickup breakdown; author per
 > `docs/skill-anatomy.md` against the accepted N04 contract.
