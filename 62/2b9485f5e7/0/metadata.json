@@ -1,0 +1,76 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "622b9485f5e7",
+  "session_id": "c3abf14c-1d8a-4576-a7f4-2bdb4e837caa",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T13:37:42.152661Z",
+  "branch": "anton/aba-361-execution-workflow-design-doc",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-sonnet-4-6",
+  "turn_id": "ef283680ee59",
+  "token_usage": {
+    "input_tokens": 21095,
+    "cache_creation_tokens": 126591,
+    "cache_read_tokens": 1529539,
+    "output_tokens": 26999,
+    "api_call_count": 22
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_013B9kxR7B4D1gvwAE9nHBGi",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape:plan-review"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "ef283680ee59",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 103,
+        "end": 104,
+        "entry_ids": [
+          "f574f82b-2535-45c5-90ca-ce845c98cda5"
+        ],
+        "tool_use_id": "toolu_013B9kxR7B4D1gvwAE9nHBGi"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_013B9kxR7B4D1gvwAE9nHBGi"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape:plan-review",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 126,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 8,
+      "agent_lines_removed": 0
+    }
+  ]
+}

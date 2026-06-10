@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "622b9485f5e7",
+  "strategy": "manual-commit",
+  "branch": "anton/aba-361-execution-workflow-design-doc",
+  "checkpoints_count": 1,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/62/2b9485f5e7/0/metadata.json",
+      "transcript": "/62/2b9485f5e7/0/full.jsonl",
+      "content_hash": "/62/2b9485f5e7/0/content_hash.txt",
+      "prompt": "/62/2b9485f5e7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 21095,
+    "cache_creation_tokens": 126591,
+    "cache_read_tokens": 1529539,
+    "output_tokens": 26999,
+    "api_call_count": 22
+  }
+}
