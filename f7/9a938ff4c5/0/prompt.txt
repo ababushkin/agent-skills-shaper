@@ -1,0 +1,22 @@
+review the tickets in linear now plan out how they can be sliced into human-reviewable graphite PR stacks. point out at what point where there will be merge conflicts and tell me how that could be avoided (if possible) without over complicating it
+
+---
+
+drain-cycle will automatically create workspaces and branches for everything, so i need to make sure when drain-cycle executes this work it automatically creates PRs
+
+---
+
+finish the integration, then using a sub-agent perform a /superpowers:verification-before-completion
+
+---
+
+push
+
+---
+
+go ahead and apply those fixes/changes/clean ups
+
+---
+
+lets plan out the next initiative: drain-cycle supervises; the pack owns the workflow 
+pick the appropriate set of skills to unpack the work required to meet the stated goals
