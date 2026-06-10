@@ -76,7 +76,7 @@ Five iterations.
 - **Iter-4**: switched to an isolated, blinded grader with no workspace metadata access and strict literal-evidence rules. Baseline collapsed back to 36%. Aggregate delta **+0.54** — the first trustworthy number this benchmark produced.
 - **Iter-5**: closed the eval-3 gap (72% → 100%) by making `Cynefin domain:` and `Tier:` lines mandatory in the fast-track output template. Re-ran the full sweep on Sonnet 4.6 (≈30% cheaper than Opus 4.7). Aggregate delta **+0.74**, stable across n=3.
 
-Each iteration's analysis lives in [`skills/plan-review-workspace/iteration-{1..5}/benchmark.md`](../skills/plan-review-workspace/).
+Each iteration's analysis lives in [`benchmarks/plan-review/iteration-{1..5}/benchmark.md`](../benchmarks/plan-review/).
 
 ---
 
@@ -99,9 +99,9 @@ Each iteration's analysis lives in [`skills/plan-review-workspace/iteration-{1..
 | Artefact | Path |
 |---|---|
 | Eval definitions (5 scenarios, assertions) | [`skills/plan-review/evals/evals.json`](../skills/plan-review/evals/evals.json) |
-| Per-iteration analysis writeups | [`skills/plan-review-workspace/iteration-{1..5}/benchmark.md`](../skills/plan-review-workspace/) |
-| Per-iteration machine-readable results | `skills/plan-review-workspace/iteration-{1..5}/benchmark.json` |
-| Aggregator scripts (n=3 stats, iter comparison) | `skills/plan-review-workspace/iteration-{3,4,5}/aggregate.py` |
-| Iter-4 grader prompt (isolated grader rules) | `skills/plan-review-workspace/iteration-4/grader-prompt.md` |
+| Per-iteration analysis writeups | [`benchmarks/plan-review/iteration-{1..5}/benchmark.md`](../benchmarks/plan-review/) |
+| Per-iteration machine-readable results | `benchmarks/plan-review/iteration-{1..5}/benchmark.json` |
+| Aggregator scripts (n=3 stats, iter comparison) | `benchmarks/plan-review/iteration-{3,4,5}/aggregate.py` |
+| Iter-4 grader prompt (isolated grader rules) | `benchmarks/plan-review/iteration-4/grader-prompt.md` |
 
 Raw per-cell run data (60+ runner outputs and grading files per iteration) is gitignored — workspace bloat with no durable analytical value. The analysis files (`benchmark.md`, `benchmark.json`, `aggregate.py`, `grader-prompt.md`) are in git and tell the full story across iterations.
