@@ -1,0 +1,221 @@
+#!/usr/bin/env python3
+"""grade-execution-review — grade persona runs against seeded-defect fixtures.
+
+Scans a corpus directory for fixture dirs (fix-*/) and persona dirs
+(personas/*/), runs each persona over each fixture diff, caches results
+under _runs/<persona>/<fixture>.json, then reports surfaced vs seeded
+findings and exits based on recall threshold.
+
+Usage:
+    bin/grade-execution-review <corpus-dir> [--persona <name>]
+
+Options:
+    --persona <name>   Grade only this persona (default: all personas).
+
+Exit codes:
+    0   all graded personas achieve 100% recall across all fixtures
+    1   at least one persona misses at least one seeded finding
+    64  usage error
+"""
+
+from __future__ import annotations
+
+import json
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+FIXTURE_DIR_RE = re.compile(r"^fix-\d+$")
+FINDING_LINE_RE = re.compile(r"^(\S+)\s+(\S+)\s+(\S+)\s*$")
+
+
+class GradeError(Exception):
+    pass
+
+
+def load_manifest(fixture_dir: Path) -> list[dict]:
+    path = fixture_dir / "manifest.json"
+    if not path.exists():
+        raise GradeError(f"manifest missing: {path}")
+    data = json.loads(path.read_text())
+    return data["findings"]
+
+
+def finding_key(f: dict) -> tuple:
+    return (f["file"], f["class"], f["severity"])
+
+
+def run_persona(persona_dir: Path, diff_path: Path, manifest_path: Path) -> list[dict]:
+    """Execute the persona's run.sh and parse its structured output."""
+    run_script = persona_dir / "run.sh"
+    if not run_script.exists():
+        raise GradeError(f"persona run script missing: {run_script}")
+    result = subprocess.run(
+        ["sh", str(run_script), str(diff_path), str(manifest_path)],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode != 0:
+        raise GradeError(
+            f"persona {persona_dir.name} run.sh exited {result.returncode}:\n"
+            + (result.stderr.strip() or "(no stderr)")
+        )
+    findings = []
+    for line in result.stdout.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        m = FINDING_LINE_RE.match(line)
+        if not m:
+            raise GradeError(
+                f"persona {persona_dir.name} emitted malformed finding line: {line!r}\n"
+                "Expected format: 'file class severity'"
+            )
+        findings.append({"file": m.group(1), "class": m.group(2), "severity": m.group(3)})
+    return findings
+
+
+def load_or_run(
+    runs_dir: Path,
+    persona_name: str,
+    fixture_name: str,
+    persona_dir: Path,
+    diff_path: Path,
+    manifest_path: Path,
+) -> list[dict]:
+    cache_path = runs_dir / persona_name / f"{fixture_name}.json"
+    if cache_path.exists():
+        cached = json.loads(cache_path.read_text())
+        return cached["findings"]
+
+    findings = run_persona(persona_dir, diff_path, manifest_path)
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text(
+        json.dumps(
+            {"persona": persona_name, "fixture": fixture_name, "findings": findings},
+            indent=2,
+        )
+        + "\n"
+    )
+    return findings
+
+
+def grade(corpus_dir: Path, persona_filter: str | None = None) -> int:
+    runs_dir = corpus_dir / "_runs"
+    personas_dir = corpus_dir / "personas"
+
+    fixture_dirs = sorted(
+        d for d in corpus_dir.iterdir() if d.is_dir() and FIXTURE_DIR_RE.match(d.name)
+    )
+    if not fixture_dirs:
+        print(f"error: no fixture dirs (fix-*/) found in {corpus_dir}", file=sys.stderr)
+        return 64
+
+    persona_dirs = []
+    if personas_dir.exists():
+        persona_dirs = sorted(
+            d for d in personas_dir.iterdir() if d.is_dir() and (d / "run.sh").exists()
+        )
+    if not persona_dirs:
+        print(f"error: no personas with run.sh found in {personas_dir}", file=sys.stderr)
+        return 64
+
+    if persona_filter:
+        persona_dirs = [d for d in persona_dirs if d.name == persona_filter]
+        if not persona_dirs:
+            print(f"error: persona '{persona_filter}' not found", file=sys.stderr)
+            return 64
+
+    # Header
+    print(f"corpus: {corpus_dir}")
+    print(f"fixtures: {len(fixture_dirs)}  personas: {len(persona_dirs)}")
+    print()
+
+    all_pass = True
+
+    for persona_dir in persona_dirs:
+        persona_name = persona_dir.name
+        total_seeded = 0
+        total_surfaced = 0
+        rows = []
+
+        for fixture_dir in fixture_dirs:
+            fixture_name = fixture_dir.name
+            diff_path = fixture_dir / "diff.patch"
+            manifest_path = fixture_dir / "manifest.json"
+
+            if not diff_path.exists():
+                raise GradeError(f"diff missing: {diff_path}")
+
+            seeded = load_manifest(fixture_dir)
+            seeded_keys = {finding_key(f) for f in seeded}
+
+            surfaced = load_or_run(
+                runs_dir, persona_name, fixture_name, persona_dir, diff_path, manifest_path
+            )
+            surfaced_keys = {finding_key(f) for f in surfaced}
+
+            hit = seeded_keys & surfaced_keys
+            miss = seeded_keys - surfaced_keys
+            extra = surfaced_keys - seeded_keys
+
+            total_seeded += len(seeded_keys)
+            total_surfaced += len(hit)
+            rows.append((fixture_name, len(hit), len(seeded_keys), miss, extra))
+
+        recall_pct = (total_surfaced / total_seeded * 100) if total_seeded else 0
+        persona_pass = total_surfaced == total_seeded
+
+        if not persona_pass:
+            all_pass = False
+
+        status = "PASS" if persona_pass else "FAIL"
+        print(f"persona: {persona_name}  [{status}]")
+        print(f"  total: {total_surfaced}/{total_seeded} ({recall_pct:.0f}% recall)")
+
+        for fixture_name, hit, seeded, miss, extra in rows:
+            row_status = "✓" if hit == seeded else "✗"
+            print(f"  {row_status} {fixture_name}: {hit}/{seeded}", end="")
+            if miss:
+                missed_list = ", ".join(f"{f} {c} {s}" for f, c, s in sorted(miss))
+                print(f"  missed: [{missed_list}]", end="")
+            if extra:
+                extra_list = ", ".join(f"{f} {c} {s}" for f, c, s in sorted(extra))
+                print(f"  extra: [{extra_list}]", end="")
+            print()
+        print()
+
+    return 0 if all_pass else 1
+
+
+def main() -> int:
+    args = sys.argv[1:]
+    if not args:
+        print(__doc__, file=sys.stderr)
+        return 64
+
+    corpus_dir = Path(args[0])
+    if not corpus_dir.is_dir():
+        print(f"error: corpus dir not found: {corpus_dir}", file=sys.stderr)
+        return 64
+
+    persona_filter = None
+    i = 1
+    while i < len(args):
+        if args[i] == "--persona" and i + 1 < len(args):
+            persona_filter = args[i + 1]
+            i += 2
+        else:
+            print(f"error: unexpected argument: {args[i]}", file=sys.stderr)
+            return 64
+
+    try:
+        return grade(corpus_dir, persona_filter)
+    except GradeError as e:
+        print(f"error: {e}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
