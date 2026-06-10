@@ -1,0 +1,170 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "7174e3d7e75a",
+  "session_id": "8e5d8abc-be80-4ad5-b14e-86e32498827d",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-10T12:01:19.324524Z",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N05-entry-skill-front-door.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N07-debugging-and-simplification.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-fable-5[1m]",
+  "turn_id": "1bdfa3009d54",
+  "checkpoint_transcript_start": 993,
+  "transcript_lines_at_start": 993,
+  "token_usage": {
+    "input_tokens": 38920,
+    "cache_creation_tokens": 516386,
+    "cache_read_tokens": 21877735,
+    "output_tokens": 93551,
+    "api_call_count": 119
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-shape:delivery-2026-06-10T03:13:07.515198Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "shape:delivery"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "9a7b3b99760a",
+      "timestamp": "2026-06-10T03:13:07.515198Z",
+      "native": {
+        "command": "/shape:delivery"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/shape:delivery",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01DVvonnBcxMu6TxedYtNGHv",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-skills:interview-me"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1bdfa3009d54",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 74,
+        "end": 75,
+        "entry_ids": [
+          "8d382c5c-eafe-454f-8b2c-3b799dbc100f"
+        ],
+        "tool_use_id": "toolu_01DVvonnBcxMu6TxedYtNGHv"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01DVvonnBcxMu6TxedYtNGHv"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-skills:interview-me",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_016p6aC9v5YFde5kwL9zh9V1",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape:initiative"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1bdfa3009d54",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 168,
+        "end": 169,
+        "entry_ids": [
+          "1899c221-d224-4dd4-b738-1bd2ec1aed0c"
+        ],
+        "tool_use_id": "toolu_016p6aC9v5YFde5kwL9zh9V1"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_016p6aC9v5YFde5kwL9zh9V1"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape:initiative",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01XKTR9HF6aEC22KuTjvpnPv",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape:render-html"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "1bdfa3009d54",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 222,
+        "end": 223,
+        "entry_ids": [
+          "3b39b4af-bc8d-433c-b361-a868fc118aaa"
+        ],
+        "tool_use_id": "toolu_01XKTR9HF6aEC22KuTjvpnPv"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01XKTR9HF6aEC22KuTjvpnPv"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape:render-html",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 14
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-10T12:01:19.263871Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 4,
+    "human_modified": 2,
+    "human_removed": 0,
+    "total_committed": 4,
+    "total_lines_changed": 6,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 126,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126
+      }
+    }
+  ]
+}

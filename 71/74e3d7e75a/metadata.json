@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "7174e3d7e75a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N05-entry-skill-front-door.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N07-debugging-and-simplification.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/71/74e3d7e75a/0/metadata.json",
+      "transcript": "/71/74e3d7e75a/0/full.jsonl",
+      "content_hash": "/71/74e3d7e75a/0/content_hash.txt",
+      "prompt": "/71/74e3d7e75a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 38920,
+    "cache_creation_tokens": 516386,
+    "cache_read_tokens": 21877735,
+    "output_tokens": 93551,
+    "api_call_count": 119
+  }
+}
