@@ -1,0 +1,5 @@
+has all of this (project, milestones, issues, dependency mapping, correct labeling) been created in linear?
+
+---
+
+i find the tasks a bit confusing, which of these will author new skills? i don't want to reinvent the wheel so for some of these a straight copy/paste with light modification (only when needed) from Addy or the superpowers packs is sufficient

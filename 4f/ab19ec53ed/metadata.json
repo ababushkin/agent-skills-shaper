@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "4fab19ec53ed",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "CLAUDE.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D1-review-gate-proven-on-seeded-defects/N03-personas-and-review-fan-out.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N05-entry-skill-front-door.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N06-build-skill-red-green-commit.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N07-debugging-and-simplification.md",
+    "examples/delivery-plans/issues-drain-end-to-end/D2-execution-workflow-drains-issues/N08-pr-finishing-graphite-first.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/4f/ab19ec53ed/0/metadata.json",
+      "transcript": "/4f/ab19ec53ed/0/full.jsonl",
+      "content_hash": "/4f/ab19ec53ed/0/content_hash.txt",
+      "prompt": "/4f/ab19ec53ed/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 2436,
+    "cache_creation_tokens": 68211,
+    "cache_read_tokens": 3918384,
+    "output_tokens": 37648,
+    "api_call_count": 20
+  }
+}
