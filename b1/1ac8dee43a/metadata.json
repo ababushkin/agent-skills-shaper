@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b11ac8dee43a",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 2,
+  "files_touched": [
+    "docs/ideas/lifecycle-expansion.html",
+    "docs/ideas/lifecycle-expansion.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b1/1ac8dee43a/0/metadata.json",
+      "transcript": "/b1/1ac8dee43a/0/full.jsonl",
+      "content_hash": "/b1/1ac8dee43a/0/content_hash.txt",
+      "prompt": "/b1/1ac8dee43a/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 62283,
+    "cache_creation_tokens": 699445,
+    "cache_read_tokens": 5048858,
+    "output_tokens": 121126,
+    "api_call_count": 44
+  }
+}
