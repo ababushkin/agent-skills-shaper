@@ -1,0 +1,24 @@
+{
+  "fixture": "fix-001",
+  "description": "JWT validation error suppression, username length AC removed, SQL injection via concatenation",
+  "findings": [
+    {
+      "file": "auth/token.go",
+      "class": "type-suppression",
+      "severity": "Critical",
+      "note": "Error return replaced with nil; type assertion ok discarded — invalid tokens pass as empty Claims"
+    },
+    {
+      "file": "api/handler.go",
+      "class": "ac-violation",
+      "severity": "Required",
+      "note": "AC 'username must be 3–32 characters' validation block removed"
+    },
+    {
+      "file": "db/query.go",
+      "class": "security-hole",
+      "severity": "Critical",
+      "note": "Parameterized query replaced with string concatenation — SQL injection"
+    }
+  ]
+}

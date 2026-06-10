@@ -1,0 +1,18 @@
+{
+  "fixture": "fix-004",
+  "description": "Auth middleware suppresses error and ok-check; payment service logs raw PAN",
+  "findings": [
+    {
+      "file": "middleware/auth.go",
+      "class": "type-suppression",
+      "severity": "Critical",
+      "note": "Validation error discarded with blank identifier and ok return value suppressed — unauthenticated requests treated as anonymous"
+    },
+    {
+      "file": "payments/charge.go",
+      "class": "security-hole",
+      "severity": "Critical",
+      "note": "Raw card number (PAN) logged in plaintext and passed directly to gateway instead of payment token — PCI DSS violation"
+    }
+  ]
+}

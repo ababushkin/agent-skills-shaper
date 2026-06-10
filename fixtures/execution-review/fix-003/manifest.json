@@ -1,0 +1,18 @@
+{
+  "fixture": "fix-003",
+  "description": "Hardcoded signing secret replaces env-var read; search result limit AC removed",
+  "findings": [
+    {
+      "file": "config/loader.go",
+      "class": "security-hole",
+      "severity": "Critical",
+      "note": "Signing secret hardcoded as string literal — secret committed to VCS and identical across environments"
+    },
+    {
+      "file": "api/search.go",
+      "class": "ac-violation",
+      "severity": "Required",
+      "note": "AC 'search results limited to 100 items' removed; Limit field omitted from SearchOptions"
+    }
+  ]
+}

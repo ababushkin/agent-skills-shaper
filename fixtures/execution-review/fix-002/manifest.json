@@ -1,0 +1,24 @@
+{
+  "fixture": "fix-002",
+  "description": "Unchecked type assertion panic, panic recovery swallows typed error, email AC removed",
+  "findings": [
+    {
+      "file": "types/user.go",
+      "class": "type-suppression",
+      "severity": "Critical",
+      "note": "Type assertion without ok check — panics on any non-Session value at runtime"
+    },
+    {
+      "file": "worker/job.go",
+      "class": "type-suppression",
+      "severity": "Critical",
+      "note": "recover() value discarded with blank identifier — panics silently swallowed, error propagation broken"
+    },
+    {
+      "file": "api/update.go",
+      "class": "ac-violation",
+      "severity": "Required",
+      "note": "AC 'email is required and must be valid RFC 5321' validation block removed"
+    }
+  ]
+}
