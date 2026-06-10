@@ -39,9 +39,12 @@ quality — built-the-wrong-thing is caught before built-it-badly.
 
 The bet: three narrow lenses surface more of the seeded findings than one broad reviewer, and the
 spec-first ordering catches the failure class a quality-only reviewer is blind to. Rejected
-alternative: port the third-party monolithic review skill verbatim — forbidden by the pack's
-predecessor rule, and a single lens leaves the security and AC-violation defect classes
-ungraded. Unlocks N05's review step and is the precondition for N11's uninstall.
+alternative: port the monolithic `code-review-and-quality` skill as-is — a single lens leaves
+the security and AC-violation defect classes ungraded. **Port-first:** two of the three personas
+are straight ports from agent-skills (MIT) — `agents/code-reviewer.md` and
+`agents/security-auditor.md` — adapted only to the N02 finding contract; spec-compliance is the
+one genuinely new persona (neither pack has it; test-engineer is the wrong lens). Unlocks N05's
+review step and is the precondition for N11's uninstall.
 
 ## Completion
 
@@ -69,7 +72,7 @@ ungraded. Unlocks N05's review step and is the precondition for N11's uninstall.
 
 ## Tasks
 
-- [ ] `skeleton` — Author the code-reviewer persona to the N02 contract and dispatch it through a minimal fan-out skill against one fixture (skill scaffold + persona directory folded in) · Done when: the persona's findings flow through the fan-out path into the grader and score · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
-- [ ] Author the security-auditor and spec-compliance personas, spec-compliance reviewing the issue's acceptance criteria before code quality · Done when: all three personas emit contract-format findings across the corpus · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
+- [ ] `skeleton` — Port the code-reviewer persona from agent-skills (`agents/code-reviewer.md`, MIT) to the N02 contract and dispatch it through a minimal fan-out skill against one fixture (skill scaffold + persona directory folded in) · Done when: the ported persona's findings flow through the fan-out path into the grader and score · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·M·L·L·L
+- [ ] Port the security-auditor persona (`agents/security-auditor.md`) and author the new spec-compliance persona, spec-compliance reviewing the issue's acceptance criteria before code quality · Done when: all three personas emit contract-format findings across the corpus · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
 - [ ] Aggregate the three verdicts into one deduped GO/NO-GO with a review-summary block ordered spec → security → quality · Done when: one invocation yields a single verdict artefact with no duplicate findings · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·M·L·L·L
 - [ ] Iterate the persona set against the harness with per-class miss analysis from `_runs/` logs · Done when: `bin/grade-execution-review` reports ≥9/10 · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L

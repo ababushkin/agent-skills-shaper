@@ -66,6 +66,6 @@ Conventional-commit-ish prefixes: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:
 ## Key constraints
 
 - No stack-prescriptive content in skill prose. Skills are stack-agnostic.
-- No verbatim copy from `addyosmani/agent-skills`. Every artefact must declare its predecessor relation in frontmatter.
+- Port-first: when `obra/superpowers` or `addyosmani/agent-skills` (both MIT) already solve it, copy and lightly adapt — voice, frontmatter, `[GATE]` markers, pack seams — rather than re-authoring from scratch. Modify only where this pack's contracts require it. Every artefact must declare its predecessor relation in frontmatter (owner decision 2026-06-10; supersedes the earlier no-verbatim-copy rule).
 - Voice must match the existing skills — direct, principle-named, no generic AI filler. Read two existing SKILL.md files before authoring a new one.
 - `rules/eng-principles-universal.md` is the canonical source for principle IDs cited in engineering skills. Read it before referencing any principle.

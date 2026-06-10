@@ -40,7 +40,9 @@ The bet: breakdown-at-pickup on fresh context beats plan-time task expansion (de
 before the node is reached), and one front door is what lets the supervisor prompt shrink to a
 pointer — the premise initiatives A and C share. Rejected alternative: a prompt-side checklist
 inside drain-cycle — the workflow gets trapped in one vendor's supervisor, which is exactly the
-coupling this initiative exists to remove. Unblocks N10's pointer swap.
+coupling this initiative exists to remove. Unblocks N10's pointer swap. **Genuinely new
+authoring** — both predecessor packs are tracker-blind; superpowers' `subagent-driven-development`
+is the nearest relative for the loop structure (reference, not port).
 
 ## Completion
 

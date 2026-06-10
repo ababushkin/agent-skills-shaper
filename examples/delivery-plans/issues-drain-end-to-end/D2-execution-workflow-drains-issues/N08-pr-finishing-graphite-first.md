@@ -41,7 +41,10 @@ The bet: Graphite-first matches the owner's tooling and drain-cycle's half-built
 lack `gt`. Rejected alternatives, both directions: plain-git-only (works everywhere but abandons
 stacking — the reason Graphite is in the stack at all) and Graphite-only (breaks any repo or
 worker without gt installed). Per-repo push policy (direct-to-main vs PR) stays with repo
-instructions; the skill honours it rather than overriding it.
+instructions; the skill honours it rather than overriding it. **Hybrid port:** superpowers'
+`finishing-a-development-branch` (MIT) is the skeleton — the verify-then-finish flow ports
+straight across; the Graphite path, the What/Why/Focus body, and the Linear trail steps are the
+new parts.
 
 ## Completion
 

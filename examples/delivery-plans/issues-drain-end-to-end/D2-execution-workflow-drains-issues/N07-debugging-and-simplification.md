@@ -40,7 +40,10 @@ The bet: the two failure modes that most often force a human rescue mid-drain ar
 failures (worker loops on retries) and over-built diffs (reviewer drowns) — these skills target
 exactly those, which is why they made the shortlist and the rest didn't. Rejected alternative:
 keep superpowers installed for its debugging skill alone — that keeps the third-party dependency
-alive and makes KR3's uninstall impossible.
+alive and makes KR3's uninstall impossible. **Port-first:** both are straight ports —
+superpowers' `systematic-debugging` and agent-skills' `code-simplification` (both MIT) — with
+light modification only (anatomy frontmatter, voice, the N04 graph seams). Do not re-author
+proven discipline.
 
 ## Completion
 
@@ -56,13 +59,13 @@ alive and makes KR3's uninstall impossible.
 
 ## Key Risks
 
-- **Risk:** accidental verbatim port of superpowers' debugging prose — a predecessor-rule
-  violation.
-  *Mitigation:* frontmatter declares the predecessor relation; voice check against two existing
-  pack skills at review, per repo convention.
+- **Risk:** the port mutates the source's proven discipline while adapting voice and anatomy —
+  losing exactly the content that justified porting instead of re-authoring.
+  *Mitigation:* frontmatter declares the predecessor relation (port); the PR notes what was
+  changed against the source and why, so review checks the deltas, not the whole text.
 
 ## Tasks
 
-- [ ] `skeleton` — Author the systematic-debugging skill with the root-cause-note gate (skill dir + frontmatter folded in) · Done when: the skill passes anatomy order and the no-fix-without-stated-cause gate is marked `[GATE]` · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
-- [ ] Author the simplification skill as a post-green pass with before/after rationale · Done when: the skill emits a reviewable simplification note on a sample diff · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
+- [ ] `skeleton` — Port superpowers' `systematic-debugging` (MIT) with the root-cause-note gate added (skill dir + frontmatter folded in) · Done when: the ported skill passes anatomy order and the no-fix-without-stated-cause gate is marked `[GATE]` · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·L·L·L·L
+- [ ] Port agent-skills' `code-simplification` (MIT) as the post-green pass with before/after rationale · Done when: the ported skill emits a reviewable simplification note on a sample diff · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·L·L·L·L
 - [ ] Wire both into the build skill's escalation and exit points by name · Done when: the build skill names both delegations and neither is inlined · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = L·L·L·L·L

@@ -40,7 +40,9 @@ The bet: the gated TDD loop is the discipline both external packs converged on i
 evolution is the strongest signal in the deep review. Rejected alternative: advisory
 "write tests first" prose without gates — advisory prose is precisely what a worker under token
 pressure skips, and ungated discipline is the failure mode the pack's `[GATE]` convention exists
-to prevent.
+to prevent. **Port-first:** both packs ship `test-driven-development` (MIT) — copy the stronger
+loop, modify only to add `[GATE]` markers, the verification-form fallback, and the per-slice
+commit convention. Do not re-write proven prose.
 
 ## Completion
 
@@ -66,6 +68,6 @@ to prevent.
 
 ## Tasks
 
-- [ ] `skeleton` — Author the RED/GREEN/commit loop core with its gates and the per-slice commit convention (skill dir + frontmatter folded in) · Done when: the skill passes anatomy section order and the loop's gates are marked `[GATE]` · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
+- [ ] `skeleton` — Port the RED/GREEN/commit loop core from the predecessor TDD skills (both packs, MIT), adding gates and the per-slice commit convention (skill dir + frontmatter folded in) · Done when: the ported skill passes anatomy section order and the loop's gates are marked `[GATE]` · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·M·L·L·L
 - [ ] Write the verification-form fallback and the consecutive-failure escalation into the debugging skill · Done when: both paths are named delegations selectable at breakdown time · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = M·M·L·L·L
 - [ ] Trial the loop on one toy task and record the transcript as the skill's worked example · Done when: the transcript shows RED → GREEN → commit with no skipped gate · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = L·L·L·L·L
