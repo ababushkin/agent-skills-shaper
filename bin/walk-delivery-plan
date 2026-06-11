@@ -17,9 +17,18 @@ that is itself signal the seam needs re-shaping.
 Usage:
     bin/walk-delivery-plan <plan-dir> [--json]
 
+Two tier shapes are accepted:
+
+  - Full tier — root has `D<n>-*/` deliverable directories; manifest oracle
+    in README is required.
+  - Lite tier — root has flat `N<nn>-*.md` node files (no `D*/`); for the
+    small-scale delivery-shape path. No manifest oracle is required; the
+    walker emits a flat list of node items and exits 0 if every node parses.
+
 Exit codes:
-    0   walked cleanly and the derived counts equal the README oracle
-    1   counts diverge from the README hand-count oracle (drift)
+    0   walked cleanly (full: derived counts equal README oracle; lite: every
+        node parses)
+    1   full-tier counts diverge from the README hand-count oracle (drift)
     2   a node/deliverable/oracle could not be parsed (seam not mechanical)
     64  usage error
 """
@@ -136,6 +145,40 @@ def read_tasks(path: Path) -> list[dict]:
 def _order(pattern: re.Pattern, name: str) -> int:
     m = pattern.match(name)
     return int(m.group(1)) if m else 0
+
+
+def walk_lite(root: Path) -> list[dict]:
+    """Walk a lite-tier plan: flat N<nn>-*.md files at root, no deliverables.
+
+    Lite plans are the small-scale path delivery-shape emits for single-outcome
+    work — no KR/deliverable tagging, no task layer, no manifest. The walker
+    returns a list of node records directly; there is no milestone wrapper, and
+    the README is not required to carry a hand-count manifest table.
+    """
+    node_files = sorted(
+        (f for f in root.iterdir() if f.is_file() and NODE_FILE_RE.match(f.name)),
+        key=lambda f: _order(NODE_FILE_RE, f.name),
+    )
+    items: list[dict] = []
+    for nfile in node_files:
+        nfm = read_front_matter(nfile)
+        if nfm.get("layer") != "node":
+            raise PlanError(f"{nfile}: layer is not 'node'")
+        # Lite nodes need layer + id + type + completion.form. They have no
+        # parent deliverable so serves_kr / maps_to are optional.
+        missing = [k for k in ("layer", "id", "type", "completion.form") if k not in nfm]
+        if missing:
+            raise PlanError(f"{nfile}: lite node missing required front-matter {missing}")
+        tasks = read_tasks(nfile)
+        items.append({
+            "id": nfm["id"],
+            "title": nfm.get("title", ""),
+            "type": nfm["type"],
+            "completion_form": nfm["completion.form"],
+            "path": str(nfile.relative_to(root)),
+            "sub_issues": tasks,
+        })
+    return items
 
 
 def walk(root: Path) -> list[dict]:
@@ -289,6 +332,49 @@ def main(argv: list[str]) -> int:
     if not root.is_dir():
         sys.stderr.write(f"error: {root} is not a directory\n")
         return 64
+
+    # Tier detection: D*/ deliverable directories → full tier; otherwise lite
+    # tier (flat N*.md files at root, no manifest oracle required).
+    has_deliverables = any(
+        d.is_dir() and DELIVERABLE_DIR_RE.match(d.name) for d in root.iterdir()
+    )
+    if not has_deliverables:
+        try:
+            items = walk_lite(root)
+        except PlanError as exc:
+            sys.stderr.write(f"PARSE ERROR: {exc}\n")
+            return 2
+        if not items:
+            sys.stderr.write(
+                f"PARSE ERROR: {root}: no deliverable directories (D<n>-*) and "
+                "no node files (N<nn>-*.md) at root — not a delivery plan\n"
+            )
+            return 2
+        if as_json:
+            print(json.dumps({
+                "source": str(root),
+                "tier": "lite",
+                "items": items,
+                "summary": {"items": len(items), "sub_issues": sum(len(i["sub_issues"]) for i in items)},
+            }, indent=2))
+        else:
+            print(f"Delivery-plan manifest — {root.name}  (tier: lite)")
+            print(f"source: {root}")
+            print("")
+            for i in items:
+                print(f"  ITEM  {i['id']}  {i['title']}  [{i['type']}]")
+                print(f"        completion: {i['completion_form']}")
+                for t in i["sub_issues"]:
+                    box = "x" if t["done"] else " "
+                    tag = " (skeleton)" if t["skeleton"] else ""
+                    text = t["text"]
+                    if len(text) > 76:
+                        text = text[:73] + "..."
+                    print(f"    SUB  [{box}]{tag} {text}")
+            print("")
+            print(f"Summary: {len(items)} items / "
+                  f"{sum(len(i['sub_issues']) for i in items)} sub-issues  (lite tier — no oracle)")
+        return 0
 
     try:
         milestones = walk(root)

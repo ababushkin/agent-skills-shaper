@@ -38,6 +38,22 @@ must emit by default rather than the user re-prompting for:
      explicitly names the model (e.g., Opus, Sonnet, Haiku) or tool that will
      execute it, preventing ambiguous task assignment.
 
+  5. Non-goals well-formed when present — `## Non-goals` is an optional section.
+     When present its body must carry at least one list item; a node with the
+     heading but an empty section fails.
+
+Two tier shapes are accepted:
+
+  - **Full tier** — root contains `D<n>-*/` deliverable directories with
+     `N<nn>-*.md` nodes inside (the original schema). The skeleton mandate
+     applies whenever any executable node (`story`, `refactor`, `capability`,
+     `migration`, `experiment`) carries tasks.
+  - **Lite tier** — root contains `N<nn>-*.md` files directly with no `D*`
+     deliverable directories. Used by `delivery-shape` for single-outcome work.
+     Skeleton, tasks, and Model annotations are not required when the lite
+     plan carries no tasks at all (the small-scale path has no task layer);
+     the five-section body, assumption tags, and Non-goals lint still apply.
+
 Like the walk-script, this reader is deliberately dependency-free (stdlib only,
 no YAML library): it needs just two front-matter keys (`layer`, `type`), a
 heading scan, and the walk-script's task-line *regex* (`TASK_RE`) — so a
@@ -87,6 +103,13 @@ REQUIRED_SECTION_RES = tuple(
 # Matches `(verified)`, `(verified — explanation)`, `(to-verify)`, `(to-verify — explanation)`.
 ASSUMPTION_TAG_RE = re.compile(r"\((verified|to-verify)\b", re.IGNORECASE)
 ASSUMPTIONS_HEADING_RE = re.compile(r"^assumptions$", re.IGNORECASE)
+NON_GOALS_HEADING_RE = re.compile(r"^non-goals$", re.IGNORECASE)
+
+# Node types whose work is executable software (and so demand a walking skeleton
+# when tasks exist). Other types — adr, design-doc, ktlo, spike, slo,
+# deprecation, incident, compliance — carry no skeleton mandate; their work is
+# doc/spec/config/carve-out and the skeleton has nothing to run end-to-end.
+EXECUTABLE_NODE_TYPES = {"story", "refactor", "capability", "migration", "experiment"}
 
 
 class PlanError(Exception):
@@ -180,6 +203,40 @@ def untagged_assumptions(body: list[str]) -> list[str]:
     return violations
 
 
+def empty_non_goals_section(body: list[str]) -> bool:
+    """True if a `## Non-goals` heading is present but its section has no list items.
+
+    The section is optional; when absent, this returns False. When present, the
+    section must carry at least one list item — an empty Non-goals heading is a
+    declared exclusion list with nothing in it, which is the lint failure.
+    """
+    in_fence = False
+    cur: dict | None = None
+    found_empty = False
+    for line in body:
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        if in_fence:
+            continue
+        m = HEADING_RE.match(line)
+        if m:
+            level = len(line) - len(line.lstrip("#"))
+            text = m.group(1).strip()
+            if cur is not None and level <= cur["level"]:
+                if not cur["has_items"]:
+                    found_empty = True
+                cur = None
+            if NON_GOALS_HEADING_RE.match(text):
+                cur = {"level": level, "has_items": False}
+            continue
+        if cur is not None and LIST_ITEM_RE.match(line):
+            cur["has_items"] = True
+    if cur is not None and not cur["has_items"]:
+        found_empty = True
+    return found_empty
+
+
 def read_tasks(body: list[str]) -> list[dict]:
     """Return the node's checklist tasks in order: [{skeleton: bool, has_model: bool, text: str}].
 
@@ -215,27 +272,33 @@ def _order(pattern: re.Pattern, name: str) -> int:
     return int(m.group(1)) if m else 0
 
 
-def collect_nodes(root: Path) -> list[dict]:
+def collect_nodes(root: Path) -> tuple[list[dict], str]:
     """Find every node and record its type, section presence, assumption tags, and tasks.
 
-    Walks the same deliverable→node layout as the walk-script. Each record
-    carries enough for all four framing sub-checks.
+    Returns (nodes, tier) where tier is "full" (deliverable→node layout) or
+    "lite" (flat N*.md files at root, no D*/ deliverable directories — the
+    small-scale path).
     """
     deliverable_dirs = sorted(
         (d for d in root.iterdir() if d.is_dir() and DELIVERABLE_DIR_RE.match(d.name)),
         key=lambda d: _order(DELIVERABLE_DIR_RE, d.name),
     )
-    if not deliverable_dirs:
-        raise PlanError(f"{root}: no deliverable directories (D<n>-*) found")
-
     node_files: list[Path] = []
-    for ddir in deliverable_dirs:
-        node_files.extend(sorted(
-            (f for f in ddir.iterdir() if NODE_FILE_RE.match(f.name)),
+    if deliverable_dirs:
+        tier = "full"
+        for ddir in deliverable_dirs:
+            node_files.extend(sorted(
+                (f for f in ddir.iterdir() if NODE_FILE_RE.match(f.name)),
+                key=lambda f: _order(NODE_FILE_RE, f.name),
+            ))
+    else:
+        tier = "lite"
+        node_files = sorted(
+            (f for f in root.iterdir() if f.is_file() and NODE_FILE_RE.match(f.name)),
             key=lambda f: _order(NODE_FILE_RE, f.name),
-        ))
+        )
     if not node_files:
-        raise PlanError(f"{root}: no node files (N<nn>-*.md) found")
+        raise PlanError(f"{root}: no node files (N<nn>-*.md) found in deliverable directories or at root")
 
     nodes: list[dict] = []
     for nfile in node_files:
@@ -251,10 +314,11 @@ def collect_nodes(root: Path) -> list[dict]:
             "type": fm["type"],
             "missing_sections": missing_five_sections(body),
             "assumption_violations": untagged_assumptions(body),
+            "empty_non_goals": empty_non_goals_section(body),
             "missing_model": [t["text"] for t in tasks if not t["has_model"]],
             "tasks": tasks,
         })
-    return nodes
+    return nodes, tier
 
 
 def pre_skeleton_tasks(node: dict) -> list[str]:
@@ -295,27 +359,43 @@ def main(argv: list[str]) -> int:
         return 64
 
     try:
-        nodes = collect_nodes(root)
+        nodes, tier = collect_nodes(root)
     except PlanError as exc:
         sys.stderr.write(f"PARSE ERROR: {exc}\n")
         return 2
 
     nodes_missing = [n for n in nodes if n["missing_sections"]]
     nodes_untagged = [n for n in nodes if n["assumption_violations"]]
-    nodes_missing_model = [n for n in nodes if n["missing_model"]]
+    nodes_empty_non_goals = [n for n in nodes if n["empty_non_goals"]]
 
     skeleton_total = sum(1 for n in nodes for t in n["tasks"] if t["skeleton"])
-    no_skeleton = skeleton_total == 0
+    total_tasks = sum(len(n["tasks"]) for n in nodes)
+    has_executable_node = any(n["type"] in EXECUTABLE_NODE_TYPES for n in nodes)
+    # Skeleton mandate fires only when an executable node carries tasks. A plan
+    # that is doc/spec/config-only (no executable types) or carries no tasks at
+    # all (lite tier with no task layer) has nothing for a skeleton to anchor.
+    skeleton_required = total_tasks > 0 and has_executable_node
+    no_skeleton = skeleton_required and skeleton_total == 0
+    # Model annotations only apply when tasks exist.
+    nodes_missing_model = [n for n in nodes if n["missing_model"]] if total_tasks > 0 else []
     pre_skeleton = [
         {"id": n["id"], "path": n["path"], "tasks": pre}
         for n in nodes if (pre := pre_skeleton_tasks(n))
     ]
 
-    ok = not nodes_missing and not nodes_untagged and not no_skeleton and not pre_skeleton and not nodes_missing_model
+    ok = (
+        not nodes_missing
+        and not nodes_untagged
+        and not nodes_empty_non_goals
+        and not no_skeleton
+        and not pre_skeleton
+        and not nodes_missing_model
+    )
 
     if as_json:
         print(json.dumps({
             "source": str(root),
+            "tier": tier,
             "nodes_checked": len(nodes),
             "missing_sections": [
                 {"id": n["id"], "path": n["path"], "type": n["type"], "missing": n["missing_sections"]}
@@ -332,11 +412,14 @@ def main(argv: list[str]) -> int:
             "missing_model_annotations": [
                 {"id": n["id"], "path": n["path"], "type": n["type"], "tasks": n["missing_model"]} for n in nodes_missing_model
             ],
+            "empty_non_goals_sections": [
+                {"id": n["id"], "path": n["path"], "type": n["type"]} for n in nodes_empty_non_goals
+            ],
             "ok": ok,
         }, indent=2))
     else:
         print(f"check-plan-framing — {root.name}")
-        print(f"source: {root}")
+        print(f"source: {root}  (tier: {tier})")
         print(f"nodes checked: {len(nodes)}")
         for n in nodes:
             if n["missing_sections"]:
@@ -353,12 +436,15 @@ def main(argv: list[str]) -> int:
             print(f"  [PRE-SKELETON] {p['id']}  {p['path']}: {len(p['tasks'])} task(s) before skeleton")
         for m in nodes_missing_model:
             print(f"  [MISSING MODEL] {m['id']}  {m['path']}: {len(m['tasks'])} task(s) without Model: annotation")
+        for n in nodes_empty_non_goals:
+            print(f"  [EMPTY NON-GOALS] {n['id']}  {n['path']}  ({n['type']})")
         verdict = (
-            "PASS — five sections, assumption tags, skeleton task, no pre-skeleton setup, Model: annotations"
+            "PASS — five sections, assumption tags, Non-goals (if present), skeleton, Model: annotations"
             if ok else
             "FAIL — " + "; ".join(filter(None, [
                 f"{len(nodes_missing)} node(s) missing required sections" if nodes_missing else "",
                 f"{len(nodes_untagged)} node(s) with untagged assumption items" if nodes_untagged else "",
+                f"{len(nodes_empty_non_goals)} node(s) with empty Non-goals section" if nodes_empty_non_goals else "",
                 "no skeleton task in plan" if no_skeleton else "",
                 f"{len(pre_skeleton)} node(s) with a task before the skeleton" if pre_skeleton else "",
                 f"{len(nodes_missing_model)} node(s) with tasks lacking Model: annotation" if nodes_missing_model else "",
@@ -411,6 +497,12 @@ def main(argv: list[str]) -> int:
                     + "".join(f"        {task}\n" for task in n["missing_model"])
                     for n in nodes_missing_model
                 )
+            )
+        if nodes_empty_non_goals:
+            sys.stderr.write(
+                "  nodes with a `## Non-goals` heading but no list items — the section is "
+                "optional, but when present it must declare at least one excluded scope item:\n"
+                + "".join(f"    - {n['path']}\n" for n in nodes_empty_non_goals)
             )
         return 1
     return 0
