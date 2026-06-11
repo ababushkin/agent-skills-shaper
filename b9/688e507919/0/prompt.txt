@@ -1,0 +1,2 @@
+lets fix up the work done in aba-365 - there's a PR opened for it
+i recently changed how skills are written, have a look at the shape that skills like: delivery-shape, pr-finishing, pr-prepare use instead
