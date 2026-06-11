@@ -4,8 +4,6 @@ The authoring spec for `SKILL.md` files in `skills/<name>/`.
 
 ## Frontmatter
 
-Minimal — only the two fields the loader and triggering need. Everything that used to live here (`pack`, `lifecycle_stage`, `principles_implemented`, `length_target`, `author`, `predecessor`, `kept/changed_from_predecessor`) is dropped: it was authoring metadata that never served the reader at invocation time.
-
 ```yaml
 ---
 name: <skill-name>
@@ -31,10 +29,6 @@ In this exact order:
 10. **Exit criteria** — how to know the skill ran correctly
 11. **Related** — plain links to sibling skills and references; no principle-citation footnotes
 
-Removed from the old anatomy: the **Common rationalisations** table and all inline `(principle Pn)` citations in prose. Rebuttal content that is load-bearing collapses into a Red flag or an exit-criterion line; everything else goes.
-
-Principle traceability is no longer carried in the file (neither frontmatter nor inline). It lives in the rules files and the README mapping.
-
 ## Length
 
 Target 100–300 lines. Below 100, editor checks for under-specification (acceptable if genuinely complete). Above 300, editor checks for redundancy with other skills, scope creep, or over-explanation. Hard cap 350 lines; beyond that, split.
@@ -42,10 +36,6 @@ Target 100–300 lines. Below 100, editor checks for under-specification (accept
 ## Artefact template section name
 
 The anatomy calls this section "Artefact template." Skills that produce a single named artefact may use a descriptive variant (e.g. "Task list template", "Finding template") — the name should identify the artefact type. The section must still appear in the required position.
-
-## Root rules files
-
-`PRODUCT_RULES.md`, `eng-principles-universal.md`, and `eng-principles-agentic.md` mirror the shape of their source principles documents, not this anatomy.
 
 ## Meta-pack skills
 
