@@ -4,43 +4,36 @@ The authoring spec for `SKILL.md` files in `skills/<name>/`.
 
 ## Frontmatter
 
+Minimal — only the two fields the loader and triggering need. Everything that used to live here (`pack`, `lifecycle_stage`, `principles_implemented`, `length_target`, `author`, `predecessor`, `kept/changed_from_predecessor`) is dropped: it was authoring metadata that never served the reader at invocation time.
+
 ```yaml
 ---
 name: <skill-name>
-description: <1-2 sentences, includes trigger phrases>
-pack: <product | engineering | meta>
-lifecycle_stage: <define | plan | build | ship | verify | review | meta | reference>
-principles_implemented:
-  - source: <eng-universal | eng-agentic | roadmap | product>
-    id: <principle or rule id>
-    bucket: <embedded | standalone | hook | sub-agent>
-length_target: <e.g. 200-280>
-author: Anton Babushkin
-predecessor:
-  repo: <URL or "none">
-  skill: <skill name in source repo, or "none">
-  relation: <derivative | adjacent | new>
-kept_from_predecessor: <list, or "n/a">
-changed_from_predecessor: <list, or "n/a">
+description: <1-2 sentences. State what the skill does, then "Use when …", then trigger phrases.>
 ---
 ```
+
+Taxonomy the dropped fields used to carry (pack, lifecycle stage, predecessor) is preserved in the README tables and git history, not in the file.
 
 ## Sections
 
 In this exact order:
 
 1. **Title** — `# <Skill Name>`
-2. **Purpose** — one paragraph
-3. **When to use** — explicit trigger phrases and intents, with the size-the-work rubric where relevant
-4. **When not to use** — explicit non-triggers, with the right alternative skill named
+2. **Purpose** — one or two plain sentences: what the skill does and the one thing that must hold. No "without it…" doom paragraph, no inline principle citations.
+3. **When to use** — tight bullets; explicit intents, with the size-the-work rubric where relevant
+4. **Do not use when** — tight bullets; explicit non-triggers, each naming the right alternative inline
 5. **Inputs** — what the skill expects to be given
-6. **Outputs** — what it produces, including the artefact path under `docs/`
-7. **Workflow** — numbered steps with hard gates marked `[GATE]`
-8. **Artefact template** — the markdown the skill produces
-9. **Common rationalisations** — table of typical excuses and rebuttals
-10. **Red flags** — bullet list of signs the skill is being violated
-11. **Verification / exit criteria** — how to know the skill ran correctly
-12. **References** — pointers to `references/` and to source principles
+6. **Outputs** — what it produces, including any artefact path; show the record/verdict shape as a fenced `json` block where the skill emits one
+7. **Workflow** — `### N. <step>` headers. A hard gate is a `### N. Gate: <name>` header — the gate semantics are mandatory; only the literal `[GATE]` marker is replaced by the `Gate:` heading
+8. **Artefact template** — the markdown (or JSON) the skill produces, as a fenced block
+9. **Red flags** — bullet list of signs the skill is being violated
+10. **Exit criteria** — how to know the skill ran correctly
+11. **Related** — plain links to sibling skills and references; no principle-citation footnotes
+
+Removed from the old anatomy: the **Common rationalisations** table and all inline `(principle Pn)` citations in prose. Rebuttal content that is load-bearing collapses into a Red flag or an exit-criterion line; everything else goes.
+
+Principle traceability is no longer carried in the file (neither frontmatter nor inline). It lives in the rules files and the README mapping.
 
 ## Length
 
@@ -56,7 +49,7 @@ The anatomy calls this section "Artefact template." Skills that produce a single
 
 ## Meta-pack skills
 
-Skills with `pack: meta` are navigation and orientation artefacts, not workflow skills. They are exempt from: `principles_implemented` frontmatter, `predecessor` frontmatter, and the body sections Inputs, Outputs, Artefact template, Common rationalisations, Red flags, and Verification / exit criteria. They must still have: Title, Purpose, When to use, When not to use, and a References or equivalent lookup table.
+Navigation and orientation skills (e.g. `using-this-pack`) are not workflow skills. They are exempt from the body sections Inputs, Outputs, Artefact template, Red flags, and Exit criteria. They must still have: Title, Purpose, When to use, Do not use when, and a Related or equivalent lookup table.
 
 ## See also
 

@@ -41,13 +41,13 @@ The flat skills layout matches the convention used by every other Claude Code pl
 
 ## Authoring a new skill
 
-Follow `docs/skill-anatomy.md` exactly. Required sections in order: Title → Purpose → When to use → When not to use → Inputs → Outputs → Workflow → Artefact template → Common rationalisations → Red flags → Verification / exit criteria → References.
+Follow `docs/skill-anatomy.md` exactly. Required sections in order: Title → Purpose → When to use → Do not use when → Inputs → Outputs → Workflow → Artefact template → Red flags → Exit criteria → Related.
 
-Required frontmatter fields: `name`, `description`, `pack`, `lifecycle_stage`, `principles_implemented` (each with `source`, `id`, `bucket`), `length_target`, `author`, `predecessor` (with `relation`).
+Required frontmatter fields: `name`, `description` only.
 
 Length target: 100–300 lines. Hard cap 350. Below 100 triggers under-specification check. Above 300 triggers redundancy check.
 
-Gates in the workflow section are marked `[GATE]` — do not remove them or make them optional.
+Workflow gates are `### N. Gate: <name>` headers. The gate semantics are mandatory — do not remove a gate or make it optional.
 
 ---
 
