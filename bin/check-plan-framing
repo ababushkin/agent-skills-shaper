@@ -24,7 +24,8 @@ must emit by default rather than the user re-prompting for:
      An empty Assumptions section (no list items, e.g. `*(none)*`) passes
      trivially — the tag rule only applies to explicit list items.
 
-  3. Foundational work folded into the skeleton — the plan carries at least one
+  3. Foundational work folded into the skeleton — when the plan has an
+     executable-software node carrying tasks it must carry at least one
      `` `skeleton` ``-flagged task, and no node places any task *before* its
      first skeleton task. Foundational / toolchain work belongs folded into the
      skeleton task's description; a task that precedes the skeleton is a setup
@@ -106,10 +107,11 @@ ASSUMPTIONS_HEADING_RE = re.compile(r"^assumptions$", re.IGNORECASE)
 NON_GOALS_HEADING_RE = re.compile(r"^non-goals$", re.IGNORECASE)
 
 # Node types whose work is executable software (and so demand a walking skeleton
-# when tasks exist). Other types — adr, design-doc, ktlo, spike, slo,
-# deprecation, incident, compliance — carry no skeleton mandate; their work is
-# doc/spec/config/carve-out and the skeleton has nothing to run end-to-end.
-EXECUTABLE_NODE_TYPES = {"story", "refactor", "capability", "migration", "experiment"}
+# when tasks exist). Other types — adr, design-doc, ktlo, spike, experiment,
+# slo, deprecation, incident, compliance — carry no skeleton mandate. Docs and
+# carve-outs have nothing to run end-to-end; a spike or experiment node *is* the
+# end-to-end probe, so its first task is that probe, not a separate skeleton.
+EXECUTABLE_NODE_TYPES = {"story", "refactor", "capability", "migration"}
 
 
 class PlanError(Exception):

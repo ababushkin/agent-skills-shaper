@@ -108,12 +108,17 @@ The five tags the contract is required to pin down:
 2. **deliverable↔KR** — `serves_kr:` on each `_deliverable.md` (and echoed on nodes). Every
    deliverable serves exactly one KR; this is the outcome spine.
 3. **completion-criterion** — `completion.form` + `completion.criterion`, shaped by `type`.
-4. **task↔skeleton flag** — at the **task** level, the walking-skeleton/foundational task is marked
-   with a leading `` `skeleton` `` tag inside its checklist line. At the **node** level, the node
-   that *is* the initiative's walking skeleton carries `skeleton: true` in front-matter. Foundational
-   / toolchain work is **folded into** the skeleton task's description — never a silent setup task
-   before it (the walking-skeleton-first principle: integration discovery must happen on day one). There is no
-   `foundational` node type: foundational work is a property of the skeleton **task**, not a node.
+4. **task↔skeleton flag** — at the **task** level, a walking-skeleton task is marked with a leading
+   `` `skeleton` `` tag inside its checklist line. A skeleton is a property of runnable-software nodes
+   **whose risk lives in integration**, not of every node: a story with integration risk leads with the
+   skeleton; a story whose dominant risk is core logic leads with a spike (skeleton follows); spike and
+   experiment nodes *are* the end-to-end probe, so their first task is that probe, not a separate
+   skeleton; adr / design-doc / ktlo nodes produce a document or maintain behaviour and carry no
+   skeleton at all. At the **node** level, the node that *is* the initiative's walking skeleton carries
+   `skeleton: true` in front-matter. Whatever the first task is, foundational / toolchain work is
+   **folded into** its description — never a silent setup task before it (integration discovery must
+   happen on day one). There is no `foundational` node type: foundational work is a property of the
+   first **task**, not a node.
 
 5. **task↔acceptance flag** — at the **task** level, the aggregate/cross-seam-verification task is
    marked with a leading `` `acceptance` `` tag inside its checklist line, mirroring `` `skeleton` ``

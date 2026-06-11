@@ -60,9 +60,15 @@ Emit all five body sections — **What / Why / Completion / Assumptions / Key Ri
 
 Work through six sub-steps in order. Every task ends up on a single `- [ ]` line in the format shown in the template.
 
-**7a. Walking skeleton first, foundational work folded in.** The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before writing it, ask: "what toolchain or setup must exist for this skeleton to run?" Fold that answer into the skeleton task's description (a parenthetical is enough); never emit it as a separate setup task *before* the skeleton — that defers the integration discovery the skeleton exists to surface on day one.
+**7a. First task by node type and risk locus, foundational work folded in.** The first task's form follows the node type, the same way Completion does — a walking skeleton is a property of runnable-software nodes whose risk lives in integration, not of every node:
 
-**7b. Feature slices — each extends one direction and is independently deployable.** After the skeleton, add one task per feature slice. Each extends the skeleton in exactly one direction (one capability, one layer, one error path), is independently testable, and leaves the system deployable on its own. A half-wired slice that needs the next task to compile is a fragment, not a slice. Name each as one observable outcome.
+- **story** — the first task is the walking skeleton (thinnest slice that runs the node's path end-to-end, leading `` `skeleton` `` tag) **unless the node's dominant risk is core logic** rather than integration. Apply the risk-locus test (parallel to the Rule A1 trigger in step 4): if the hard, uncertain part is an algorithm, model, or numerical method — something a thin end-to-end thread would only stub — the first task is a **spike on that core**, and the skeleton follows once the core is proven. A skeleton threaded through easy plumbing that mocks the actual risk manufactures a green path (agentic P4); its `Done when:` must exercise the **real** risky seam — the third-party call, the cross-service boundary, the unproven dependency — never a mocked stand-in.
+- **spike / experiment** — the node *is* the minimal end-to-end probe; its first task is that probe. Do not add a separate skeleton task — it is redundant with the node itself.
+- **adr / design-doc / ktlo** — no skeleton: these produce a document or maintain existing behaviour, not runnable software, so there is no path to run end-to-end. Tasks, if any, follow the node's Completion form.
+
+Whatever the first task is, fold its foundational setup in. Before writing it, ask: "what toolchain or setup must exist for this task to run?" Fold that answer into the first task's description (a parenthetical is enough); never emit it as a separate setup task *before* it — that defers the integration discovery the first task exists to surface on day one.
+
+**7b. Feature slices — each extends one direction and is independently deployable.** After the first task, add one task per feature slice. Each extends the prior work in exactly one direction (one capability, one layer, one error path), is independently testable, and leaves the system deployable on its own. A half-wired slice that needs the next task to compile is a fragment, not a slice. Name each as one observable outcome. On adr / design-doc / ktlo nodes there are no feature slices — skip 7b; their tasks follow Completion.
 
 **7c. Gate: acceptance criterion on every task, written before ordering.** Write a `Done when:` clause on every task (skeleton included) before sequencing. It must be a verifiable condition, not a description of the work: "Done when: the endpoint returns 200 for a valid request" is a criterion; "Done when: the handler is wired up" is a description. A task whose criterion can't be written in one sentence is not yet well-scoped.
 
@@ -78,7 +84,7 @@ Write the directory layout from the template: the root `README.md` carrying goal
 
 ### 9. Gate: verify the emitted plan
 
-Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (also enforces `serves_kr`, `type`, `maps_to` presence). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five sections, every Assumptions item is tagged, the plan has at least one `` `skeleton` `` task, no node places a setup task before its skeleton, and every task carries a `Done when:` clause and a `Model:` annotation. If either fails, fix the file-set — do not relax the gate.
+Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (also enforces `serves_kr`, `type`, `maps_to` presence). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five sections, every Assumptions item is tagged, the plan carries a `` `skeleton` `` task where its runnable-software nodes call for one, no node places a setup task before its skeleton, and every task carries a `Done when:` clause and a `Model:` annotation. If either fails, fix the file-set — do not relax the gate.
 
 ## Artefact template
 
@@ -142,6 +148,10 @@ alternative, what it unblocks. Do not re-state the KR.>
 `*(none)*` is valid when no risks are identified.>
 
 ## Tasks
+<!-- First task's form varies by node type and risk locus (7a): the `skeleton`
+line below is the story-with-integration-risk case. A core-logic-risk story
+leads with a spike; spike/experiment nodes lead with the probe itself;
+adr/design-doc/ktlo nodes carry no skeleton. -->
 - [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in> · Done when: <verifiable condition> · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
 - [ ] <one observable outcome> · Done when: <verifiable condition> · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = L·L·L·L·L
 ```
@@ -171,6 +181,8 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 - A deliverable that meets a design-doc trigger has no `design-doc` node before its build nodes — or a reversible, single-surface deliverable was given one it doesn't need.
 - A node's fine-grained build tasks were expanded at emission time rather than deferred to pickup.
 - A setup or scaffolding task precedes the walking-skeleton task in a node.
+- A skeleton task threads mocked plumbing whose `Done when:` never exercises the real risky seam — a manufactured green path (agentic P4).
+- A core-logic-risk story leads with a skeleton that stubs the risk, instead of a spike on the core (7a risk-locus test ignored).
 - The plan was declared done without running `bin/walk-delivery-plan` and `bin/check-plan-framing`.
 - delivery-shape was run on a vague idea with no goal or KRs (should have routed to initiative-shape).
 
@@ -183,7 +195,7 @@ The skill is complete when:
 3. Every node carries `type`, `serves_kr`, and `maps_to`.
 4. Every deliverable meeting a trigger has a `design-doc` node as its first node, with build nodes blocked by it; deliverables meeting no trigger have none.
 5. Every node carries the five body sections, with Completion populated per its `type`, every Assumptions item tagged, and every Key Risk carrying a mitigation or falsifier.
-6. Each node's first task is the walking skeleton (no preceding setup task, foundational work folded in); remaining tasks are independently testable, deployable slices; every task carries a verifiable `Done when:` and a one-sentence/one-criterion scope; tasks are sequenced by dependency with external blocks flagged inline; every task carries a `Model:` annotation.
+6. Each node's first task follows its type and risk locus (story-with-integration-risk → walking skeleton; core-logic-risk story → spike; spike/experiment → the probe; adr/design-doc/ktlo → none), with no preceding setup task and foundational work folded in; remaining tasks are independently testable, deployable slices; every task carries a verifiable `Done when:` and a one-sentence/one-criterion scope; tasks are sequenced by dependency with external blocks flagged inline; every task carries a `Model:` annotation.
 7. `bin/walk-delivery-plan <plan>` exits 0.
 8. `bin/check-plan-framing <plan>` exits 0.
 
