@@ -141,11 +141,13 @@ the aggregate-verification task (flag 5 above). Examples:
 `` - [ ] `skeleton` — walk the tree, read front-matter, print counts (toolchain folded in) ``.
 `` - [ ] `acceptance` — evaluate aggregate result; write finding (confirmed / falsified) ``.
 
-### Five body sections
+### Five body sections (+ optional Non-goals)
 
-Every node body carries exactly **five sections** in addition to its front-matter, regardless of
-`type`. `delivery-shape` emits all five by default; `bin/check-plan-framing` enforces their
-presence (exits 1 if any heading is absent):
+Every node body carries exactly **five required sections** in addition to its front-matter,
+regardless of `type` or tier (lite or full — see *Tiers* below — share one body definition).
+`delivery-shape` emits all five by default; `bin/check-plan-framing` enforces their
+presence (exits 1 if any heading is absent). A **sixth section, `## Non-goals`, is optional** —
+absent by default, linted when present (an empty Non-goals heading fails):
 
 | Section | Content | Discipline rule |
 |---------|---------|-----------------|
@@ -154,6 +156,7 @@ presence (exits 1 if any heading is absent):
 | **Completion** | Type-dependent content (see vocabulary table). Heading is required on all types, including `ktlo`. | See vocabulary below for what each type holds. |
 | **Assumptions** | List items (`- …`), each tagged `(verified)` or `(to-verify)`. Empty section (`*(none)*`) is valid. | `bin/check-plan-framing` enforces the tag on every list item. `(to-verify)` items block pickup. |
 | **Key Risks** | List items (`- **Risk:** …`), each carrying `*Mitigation:* …` or `*Falsifier:* …`. Empty section (`*(none)*`) is valid. | A risk with neither a mitigation nor a falsifier is an unresolved worry, not a governed risk. |
+| *Non-goals* *(optional)* | List items (`- …`) naming scope this node deliberately excludes — work that would be tempting to absorb but is being declined. Add the section only when such a tempting-but-excluded scope exists; do not pad with "we are not building feature X" non-sequiturs. | `bin/check-plan-framing`: if the `## Non-goals` heading is present, the section must carry at least one list item. Distinct from `refactor`'s `**Out of scope:**` clause inside `## Completion` (which names what the **invariant** protects); `## Non-goals` names excluded **work**. |
 
 ---
 
@@ -175,6 +178,7 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 |--------|---------------------------|-------------------------------|--------------|-----------------|
 | `spike` | decision + stop condition | `**Decision:** <question>` + `**Stop condition:** <when to stop>` | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
 | `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | At-pickup task breakdown (per node type) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `refactor` | invariant + verification + protected scope (behaviour-preserving change) | `**Invariant:** <what stays true>` + `**Verified by:** <existing coverage, unchanged>` + `**Out of scope:** <what the invariant protects>` | At-pickup task breakdown (refactor — invariant-preserving) | `_tests/lite-refactor-nongoals/N01`, `N02` |
 | `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | prose naming what the accepted design doc covers | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
 | `adr` | an accepted decision record (Context / Decision / Consequences) | `**Decision:** <accepted decision>` + context/consequences summary + ADR reference | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition | `product-spike` (experiment discipline) | `N07` |
@@ -198,6 +202,16 @@ reducible to its child nodes and was absorbed into deliverable prose (see *Desig
 `capability` sits in the to-fill appendix below rather than the grounded table. It grounds the
 moment a capability carries a spec *not* reducible to its children — at which point it becomes a
 node, a peer of the `story` / `spike` / … nodes under its deliverable.
+
+`refactor` is **grounded when behaviour-preserving restructuring is planned** — extracting a
+helper, renaming collaborators, consolidating duplicated logic. Its completion is an
+**invariant** (what stays true), not a Cohn story or a `Done when:` list. The discriminator
+against `capability`: a `refactor` *preserves* behaviour (the invariant is the spec); a
+`capability` *adds* behaviour (the capability spec is the bet). The discriminator against
+`story`: a story's completion is "a verifiable new state" — fitting it to behaviour-preserving
+work forces a dishonest acceptance criterion ("Done when: nothing changed"). The discriminator
+against `ktlo`: ktlo is a carve-out with no completion framing; refactor carries an invariant
+the suite verifies.
 
 ### To-fill appendix — not exercised by this initiative
 
@@ -227,6 +241,31 @@ with a citation.
 `acceptance-criteria` · `decision+stop-condition` · `decision-record` · `the-design-doc` ·
 `hypothesis+success-metric` · `numeric-target` · `rollback-per-phase` · `the-capability-spec` ·
 `none` (carve-out). A node's `completion.form` is one of these, fixed by its `type`.
+
+---
+
+## Tiers — full hierarchy vs lite
+
+The contract supports **two tier shapes** sharing one body-section definition. The choice is a
+scale gate inside `delivery-shape` (see SKILL step 2); the gates accept either shape:
+
+| Tier | Triggered when | Root layout | Hierarchy | Manifest oracle | Skeleton mandate |
+|------|----------------|-------------|-----------|-----------------|------------------|
+| **Full** | a committed initiative with KR-worthy results — multiple deliverables, multiple nodes per deliverable | `D<n>-*/` directories + `_deliverable.md` + `N<nn>-*.md` | KR → deliverable → node → task | required in README | applies whenever any executable node (`story`, `refactor`, `capability`, `migration`, `experiment`) carries tasks |
+| **Lite** | a single outcome with ≤~3 changes and no KR worth tracking — task or small tuning job | flat `N<nn>-*.md` files at the plan root | items + (optional) tasks | none required | vacuous when no tasks; otherwise as above |
+
+**Both tiers reference one shared five-section body** (What / Why / Completion / Assumptions /
+Key Risks, plus optional Non-goals). Only the surrounding hierarchy and the task layer differ
+by tier — the body discipline is tier-independent so the gates apply identically.
+
+The walking-skeleton mandate is **conditional on executable software nodes**, not doc/spec/config
+changes. A node whose work has no executable path (`adr`, `design-doc`, `ktlo`, …) can carry no
+skeleton task and the plan still passes `bin/check-plan-framing` — there is nothing for a
+skeleton to run end-to-end. The gate detects tier from artefact shape (presence of `D*`/`N*` vs
+flat items) without a mode flag.
+
+The lite tier is grounded by `_tests/lite-refactor-nongoals/`, which also exercises the
+`refactor` type and the optional `## Non-goals` section.
 
 ---
 

@@ -36,9 +36,28 @@ A delivery-plan file-set under `examples/delivery-plans/<initiative-slug>/` (or 
 
 Write one sentence: "This initiative wants [outcome] for [who]." Anchor to the stated outcome, not to "what would make a plausible plan."
 
-### 2. Gate: confirm the input is a committed initiative
+### 2. Gate: scale — full hierarchy or lite tier
 
-Read the goal and KRs. delivery-shape consumes the committed initiative initiative-shape produces — it does not re-run that skill's goal/KR-shaping gates. If there is no goal sentence, or fewer KRs than the initiative was shaped with, the input is an idea, not an initiative — stop and route to initiative-shape. Do not invent KRs to proceed.
+Before checking whether KRs are present, triage scale. Two output shapes share one body
+discipline; the input picks the tier:
+
+- **Lite tier** — a single outcome with no KR worth tracking and ≤~3 distinct changes (a small
+  task, a tuning job, a behaviour-preserving sweep). Emit `Context` + `Goal` + one
+  `N<nn>-*.md` node per change at the plan root, each with the five-section body. **No** `D*`
+  deliverable directories, **no** KR/deliverable tagging, **no** task breakdown, **no** walking
+  skeleton, **no** manifest table. The lite plan still walks under `bin/walk-delivery-plan` and
+  passes `bin/check-plan-framing` — the gates detect the lite shape automatically.
+- **Full hierarchy** — anything that produces or maps to a committed initiative (goal + 3–5
+  KRs). Proceed through steps 3–9 as the full deliverable → node → task hierarchy.
+
+When in doubt, prefer lite: an under-shaped lite plan converts up to full cheaply, whereas a
+full plan emitted for a single task is pure ceremony. If you pick full, you owe an initiative;
+read the goal and KRs next and, if there is no goal sentence or fewer KRs than the initiative
+was shaped with, stop and route to initiative-shape. Do not invent KRs to proceed.
+
+The remaining workflow steps (3–9) describe the **full** path. Lite emits steps 5 (node body)
+and 9 (gate verification) only — KR mapping, design-doc triggering, task breakdown, and the
+file-set layout collapse to a flat `N*.md` set at the plan root.
 
 ### 3. Gate: map deliverables to KRs
 
@@ -50,17 +69,21 @@ For each deliverable, test the triggers: does it break into **more than ~5 nodes
 
 ### 5. Decompose each deliverable into nodes; select the type
 
-A node is polymorphic — not always a story. For each unit of work, select the node `type` from the vocabulary in `docs/delivery-shape-contract.md` (`story`, `spike`, `adr`, `experiment`, `ktlo`, …), which fixes its completion form. Tag every node with `type`, `serves_kr`, and `maps_to`. Do not copy a spike protocol or ADR template into the node — link to the source instead.
+A node is polymorphic — not always a story. For each unit of work, select the node `type` from the vocabulary in `docs/delivery-shape-contract.md` (`story`, `spike`, `adr`, `experiment`, `refactor`, `ktlo`, …), which fixes its completion form. **`refactor`** is the type for behaviour-preserving change — its `## Completion` is an invariant (`**Invariant:** … **Verified by:** … **Out of scope:** …`), not a Cohn story or `Done when:` list. Tag every node with `type`, `serves_kr`, and `maps_to`. Do not copy a spike protocol or ADR template into the node — link to the source instead.
 
 ### 6. Gate: five-section body on every node, with type-appropriate Completion
 
-Emit all five body sections — **What / Why / Completion / Assumptions / Key Risks** — on every node, regardless of type. The Cohn story form ("As <role>, I want…, so that…") is the first sentence of `## What` on story nodes. Completion content is type-dependent (story → `Done when:` list; spike → decision + stop condition; experiment → hypothesis + success metric; adr → decision record; design-doc → what the accepted doc covers; ktlo → none). Every Assumptions item carries a `(verified)` or `(to-verify)` tag; `(to-verify)` items block pickup. Every Key Risk carries a mitigation step or a falsifier. Enforced mechanically by `bin/check-plan-framing`.
+Emit all five body sections — **What / Why / Completion / Assumptions / Key Risks** — on every node, regardless of type or tier (lite and full share one body definition). The Cohn story form ("As <role>, I want…, so that…") is the first sentence of `## What` on story nodes. Completion content is type-dependent (story → `Done when:` list; spike → decision + stop condition; experiment → hypothesis + success metric; adr → decision record; design-doc → what the accepted doc covers; **refactor → `Invariant:` + `Verified by:` + `Out of scope:`**; ktlo → none). Every Assumptions item carries a `(verified)` or `(to-verify)` tag; `(to-verify)` items block pickup. Every Key Risk carries a mitigation step or a falsifier.
+
+An optional sixth section, **`## Non-goals`**, names scope the node deliberately excludes — work tempting to absorb but being declined, so the exclusion survives into pickup rather than being rediscovered there. Add it only when such tempting-but-excluded scope exists; do not pad. When the heading is present, the section must carry at least one list item. `## Non-goals` is distinct from `refactor`'s `**Out of scope:**` line inside `## Completion` (which names what the invariant protects); `## Non-goals` names excluded **work**.
+
+Enforced mechanically by `bin/check-plan-framing`.
 
 ### 7. Break each node into tasks
 
 Work through six sub-steps in order. Every task ends up on a single `- [ ]` line in the format shown in the template.
 
-**7a. Walking skeleton first, foundational work folded in.** The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before writing it, ask: "what toolchain or setup must exist for this skeleton to run?" Fold that answer into the skeleton task's description (a parenthetical is enough); never emit it as a separate setup task *before* the skeleton — that defers the integration discovery the skeleton exists to surface on day one.
+**7a. Walking skeleton first, foundational work folded in (executable nodes only).** The first task is the walking skeleton: the thinnest slice that runs the node's path end-to-end, marked with a leading `` `skeleton` `` tag. Before writing it, ask: "what toolchain or setup must exist for this skeleton to run?" Fold that answer into the skeleton task's description (a parenthetical is enough); never emit it as a separate setup task *before* the skeleton — that defers the integration discovery the skeleton exists to surface on day one. The skeleton mandate applies to executable software nodes (`story`, `refactor`, `capability`, `migration`, `experiment`); a doc/spec/config node (`adr`, `design-doc`, `ktlo`, …) has no executable path to run end-to-end and carries no skeleton task — only its non-skeleton breakdown tasks (if any).
 
 **7b. Feature slices — each extends one direction and is independently deployable.** After the skeleton, add one task per feature slice. Each extends the skeleton in exactly one direction (one capability, one layer, one error path), is independently testable, and leaves the system deployable on its own. A half-wired slice that needs the next task to compile is a fragment, not a slice. Name each as one observable outcome.
 
@@ -99,7 +122,7 @@ Every node — regardless of type — uses the same five-section body. Completio
 ---
 layer: node
 id: N01
-type: <story | spike | adr | experiment | ktlo | design-doc>
+type: <story | spike | adr | experiment | refactor | ktlo | design-doc>
 title: <one line>
 parent: D1
 serves_kr: KR<n>
@@ -128,6 +151,7 @@ alternative, what it unblocks. Do not re-state the KR.>
 <`adr` → `**Decision:** <accepted>` + context/consequences + ADR reference.>
 <`design-doc` → prose naming what the accepted design doc covers.>
 <`experiment` → `**Hypothesis:**` + `**Success metric:**` + falsification condition.>
+<`refactor` → `**Invariant:** <what stays true>` + `**Verified by:** <existing coverage, unchanged>` + `**Out of scope:** <what the invariant protects>`.>
 <`ktlo` → `None — roadmap A5 carve-out.`>
 
 ## Assumptions
@@ -140,6 +164,12 @@ alternative, what it unblocks. Do not re-state the KR.>
 <`- **Risk:** <…>` items, each carrying a `*Mitigation:*` step OR a `*Falsifier:*`
 (an observable outcome that would confirm it is not actually a risk).
 `*(none)*` is valid when no risks are identified.>
+
+## Non-goals  *(optional — include only when tempting-but-excluded scope exists)*
+
+<List items (`- <item>`) naming scope this node deliberately excludes. If the
+heading is present the section must carry at least one item; an empty
+Non-goals heading fails `bin/check-plan-framing`.>
 
 ## Tasks
 - [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in> · Done when: <verifiable condition> · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
@@ -159,6 +189,9 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 ## Red flags
 
 - A node is missing any of the five body sections, or Completion is absent on a story node.
+- A node carries a `## Non-goals` heading with no list items underneath — an empty exclusion list is a heading that drifted away from its content.
+- A `refactor` node's Completion is written as a Cohn story or a `Done when:` list instead of `**Invariant:**` + `**Verified by:**` + `**Out of scope:**`.
+- The skill was run on a single task or 2–3 changes and emitted the full KR → deliverable → node → task hierarchy with walking skeletons and a manifest (should have routed to the lite tier).
 - A task's `Done when:` describes the work performed rather than a verifiable outcome, or is absent.
 - A task description needs more than one sentence, or carries more than one independent `Done when:` — both require a split.
 - A feature slice leaves the system non-deployable, or depends on a later task to pass its own criterion — a fragment, not a slice.
