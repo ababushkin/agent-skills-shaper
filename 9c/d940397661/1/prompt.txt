@@ -9,3 +9,7 @@ initiative-shape, delivery-shape, design-doc and verify-implementaiton
 ---
 
 we can remove that gate reference from claude.md
+
+---
+
+/commit-commands:commit
