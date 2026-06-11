@@ -83,7 +83,8 @@ produces code that compiles but does not satisfy the AC — agentic P4: "seems r
 
 - Working-tree changes that satisfy the task's `Done when:` criterion.
 - One commit per slice, each passing the verification command.
-- If three consecutive GREEN attempts fail without narrowing the error: an escalation note
+- `.drain-handoff.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `pr-finishing`.
+- If three consecutive implementation attempts fail without narrowing the error: an escalation note
   naming the blocker, ready to hand off to `debugging`.
 
 ## Workflow
@@ -147,6 +148,21 @@ not a slice, it is a fragment.
 Commit format: conventional-commit prefix + one-line subject ≤ 70 chars. No co-author
 trailers.
 
+After committing, append this slice's record to `.drain-handoff.json` in the worktree root
+(create the file if absent). The file accumulates one entry per slice:
+
+```json
+{
+  "issue": "<issue-id from branch name or delivery plan>",
+  "slices": [
+    { "sha": "<40-char SHA of this commit>", "title": "<commit subject>", "why": "<commit body, or empty if no body>" }
+  ]
+}
+```
+
+This file is the input contract for `pr-finishing`. Without it, pr-finishing falls back to
+`git log` and loses commit-body context for the Why field in each PR body.
+
 **6. Repeat for remaining slices.**
 
 Return to step 2 for the next slice. Each slice extends the task in exactly one direction
@@ -155,8 +171,8 @@ is a fragment — merge the two, then split at a verifiable boundary.
 
 **7. [GATE] Consecutive-failure escalation — three reds, name the blocker.**
 
-If the same check fails across three consecutive GREEN attempts without progress (same error,
-no narrowing), stop the loop. Do not retry. Record:
+If the verification command fails across three consecutive implementation attempts (RED results)
+without progress — same error output, no narrowing toward green — stop the loop. Do not retry. Record:
 - The check command and its output verbatim.
 - The three implementation attempts and why each failed.
 - The hypothesis about what is blocking (dependency, missing context, wrong assumption).
@@ -166,7 +182,7 @@ without the blocker named is not persistence — it is noise that contaminates t
 
 ## Artefact template
 
-No file artefact. The skill produces:
+The skill produces one file artefact (`.drain-handoff.json`, grown one entry per commit) and an inline run log:
 
 ```
 Verification: <command>          # step 1 — recorded before any code
@@ -199,7 +215,7 @@ Verification: <command>          # step 1 — recorded before any code
 - Implementation written before a failing check exists.
 - A check passes on the first run after being written (immediate green = not testing missing behaviour).
 - A failing check is deleted, skipped, or `// @ts-ignore`'d to make the build proceed.
-- Three or more consecutive GREEN attempts without progress (same error, no narrowing), with no escalation to `debugging`.
+- Three or more consecutive RED results (failed implementation attempts) without progress (same error, no narrowing), with no escalation to `debugging`.
 - A commit contains multiple slices, or a commit leaves the verification command failing.
 - The verification form was improvised mid-slice rather than selected at step 1.
 - The refactor step added new behaviour or the commit message describes implementation, not outcome.
@@ -213,7 +229,7 @@ The skill has run correctly when:
 2. Each slice produced a failing check first, a minimal implementation that cleared it, and
    a commit — in that order, with no skipped steps.
 3. Each commit passes the verification command and its message names an observable outcome.
-4. If three consecutive GREEN attempts failed without narrowing the error, a blocker record
+4. If three consecutive implementation attempts (RED results) failed without narrowing the error, a blocker record
    exists and `debugging` was invoked with it as context — no further attempts without that hand-off.
 5. The final state of the working tree satisfies the task's `Done when:` criterion, confirmed
    by running the verification command and observing exit 0.
