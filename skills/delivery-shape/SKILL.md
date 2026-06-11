@@ -1,162 +1,329 @@
 ---
 name: delivery-shape
-description: Decomposes a committed initiative (goal + key results) into an ordered, verifiable delivery hierarchy — deliverables → nodes → tasks — that a human reads top-down and a deterministic reader walks bottom-up into a tracker manifest. Use after an initiative is shaped and before any node is picked up to build. Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative", "break the initiative into deliverables", "plan the delivery for this", "shape the delivery", "what are the deliverables for this initiative".
+description: Decomposes committed work - an initiative, single task, or accepted design doc - into an ordered, verifiable delivery hierarchy: deliverables -> nodes -> tasks.
 ---
 
 # Delivery shape
 
 ## Purpose
 
-Take a committed initiative — its goal and key results — and emit the full delivery hierarchy that sits between "we have an initiative" and "we know what to build, in what order, and how we'll know each piece is done."
+Take committed work and create a delivery plan that's easy for human's to review and for agents to action.
 
-The hierarchy has three layers: deliverables (each serving one KR), nodes (polymorphic units of work — a story, a spike, an ADR, an experiment, …), and tasks (the checklist inside a node). A human reads it top-down from the outcome; a deterministic reader walks it bottom-up into a tracker manifest. Every deliverable traces to a KR, every node names its completion form, and every node carries a uniform five-section body. The skill selects and delegates to the disciplines it points at; it does not re-author them inline.
+The input may be an initiative, a single task, or an accepted design doc. The hierarchy has three layers: deliverables, nodes, and tasks. Deliverables serve a stated outcome source. Nodes are typed units of work such as stories, spikes, ADRs, experiments, design docs, or KTLO work. Tasks are the verifiable checklist inside a node.
 
 ## When to use
 
-- A committed initiative exists (goal + 3–5 KRs) and you need the deliverable → node → task hierarchy before work starts.
-- You are about to write a flat task list from an initiative and want the outcome trace (deliverable ↔ KR) and per-node completion framing baked in instead.
+- Committed work exists and the desired outcome is known.
+- You need a deliverable → node → task hierarchy before build pickup.
+- You want traceability from each deliverable back to the relevant outcome source.
+- You are shaping work from one of these sources:
+  - an initiative with a goal and KRs
+  - a single task with acceptance criteria or a clear desired outcome
+  - an accepted design doc with decisions, constraints, and rollout target
 
 ## Do not use when
 
-- No committed initiative yet — the input is a vague idea or a problem with no goal/KRs. Run initiative-shape first; delivery-shape consumes its output.
-- A single node is ready to build — you have one issue and need its task breakdown. Use the at-pickup breakdown phase of your build agent or hand the node to your build skill.
-- Single-issue, bug, or KTLO work — create the issue directly in the ops slot. A bug fix does not need a deliverable hierarchy.
+- The input is only a vague idea or problem with no committed outcome. Route to the appropriate shaping skill first.
+- The work is already fully decomposed and ready to execute.
+- The request is just to implement one issue now, with no need for an intermediate delivery plan.
 
 ## Inputs
 
-A committed initiative as text: the goal sentence and 3–5 key results (the six-field shape initiative-shape produces is ideal; goal + KRs as plain text is the minimum). The KRs are the spine every deliverable traces to. If the input has no KRs, stop — there is nothing for deliverables to serve.
+Committed work as text.
+
+Supported input shapes:
+
+| Source | Minimum input | Traceability spine |
+|---|---|---|
+| Initiative | Goal plus KRs | KRs |
+| Single task | Task statement plus outcome or acceptance criteria | Acceptance criteria or stated outcome |
+| Accepted design doc | Accepted design, decisions, constraints, and rollout target | Design decisions, requirements, or rollout outcomes |
+
+If the input has no committed outcome source, stop. Do not invent outcomes, KRs, acceptance criteria, or design decisions to proceed.
 
 ## Outputs
 
-A delivery-plan file-set under `examples/delivery-plans/<initiative-slug>/` (or the path the caller names), laid out per `docs/delivery-shape-contract.md`: a root `README.md` (goal + KRs + tree + hand-count manifest), one `D<n>-<slug>/` directory per deliverable with a `_deliverable.md`, and one `N<nn>-<slug>.md` per node. The file-set walks cleanly under `bin/walk-delivery-plan` and passes `bin/check-plan-framing`.
+Emit a delivery-plan file-set matching `docs/delivery-shape-contract.md`.
+
+By default, write it under:
+
+```text
+examples/delivery-plans/<work-slug>/
+```
+
+unless the caller names another path.
+
+The file-set contains:
+
+- Root `README.md` with the source summary, traceability spine, rendered tree, and hand-count manifest.
+- One `D<n>-<slug>/` directory per deliverable.
+- One `_deliverable.md` per deliverable.
+- One `N<nn>-<slug>.md` file per node.
+
+The emitted plan must pass:
+
+```bash
+bin/walk-delivery-plan <plan>
+bin/check-plan-framing <plan>
+```
 
 ## Workflow
 
-### 1. Restate the problem
+### 1. Restate the work
 
-Write one sentence: "This initiative wants [outcome] for [who]." Anchor to the stated outcome, not to "what would make a plausible plan."
+Write one sentence:
 
-### 2. Gate: confirm the input is a committed initiative
+```text
+This work wants [outcome] for [who or what].
+```
 
-Read the goal and KRs. delivery-shape consumes the committed initiative initiative-shape produces — it does not re-run that skill's goal/KR-shaping gates. If there is no goal sentence, or fewer KRs than the initiative was shaped with, the input is an idea, not an initiative — stop and route to initiative-shape. Do not invent KRs to proceed.
+Anchor to the stated outcome, not to a plausible implementation.
 
-### 3. Gate: map deliverables to KRs
+### 2. Gate: confirm the input is committed work
 
-Group the work into deliverables, each a milestone-class chunk serving **exactly one KR**. Tag every `_deliverable.md` with `serves_kr:`. Two checks must hold: every deliverable serves one KR, and every KR is served by at least one deliverable. A KR with no deliverable is an unplanned outcome; a deliverable serving no KR is output without a bet.
+Identify the source type:
 
-### 4. Gate: design-doc-worthy deliverables get a design doc before build
+```text
+initiative | single-task | accepted-design-doc
+```
 
-For each deliverable, test the triggers: does it break into **more than ~5 nodes**, contain a **one-way-door** decision, touch **shared infrastructure**, or carry **meaningful user / cost / compliance** impact? If any holds, the deliverable's **first** node is a `design-doc` node (`type: design-doc`); the build nodes under it are **blocked by** that node and their task breakdown waits until the design doc is accepted. If none holds, proceed straight to nodes. A smaller architecturally-significant decision that is not design-doc-worthy takes an `adr` node instead. Delegate the design-doc discipline to the design-doc skill; do not re-author its structure inline.
+Then identify the traceability spine.
 
-### 5. Decompose each deliverable into nodes; select the type
+For an initiative, use the KRs.
 
-A node is polymorphic — not always a story. For each unit of work, select the node `type` from the vocabulary in `docs/delivery-shape-contract.md` (`story`, `spike`, `adr`, `experiment`, `ktlo`, …), which fixes its completion form. Tag every node with `type`, `serves_kr`, and `maps_to`. Do not copy a spike protocol or ADR template into the node — link to the source instead.
+For a single task, use the acceptance criteria or stated outcome.
 
-### 6. Gate: five-section body on every node, with type-appropriate Completion
+For an accepted design doc, use the accepted decisions, requirements, constraints, or rollout outcomes.
 
-Emit all five body sections — **What / Why / Completion / Assumptions / Key Risks** — on every node, regardless of type. The Cohn story form ("As <role>, I want…, so that…") is the first sentence of `## What` on story nodes. Completion content is type-dependent (story → `Done when:` list; spike → decision + stop condition; experiment → hypothesis + success metric; adr → decision record; design-doc → what the accepted doc covers; ktlo → none). Every Assumptions item carries a `(verified)` or `(to-verify)` tag; `(to-verify)` items block pickup. Every Key Risk carries a mitigation step or a falsifier. Enforced mechanically by `bin/check-plan-framing`.
+If no traceability spine exists, stop and route back to shaping. Do not fabricate one.
+
+### 3. Map deliverables to the traceability spine
+
+Group the work into milestone-class deliverables.
+
+Each deliverable must serve exactly one item from the traceability spine.
+
+Use the trace field defined by `docs/delivery-shape-contract.md`. Prefer the generalized form:
+
+```yaml
+serves_outcome: <KR1 | AC1 | DD1 | DEC1 | OUT1>
+```
+
+If the current contract still requires `serves_kr`, use only for initiative-shaped work and update the contract/checkers before using this skill for single tasks or design docs.
+
+Two checks must hold:
+
+- Every deliverable serves exactly one outcome item.
+- Every outcome item is served by at least one deliverable.
+
+An outcome item with no deliverable is unplanned. A deliverable with no outcome source is output without a bet.
+
+### 4. Decide whether a deliverable needs design first
+
+For each deliverable, check whether any design-doc trigger applies:
+
+- It breaks into more than about five nodes.
+- It contains a one-way-door decision.
+- It touches shared infrastructure.
+- It carries meaningful user, cost, compliance, or operational impact.
+
+If any trigger applies, the deliverable's first node is:
+
+```yaml
+type: design-doc
+```
+
+Build nodes under it are blocked by that design-doc node. Their detailed build task breakdown waits until the design doc is accepted.
+
+If the input itself is an accepted design doc, do not create another design-doc node unless a later deliverable introduces a new design question.
+
+If no design-doc trigger applies, proceed straight to nodes.
+
+If a smaller architectural decision matters but does not need a full design doc, create an `adr` node.
+
+Delegate discipline-specific structures to their source skills or references. Do not inline spike protocols, ADR templates, design-doc templates, or sizing rubrics.
+
+### 5. Decompose deliverables into nodes
+
+For each unit of work, select a node `type` from `docs/delivery-shape-contract.md`.
+
+Every node must carry:
+
+```yaml
+type: <node-type>
+serves_outcome: <outcome-id>
+maps_to: <tracker-shape>
+```
+
+If the current contract has not yet migrated from `serves_kr`, use the contract's required trace field consistently.
+
+Use the node type to determine the completion form.
+
+### 6. Write the five-section node body
+
+Every node must use the same five body sections:
+
+```markdown
+## What
+## Why
+## Completion
+## Assumptions
+## Key Risks
+```
+
+Completion varies by node type:
+
+| Node type | Completion form |
+|---|---|
+| `story` | `Done when:` list |
+| `spike` | Decision question + stop condition |
+| `experiment` | Hypothesis + success metric + falsification condition |
+| `adr` | Decision record + ADR reference |
+| `design-doc` | What the accepted design doc covers |
+| `ktlo` | `None - roadmap A5 carve-out.` |
+
+For story nodes, the first sentence of `## What` uses the Cohn form:
+
+```text
+As <role>, I want <capability>, so that <benefit>.
+```
+
+Every assumption must be tagged:
+
+```text
+*(verified)*
+*(to-verify)*
+```
+
+Any `(to-verify)` assumption blocks pickup.
+
+Every key risk must include either a mitigation or a falsifier.
 
 ### 7. Break each node into tasks
 
-Work through six sub-steps in order. Every task ends up on a single `- [ ]` line in the format shown in the template.
+Every task is a single unchecked Markdown task line.
 
-**7a. First task by node type and risk locus, foundational work folded in.** The first task's form follows the node type, the same way Completion does — a walking skeleton is a property of runnable-software nodes whose risk lives in integration, not of every node:
+Each task must include:
 
-- **story** — the first task is the walking skeleton (thinnest slice that runs the node's path end-to-end, leading `` `skeleton` `` tag) **unless the node's dominant risk is core logic** rather than integration. Apply the risk-locus test (parallel to the Rule A1 trigger in step 4): if the hard, uncertain part is an algorithm, model, or numerical method — something a thin end-to-end thread would only stub — the first task is a **spike on that core**, and the skeleton follows once the core is proven. A skeleton threaded through easy plumbing that mocks the actual risk manufactures a green path (agentic P4); its `Done when:` must exercise the **real** risky seam — the third-party call, the cross-service boundary, the unproven dependency — never a mocked stand-in.
-- **spike / experiment** — the node *is* the minimal end-to-end probe; its first task is that probe. Do not add a separate skeleton task — it is redundant with the node itself.
-- **adr / design-doc / ktlo** — no skeleton: these produce a document or maintain existing behaviour, not runnable software, so there is no path to run end-to-end. Tasks, if any, follow the node's Completion form.
+- One observable outcome.
+- One `Done when:` clause.
+- One `Model:` annotation.
+- Any external block flagged inline.
 
-Whatever the first task is, fold its foundational setup in. Before writing it, ask: "what toolchain or setup must exist for this task to run?" Fold that answer into the first task's description (a parenthetical is enough); never emit it as a separate setup task *before* it — that defers the integration discovery the first task exists to surface on day one.
+#### 7a. Choose the first task
 
-**7b. Feature slices — each extends one direction and is independently deployable.** After the first task, add one task per feature slice. Each extends the prior work in exactly one direction (one capability, one layer, one error path), is independently testable, and leaves the system deployable on its own. A half-wired slice that needs the next task to compile is a fragment, not a slice. Name each as one observable outcome. On adr / design-doc / ktlo nodes there are no feature slices — skip 7b; their tasks follow Completion.
+The first task depends on node type and risk locus.
 
-**7c. Gate: acceptance criterion on every task, written before ordering.** Write a `Done when:` clause on every task (skeleton included) before sequencing. It must be a verifiable condition, not a description of the work: "Done when: the endpoint returns 200 for a valid request" is a criterion; "Done when: the handler is wired up" is a description. A task whose criterion can't be written in one sentence is not yet well-scoped.
+| Node type / risk locus | First task |
+|---|---|
+| Story with integration risk | `skeleton` task exercising the real risky seam |
+| Story with core-logic risk | Spike on the core logic, then skeleton after the core is proven |
+| Spike | The minimal probe |
+| Experiment | The minimal experiment |
+| ADR | No skeleton; tasks follow the decision-record completion form |
+| Design doc | No skeleton; tasks follow the accepted-design completion form |
+| KTLO | No skeleton; tasks preserve existing behavior |
 
-**7d. Gate: size check — one sentence, one verifiable outcome.** Review every task against two tests: the description fits in one sentence, and the task has exactly one `Done when:` clause. A description needing more than one sentence holds multiple concerns; more than one independent `Done when:` means multiple tasks. Split any that fail. This is verification granularity, not effort estimation.
+Before writing the first task, ask:
 
-**7e. Dependency ordering — sequence tasks; flag external blocks inline.** Sequence so each task builds only on completed prior tasks: skeleton first, then feature slices ordered by dependency, not difficulty. For any task depending on a cross-team deliverable, external credential, third-party environment, or shared-infrastructure change outside this node, flag it inline with `⚠ blocks on: <dependency>`.
+```text
+What toolchain or setup must exist for this task to run?
+```
 
-**7f. Model routing — apply the 5-axis rubric and append a `Model:` annotation.** Score the five axes from `references/task-sizing.md` (RC, SC, HS, SR, OR) Low/Med/High and derive the tier and review flag using the reversibility-gated routing rule. Append the result inline; the annotation must begin with `Model:`. When SR = High, also append `companions code-review-and-quality`; when HS = High, also append `companions source-driven-development`. A task with no `Model:` annotation is not complete.
+Fold that setup into the first task. Do not create a separate setup task before it.
+
+A skeleton must exercise the real risky seam: the third-party call, cross-service boundary, unproven dependency, or other integration risk. Do not create a green path that only proves mocked plumbing.
+
+#### 7b. Add feature slices where applicable
+
+For runnable-software story nodes, add one task per feature slice after the first task.
+
+Each slice must:
+
+- Extend the prior work in one direction.
+- Be independently testable.
+- Leave the system deployable.
+- Be named as an observable outcome.
+
+Do not add feature slices to `adr`, `design-doc`, or `ktlo` nodes.
+
+#### 7c. Write acceptance criteria before ordering
+
+Every task needs a `Done when:` clause before sequencing.
+
+The clause must describe a verifiable result, not the work performed.
+
+Good:
+
+```text
+Done when: the endpoint returns 200 for a valid request.
+```
+
+Bad:
+
+```text
+Done when: the handler is wired up.
+```
+
+If the criterion cannot fit in one sentence, split the task.
+
+#### 7d. Check task size
+
+Each task must have:
+
+- One sentence of task description.
+- Exactly one `Done when:` clause.
+- One verifiable outcome.
+
+Split tasks that carry multiple concerns.
+
+#### 7e. Sequence by dependency
+
+Order tasks so each one builds only on completed prior tasks.
+
+Use dependency order, not perceived difficulty.
+
+Flag external blockers inline:
+
+```text
+blocks on: <dependency>
+```
+
+Use this for cross-team deliverables, external credentials, third-party environments, or shared-infrastructure changes outside the node.
+
+#### 7f. Add model routing
+
+Apply the 5-axis rubric from `references/task-sizing.md`:
+
+```text
+RC, SC, HS, SR, OR
+```
+
+Score each axis Low / Med / High, derive the tier and review flag, and append a `Model:` annotation.
+
+The annotation must begin with:
+
+```text
+Model:
+```
+
+A task without `Model:` is incomplete.
 
 ### 8. Emit the file-set
 
-Write the directory layout from the template: the root `README.md` carrying goal + KRs verbatim, the rendered tree, and the hand-count manifest (milestones / issues / sub-issues); one `D<n>/` per deliverable; one `N<nn>.md` per node. Numeric prefixes give deterministic order; pad node numbers past nine.
+Write the plan using the layout and frontmatter rules in `docs/delivery-shape-contract.md`.
 
-### 9. Gate: verify the emitted plan
+Use numeric prefixes for deterministic order:
 
-Run both gates. `bin/walk-delivery-plan <plan>` must exit 0 — the plan walks deterministically and the derived manifest equals the README oracle (also enforces `serves_kr`, `type`, `maps_to` presence). `bin/check-plan-framing <plan>` must exit 0 — every node carries the five sections, every Assumptions item is tagged, the plan carries a `` `skeleton` `` task where its runnable-software nodes call for one, no node places a setup task before its skeleton, and every task carries a `Done when:` clause and a `Model:` annotation. If either fails, fix the file-set — do not relax the gate.
-
-## Artefact template
-
-The emitted file-set (paths relative to the plan root):
-
-```
-<initiative-slug>/
-├── README.md                  goal + KRs verbatim · tree · hand-count manifest table
-├── D1-<slug>/
-│   ├── _deliverable.md        layer: deliverable · serves_kr · maps_to: <milestone-class>
-│   └── N01-<slug>.md          a node (see below)
-└── …
+```text
+D1-<slug>/
+N01-<slug>.md
+N02-<slug>.md
 ```
 
-Every node — regardless of type — uses the same five-section body. Completion content varies by `type`; the heading is required on all of them.
+Pad node numbers past nine.
 
-```markdown
----
-layer: node
-id: N01
-type: <story | spike | adr | experiment | ktlo | design-doc>
-title: <one line>
-parent: D1
-serves_kr: KR<n>
-maps_to: <issue-class>
-completion:
-  form: <completion-criterion form — see vocabulary in contract>
----
-
-# N01 — <title>
-
-## What
-
-<For `story`: the grounded story form (Cohn) — "As <role>, I want <capability>,
-so that <benefit>" — as the first sentence, then clarifying context.>
-<For other types: what this node investigates, decides, or maintains.>
-
-## Why
-
-<Per-node rationale beyond `serves_kr`: the bet this node makes, the rejected
-alternative, what it unblocks. Do not re-state the KR.>
-
-## Completion
-
-<`story` → `- **Done when:** <verifiable state>` list (≥1 item).>
-<`spike` → `**Decision:** <question>` + `**Stop condition:** <when to stop>`.>
-<`adr` → `**Decision:** <accepted>` + context/consequences + ADR reference.>
-<`design-doc` → prose naming what the accepted design doc covers.>
-<`experiment` → `**Hypothesis:**` + `**Success metric:**` + falsification condition.>
-<`ktlo` → `None — roadmap A5 carve-out.`>
-
-## Assumptions
-
-<`- <assumption> *(verified)*` or `- <assumption> *(to-verify)*` items.
-`(to-verify)` items block pickup. `*(none)*` is valid for ktlo and simple nodes.>
-
-## Key Risks
-
-<`- **Risk:** <…>` items, each carrying a `*Mitigation:*` step OR a `*Falsifier:*`
-(an observable outcome that would confirm it is not actually a risk).
-`*(none)*` is valid when no risks are identified.>
-
-## Tasks
-<!-- First task's form varies by node type and risk locus (7a): the `skeleton`
-line below is the story-with-integration-risk case. A core-logic-risk story
-leads with a spike; spike/experiment nodes lead with the probe itself;
-adr/design-doc/ktlo nodes carry no skeleton. -->
-- [ ] `skeleton` — <thinnest end-to-end slice; foundational work folded in> · Done when: <verifiable condition> · Model: Balanced · risk reversible · review standard · axes RC·SC·HS·SR·OR = H·M·L·L·L
-- [ ] <one observable outcome> · Done when: <verifiable condition> · Model: Fast · risk reversible · review standard · axes RC·SC·HS·SR·OR = L·L·L·L·L
-```
-
-The root `README.md` ends with the hand-count manifest the walk-script reproduces:
+The root `README.md` must include the hand-count manifest the walker reproduces:
 
 ```markdown
 | Tracker artefact | Source layer | Count |
@@ -166,43 +333,49 @@ The root `README.md` ends with the hand-count manifest the walk-script reproduce
 | Sub-issues | tasks (`- [ ]` lines) | **<n>** |
 ```
 
+### 9. Verify the plan
+
+Run:
+
+```bash
+bin/walk-delivery-plan <plan>
+bin/check-plan-framing <plan>
+```
+
+If either fails, fix the emitted file-set. Do not relax the gate.
+
 ## Red flags
 
-- A node is missing any of the five body sections, or Completion is absent on a story node.
-- A task's `Done when:` describes the work performed rather than a verifiable outcome, or is absent.
-- A task description needs more than one sentence, or carries more than one independent `Done when:` — both require a split.
-- A feature slice leaves the system non-deployable, or depends on a later task to pass its own criterion — a fragment, not a slice.
-- A cross-team or external dependency is not flagged inline on the task that blocks on it.
-- Any task line is missing its `Model:` annotation.
-- An Assumptions item lacks a `(verified)`/`(to-verify)` tag, or a Key Risk carries neither mitigation nor falsifier.
-- A deliverable has no `serves_kr`, or serves more than one KR.
-- A node is missing `type` or `maps_to`.
-- A node re-states a spike protocol, ADR structure, design-doc structure, or test discipline inline instead of delegating.
-- A deliverable that meets a design-doc trigger has no `design-doc` node before its build nodes — or a reversible, single-surface deliverable was given one it doesn't need.
-- A node's fine-grained build tasks were expanded at emission time rather than deferred to pickup.
-- A setup or scaffolding task precedes the walking-skeleton task in a node.
-- A skeleton task threads mocked plumbing whose `Done when:` never exercises the real risky seam — a manufactured green path (agentic P4).
-- A core-logic-risk story leads with a skeleton that stubs the risk, instead of a spike on the core (7a risk-locus test ignored).
-- The plan was declared done without running `bin/walk-delivery-plan` and `bin/check-plan-framing`.
-- delivery-shape was run on a vague idea with no goal or KRs (should have routed to initiative-shape).
+- The plan invents outcomes, KRs, acceptance criteria, or design decisions.
+- A deliverable serves zero outcome items or more than one outcome item.
+- An outcome item has no deliverable.
+- A design-doc-worthy deliverable has no first `design-doc` node.
+- An accepted design doc input creates a duplicate design-doc node without a new design question.
+- A reversible, single-surface deliverable was given an unnecessary design-doc node.
+- A node is missing `type`, trace field, or `maps_to`.
+- A node omits one of the five required body sections.
+- A node inlines a delegated discipline instead of linking to its source skill or reference.
+- A setup/scaffolding task appears before the first risk-facing task.
+- A skeleton proves mocked plumbing instead of the real risky seam.
+- A core-logic-risk story starts with a skeleton that stubs the core risk.
+- A task lacks `Done when:` or `Model:`.
+- A task has multiple independent completion criteria.
+- A cross-team or external dependency is not flagged inline.
+- The plan was declared complete without running both gates.
 
 ## Exit criteria
 
 The skill is complete when:
 
-1. A file-set exists with a root `README.md`, one `D<n>/` per deliverable, and one `N<nn>.md` per node.
-2. Every deliverable carries `serves_kr`, and every KR is served by at least one deliverable.
-3. Every node carries `type`, `serves_kr`, and `maps_to`.
-4. Every deliverable meeting a trigger has a `design-doc` node as its first node, with build nodes blocked by it; deliverables meeting no trigger have none.
-5. Every node carries the five body sections, with Completion populated per its `type`, every Assumptions item tagged, and every Key Risk carrying a mitigation or falsifier.
-6. Each node's first task follows its type and risk locus (story-with-integration-risk → walking skeleton; core-logic-risk story → spike; spike/experiment → the probe; adr/design-doc/ktlo → none), with no preceding setup task and foundational work folded in; remaining tasks are independently testable, deployable slices; every task carries a verifiable `Done when:` and a one-sentence/one-criterion scope; tasks are sequenced by dependency with external blocks flagged inline; every task carries a `Model:` annotation.
-7. `bin/walk-delivery-plan <plan>` exits 0.
-8. `bin/check-plan-framing <plan>` exits 0.
+- The delivery-plan file-set exists.
+- `bin/walk-delivery-plan <plan>` exits 0.
+- `bin/check-plan-framing <plan>` exits 0.
 
 ## Related
 
-- initiative-shape: produces the committed initiative (goal + KRs) this skill consumes.
-- design-doc: the delegate for a design-doc-worthy deliverable, before its build nodes' task breakdown.
-- `docs/delivery-shape-contract.md` — the plan-artefact contract: layers, cross-reference convention, per-node tags, node-type vocabulary, delegation timing.
-- `bin/walk-delivery-plan`, `bin/check-plan-framing` — the deterministic reader and framing gate.
-- `references/task-sizing.md` — the 5-axis model-routing rubric.
+- `initiative-shape` - produces committed initiatives this skill can consume.
+- `design-doc` - owns design-doc structure for design-doc-worthy deliverables.
+- `docs/delivery-shape-contract.md` - plan artefact contract, layers, node vocabulary, frontmatter, and cross-reference rules.
+- `bin/walk-delivery-plan` - deterministic reader and manifest checker.
+- `bin/check-plan-framing` - node/task framing gate.
+- `references/task-sizing.md` - 5-axis model-routing rubric.
