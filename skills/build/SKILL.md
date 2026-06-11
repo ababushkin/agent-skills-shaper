@@ -86,6 +86,8 @@ produces code that compiles but does not satisfy the AC — agentic P4: "seems r
 - `.drain-handoff.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `pr-finishing`.
 - If three consecutive implementation attempts fail without narrowing the error: an escalation note
   naming the blocker, ready to hand off to `debugging`.
+- After all slices are green and committed: ready for optional `simplify` pass to reduce accidental
+  complexity before review.
 
 ## Workflow
 
@@ -169,6 +171,9 @@ Return to step 2 for the next slice. Each slice extends the task in exactly one 
 and is independently verifiable. A slice that requires the next slice to pass its own check
 is a fragment — merge the two, then split at a verifiable boundary.
 
+When all slices are complete and all tests pass, open `simplify` for an optional post-green
+clarity pass before review.
+
 **7. [GATE] Consecutive-failure escalation — three reds, name the blocker.**
 
 If the verification command fails across three consecutive implementation attempts (RED results)
@@ -195,6 +200,9 @@ Verification: <command>          # step 1 — recorded before any code
 
 # If escalating:
 [BLOCKED] <blocker hypothesis> → hand off to debugging skill
+
+# After all slices are green:
+[DONE] All slices complete, tests pass → optional: open simplify skill for post-green clarity pass
 ```
 
 ## Common rationalisations
@@ -238,6 +246,8 @@ The skill has run correctly when:
 
 - `skills/debugging/SKILL.md` — escalation target when three consecutive RED loops fail
   to narrow to green; receives the blocker record as input
+- `skills/simplify/SKILL.md` — exit point for post-green clarity pass after all slices are
+  complete and tests pass
 - `rules/eng-principles-agentic.md` — P3 (spec as seatbelt), P4 (evidence beats vibes),
   P6 (stop the line), P8 (slices and gates, not calendar time)
 - `rules/eng-principles-universal.md` — Rule B2 (walking skeleton first), Rule C8 (tests
