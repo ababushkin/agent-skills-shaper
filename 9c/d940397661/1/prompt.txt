@@ -1,0 +1,11 @@
+have a look at the two uncommited files, i've removed a lot of redundant content and trimmed them down so that they're focused, minimal and easy to comprehend
+
+i want to review my other critical skills with the same editing quality in mind to make my skills consistent
+
+---
+
+initiative-shape, delivery-shape, design-doc and verify-implementaiton
+
+---
+
+we can remove that gate reference from claude.md

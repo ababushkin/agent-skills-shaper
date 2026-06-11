@@ -1,0 +1,132 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "9cd940397661",
+  "session_id": "9449a08a-95ad-4518-a06c-c2d335a49fa1",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T07:33:29.828806Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "CLAUDE.md",
+    "docs/skill-anatomy.md",
+    "skills/delivery-shape/SKILL.md",
+    "skills/design-doc/SKILL.md",
+    "skills/initiative-shape/SKILL.md",
+    "skills/pr-finishing/SKILL.md",
+    "skills/pr-prepare/SKILL.md",
+    "skills/verify-implementation/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "740100f48fd4",
+  "token_usage": {
+    "input_tokens": 50051,
+    "cache_creation_tokens": 159980,
+    "cache_read_tokens": 2569261,
+    "output_tokens": 32999,
+    "api_call_count": 28
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-commit-commands:commit-2026-06-11T07:33:12.899327Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "commit-commands:commit"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "740100f48fd4",
+      "timestamp": "2026-06-11T07:33:12.899327Z",
+      "native": {
+        "command": "/commit-commands:commit"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/commit-commands:commit",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T07:33:29.810609Z",
+    "agent_lines": 21,
+    "agent_removed": 675,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 338,
+    "total_committed": 21,
+    "total_lines_changed": 1034,
+    "agent_percentage": 67.31141199226306,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 339,
+      "user_lines_removed": 338,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126,
+        "skills/pr-finishing/SKILL.md": 111,
+        "skills/pr-prepare/SKILL.md": 102
+      },
+      "user_removed_per_file": {
+        "skills/pr-finishing/SKILL.md": 221,
+        "skills/pr-prepare/SKILL.md": 117
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 225,
+      "user_lines_removed": 0,
+      "agent_lines_added": 449,
+      "agent_lines_removed": 338,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126,
+        "examples/delivery-plans/watch-pane-rich-rendering/D2-claude-code-style-transcript/N02-transcript-rendering-core.md": 99
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 231,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1055,
+      "agent_lines_removed": 1010,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126,
+        "examples/delivery-plans/watch-pane-rich-rendering/D1-filter-never-breaks-the-pane/N01-crash-proof-filter.md": 2,
+        "examples/delivery-plans/watch-pane-rich-rendering/D2-claude-code-style-transcript/N02-transcript-rendering-core.md": 94,
+        "examples/delivery-plans/watch-pane-rich-rendering/README.md": 9
+      },
+      "user_removed_per_file": {
+        "examples/delivery-plans/watch-pane-rich-rendering/D1-filter-never-breaks-the-pane/N01-crash-proof-filter.md": 4,
+        "examples/delivery-plans/watch-pane-rich-rendering/README.md": 5
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 231,
+      "user_lines_removed": 9,
+      "agent_lines_added": 1058,
+      "agent_lines_removed": 1013,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 126,
+        "examples/delivery-plans/watch-pane-rich-rendering/D1-filter-never-breaks-the-pane/N01-crash-proof-filter.md": 2,
+        "examples/delivery-plans/watch-pane-rich-rendering/D2-claude-code-style-transcript/N02-transcript-rendering-core.md": 94,
+        "examples/delivery-plans/watch-pane-rich-rendering/README.md": 9
+      },
+      "user_removed_per_file": {
+        "examples/delivery-plans/watch-pane-rich-rendering/D1-filter-never-breaks-the-pane/N01-crash-proof-filter.md": 4,
+        "examples/delivery-plans/watch-pane-rich-rendering/README.md": 5
+      }
+    }
+  ]
+}
