@@ -62,7 +62,6 @@ Ask explicitly and wait for answers. Do not infer missing commitments.
 - **What 3 observable states would tell us it worked?** Default to 3 KRs; cap at 5. Each KR must be verifiable from the system: a binary pass/fail, a fitness function firing, or a measurable delta.
 - **Which KR is the bet, which are brakes, and which is foundation?** `bet` is what changes this cycle. `brake` protects a working property from regression. `foundation` makes the bet measurable. Most initiatives have at most 1-2 bets.
 - **For each KR, fill the four required sub-fields:** `baseline`, `target`, `measured over`, and `how we'll know`.
-- **For each KR, assign one delivery tag:** `(commit)` for must-hit operability, no-silent-failure, or baseline-tracking KRs; `(stretch)` for aspirational outcome, behavior-change, or calibration KRs.
 
 Default KR mix by type:
 
@@ -80,50 +79,41 @@ Ask two separate questions:
 - **Appetite:** how many issues? Guide: `~5` small, `~10` medium, `~15` large. If the answer exceeds 15, flag that the initiative needs splitting.
 - **Kill condition:** what observable state says the bet did not work and we should stop? Examples: "If [KR] fails for [N] consecutive cycles", "If we ship [X] and [baseline metric] does not move", or "If the research establishes [Y]."
 
-### 6. Synthesise into initiative format
+### 6. Synthesize the draft
 
 Draft the six fields using the template below. The Goal is the Objective. Each KR headline is the observable claim; do not add a separate `state:` field.
 
 Keep KR language concrete. Avoid "improve", "better", "enhance", and arbitrary "run N times" thresholds unless paired with a correctness or quality dimension.
 
-Add the italic `Layer 1` / `Layer 2` audit footer under each KR and the dimensions summary after the KR list. Use `references/kr-quality-templates.md` for dimensions, templates, KR roles, and grader-backed patterns.
+Use `references/kr-quality-templates.md` only when you need help choosing strong KR dimensions, roles, or evidence patterns. Do not add rubric/audit annotations to the user-facing shape.
 
 Optional note: include **Dominant model tier** when task routing matters. Use `Fast` for mostly mechanical rewrites, `Balanced` for bounded but non-trivial reasoning, and `Frontier` for one-way doors such as schema migrations, public APIs, auth, production data, or orchestrator-level decomposition. See `references/task-sizing.md`.
 
 Present the draft. Do not record or emit it yet.
 
-### 7. Gate: user confirms the draft
+### 7. Gate: user confirmation
 
-Ask explicitly: "Does this capture the initiative correctly? Any changes to the Objective, Key results, kill condition, or project type before I create the project?"
+Ask: "Does this capture the initiative correctly? Any changes to the Objective, Key results, kill condition, or project type before I create the project?"
 
 Do not proceed until the user confirms.
 
 ### 8. Gate: verification rubric — 11 cross-cutting rules
 
-Run these checks against the confirmed draft. Each is pass/fail. Any failure returns the draft to Step 6 for repair. The shape is not captured until every hard rule passes.
+Grade the confirmed draft against these checks. Each one must pass before capture. If a check fails, repair the draft in Step 6 and re-confirm only the changed parts with the user.
 
 | #   | Rule | Pass condition |
 | --- | --- | --- |
-| 1   | All six fields present | Goal / Key results / Affected repos / Appetite / Kill condition / Project type are non-empty |
-| 2   | Goal names who + outcome | Goal contains an affected party and desired outcome, with no solution verb such as "build", "add", "integrate", or "ship" |
-| 3   | Initiative name is a goal/problem | Name does not open with a solution verb |
-| 4   | KR count | At least 3 KRs and no more than 5 |
-| 5a  | No degenerate KRs | `target != baseline` numerically or by state change |
-| 5b  | Distinct Layer 1 dimensions | No two KRs share a Layer 1 dimension, unless the referenced template explicitly permits it |
-| 5c  | KRs are not Goal restatements | Each KR measures a property of the Goal, not the Goal itself |
-| 5d  | KR matches Layer 2 template | Each KR's claim matches the cited template in `references/kr-quality-templates.md` |
-| 5e  | Language ban | No vague "improve", "better", "enhance", or arbitrary "run N times" threshold |
-| 5f  | Grader-backed or carved out | `how we'll know` points to a command, script, query, metric, or concrete artefact that can emit or support a verdict; manual grading is explicitly carved out only when the verdict is irreducibly qualitative or the initiative is one-shot |
-| 6   | KR sub-fields complete | Every KR has non-placeholder `baseline`, `target`, `measured over`, and `how we'll know` values |
-| 7   | Delivery tag present | Every KR has exactly one of `(commit)` or `(stretch)` |
-| 8   | Kill condition is observable | Kill condition names a concrete stop state, not "if it doesn't work" |
-| 9   | Project type is canonical | Project type is one of 1-6 |
-| 10  | Appetite is in issues | Appetite is expressed as `~N issues`, not days, weeks, or sprints |
-| 11  | Role tag present | Every KR has exactly one of `bet`, `brake`, or `foundation` |
+| 1   | Goal is outcome-shaped | Names who is affected and what should be true for them; does not describe a solution to build |
+| 2   | Project type fits | One of the six project types is selected, and the KRs fit that type's default mix closely enough to be useful |
+| 3   | KRs are few and distinct | 3-5 KRs, each measuring a different important dimension of success |
+| 4   | KRs are observable | Each KR has a real baseline, target, measurement window, and evidence source |
+| 5   | KRs are not fake progress | No KR is vague, degenerate, a restatement of the Goal, or an arbitrary output count |
+| 6   | KR roles are clear | Each KR is marked as a `bet`, `brake`, or `foundation`, so downstream deliverables can be sequenced correctly |
+| 7   | Scope has an off-ramp | Appetite is expressed as `~N issues`, and the kill condition names an observable stop state |
 
-Soft warning: if every KR is tagged `bet`, ask whether a brake or foundation KR is missing. Do not force one of each role; some shapes are honestly 2 bets + 1 foundation, or 1 bet + 2 brakes.
+If every KR is tagged `bet`, ask whether a brake or foundation KR is missing. Do not force one of each role; some shapes are honestly 2 bets + 1 foundation, or 1 bet + 2 brakes.
 
-Report failing rules by number and quote the specific text that failed. For rule 5, name the sub-rule.
+Report only the failing rule numbers and the shortest useful reason. Do not expose internal rubric vocabulary in the final initiative shape.
 
 ### 9. Capture or hand off the shape
 
@@ -141,19 +131,19 @@ The shape reads as a product OKR — a non-pack-author should be able to grade e
 
 **Key results:**
 
-**KR1 (commit|stretch)** - [observable claim: binary pass/fail, fitness function firing, or measurable delta] *(bet|brake|foundation)*
+**KR1** - [observable claim: binary pass/fail, fitness function firing, or measurable delta] *(bet|brake|foundation)*
 - baseline: [current value/state]
 - target: [target value/state]
 - measured over: [time frame or N units]
 - how we'll know: [file path / query / log / cached report / metric + system; if grader-backed, include the command that emits the verdict]
 
-**KR2 (commit|stretch)** - [observable claim] *(bet|brake|foundation)*
+**KR2** - [observable claim] *(bet|brake|foundation)*
 - baseline: ...
 - target: ...
 - measured over: ...
 - how we'll know: ...
 
-**KR3 (commit|stretch)** - [observable claim] *(bet|brake|foundation)*
+**KR3** - [observable claim] *(bet|brake|foundation)*
 - baseline: ...
 - target: ...
 - measured over: ...
