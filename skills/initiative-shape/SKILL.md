@@ -1,6 +1,6 @@
 ---
 name: initiative-shape
-description: Shapes a vague idea into a properly formed initiative — goal sentence, 3 measurable key results (each with baseline / target / measured over / how we'll know, a commit/stretch tag, and a bet/brake/foundation role), affected repos, appetite, kill condition, and project type. Records the shape via the installed tracker binding when one is present, otherwise emits a paste-ready markdown block. Use when starting any sustained body of work, converting a repo-aliased project into a goal-oriented initiative, or preparing for cycle planning. Trigger phrases: "I want to work on", "new initiative", "create a project", "we should tackle", "shape this for the next cycle", "what should the next initiative be".
+description: "Shapes a vague idea into a properly formed initiative — goal sentence, 3 measurable key results (each with baseline / target / measured over / how we'll know, a commit/stretch tag, and a bet/brake/foundation role), affected repos, appetite, kill condition, and project type. Records the shape via the installed tracker binding when one is present, otherwise emits a paste-ready markdown block. Use when starting any sustained body of work, converting a repo-aliased project into a goal-oriented initiative, or preparing for cycle planning."
 ---
 
 # Initiative shape
