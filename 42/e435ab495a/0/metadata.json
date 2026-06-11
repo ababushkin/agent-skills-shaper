@@ -1,0 +1,93 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "42e435ab495a",
+  "session_id": "01564105-a66e-4224-8df0-00452ce98beb",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-11T11:58:49.523838Z",
+  "branch": "docs/readme-self-contained-rewrite",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "README.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "3b1092c49f87",
+  "token_usage": {
+    "input_tokens": 16323,
+    "cache_creation_tokens": 43989,
+    "cache_read_tokens": 593801,
+    "output_tokens": 10234,
+    "api_call_count": 12
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_016aKGWMPaJGMzppGxpymgYK",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "elements-of-style:writing-clearly-and-concisely"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "3b1092c49f87",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 54,
+        "end": 55,
+        "entry_ids": [
+          "e7c0319a-f528-4545-ab41-9ee75ca6b3b6"
+        ],
+        "tool_use_id": "toolu_016aKGWMPaJGMzppGxpymgYK"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_016aKGWMPaJGMzppGxpymgYK"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: elements-of-style:writing-clearly-and-concisely",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-11T11:58:49.51482Z",
+    "agent_lines": 93,
+    "agent_removed": 136,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 93,
+    "total_lines_changed": 229,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 127,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 127
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 127,
+      "user_lines_removed": 0,
+      "agent_lines_added": 93,
+      "agent_lines_removed": 136,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 127
+      }
+    }
+  ]
+}
