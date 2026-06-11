@@ -152,7 +152,7 @@ Skills are plain Markdown. Paste the relevant `rules/*.md` or `skills/<name>/SKI
 
 ### Attribution
 
-This pack is a soft fork of [addyosmani/agent-skills](https://github.com/addyosmani/agent-skills) by Addy Osmani. It inherits the structural conventions — skill frontmatter, anatomy specs, the `SKILL.md` pattern. Where an artefact has a counterpart there, the relationship is declared in its frontmatter (`predecessor`, `kept_from_predecessor`, `changed_from_predecessor`).
+Inspired by [superpowers](https://github.com/obra/superpowers) and [agent-skills](https://github.com/addyosmani/agent-skills).
 
 </details>
 
