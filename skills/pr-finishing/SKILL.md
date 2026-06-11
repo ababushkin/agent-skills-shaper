@@ -116,8 +116,9 @@ line on the first failure).
 **3. Read the slice manifest.**
 Check for `.drain-handoff.json` in the worktree root. If present, read the `slices` array; each
 entry carries `sha`, `title`, and optionally `why`. If absent, run
-`git log main..HEAD --reverse --format=%H %s` and treat each commit as one slice, deriving
-the title from the commit subject and the Why from the commit body.
+`git log main..HEAD --reverse --format=%H %B` and treat each commit as one slice, deriving
+the title from the first line of `%B` (the subject) and the Why from the remainder (the body).
+`%B` emits subject and body together; `%s` alone omits the body and always yields an empty Why.
 
 Log a notice if the manifest is absent — it means the worker did not follow slice-during-build
 discipline; the skill continues on best-effort and records the path taken.
@@ -134,11 +135,14 @@ Check in order: `which gt` exits 0; `gt auth status` exits 0; `gt repo init --ch
 **5. Graphite path — branch, track, body, submit.**
 For each slice (oldest commit first):
 
-a. `gt branch create <issue>/<slug>` (or `gt track --branch <name>`) to associate the commit
-   with a Graphite branch.
-b. Write the What/Why/Focus body for this slice (see Artefact template) and set it via
-   `gt pr description` or the equivalent `gh pr edit` after `gt stack submit`.
+a. `git checkout <sha>` (the slice's exact commit) so HEAD points at this slice, then run
+   `gt branch create <issue>/<slug>` (or `gt track --branch <name>`) to track this commit
+   as a Graphite branch. Without the checkout, all branches point at the branch tip.
+b. Draft the What/Why/Focus body for this slice (see Artefact template) and save it — do not
+   attempt to set it yet; the PR does not exist until after `gt stack submit`.
 c. After all slices are tracked, run `gt stack submit --no-interactive` to submit the full stack.
+   Then, for each submitted PR, set the drafted body via `gh pr edit <url> --body "<body>"`.
+   Wrap the `gh pr edit` call in the same recovery loop as `gt` calls.
 
 **Recovery loop** — wrap every `gt` call:
 
@@ -165,7 +169,9 @@ c. Write the What/Why/Focus body (same template as the Graphite path — artefac
 d. `git push -u origin <branch>`.
 e. `gh pr create --title "<title>" --body "<body>"`.
 
-After all slices, record PR URLs in `.drain-handoff.json` under `pr_urls`. The body and trail
+After all slices, verify each PR URL is reachable (`gh pr view <url>` exits 0) before proceeding.
+If any URL is missing or unreachable: stop, report, do not post the review-summary comment.
+Record the confirmed URLs in `.drain-handoff.json` under `pr_urls`. The body and trail
 artefacts must be identical to what the Graphite path would have produced.
 
 **8. Review-summary comment and Linear status update.**
