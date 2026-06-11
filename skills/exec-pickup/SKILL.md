@@ -9,7 +9,7 @@ description: >
   "start working on this ticket", "drain this issue", "exec:pickup", "work on ABA-NNN".
 ---
 
-# Exec: pickup (front door)
+# Exec: pickup
 
 ## Purpose
 
@@ -33,6 +33,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 - **Issue ID** — a Linear issue identifier (e.g. `ABA-363`)
 - **Worktree path** — where the issue branch is checked out
 - **Branch name** — the git branch for this issue
+- **Parent branch** — `main`, or the parent branch in the stack if this work stacks on another issue
 
 ## Outputs
 
@@ -51,27 +52,31 @@ Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `iss
 
 If `blocked_by[]` is non-empty, invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
 
-### 3. Write the envelope
+### 3. Rebase onto the parent branch
+
+Determine the parent branch — `main` by default, or the parent branch in the stack if this work stacks on another issue — and rebase the worktree branch onto it before any build begins. Building on a stale base produces conflicts at finish; rebase at pickup, on fresh context, instead. Record the chosen parent in `parent_branch`.
+
+### 4. Write the envelope
 
 Write `pickup-envelope.json` (see Artefact template) to the worktree root. This file is the contract — every downstream skill reads it; none re-reads the Linear issue.
 
-### 4. Gate: invoke `exec:breakdown`
+### 5. Gate: invoke `exec:breakdown`
 
 Delegate to `exec:breakdown`, passing the envelope. It returns an ordered task list, each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, and `axes` (RC·SC·HS·SR·OR). If it returns no tasks or any task lacks `done_when`, halt and comment naming the gap.
 
-### 5. Build each slice with `exec:build`
+### 6. Build each slice with `exec:build`
 
 For each task in order, delegate to `exec:build` with the task and the envelope path. `exec:build` owns the RED → GREEN → commit loop, including `exec:debug` on a stuck red loop and `exec:simplify` on green. Do not advance until the task's `done_when` is satisfied and a commit exists.
 
-### 6. Gate: invoke `exec:review`
+### 7. Gate: invoke `exec:review`
 
 After all slices are committed, delegate to `exec:review` with the working-tree diff and the envelope path (so the spec-compliance persona reads `ac_checklist` directly). On `NO-GO`, loop back into `exec:build` on the failing findings. Do not proceed until the verdict is `GO`.
 
-### 7. Gate: invoke `exec:verify`
+### 8. Gate: invoke `exec:verify`
 
 Delegate to `exec:verify` with the envelope's `ac_checklist` and the diff. A fail loops back into `exec:build`; a pass is the green light for finishing.
 
-### 8. Invoke `exec:finish`
+### 9. Invoke `exec:finish`
 
 Delegate to `exec:finish` with the envelope, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition.
 
@@ -81,6 +86,7 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 {
   "issue_id": "<id>",
   "branch": "<branch>",
+  "parent_branch": "<main | parent branch in the stack>",
   "worktree_path": "<path>",
   "ac_checklist": ["<verbatim AC item>", "…"],
   "body_md": "<full issue body>",
@@ -111,5 +117,3 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 - `skills/execution-review/SKILL.md` — `exec:review` (persona fan-out, ADR 0003 dispatch)
 - `skills/verify-implementation/SKILL.md` — `exec:verify`
 - `skills/pr-prepare/SKILL.md` — `exec:finish`
-- `docs/design-docs/execution-workflow/design-doc.md` — the accepted N04 contract: skill graph, handoff contract table, verb namespace
-- `docs/adr/0004-execution-verb-namespace.md` — decision of record for the `exec:*` prefix
