@@ -107,4 +107,3 @@ Ready for: build (implement fix) | design-doc (architectural escalation)
 
 - `skills/build/SKILL.md` — escalates here after three RED loops without narrowing; receives the root-cause note as input.
 - `skills/design-doc/SKILL.md` — escalation target when the cause is architectural.
-- Ported from `superpowers/systematic-debugging` (MIT): four-phase root-cause methodology and the no-fix-before-understanding rule.

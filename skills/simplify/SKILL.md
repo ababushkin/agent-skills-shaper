@@ -112,4 +112,3 @@ Evidence:
 ## Related
 
 - `skills/build/SKILL.md` — source of the working code; simplify is its post-green exit point.
-- Ported from `agent-skills/code-simplification` (MIT): the five principles, concrete pattern signals, and Chesterton's Fence.
