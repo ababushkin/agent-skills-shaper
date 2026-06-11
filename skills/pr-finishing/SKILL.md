@@ -20,6 +20,7 @@ Do not use this skill to hide failing tests, submit a known-broken branch, or re
 ## Inputs
 
 - Feature branch with one logical change per commit.
+- Optional base branch, `<base>` (default `main`). When the work is stacked on another branch rather than `main` — e.g. a drain-cycle worktree chained off a prior issue's branch — the caller passes that branch as the base. Resolution order: an explicit base in the invocation, else a `base` key in `.drain-handoff.json`, else `main`.
 - Optional `.drain-handoff.json` containing an `issue` and `slices`.
 - Optional Linear issue ID from the branch name, handoff file, user request, or available Linear plugin.
 - Optional Graphite CLI, `gt`.
@@ -66,9 +67,9 @@ If tests fail, stop. Report the failing command and relevant output. Do not subm
 
 If .drain-handoff.json exists, read its slices array.
 
-If it does not exist, derive slices from git:
+If it does not exist, derive slices from git, ranging from the resolved base (default `main`):
 
-`git log main..HEAD --reverse --format=%H%x00%B%x00%x00`
+`git log <base>..HEAD --reverse --format=%H%x00%B%x00%x00`
 
 Use each commit as one slice. The first line of the commit message is the title; the remaining body is the Why.
 
@@ -92,6 +93,7 @@ For each slice, oldest first:
 
 - Create or track a Graphite branch at that exact commit.
 - Ensure the branch points to the slice commit, not the stack tip.
+- Parent the oldest slice's branch on `<base>` (e.g. `gt track --parent <base>`) so the bottom PR targets `<base>`, not `main`. Each later slice parents on the slice before it.
 - Draft the PR body using the template below.
 
 Submit the stack:
@@ -117,7 +119,7 @@ For each slice, oldest first:
 - Create a branch from the slice parent named <issue-or-branch>/<slug>-<n>.
 - Cherry-pick the slice commit.
 - Create the PR using the shared body template.
-- Push the branch and create the PR with gh pr create.
+- Push the branch and create the PR with gh pr create. Target the oldest slice's PR at `<base>` (`gh pr create --base <base>`); each later slice targets the prior slice's branch.
 
 The plain-git path must produce the same PR body and final trail as the Graphite path.
 
