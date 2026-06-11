@@ -1,6 +1,6 @@
 ---
 name: delivery-shape
-description: Decomposes committed work - an initiative, single task, or accepted design doc - into an ordered, verifiable delivery hierarchy: deliverables -> nodes -> tasks.
+description: "Decomposes committed work - an initiative, single task, or accepted design doc - into an ordered, verifiable delivery hierarchy: deliverables -> nodes -> tasks."
 ---
 
 # Delivery shape
