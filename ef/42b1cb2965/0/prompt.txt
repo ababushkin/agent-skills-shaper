@@ -1,0 +1,5 @@
+/loop 1 minute, check for feedback in the pr - address it, loop up to 3 times before halting
+
+---
+
+/loop 1 minute, check for feedback in the pr - address it, loop up to 3 times before halting [iteration 2 of 3]
