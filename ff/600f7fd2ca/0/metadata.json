@@ -3,19 +3,21 @@
   "checkpoint_id": "ff600f7fd2ca",
   "session_id": "3f105d3f-d1ec-452c-a0d6-48fbe25a67e1",
   "strategy": "manual-commit",
-  "created_at": "2026-06-12T04:55:44.78552Z",
+  "created_at": "2026-06-12T04:56:11.419637Z",
   "branch": "wire-writing-into-skills",
   "checkpoints_count": 1,
-  "files_touched": [],
+  "files_touched": [
+    "agents/writing-editor/AGENT.md"
+  ],
   "agent": "Claude Code",
   "model": "claude-opus-4-8[1m]",
   "turn_id": "ae313fdd3c6e",
   "token_usage": {
-    "input_tokens": 49632,
-    "cache_creation_tokens": 340168,
-    "cache_read_tokens": 10028752,
-    "output_tokens": 72892,
-    "api_call_count": 113
+    "input_tokens": 49636,
+    "cache_creation_tokens": 341424,
+    "cache_read_tokens": 10226619,
+    "output_tokens": 73770,
+    "api_call_count": 115
   },
   "skill_events_version": 1,
   "skill_events": [
@@ -54,21 +56,16 @@
   "session_metrics": {
     "turn_count": 4
   },
-  "prompt_attributions": [
-    {
-      "checkpoint_number": 2,
-      "user_lines_added": 398,
-      "user_lines_removed": 0,
-      "agent_lines_added": 402,
-      "agent_lines_removed": 0,
-      "user_added_per_file": {
-        ".claude/settings.local.json": 129,
-        "writing-refinement/SKILL.md": 85,
-        "writing-refinement/references/design-docs.md": 36,
-        "writing-refinement/references/plans-okrs.md": 47,
-        "writing-refinement/references/style-rules.md": 59,
-        "writing-refinement/references/tasks.md": 42
-      }
-    }
-  ]
+  "initial_attribution": {
+    "calculated_at": "2026-06-12T04:56:11.394346Z",
+    "agent_lines": 12,
+    "agent_removed": 10,
+    "human_added": 356,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 368,
+    "total_lines_changed": 487,
+    "agent_percentage": 4.517453798767967,
+    "metric_version": 2
+  }
 }
