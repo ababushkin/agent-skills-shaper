@@ -94,3 +94,7 @@ continue i was mistaken - confirm you're going to shape the design-doc using the
 ---
 
 walk me through q1 and interview me to help me make the right decision
+
+---
+
+now interview me on q3
