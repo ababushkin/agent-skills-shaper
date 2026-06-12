@@ -81,13 +81,13 @@ List every unresolved question. Each carries an owner and a resolution gate — 
 
 ### 10. Review hand-off
 
-Before sharing, dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the completed document, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. The persona edits prose only; the section set and order remain this skill's gates.
+Before sharing, perform a writing review as a sub-agent over the completed document, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`. The persona edits prose only; the section set and order remain this skill's gates.
 
 Then share the completed document for review before any implementation begins. Implementation starts only after acceptance. Sharing a draft with known incomplete sections is not a hand-off.
 
 ## Artefact template
 
-Write the prose in every section against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and `references/design-docs.md`. Those rules govern how each section reads; the section set and order below are this skill's own gates, not the rules file's.
+Write the prose in every section against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and `skills/writing-refinement/references/design-docs.md`. Those rules govern how each section reads; the section set and order below are this skill's own gates, not the rules file's.
 
 ```markdown
 ---

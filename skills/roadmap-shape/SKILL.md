@@ -187,10 +187,10 @@ Read the shaped roadmap against the following named failure patterns:
 If any check fails, either fix the roadmap or document why the pattern is intentional.
 
 **13. Write and file the roadmap.**
-Use the template below. File at `docs/roadmap.md`. Write each item and milestone against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `references/plans-okrs.md`: name milestones as summary achievements, never labels such as "Phase 1" or "Research."
+Use the template below. File at `docs/roadmap.md`. Write each item and milestone against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `skills/writing-refinement/references/plans-okrs.md`: name milestones as summary achievements, never labels such as "Phase 1" or "Research."
 
 **14. [GATE] Writing-editor pass.**
-Before the roadmap goes to its shape review and the user, dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the drafted roadmap, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. The skill does not complete until the verdict is `accept` or `accept with notes`.
+Before the roadmap goes to its shape review and the user, perform a writing review as a sub-agent over the drafted roadmap, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
 
 ## Roadmap template
 

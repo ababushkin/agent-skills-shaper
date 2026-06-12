@@ -87,7 +87,7 @@ Keep KR language concrete. Avoid "improve", "better", "enhance", and arbitrary "
 
 Use `references/kr-quality-templates.md` only when you need help choosing strong KR dimensions, roles, or evidence patterns. Do not add rubric/audit annotations to the user-facing shape.
 
-Write the Goal and KRs against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and `references/plans-okrs.md`. Name the gap between the current state, the desired state, and the cost of staying put; keep the actor in the subject and use concrete verbs.
+Write the Goal and KRs against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and `skills/writing-refinement/references/plans-okrs.md`. Name the gap between the current state, the desired state, and the cost of staying put; keep the actor in the subject and use concrete verbs.
 
 Optional note: include **Dominant model tier** when task routing matters. Use `Fast` for mostly mechanical rewrites, `Balanced` for bounded but non-trivial reasoning, and `Frontier` for one-way doors such as schema migrations, public APIs, auth, production data, or orchestrator-level decomposition. See `references/task-sizing.md`.
 
@@ -95,7 +95,7 @@ Present the draft. Do not record or emit it yet.
 
 ### 6b. Gate: writing-editor pass
 
-Before showing the draft to the user, dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the synthesized draft, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. Do not proceed to Step 7 until the verdict is `accept` or `accept with notes`.
+Before showing the draft to the user, perform a writing review as a sub-agent over the synthesized draft, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
 
 ### 7. Gate: user confirmation
 

@@ -171,7 +171,7 @@ Every node must use the same five body sections:
 ## Key Risks
 ```
 
-Write the body against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `references/plans-okrs.md`. Phrase the node as a summary achievement, keep the actor in the subject, and use concrete verbs.
+Write the body against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `skills/writing-refinement/references/plans-okrs.md`. Phrase the node as a summary achievement, keep the actor in the subject, and use concrete verbs.
 
 Completion varies by node type:
 
@@ -212,7 +212,7 @@ Each task must include:
 - One `Model:` annotation.
 - Any external block flagged inline.
 
-Write each task against the `writing-refinement` skill's `references/tasks.md`: active voice, a concrete done-when state, and no blank task ("Investigate latency") unless the output is named.
+Write each task against `skills/writing-refinement/references/tasks.md`: active voice, a concrete done-when state, and no blank task ("Investigate latency") unless the output is named.
 
 #### 7a. Choose the first task
 
@@ -348,7 +348,7 @@ bin/check-plan-framing <plan>
 
 If either fails, fix the emitted file-set. Do not relax the gate.
 
-Then dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the emitted node and task bodies, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. The plan is not complete until the verdict is `accept` or `accept with notes`.
+Then perform a writing review as a sub-agent over the emitted node and task bodies, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
 
 ## Red flags
 

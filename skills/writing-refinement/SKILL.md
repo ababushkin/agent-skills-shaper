@@ -38,9 +38,7 @@ Identify what is being written, then read the matching reference file for its te
 | Plan-mode plan, idea one-pager, proposal | `references/plans-and-ideas.md` |
 | **Anything else** | **No type reference — run Phases 1–5 with `style-rules.md` only.** |
 
-Read `references/style-rules.md` in every case — it governs Phase 4 for all document types.
-
-The five phases are type-agnostic; only the templates and bad/good examples are type-specific. An artefact that matches no row above still routes cleanly: skip the type reference, run the same five phases, apply `style-rules.md`. Never refuse a document because it lacks a dedicated reference — fall through to the default.
+Read `references/style-rules.md` in every case — it governs Phase 4 for all document types. The five phases are type-agnostic; only the templates and examples are type-specific. Never refuse a document for lacking a dedicated reference — fall through to the default row and run the same five phases.
 
 ## Phase 1 — Architectural definition (the "why")
 
