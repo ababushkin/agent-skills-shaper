@@ -81,9 +81,13 @@ List every unresolved question. Each carries an owner and a resolution gate — 
 
 ### 10. Review hand-off
 
-Share the completed document for review before any implementation begins. Implementation starts only after acceptance. Sharing a draft with known incomplete sections is not a hand-off.
+Before sharing, dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the completed document, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. The persona edits prose only; the section set and order remain this skill's gates.
+
+Then share the completed document for review before any implementation begins. Implementation starts only after acceptance. Sharing a draft with known incomplete sections is not a hand-off.
 
 ## Artefact template
+
+Write the prose in every section against `references/writing-rules.md` — the Core rules and Design docs sections. Those rules govern how each section reads; the section set and order below are this skill's own gates, not the rules file's.
 
 ```markdown
 ---
@@ -165,6 +169,7 @@ The design doc passes review when:
 6. The walking-skeleton recommendation is addressed in Consequences.
 7. Every open question has an owner and a resolution gate.
 8. No implementation work started before acceptance.
+9. The Step 10 writing-editor pass returned `accept` or `accept with notes`.
 
 ## Related
 
@@ -172,3 +177,5 @@ The design doc passes review when:
 - spike — run first when the problem itself is not yet understood.
 - delivery-shape: a design-doc-worthy deliverable emits a `design-doc` node that delegates here before its build nodes' task breakdown.
 - `references/nfr-categories.md` — NFR taxonomy.
+- `references/writing-rules.md` — prose ruleset every section is written against.
+- `agents/writing-editor/AGENT.md` — the writing-editor persona dispatched at Step 10.
