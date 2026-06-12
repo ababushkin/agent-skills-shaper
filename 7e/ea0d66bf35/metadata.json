@@ -1,0 +1,26 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "7eea0d66bf35",
+  "strategy": "manual-commit",
+  "branch": "writing-refinement-pack",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "agents/code-reviewer/AGENT.md",
+    "docs/sub-agent-anatomy.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/7e/ea0d66bf35/0/metadata.json",
+      "transcript": "/7e/ea0d66bf35/0/full.jsonl",
+      "content_hash": "/7e/ea0d66bf35/0/content_hash.txt",
+      "prompt": "/7e/ea0d66bf35/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 295,
+    "cache_creation_tokens": 12313,
+    "cache_read_tokens": 1313388,
+    "output_tokens": 7142,
+    "api_call_count": 10
+  }
+}
