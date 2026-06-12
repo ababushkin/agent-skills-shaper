@@ -102,3 +102,7 @@ now interview me on q3
 ---
 
 when i de-marked them i did it as a part of an editorial change. lets go first principles here. what do the explicit gate headers actually do? what are the gates for? why is this even important? what would happen if these weren't here or more subtle like they are now?
+
+---
+
+go
