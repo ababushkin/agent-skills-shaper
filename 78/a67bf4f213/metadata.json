@@ -2,7 +2,7 @@
   "cli_version": "0.7.5",
   "checkpoint_id": "78a67bf4f213",
   "strategy": "manual-commit",
-  "checkpoints_count": 1,
+  "checkpoints_count": 3,
   "files_touched": [
     "references/writing-rules.md"
   ],
@@ -12,13 +12,19 @@
       "transcript": "/78/a67bf4f213/0/full.jsonl",
       "content_hash": "/78/a67bf4f213/0/content_hash.txt",
       "prompt": "/78/a67bf4f213/0/prompt.txt"
+    },
+    {
+      "metadata": "/78/a67bf4f213/1/metadata.json",
+      "transcript": "/78/a67bf4f213/1/full.jsonl",
+      "content_hash": "/78/a67bf4f213/1/content_hash.txt",
+      "prompt": "/78/a67bf4f213/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 18951,
-    "cache_creation_tokens": 254404,
-    "cache_read_tokens": 6429014,
-    "output_tokens": 42818,
-    "api_call_count": 72
+    "input_tokens": 64282,
+    "cache_creation_tokens": 647097,
+    "cache_read_tokens": 10613987,
+    "output_tokens": 154509,
+    "api_call_count": 116
   }
 }
