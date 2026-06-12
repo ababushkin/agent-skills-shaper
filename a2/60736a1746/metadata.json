@@ -3,7 +3,7 @@
   "checkpoint_id": "a260736a1746",
   "strategy": "manual-commit",
   "branch": "writing-refinement-pack",
-  "checkpoints_count": 0,
+  "checkpoints_count": 2,
   "files_touched": [
     "agents/writing-editor/AGENT.md",
     "skills/delivery-shape/SKILL.md",
@@ -23,13 +23,19 @@
       "transcript": "/a2/60736a1746/0/full.jsonl",
       "content_hash": "/a2/60736a1746/0/content_hash.txt",
       "prompt": ""
+    },
+    {
+      "metadata": "/a2/60736a1746/1/metadata.json",
+      "transcript": "/a2/60736a1746/1/full.jsonl",
+      "content_hash": "/a2/60736a1746/1/content_hash.txt",
+      "prompt": "/a2/60736a1746/1/prompt.txt"
     }
   ],
   "token_usage": {
-    "input_tokens": 4,
-    "cache_creation_tokens": 1767,
-    "cache_read_tokens": 200392,
-    "output_tokens": 804,
-    "api_call_count": 2
+    "input_tokens": 45522,
+    "cache_creation_tokens": 417151,
+    "cache_read_tokens": 5910740,
+    "output_tokens": 128646,
+    "api_call_count": 58
   }
 }
