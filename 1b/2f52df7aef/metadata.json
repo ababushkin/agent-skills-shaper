@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "1b2f52df7aef",
+  "strategy": "manual-commit",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "skills/delivery-shape/SKILL.md",
+    "skills/design-doc/SKILL.md",
+    "skills/initiative-shape/SKILL.md",
+    "skills/roadmap-shape/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/1b/2f52df7aef/0/metadata.json",
+      "transcript": "/1b/2f52df7aef/0/full.jsonl",
+      "content_hash": "/1b/2f52df7aef/0/content_hash.txt",
+      "prompt": "/1b/2f52df7aef/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18955,
+    "cache_creation_tokens": 255722,
+    "cache_read_tokens": 6680968,
+    "output_tokens": 43489,
+    "api_call_count": 74
+  }
+}
