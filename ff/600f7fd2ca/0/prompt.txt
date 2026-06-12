@@ -1,0 +1,99 @@
+i want to incorporate these writing guidelines into the appropraite artefacts that produce projects/tasks/milestones. they should be incorporated in two phases: 1) as the agent is going to write content and b) in a sub-agent review workflow when an agent has finished writing so that its work gets refined
+
+/idea-refine 
+
+Writing Guidelines for AI Agents
+Use these rules for software engineering and product management writing.
+Core Rules
+Put the actor in the subject and the action in the verb. Prefer "The API caches responses" over "Caching is implemented by the API."
+Use concrete verbs. Replace nominalizations such as "implementation," "utilization," and "optimization" with "implement," "use," and "optimize."
+Make each goal, milestone, or task produce a visible work product: a shipped change, design doc, verified fix, report, migration, test, or decision.
+Start with known context and end with the new or important information.
+Cut filler, but keep assumptions, risks, constraints, dependencies, owners, dates, and success criteria.
+Write like a professional colleague. Prefer a clear story over a list of disconnected facts.
+Project Goals and OKRs
+Explain the gap between the current state and the desired state.
+Use Situation, Complication, Question, Answer logic internally, but do not use those labels as headings.
+Make success measurable.
+Bad:
+"Improve the efficiency of our API and utilize better caching."
+Good:
+"Our API serves 1k RPS today. The Q3 launch requires 10k RPS, which will exceed current capacity. We will re-architect the load balancer to support 15k RPS."
+Bad:
+"Significantly improve dashboard speed."
+Good:
+"Reduce P95 dashboard load time from 4.5s to under 800ms using Edge Workers."
+Milestones and Deliverables
+Use milestones as summary achievements, not labels.
+Group work into non-overlapping containers.
+Order groups by sequence, system structure, or impact.
+Bad:
+"Frontend; Data; Implementation."
+Good:
+"Built responsive React components; Migrated user records to a sharded Postgres cluster."
+Bad:
+"Security; Authentication; Login Page."
+Good:
+"Identity management; Data encryption at rest."
+Tasks, Stories, Bugs, and Refactors
+Every task needs a concrete "done when" state.
+Avoid blank tasks such as "Investigate latency" unless the output is named.
+Use active voice.
+Bad:
+"Perform an investigation into the latency situation."
+Good:
+"Done when: The report identifies the three highest-latency queries in the /orders endpoint."
+Bad:
+"As a user, I want the utilization of an automated system."
+Good:
+"As a user, I want to reset my password through an email link so I can regain access in under 2 minutes."
+Vocabulary
+Use exact technical terms when they are accurate. Replace metaphors only when they hide the cause.
+Prefer "essential" or "required" over vague intensifiers such as "vital."
+Replace "bottleneck" with the specific shortage, delay, queue, lock, or capacity limit when known.
+Prefer "plan" or "spec" over "blueprint" unless discussing an actual final design.
+Prefer "limit" or "maximum" over "ceiling."
+Prefer "use" over "utilization."
+Prefer "implement" over "implementation" when describing action.
+Prefer "communicate with," "connect to," or "call" over "interface with."
+Prefer "affect" over "impact" as a verb.
+Delete "basically," "actually," "quite," "it should be noted that," and similar throat-clearing.
+Replace "at this point in time" with "now."
+Agent Review Checklist
+Before returning an artifact, check:
+Does it move from problem to solution in a clear order?
+Do subtasks explain how to achieve the milestone or why the milestone matters?
+Did pruning preserve assumptions, risks, dependencies, constraints, and success criteria?
+Is every task's done state visible and verifiable?
+Do important terms or conclusions appear where readers will notice them?
+Does it sound like a capable colleague wrote it?
+
+---
+
+1. writing-editor should be automatic
+2. one-persona
+
+lets design a plan so i can take action on this soon rather than later, write the plan using these guidelines shape it up - either into a task or a project, which ever is most suitable (task sounds more appropriate to me). review the plan in sub-agent using the guidelines i've given you, before giving it to me for final review
+
+---
+
+no i want you to open this as some graphite PRs so i can review it all and iterate on it after running it through some examples
+
+---
+
+yes fill in proper pr descriptions
+
+---
+
+actually i'm going to convert this into its own skill pack using the following structure: writing-refinement/
+├── SKILL.md            ← trigger description + 5-phase workflow + final checklist
+└── references/
+    ├── plans-okrs.md       ← R1→R2 framing, OKR examples
+    ├── design-docs.md      ← section mapping (Problem/Context/Constraints/...)
+    ├── tasks.md            ← user stories, "Done When" criteria
+    └── style-rules.md      ← vocabulary watchlist, nominalizations, examples
+
+
+i've written a draft of what it COULD look like in writing-refinement have a look through that and see what's missing or what we can just easily incorporate
+
+i suspect one thing that's missing is that sometimes i need to just produce a plan that isn't a design doc (eg when i'm running claude in plan mode) or when i'm refining an idea and it produces an idea refinement artefact. in those cases we should either have custom guidelines or fall through and apply the default guidelines that the skill pack can execute
