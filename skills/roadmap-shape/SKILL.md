@@ -187,7 +187,10 @@ Read the shaped roadmap against the following named failure patterns:
 If any check fails, either fix the roadmap or document why the pattern is intentional.
 
 **13. Write and file the roadmap.**
-Use the template below. File at `docs/roadmap.md`.
+Use the template below. File at `docs/roadmap.md`. Write each item and milestone against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `skills/writing-refinement/references/plans-okrs.md`: name milestones as summary achievements, never labels such as "Phase 1" or "Research."
+
+**14. [GATE] Writing-editor pass.**
+Before the roadmap goes to its shape review and the user, perform a writing review as a sub-agent over the drafted roadmap, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
 
 ## Roadmap template
 
@@ -289,6 +292,7 @@ The skill has run correctly when:
 4. Capacity allocation is stated and adds to 100%.
 5. All items with Confidence < 5 are in validation slots, not build slots.
 6. The shape review table is complete and any flagged pattern has a note.
+7. The Step 14 writing-editor pass returned `accept` or `accept with notes`.
 
 ## References
 
@@ -298,6 +302,8 @@ The skill has run correctly when:
 - `references/ice-scoring.md` — ICE = Impact × Confidence × Ease mechanics
 - `references/kano-classification.md` — five-category feature taxonomy for customer-facing work
 - `references/task-sizing.md` — model tier / risk routing rubric for roadmap item prioritisation
+- `writing-refinement` — prose skill items and milestones are written and reviewed against (`references/plans-okrs.md`, `style-rules.md`)
+- `agents/writing-editor/AGENT.md` — the writing-editor persona dispatched at Step 14
 - Janna Bastow — Now-Next-Later roadmap format
 - Ryan Singer — "Shape Up" (appetite and fixed-time planning)
 - Shreyas Doshi — portfolio themes framework

@@ -15,36 +15,36 @@ pack: <product | engineering | meta>
 review_target: <design-doc | implementation | spec | other>
 model: <Fast|Balanced|Frontier>
 principles_implemented:
-  - source: <eng-universal | eng-agentic | roadmap | product>
-    id: <principle or rule id>
+  - source: <eng-universal | eng-agentic | roadmap | product | writing-refinement | ...>
+    id: <principle or rule id, or "all">
     bucket: sub-agent
-length_target: <e.g. 150-200>
 author: Anton Babushkin
-predecessor:
-  repo: <URL or "none">
-  skill: <skill name in source repo, or "none">
-  relation: <derivative | adjacent | new>
-kept_from_predecessor: <list, or "n/a">
-changed_from_predecessor: <list, or "n/a">
 ---
 ```
 
+Add a `predecessor` block (`repo`, `skill`, `relation`, plus `kept_from_predecessor` / `changed_from_predecessor`) **only when the persona is ported from another pack**, to record provenance. A net-new persona omits it — `relation: new` with everything else `n/a` is noise. There is no `length_target` field; the length guidance below is the only target.
+
 ## Sections
 
-In this exact order:
+A persona keeps the canonical order, but only the **required** sections are mandatory. Include an **optional** section only when it carries content not already in a required section or in a skill the persona defers to. Restating, for example, a Workflow that a cited skill's review mode already owns is a reject trigger, not thoroughness.
+
+**Required** (omitting any is a reject):
 
 1. **Title** — `# <Persona Name>`
 2. **Purpose** — one paragraph: what this review catches and why the original agent can't
-3. **Review posture** — the stance this persona takes (adversarial, fresh-eyes, no investment in the original work). Names the rationalisations the original agent has structural reasons to miss.
-4. **Context to load** — what files, ADRs, or specs the persona reads *before* seeing the original agent's output. The point is to form an independent view first, then check it against the work.
-5. **Trigger** — when this review fires
-6. **Inputs** — what the persona is given
-7. **Outputs** — review verdict (`accept`, `accept with notes`, `reject`) and structured notes
-8. **Workflow** — numbered steps the persona walks through
-9. **Common rationalisations** — patterns the *original* agent will use that this persona is on the lookout for
-10. **Red flags** — signals that warrant a `reject`
-11. **Out of scope** — what other artefacts cover; this persona's specific lane
-12. **References** — principles enforced
+3. **Review posture** — the stance (adversarial, fresh-eyes, no investment in the original work). Names the rationalisations the original agent has structural reasons to miss, and the clean-`accept`-is-suspect rule.
+4. **Context to load** — what files, ADRs, or specs the persona reads *before* seeing the original agent's output, to form an independent view first.
+5. **Outputs** — review verdict (`accept`, `accept with notes`, `reject`) and the structured-notes shape.
+6. **Out of scope** — what other artefacts cover; this persona's specific lane.
+7. **References** — principles and source files enforced.
+
+**Optional** (include when, and only when, they add non-redundant content):
+
+- **Trigger** — when this review fires, if not obvious from Purpose.
+- **Inputs** — what the persona is given, if more than Context-to-load and Trigger already imply.
+- **Workflow** — numbered steps, **only when the persona is self-contained**. A persona that defers its steps to a cited skill's review mode omits this.
+- **Common rationalisations** — the excuses the *original* agent makes, as a table with counters. Strongly recommended: this adversarial priming is often the main reason to dispatch a persona over running a skill's review mode inline.
+- **Red flags** — `reject` signals, only where not already covered by Outputs or Workflow.
 
 ## Model tier
 
@@ -60,15 +60,16 @@ The rule of thumb: if this persona's verdict propagates to downstream decisions 
 
 ## Length
 
-Target 150–200 lines. Hard cap 250.
+Target under 120 lines. Hard cap 150. A persona over the cap is usually restating rules that belong in a skill or reference — cut to the required sections and the optional ones that earn their place.
 
 ## Reject triggers specific to sub-agents
 
 - `model:` field absent from frontmatter, or tier not justified against the orchestrator/worker distinction.
-- Missing the "Review posture" section.
-- Missing the "Context to load" section, or context loading happens after seeing the original work (this pollutes the independent view).
+- Missing any required section: Review posture, Context to load, Outputs, Out of scope, References.
+- Context loading happens after seeing the original work (this pollutes the independent view).
 - The persona's lane overlaps another sub-agent's without an explicit `Out of scope` boundary.
 - The persona is a thin wrapper around an existing skill rather than a genuine adversarial second pass.
+- An optional section restates content a cited skill or reference already owns (e.g. a Workflow duplicating a skill's review-mode steps).
 - The persona's review verdict criteria reduce to "does this match my interpretation" — should be principle-grounded.
 
 ## See also

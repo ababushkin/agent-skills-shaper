@@ -87,9 +87,15 @@ Keep KR language concrete. Avoid "improve", "better", "enhance", and arbitrary "
 
 Use `references/kr-quality-templates.md` only when you need help choosing strong KR dimensions, roles, or evidence patterns. Do not add rubric/audit annotations to the user-facing shape.
 
+Write the Goal and KRs against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and `skills/writing-refinement/references/plans-okrs.md`. Name the gap between the current state, the desired state, and the cost of staying put; keep the actor in the subject and use concrete verbs.
+
 Optional note: include **Dominant model tier** when task routing matters. Use `Fast` for mostly mechanical rewrites, `Balanced` for bounded but non-trivial reasoning, and `Frontier` for one-way doors such as schema migrations, public APIs, auth, production data, or orchestrator-level decomposition. See `references/task-sizing.md`.
 
 Present the draft. Do not record or emit it yet.
+
+### 6b. Gate: writing-editor pass
+
+Before showing the draft to the user, perform a writing review as a sub-agent over the synthesized draft, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
 
 ### 7. Gate: user confirmation
 
@@ -124,7 +130,7 @@ Take exactly one branch:
 
 ## Initiative description template
 
-The shape reads as a product OKR — a non-pack-author should be able to grade each KR in 30 seconds. Each KR's headline *is* the observable claim (no separate `state:` field). The four sub-fields use customer/business friendly names.
+The shape reads as a product OKR — a non-pack-author should be able to grade each KR in 30 seconds. Fill the template against the `writing-refinement` skill's `style-rules.md` and `plans-okrs.md`. Each KR's headline *is* the observable claim (no separate `state:` field). The four sub-fields use customer/business friendly names.
 
 ```markdown
 **Goal:** For [who], we want to [solve problem / achieve outcome].
@@ -164,11 +170,13 @@ The shape reads as a product OKR — a non-pack-author should be able to grade e
 
 ## Exit criteria
 
-The skill is complete when Step 8 passes and Step 9 has either recorded the shape through the bound tracker procedure or emitted the filled markdown block.
+The skill is complete when the Step 6b writing-editor pass returns `accept` or `accept with notes`, Step 8 passes, and Step 9 has either recorded the shape through the bound tracker procedure or emitted the filled markdown block.
 
 ## Related
 
 - `delivery-shape`: downstream; shapes a confirmed initiative into deliverables, nodes, and tasks.
+- `writing-refinement`: prose skill the Goal and KRs are written and reviewed against (`references/plans-okrs.md`, `style-rules.md`).
+- `agents/writing-editor/AGENT.md`: the writing-editor persona dispatched at Step 6b.
 - `references/initiative-types.md`: six-type taxonomy, Objective shapes, default KR mixes, and anti-patterns.
 - `references/kr-quality-templates.md`: Layer 1 dimensions, Layer 2 templates, KR roles, and grader-backed KR patterns.
 - `references/task-sizing.md`: model-tier routing rubric.
