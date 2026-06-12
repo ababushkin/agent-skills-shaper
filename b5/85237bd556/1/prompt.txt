@@ -1,0 +1,104 @@
+Work on Linear issue ABA-375:
+
+<issue identifier="ABA-375">
+<title>N01: Establish the Information Architecture (IA)</title>
+<description>
+Before we begin the mechanical work of compressing prose, we need a finalized design document to standardize how we fold the 14 baseline skills into the new layout. This document prevents individual skills from drifting apart and ensures we don't accidentally drop critical gate criteria.
+
+Objective is to create a design doc in `docs/designs/` that covers:
+
+* **The Absorption Map:** A section-by-section breakdown of all 14 baseline skills, identifying what we keep, move, or delete.
+* **The Survivor Manifest:** The final list of skills and utilities that will be used for the line-count audit.
+* **A Standardized Naming Schema:** The fixed directory names and command wrappers for the new pack.
+* **The Gate Inventory:** A clear destination for every [GATE] found in the original skills so that no requirements are lost.
+
+**Operational Context**
+
+* **What we are assuming:** We will use the naming schema from <issue id="6440b109-6e23-43b2-b176-38cc144bb14c" href="https://linear.app/ababushkin/issue/ABA-361/n04-execution-workflow-design-doc-before-build">ABA-361</issue> and limit the "measured set" to the shaping skills only, excluding Initiative A’s execution tools.
+* **Risks we are managing:** To prevent the silent loss of gate criteria, we are making the **Gate Inventory** a mandatory part of the "Done" state. We must also prevent the document from creeping into actual prose drafting; it should stick strictly to maps, manifests, and naming rules.
+
+**The Work**
+
+1. **Draft the IA Document:** Create the initial absorption map and manifest. This task is complete once the document exists under `docs/designs/` with all 14 baseline skills mapped.
+2. **Compile the Gate Inventory:** Audit the eight folded skills and document a destination for every [GATE]. This task is complete when every gate has a confirmed home or a recorded deletion rationale.
+
+**Done When** This task is finished once the document is accepted, the naming is finalized, and we have a verified plan for every gate in the legacy library.
+</description>
+<team name="Personal"/>
+<label>repo › agent-skills-shaper</label>
+<label>review › high</label>
+<label>model › opus</label>
+<project name="Consolidate Shaper’s Lifecycle into Four Phase Skills">Collapse the shaping half of Shaper into four phase skills (shape:idea/project/design/delivery), each under the length cap, every pruned skill absorbed or deleted. Second of three lifecycle-expansion projects.</project>
+<issue-relations>
+<blocking>
+<issue-ref identifier="ABA-379" title="N04 — shape:project phase skill"/>
+<issue-ref identifier="ABA-380" title="N05 — shape:design phase skill"/>
+<issue-ref identifier="ABA-378" title="N03 — shape:idea phase skill"/>
+<issue-ref identifier="ABA-381" title="N06 — Utilities under the cap"/>
+<issue-ref identifier="ABA-377" title="N02 — shape:delivery phase skill"/>
+</blocking>
+<blocked-by><issue-ref identifier="ABA-361" title="N04 — Execution-workflow design doc (before build)"/></blocked-by>
+</issue-relations>
+</issue>
+
+---
+
+why did you proceed even though the blocking issue isn't complete?
+
+---
+
+continue i was mistaken - confirm you're going to shape the design-doc using the design-doc skill
+
+---
+
+continue i was mistaken - confirm you're going to shape the design-doc using the design-doc skill - also do not commit/pus/close after plan-review, hand it off for me to review
+
+---
+
+/crit:crit docs/designs/front-door-ia.md
+
+---
+
+/crit:crit docs/designs/front-door-ia.md
+
+---
+
+<task-notification>
+<task-id>bt8nvaeyi</task-id>
+<tool-use-id>REDACTED</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-anton-src-agent-skills-shaper/bc1a244e-0d8e-4e46-9979-36fcf232d271/tasks/bt8nvaeyi.output</output-file>
+<status>completed</status>
+<summary>Background command "Open crit review session for the IA design doc" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bf7t6qjw7</task-id>
+<tool-use-id>toolu_014a1nzYaHcmJii6zHhbcoqv</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-anton-src-agent-skills-shaper/bc1a244e-0d8e-4e46-9979-36fcf232d271/tasks/bf7t6qjw7.output</output-file>
+<status>completed</status>
+<summary>Background command "Start next crit review round on the IA doc" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+<task-notification>
+<task-id>bb1oc72ii</task-id>
+<tool-use-id>toolu_01Wy1G3mGyirS2etcV3SkL8i</tool-use-id>
+<output-file>/private/tmp/claude-501/-Users-anton-src-agent-skills-shaper/bc1a244e-0d8e-4e46-9979-36fcf232d271/tasks/bb1oc72ii.output</output-file>
+<status>completed</status>
+<summary>Background command "Start next crit review round on the IA doc" completed (exit code 0)</summary>
+</task-notification>
+
+---
+
+walk me through q1 and interview me to help me make the right decision
+
+---
+
+now interview me on q3
+
+---
+
+when i de-marked them i did it as a part of an editorial change. lets go first principles here. what do the explicit gate headers actually do? what are the gates for? why is this even important? what would happen if these weren't here or more subtle like they are now?
