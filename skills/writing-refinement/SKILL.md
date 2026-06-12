@@ -24,7 +24,7 @@ Review-mode output is a verdict plus line-level fixes, not a rewrite-in-place:
 
 Review mode runs Phases 1–5 as **checks against the draft**, not as drafting steps: Phase 1 — does an SCQA spine exist and do R1/R2 carry a number or visualizable end product? Phases 2–3 — MECE groups, achievement headings, point-first sections, old-before-new? Phase 4 — the `style-rules.md` line sweep. Phase 5 — the final gate, reported as the verdict above.
 
-For a heavier fresh-context review — an adversarial sub-agent dispatched automatically before a draft reaches the user — use the companion persona `agents/writing-editor/AGENT.md`, which carries the full review posture, the author's blind-spot list, and the rationalisations table. The two share one source of rules: this skill's `references/`.
+For a heavier fresh-context review — an adversarial sub-agent dispatched automatically before a draft reaches the user — use the companion persona `agents/writing-editor/AGENT.md`, which adds the adversarial review posture and the author's-rationalisations table on top of these phases. The two share one source of rules: this skill's `references/`.
 
 ## Before Phase 1: route by document type
 

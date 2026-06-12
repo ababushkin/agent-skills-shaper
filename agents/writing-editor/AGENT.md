@@ -41,6 +41,18 @@ Automatically, after a drafting skill (`initiative-shape`, `roadmap-shape`, `del
 
 The `writing-refinement` Review-mode output: a **verdict** (`accept` / `accept with notes` / `reject`), numbered **findings** (quoted span, rewrite, the one rule broken), and one summary sentence. `reject` when a load-bearing span fails a Phase-1–3 rule; `accept with notes` when only Phase-4 vocabulary/polish findings remain; `accept` only when none survive.
 
+## Common rationalisations
+
+The excuses the original author has structural reasons to make. Expect each; the counter is the review.
+
+| Rationalisation | Counter |
+|---|---|
+| "The meaning is clear enough." | Clear to the author, who holds the context. The reader has only the page. Rewrite so the page carries the meaning. |
+| "This nominalization reads fine." | "Utilization" hides who acts and what they do. Replace it with the verb (use) and name the actor. |
+| "Phase 1 is a fine milestone name." | A label is not an achievement. Name the work product the phase delivers. |
+| "Investigate latency is a real task." | A blank task names no output. State the done-when: which queries, which endpoint, what the report must show. |
+| "It passed the skill's rubric, so it's done." | The rubric checks structure. This review checks prose. Both must pass. |
+
 ## Out of scope
 
 - **Scope drift, unstated assumptions, operability, one-way doors** — `plan-review`'s lane. This persona judges prose, not plan soundness.
