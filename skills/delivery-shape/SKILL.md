@@ -171,6 +171,8 @@ Every node must use the same five body sections:
 ## Key Risks
 ```
 
+Write the body against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `references/plans-okrs.md`. Phrase the node as a summary achievement, keep the actor in the subject, and use concrete verbs.
+
 Completion varies by node type:
 
 | Node type | Completion form |
@@ -209,6 +211,8 @@ Each task must include:
 - One `Done when:` clause.
 - One `Model:` annotation.
 - Any external block flagged inline.
+
+Write each task against the `writing-refinement` skill's `references/tasks.md`: active voice, a concrete done-when state, and no blank task ("Investigate latency") unless the output is named.
 
 #### 7a. Choose the first task
 
@@ -344,6 +348,8 @@ bin/check-plan-framing <plan>
 
 If either fails, fix the emitted file-set. Do not relax the gate.
 
+Then dispatch the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the emitted node and task bodies, per the dispatch protocol in `docs/adr/0003-persona-contract-and-dispatch-protocol.md` — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker. Apply its line-level rewrites. On `reject`, repair and re-run once; if it still rejects, carry the remaining notes forward as `accept with notes` rather than blocking. The plan is not complete until the verdict is `accept` or `accept with notes`.
+
 ## Red flags
 
 - The plan invents outcomes, KRs, acceptance criteria, or design decisions.
@@ -370,11 +376,14 @@ The skill is complete when:
 - The delivery-plan file-set exists.
 - `bin/walk-delivery-plan <plan>` exits 0.
 - `bin/check-plan-framing <plan>` exits 0.
+- The Step 9 writing-editor pass returned `accept` or `accept with notes`.
 
 ## Related
 
 - `initiative-shape` - produces committed initiatives this skill can consume.
 - `design-doc` - owns design-doc structure for design-doc-worthy deliverables.
+- `writing-refinement` - prose skill node and task bodies are written and reviewed against (`references/plans-okrs.md`, `references/tasks.md`, `style-rules.md`).
+- `agents/writing-editor/AGENT.md` - the writing-editor persona dispatched at Step 9.
 - `docs/delivery-shape-contract.md` - plan artefact contract, layers, node vocabulary, frontmatter, and cross-reference rules.
 - `bin/walk-delivery-plan` - deterministic reader and manifest checker.
 - `bin/check-plan-framing` - node/task framing gate.
