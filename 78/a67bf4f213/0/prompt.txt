@@ -74,3 +74,7 @@ Does it sound like a capable colleague wrote it?
 2. one-persona
 
 lets design a plan so i can take action on this soon rather than later, write the plan using these guidelines shape it up - either into a task or a project, which ever is most suitable (task sounds more appropriate to me). review the plan in sub-agent using the guidelines i've given you, before giving it to me for final review
+
+---
+
+no i want you to open this as some graphite PRs so i can review it all and iterate on it after running it through some examples
