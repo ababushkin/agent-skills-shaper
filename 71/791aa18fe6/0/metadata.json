@@ -1,0 +1,89 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "71791aa18fe6",
+  "session_id": "3f105d3f-d1ec-452c-a0d6-48fbe25a67e1",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-12T05:17:04.899038Z",
+  "branch": "writing-refinement-pack",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "agents/writing-editor/AGENT.md",
+    "skills/writing-refinement/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "9e0452096ed8",
+  "checkpoint_transcript_start": 994,
+  "transcript_lines_at_start": 994,
+  "token_usage": {
+    "input_tokens": 154,
+    "cache_creation_tokens": 5567,
+    "cache_read_tokens": 482279,
+    "output_tokens": 4308,
+    "api_call_count": 4
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01VBSm3GwH5qDse98vek2arg",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "agent-skills:idea-refine"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "9e0452096ed8",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 22,
+        "end": 23,
+        "entry_ids": [
+          "27b1cb9e-21be-461e-8914-f8a2e60e0d9a"
+        ],
+        "tool_use_id": "toolu_01VBSm3GwH5qDse98vek2arg"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01VBSm3GwH5qDse98vek2arg"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: agent-skills:idea-refine",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-12T05:17:04.872292Z",
+    "agent_lines": 0,
+    "agent_removed": 0,
+    "human_added": 12,
+    "human_modified": 1,
+    "human_removed": 0,
+    "total_committed": 12,
+    "total_lines_changed": 13,
+    "agent_percentage": 0,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 533,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 129,
+        "docs/designs/front-door-ia.md": 289,
+        "docs/plan-reviews/front-door-ia/review.md": 98,
+        "pickup-envelope.json": 17
+      }
+    }
+  ]
+}

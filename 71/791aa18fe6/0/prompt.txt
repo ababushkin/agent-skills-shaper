@@ -1,0 +1,1 @@
+did we remove any essential items that will reduce the accuracy/correctness/quailty of a sub-agent's run? i just wanted to trim anything that didn't need to be there so may have made a mistake in my comment.
