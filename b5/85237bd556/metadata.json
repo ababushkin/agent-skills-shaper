@@ -1,0 +1,29 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "b585237bd556",
+  "strategy": "manual-commit",
+  "branch": "writing-refinement-pack",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "skills/delivery-shape/SKILL.md",
+    "skills/design-doc/SKILL.md",
+    "skills/initiative-shape/SKILL.md",
+    "skills/roadmap-shape/SKILL.md",
+    "skills/writing-refinement/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/b5/85237bd556/0/metadata.json",
+      "transcript": "/b5/85237bd556/0/full.jsonl",
+      "content_hash": "/b5/85237bd556/0/content_hash.txt",
+      "prompt": "/b5/85237bd556/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 24420,
+    "cache_creation_tokens": 55485,
+    "cache_read_tokens": 1032827,
+    "output_tokens": 9414,
+    "api_call_count": 17
+  }
+}
