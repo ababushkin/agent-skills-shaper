@@ -28,16 +28,16 @@ Task arrives
     │       ├── Confidence ≥ 5: file in idea bank          (wait — no action until roadmap-shape runs)
     │       │       └── Idea bank needs review/curation?   → backlog-manage
     │       └── Confidence < 5: validation slot
-    │               ├── product feel unknown               → product-spike
+    │               ├── product feel unknown               → shape:design (product-spike track)
     │               ├── customer reality unknown           → interview / survey
     │               ├── market signal unknown              → smoke test
-    │               └── technical feasibility unknown     → backend-spike (→ design-doc)
+    │               └── technical feasibility unknown     → shape:design (backend-spike track)
     ├── Managing the idea bank or KTLO list?               → backlog-manage
     │       └── Idea bank clean — ready to plan?           → roadmap-shape
     ├── Building or reviewing a roadmap?                   → roadmap-shape
     │       └── reads from idea bank (docs/idea-bank/)
     ├── Committed initiative (goal + KRs) exists?          → delivery-shape
-    ├── Significant engineering work — how to build it?   → design-doc
+    ├── Significant engineering work — how to build it?   → shape:design (design-doc track)
     ├── Have a plan/spec/design — should I trust it?       → plan-review
     └── Agent signals it's done?                          → stop-the-line (hook — fires on claims)
 ```
@@ -69,7 +69,7 @@ These apply across every skill in the pack. They are not optional.
 
 ## Common mistake: skipping skills
 
-Skills are not ceremony — they encode the checks that prevent the most common and expensive failure modes. Skipping idea-triage produces a roadmap full of unvalidated opinions. Skipping design-doc produces implementations that solve the wrong problem or the right problem in an unmaintainable way. Skipping delivery-shape produces a task list with no outcome trace and no per-node completion framing.
+Skills are not ceremony — they encode the checks that prevent the most common and expensive failure modes. Skipping idea-triage produces a roadmap full of unvalidated opinions. Skipping shape:design produces implementations that solve the wrong problem or the right problem in an unmaintainable way. Skipping delivery-shape produces a task list with no outcome trace and no per-node completion framing.
 
 The value of a skill is highest the first time you skip it and something breaks. After that, the cost of not skipping it is obvious.
 
@@ -80,14 +80,14 @@ Most work spans more than one skill. These are the common sequences:
 **Product track — from idea to roadmap:**
 ```
 idea arrives → idea-triage → idea bank (confidence ≥ 5)
-                           → validation slot (confidence < 5) → product-spike → re-score
+                           → validation slot (confidence < 5) → shape:design → re-score
 idea bank clean → backlog-manage → roadmap-shape
 ```
 
 **Engineering track — from design to delivery plan:**
 ```
-significant work → design-doc → delivery-shape → [hand off to your build skill]
-unknown risk    → backend-spike → design-doc → delivery-shape → [hand off]
+significant work → shape:design → delivery-shape → [hand off to your build skill]
+unknown risk    → shape:design (backend-spike track) → shape:design (design-doc track) → delivery-shape → [hand off]
 ```
 
 **Every PR:** `stop-the-line` hook fires automatically on PR open/update — no manual invocation.
@@ -100,11 +100,9 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 |---|---|---|
 | `idea-triage` | "We should build…", "A customer asked for…", "Competitor just launched…" | Triage record with ICE score and routing decision (idea bank or validation slot) |
 | `backlog-manage` | "Review the backlog", "Add to KTLO", "Promote this idea", "Kill this" | Updated idea bank records + KTLO list |
-| `product-spike` | "Let's prototype", "Quick mockup", "Test this flow first", "Does this interaction make sense?" | Written finding: proceed / reshape / kill |
-| `backend-spike` | "What's the right threshold for", "How should we detect", "Spike on", "What guard should we add" | Recommendation with rejected-alternatives table + follow-up ticket |
+| `shape:design` | "How should we build X?", "Architecture for Y", "What's the right threshold for", "Let's prototype this", "Spike on" | Design doc, spike recommendation, or prototype finding (routed by dominant unknown) |
 | `roadmap-shape` | "Let's do planning", "What should we build next?", "Review the roadmap" | Shaped Now/Next/Later roadmap with explicit capacity allocation |
 | `delivery-shape` | "Turn this initiative into a delivery plan", "Decompose this initiative", "Plan the delivery" | Delivery hierarchy with deliverables, nodes, and tasks; outcomes traced to KRs |
-| `design-doc` | "How should we build X?", "Architecture for Y", "Technical approach to Z" | Accepted design doc |
 | `plan-review` | "Review this plan", "Before I approve", "What's missing here", "Should we go with this" | Review record with APPROVE / REVISE / KILL recommendation |
 | `stop-the-line` | Fires on PR open/update — catches signal-suppression moves | Completion verified or halt raised |
 
@@ -115,5 +113,5 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 - `rules/eng-principles-agentic.md` — agent-specific principles; load alongside universal for any agent-driven implementation
 - `skills/idea-triage/SKILL.md` — first product skill; intake gate for new ideas
 - `skills/app-calibrate/SKILL.md` — creates/updates baseline metrics file; run before idea-triage on improvement-type ideas
-- `skills/design-doc/SKILL.md` — first engineering skill; required before non-trivial implementation
+- `skills/shape:design/SKILL.md` — entry point for all pre-implementation shaping (design doc, backend spike, product spike)
 - `hooks/stop-the-line/HOOK.md` — fires on every PR; no manual invocation required

@@ -26,7 +26,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 - **Only reviewing a diff** — use `exec:review` directly.
 - **Only finishing an already-built PR** — use `exec:finish` directly.
 - **Shaping or planning** — use `shape:delivery`, `shape:initiative`, or `shape:plan-review`.
-- **Exploratory spikes** — use `shape:backend-spike` or `shape:product-spike`; this skill assumes the work is broken down and ready to build.
+- **Exploratory spikes or design work** — use `shape:design`; this skill assumes the work is broken down and ready to build.
 
 ## Inputs
 
