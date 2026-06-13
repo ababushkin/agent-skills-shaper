@@ -1,13 +1,20 @@
 ---
-name: delivery-shape
-description: "Decomposes committed work - an initiative, single task, or accepted design doc - into an ordered, verifiable delivery hierarchy: deliverables -> nodes -> tasks."
+name: delivery
+description: >
+  Decomposes committed work — an initiative, single task, or accepted design doc — into an
+  ordered, verifiable delivery hierarchy: deliverables → nodes → tasks. Use when committed
+  work exists and you need a deliverable → node → task hierarchy before build pickup.
+  Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative",
+  "break the initiative into deliverables", "shape the delivery", "delivery plan",
+  "plan the nodes and tasks", "break down committed work", "build delivery plan",
+  "what are the deliverables for this initiative".
 ---
 
 # Delivery shape
 
 ## Purpose
 
-Take committed work and create a delivery plan that's easy for human's to review and for agents to action.
+Take committed work and create a delivery plan that's easy for humans to review and for agents to action.
 
 The input may be an initiative, a single task, or an accepted design doc. The hierarchy has three layers: deliverables, nodes, and tasks. Deliverables serve a stated outcome source. Nodes are typed units of work such as stories, spikes, ADRs, experiments, design docs, or KTLO work. Tasks are the verifiable checklist inside a node.
 
@@ -97,19 +104,9 @@ For an accepted design doc, use the accepted decisions, requirements, constraint
 
 If no traceability spine exists, stop and route back to shaping. Do not fabricate one.
 
-### 3. Map deliverables to the traceability spine
+### 3. Gate: map deliverables to the traceability spine
 
-Group the work into milestone-class deliverables.
-
-Each deliverable must serve exactly one item from the traceability spine.
-
-Use the trace field defined by `docs/delivery-shape-contract.md`. Prefer the generalized form:
-
-```yaml
-serves_outcome: <KR1 | AC1 | DD1 | DEC1 | OUT1>
-```
-
-If the current contract still requires `serves_kr`, use only for initiative-shaped work and update the contract/checkers before using this skill for single tasks or design docs.
+Group the work into milestone-class deliverables. Each deliverable must serve exactly one item from the traceability spine. Use the trace field defined by `docs/delivery-shape-contract.md`.
 
 Two checks must hold:
 
@@ -118,7 +115,7 @@ Two checks must hold:
 
 An outcome item with no deliverable is unplanned. A deliverable with no outcome source is output without a bet.
 
-### 4. Decide whether a deliverable needs design first
+### 4. Gate: decide whether a deliverable needs design first
 
 For each deliverable, check whether any design-doc trigger applies:
 
@@ -145,21 +142,11 @@ Delegate discipline-specific structures to their source skills or references. Do
 
 ### 5. Decompose deliverables into nodes
 
-For each unit of work, select a node `type` from `docs/delivery-shape-contract.md`.
-
-Every node must carry:
-
-```yaml
-type: <node-type>
-serves_outcome: <outcome-id>
-maps_to: <tracker-shape>
-```
+For each unit of work, select a node `type` from `docs/delivery-shape-contract.md`. Every node must carry `type`, trace field, and `maps_to`.
 
 If the current contract has not yet migrated from `serves_kr`, use the contract's required trace field consistently.
 
-Use the node type to determine the completion form.
-
-### 6. Write the five-section node body
+### 6. Gate: write the five-section node body
 
 Every node must use the same five body sections:
 
@@ -171,18 +158,9 @@ Every node must use the same five body sections:
 ## Key Risks
 ```
 
-Write the body against the `writing-refinement` skill — `skills/writing-refinement/references/style-rules.md` and the Milestones section of `skills/writing-refinement/references/plans-okrs.md`. Phrase the node as a summary achievement, keep the actor in the subject, and use concrete verbs.
+Write the body against the `writing-refinement` skill (`skills/writing-refinement/references/style-rules.md`, `plans-okrs.md`). Phrase the node as a summary achievement; keep the actor in the subject and use concrete verbs.
 
-Completion varies by node type:
-
-| Node type | Completion form |
-|---|---|
-| `story` | `Done when:` list |
-| `spike` | Decision question + stop condition |
-| `experiment` | Hypothesis + success metric + falsification condition |
-| `adr` | Decision record + ADR reference |
-| `design-doc` | What the accepted design doc covers |
-| `ktlo` | `None - roadmap A5 carve-out.` |
+Completion form varies by node type — see `docs/delivery-shape-contract.md`.
 
 For story nodes, the first sentence of `## What` uses the Cohn form:
 
@@ -228,50 +206,19 @@ The first task depends on node type and risk locus.
 | Design doc | No skeleton; tasks follow the accepted-design completion form |
 | KTLO | No skeleton; tasks preserve existing behavior |
 
-Before writing the first task, ask:
-
-```text
-What toolchain or setup must exist for this task to run?
-```
-
-Fold that setup into the first task. Do not create a separate setup task before it.
+Before writing the first task, identify any toolchain or setup prerequisites and fold them into the first task. Do not create a separate setup task before it.
 
 A skeleton must exercise the real risky seam: the third-party call, cross-service boundary, unproven dependency, or other integration risk. Do not create a green path that only proves mocked plumbing.
 
 #### 7b. Add feature slices where applicable
 
-For runnable-software story nodes, add one task per feature slice after the first task.
+For runnable-software story nodes, add one task per feature slice after the first task. Each slice must extend prior work in one direction, be independently testable, leave the system deployable, and name an observable outcome. Do not add slices to `adr`, `design-doc`, or `ktlo` nodes.
 
-Each slice must:
+#### 7c. Gate: write acceptance criteria before ordering
 
-- Extend the prior work in one direction.
-- Be independently testable.
-- Leave the system deployable.
-- Be named as an observable outcome.
+Every task needs a `Done when:` clause before sequencing. The clause must describe a verifiable result, not the work performed. If the criterion cannot fit in one sentence, split the task.
 
-Do not add feature slices to `adr`, `design-doc`, or `ktlo` nodes.
-
-#### 7c. Write acceptance criteria before ordering
-
-Every task needs a `Done when:` clause before sequencing.
-
-The clause must describe a verifiable result, not the work performed.
-
-Good:
-
-```text
-Done when: the endpoint returns 200 for a valid request.
-```
-
-Bad:
-
-```text
-Done when: the handler is wired up.
-```
-
-If the criterion cannot fit in one sentence, split the task.
-
-#### 7d. Check task size
+#### 7d. Gate: check task size
 
 Each task must have:
 
@@ -283,72 +230,25 @@ Split tasks that carry multiple concerns.
 
 #### 7e. Sequence by dependency
 
-Order tasks so each one builds only on completed prior tasks.
-
-Use dependency order, not perceived difficulty.
-
-Flag external blockers inline:
-
-```text
-blocks on: <dependency>
-```
-
-Use this for cross-team deliverables, external credentials, third-party environments, or shared-infrastructure changes outside the node.
+Order tasks by dependency, not perceived difficulty. Flag external blockers inline (`blocks on: <dependency>`): cross-team deliverables, external credentials, third-party environments, or shared-infrastructure changes outside the node.
 
 #### 7f. Add model routing
 
-Apply the 5-axis rubric from `references/task-sizing.md`:
-
-```text
-RC, SC, HS, SR, OR
-```
-
-Score each axis Low / Med / High, derive the tier and review flag, and append a `Model:` annotation.
-
-The annotation must begin with:
-
-```text
-Model:
-```
-
-A task without `Model:` is incomplete.
+Apply the 5-axis rubric from `references/task-sizing.md` (RC, SC, HS, SR, OR). Score each axis Low / Med / High, derive the tier and review flag, and append a `Model:` annotation. A task without `Model:` is incomplete.
 
 ### 8. Emit the file-set
 
 Write the plan using the layout and frontmatter rules in `docs/delivery-shape-contract.md`.
 
-Use numeric prefixes for deterministic order:
+Use numeric prefixes (`D1-<slug>/`, `N01-<slug>.md`); pad node numbers past nine.
 
-```text
-D1-<slug>/
-N01-<slug>.md
-N02-<slug>.md
-```
+The root `README.md` must include the hand-count manifest from `docs/delivery-shape-contract.md`.
 
-Pad node numbers past nine.
+### 9. Gate: verify the plan
 
-The root `README.md` must include the hand-count manifest the walker reproduces:
+Run `bin/walk-delivery-plan <plan>` and `bin/check-plan-framing <plan>`. Fix failures; do not relax the gate.
 
-```markdown
-| Tracker artefact | Source layer | Count |
-|------------------|--------------|------:|
-| Milestones | deliverables (`D*`) | **<n>** |
-| Issues | nodes (`N*`) | **<n>** |
-| Sub-issues | tasks (`- [ ]` lines) | **<n>** |
-```
-
-### 9. Verify the plan
-
-Run:
-
-```bash
-bin/walk-delivery-plan <plan>
-bin/check-plan-framing <plan>
-```
-
-If either fails, fix the emitted file-set. Do not relax the gate.
-
-Then perform a writing review as a sub-agent over the emitted node and task bodies, using the `writing-editor` persona (`agents/writing-editor/AGENT.md`), and apply its rewrites. On `reject`, repair and re-run once, then carry any remaining notes forward as `accept with notes`.
+Then sub-agent a writing review using the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the emitted node and task bodies. Apply rewrites; on `reject`, repair and re-run once, then carry remaining notes forward as `accept with notes`.
 
 ## Red flags
 
@@ -380,11 +280,11 @@ The skill is complete when:
 
 ## Related
 
-- `initiative-shape` - produces committed initiatives this skill can consume.
-- `design-doc` - owns design-doc structure for design-doc-worthy deliverables.
-- `writing-refinement` - prose skill node and task bodies are written and reviewed against (`references/plans-okrs.md`, `references/tasks.md`, `style-rules.md`).
-- `agents/writing-editor/AGENT.md` - the writing-editor persona dispatched at Step 9.
-- `docs/delivery-shape-contract.md` - plan artefact contract, layers, node vocabulary, frontmatter, and cross-reference rules.
-- `bin/walk-delivery-plan` - deterministic reader and manifest checker.
-- `bin/check-plan-framing` - node/task framing gate.
-- `references/task-sizing.md` - 5-axis model-routing rubric.
+- `shape:project` — produces committed initiatives this skill can consume.
+- `shape:design` — owns design-doc structure for design-doc-worthy deliverables.
+- `writing-refinement` — prose skill; node and task bodies are written and reviewed against (`references/plans-okrs.md`, `references/tasks.md`, `style-rules.md`).
+- `agents/writing-editor/AGENT.md` — the writing-editor persona dispatched at Step 9.
+- `docs/delivery-shape-contract.md` — plan artefact contract, layers, node vocabulary, frontmatter, and cross-reference rules.
+- `bin/walk-delivery-plan` — deterministic reader and manifest checker.
+- `bin/check-plan-framing` — node/task framing gate.
+- `references/task-sizing.md` — 5-axis model-routing rubric.

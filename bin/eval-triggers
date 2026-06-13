@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # bin/eval-triggers
 #
-# Evaluates the delivery-shape trigger eval set against three candidate skills.
-# Reads eval/delivery-shape-triggers.md, scores each phrasing against trigger-phrase
-# lists extracted from the three skills' SKILL.md description frontmatter, and reports
+# Evaluates the delivery trigger eval set against candidate skills.
+# Reads eval/delivery-triggers.md, scores each phrasing against trigger-phrase
+# lists extracted from the skills' SKILL.md description frontmatter, and reports
 # matched-skill vs expected-skill per row.
 #
 # Matching: longest trigger phrase that appears as a case-insensitive substring of the
-# test phrasing wins. Ties go to the first skill in the candidate list (delivery-shape).
+# test phrasing wins. Ties go to the first skill in the candidate list (delivery).
 #
 # Exit codes:
 #   0  — 0 collisions (all phrasings matched expected)
@@ -24,13 +24,13 @@ REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 _CLEANUP_DIR=""
 cleanup() { [[ -n "$_CLEANUP_DIR" ]] && rm -rf "$_CLEANUP_DIR"; }
 trap cleanup EXIT
-EVAL_FILE="$REPO_ROOT/eval/delivery-shape-triggers.md"
+EVAL_FILE="$REPO_ROOT/eval/delivery-triggers.md"
 SKILLS_DIR="$REPO_ROOT/skills"
 DEBUG=0
 [[ "${1:-}" == "--debug" ]] && DEBUG=1
 
 CANDIDATE_SKILLS=(
-    "delivery-shape"
+    "delivery"
     "initiative-shape"
 )
 
