@@ -31,7 +31,7 @@ DEBUG=0
 
 CANDIDATE_SKILLS=(
     "delivery"
-    "initiative-shape"
+    "project"
 )
 
 # Extract trigger phrases from a skill's SKILL.md description frontmatter.
