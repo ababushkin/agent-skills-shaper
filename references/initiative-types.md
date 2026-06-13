@@ -2,23 +2,23 @@
 name: initiative-types
 description: >
   Six-type taxonomy for classifying a Linear initiative by what success means for it.
-  Used by /initiative-shape to set the Objective shape and the rubric the KRs are judged
+  Used by /shape:project to set the Objective shape and the rubric the KRs are judged
   against. Per-type playbooks (default KR mix, anti-patterns, verification rubric) are
   filled in below the corresponding type entry as the skill matures.
 type: reference
 cited_by:
-  - skills/initiative-shape/SKILL.md
+  - skills/project/SKILL.md
 ---
 
 # Initiative types (6)
 
-The `/initiative-shape` skill probes the project type before shaping KRs. The type determines what "success" means for the initiative: a methodology skill pack and a personal product can both pass cycle close, but they pass on different KRs, because their theories of success are different. Naming the type up front lets the skill load the right Objective shape and verification rubric — and lets a downstream agent reading the Linear project description apply the right rubric without re-deriving the taxonomy.
+The `/shape:project` skill probes the project type before shaping KRs. The type determines what "success" means for the initiative: a methodology skill pack and a personal product can both pass cycle close, but they pass on different KRs, because their theories of success are different. Naming the type up front lets the skill load the right Objective shape and verification rubric — and lets a downstream agent reading the Linear project description apply the right rubric without re-deriving the taxonomy.
 
 The six types below are the ones actually observed across this portfolio (`agent-skills-shaper`, `nestl`, `agent-skills`, paused `em-os`, `stock-review`) plus one anticipated type (production / customer-facing). If a new initiative doesn't fit any of the six, the taxonomy needs updating — flag rather than force-fit.
 
 Each type's default KR mix is annotated with a **Role split** — which KR is the **bet** (the push), which are **brakes** (don't-regress guardrails), and which is **foundation** (instrumentation that makes the bet measurable). The role tags appended to each KR bullet (e.g. `· bet`, `· brake`, `· foundation`) sit alongside the leading/lagging and committed/aspirational descriptors. Roles are defined in `references/kr-quality-templates.md` "Roles within an initiative"; the splits below are defaults, not mandates.
 
-**Worked-example convention.** Each example below uses the PM-readable KR shape `/initiative-shape` emits — `(commit)` / `(stretch)` tags with `baseline` / `target` / `measured over` / `how we'll know` sub-fields. The examples model KR *content* and the per-type dimension mix; the rubric trace (the `*Layer 1 · Layer 2*` audit-footer under each KR and the `*Dimensions: …*` summary line) is added per the template in `skills/initiative-shape/SKILL.md` and is left off here to keep the focus on phrasing.
+**Worked-example convention.** Each example below uses the PM-readable KR shape `/shape:project` emits — `(commit)` / `(stretch)` tags with `baseline` / `target` / `measured over` / `how we'll know` sub-fields. The examples model KR *content* and the per-type dimension mix; the rubric trace (the `*Layer 1 · Layer 2*` audit-footer under each KR and the `*Dimensions: …*` summary line) is added per the template in `skills/project/SKILL.md` and is left off here to keep the focus on phrasing.
 
 ## Type 1 — Methodology skill pack
 
@@ -36,7 +36,7 @@ Each type's default KR mix is annotated with a **Role split** — which KR is th
 
 Adoption KRs ("skill installed in N repos") are output unless cross-repo adoption is itself the named goal — usually leave them out.
 
-**Worked example — `/initiative-shape` itself.**
+**Worked example — `/shape:project` itself.**
 
 ```
 Goal:           For Anton (and any agent invoking Shaper), make
@@ -44,7 +44,7 @@ Goal:           For Anton (and any agent invoking Shaper), make
                 so cycle planning works against goals and KRs rather than
                 repo-aliased backlogs.
 
-KR1 (commit) — initiative-shape fires (or is offered) in ≥80% of
+KR1 (commit) — shape:project fires (or is offered) in ≥80% of
                new-initiative moments across the next 4 cycles
   baseline:        unknown — first cycle of measurement
   target:          ≥80% offered at new-initiative moments
@@ -359,5 +359,5 @@ Project type:   5 — Equity research tooling
 ## Sources
 
 - Internal research: Linear document "Research and implementation plan — OKR shapes by project type" (Section 1.1, project `Initiative quality — type-aware OKRs with KRs`)
-- `skills/initiative-shape/SKILL.md` — the six-field initiative format the type field is added to (defined inline in the skill); tracker capture is owned by the Workflow pack when installed
-- `skills/initiative-shape/SKILL.md` — invokes the type probe at Step 2.5
+- `skills/shape:project/SKILL.md` — the six-field initiative format the type field is added to (defined inline in the skill); tracker capture is owned by the Workflow pack when installed
+- `skills/shape:project/SKILL.md` — invokes the type probe at Step 2.5

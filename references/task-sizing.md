@@ -6,8 +6,7 @@ description: >
   estimation; a second lens on the verification-granularity Size check.
 type: reference
 cited_by:
-  - skills/roadmap-shape/SKILL.md
-  - skills/initiative-shape/SKILL.md
+  - skills/project/SKILL.md
 ---
 
 # Task sizing — the 5-axis routing rubric
