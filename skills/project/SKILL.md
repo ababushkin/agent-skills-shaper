@@ -1,9 +1,9 @@
 ---
-name: initiative-shape
+name: project
 description: "Shapes a vague idea into a properly formed initiative with a clear goal and measurable criteria for success"
 ---
 
-# Initiative shape
+# Project shape
 
 ## Purpose
 
@@ -19,7 +19,7 @@ Shape a vague idea into an initiative before work begins, so the work is governe
 ## Do not use when
 
 - The work is a single issue, bug, or KTLO item.
-- The initiative is already formed and needs deliverables, nodes, or tasks. Use `delivery-shape`.
+- The initiative is already formed and needs deliverables, nodes, or tasks. Use `shape:delivery`.
 
 ## Inputs
 
@@ -174,7 +174,7 @@ The skill is complete when the Step 6b writing-editor pass returns `accept` or `
 
 ## Related
 
-- `delivery-shape`: downstream; shapes a confirmed initiative into deliverables, nodes, and tasks.
+- `shape:delivery`: downstream; shapes a confirmed initiative into deliverables, nodes, and tasks.
 - `writing-refinement`: prose skill the Goal and KRs are written and reviewed against (`references/plans-okrs.md`, `style-rules.md`).
 - `agents/writing-editor/AGENT.md`: the writing-editor persona dispatched at Step 6b.
 - `references/initiative-types.md`: six-type taxonomy, Objective shapes, default KR mixes, and anti-patterns.
