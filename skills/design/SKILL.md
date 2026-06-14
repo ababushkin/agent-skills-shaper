@@ -25,7 +25,7 @@ Use this skill when one of these conditions holds:
 | Backend correctness: threshold, detection logic, substitution rule, algorithmic safeguard — ≥2 plausible approaches, picking one without comparing carries silent risk | Backend spike |
 | Product feel: interaction sequencing, user comprehension, flow legibility — opinion-based argument has not resolved the question | Product spike |
 
-If the problem itself is not yet framed, run `shape:idea-triage` first. A design or spike on an undefined problem produces an answer to the wrong question.
+If the problem itself is not yet framed, run `/shape:idea` first. A design or spike on an undefined problem produces an answer to the wrong question.
 
 ## Do not use when
 
@@ -207,7 +207,7 @@ Throwaway code: delete it, or mark it explicitly as non-production in the findin
 
 ## Related
 
-- `shape:idea-triage` — upstream: produces the validated hypothesis that may route here.
+- `shape:idea` — upstream: produces the validated hypothesis that may route here.
 - `shape:delivery` — downstream: a design-doc-worthy deliverable emits a `design-doc` node that delegates here.
 - `shape:plan-review` — run on the follow-up implementation ticket before committing to the build.
 - `references/design-spike-templates.md` — artefact templates for all three tracks.
