@@ -1,6 +1,6 @@
 {
   "name": "shape",
-  "description": "Four-phase workflow skills for small product-engineering teams: idea intake and scoring, pre-build design (design doc, backend spike, product spike), delivery hierarchy breakdown, and issue execution end-to-end. Utility skills cover plan review, HTML rendering, implementation verification, and code review.",
+  "description": "Workflow skills for the full product-engineering arc: idea intake and shaping, pre-build design (design-doc, product-spike, and backend-spike tracks), delivery planning, execution end-to-end. Utilities: plan review, implementation verification, PR preparation.",
   "version": "0.1.0",
   "author": {
     "name": "Anton Babushkin"

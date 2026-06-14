@@ -1,6 +1,6 @@
 # Product rules
 
-These are the product principles and operational rules for the Shaper pack. They cover roadmap structure, prioritisation, commitment, and learning. The companion skill `idea-triage` handles problem-framing at the point of intake. `roadmap-shape` (Next) covers the mechanics of building and maintaining the roadmap itself.
+These are the product principles and operational rules for the Shaper pack. They cover roadmap structure, prioritisation, commitment, and learning. The `/shape:idea` skill handles problem-framing and roadmap mechanics at the point of intake.
 
 ---
 

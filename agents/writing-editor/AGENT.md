@@ -35,7 +35,7 @@ Load **before** reading the draft, so the standard is formed independently and t
 
 ## Trigger
 
-Automatically, after a drafting skill (`initiative-shape`, `roadmap-shape`, `delivery-shape`, `design-doc`) synthesizes a complete draft and before its user-confirmation or hand-off gate. Dispatched per ADR 0003 — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker.
+Automatically, after a drafting skill (`shape:idea`, `shape:design`, `shape:delivery`) synthesizes a complete draft and before its user-confirmation or hand-off gate. Dispatched per ADR 0003 — the `Agent` tool on Claude Code, inline self-review on a non-Claude worker.
 
 ## Outputs
 

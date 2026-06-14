@@ -22,7 +22,7 @@ For "principle gap" issues — a behaviour you keep seeing that the rules don't 
 Skills are workflows that solve a specific decision-point problem in product, design, or engineering. Read these before proposing one:
 
 1. **`docs/skill-anatomy.md`** — the required structure, frontmatter, and section order.
-2. **Two existing `SKILL.md` files** — match the voice. Direct, principle-named, no generic AI filler. Suggested reads: `skills/idea-triage/SKILL.md` and `skills/incremental-implementation/SKILL.md`.
+2. **Two existing `SKILL.md` files** — match the voice. Direct, principle-named, no generic AI filler. Suggested reads: `skills/idea/SKILL.md` and `skills/shape:design/SKILL.md`.
 3. **`rules/eng-principles-universal.md`** if your skill is engineering-track — it's the canonical source for principle IDs you'll cite in frontmatter.
 4. **`docs/authoring-learnings.md`** — calibration guidance and failure modes surfaced during v0.1.
 
