@@ -2,7 +2,17 @@
 
 **Robust, scalable skills for modern agentic engineering**
 
-Vibe coding is fun on a small project. Over a longer one, your prompts drift — methodical and rigorous one day, rushed or forgetful the next - and the quality of the output drifts with them. Shaper encodes the engineering discipline that strong teams have relied on for decades into ready-to-go skills, so an agent applies it the same way on every project, every turn — instead of taking the shortcut.
+Vibe coding is fun on a small project. Over a longer one, your prompts drift and the quality of the output drifts with them. Shaper encodes the engineering discipline that strong teams have relied on for decades into ready-to-go skills, so an agent applies it the same way on every project, every turn — instead of taking the shortcut.
+
+Core disciplines it encodes:
+
+- Frames the problem before reaching for a solution
+- Pins down acceptance criteria before code is written
+- Lands work in small, independently verified slices
+- Builds the smallest thing that works — no speculative scope
+- Diagnoses root cause before rushing into a fix
+- Verifies the result with a separate agent, not the one that built it
+
 
 ```
   SHAPE              DESIGN            PLAN              BUILD             VERIFY            SHIP
