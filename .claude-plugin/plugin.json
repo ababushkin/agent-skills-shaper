@@ -1,6 +1,6 @@
 {
   "name": "shape",
-  "description": "Workflow skills for small product-design-engineering teams. Covers idea triage, roadmap shaping, prototyping, design docs, task breakdown, incremental implementation, and HTML rendering of artefacts for human review.",
+  "description": "Four-phase workflow skills for small product-engineering teams: idea intake and scoring, pre-build design (design doc, backend spike, product spike), delivery hierarchy breakdown, and issue execution end-to-end. Utility skills cover plan review, HTML rendering, implementation verification, and code review.",
   "version": "0.1.0",
   "author": {
     "name": "Anton Babushkin"
