@@ -10,23 +10,6 @@ description: >
   review", "make a readable version". Use this skill whenever the user is about to
   hand a markdown artefact to a human reviewer, even if they don't explicitly say
   the word HTML.
-pack: engineering
-lifecycle_stage: review
-principles_implemented:
-  - source: eng-agentic
-    id: P7
-    bucket: standalone
-  - source: eng-universal
-    id: P1
-    bucket: standalone
-length_target: 120-180
-author: Anton Babushkin
-predecessor:
-  repo: none
-  skill: none
-  relation: new
-kept_from_predecessor: n/a
-changed_from_predecessor: n/a
 ---
 
 # Render HTML

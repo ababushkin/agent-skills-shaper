@@ -9,85 +9,8 @@ description: >
   "what's missing here", "any concerns", "look this over", "thoughts on this
   approach". Auto-fire conditions: any plan that breaks into more than a single
   independently verifiable slice, touches code the user has not personally read
-  recently, or contains a
-  one-way-door decision (architecture choice, schema migration, public API,
-  vendor lock-in, auth or production-data touch).
-pack: engineering
-lifecycle_stage: define
-principles_implemented:
-  - source: eng-agentic
-    id: P3
-    bucket: standalone
-  - source: eng-agentic
-    id: P4
-    bucket: embedded
-  - source: eng-agentic
-    id: P5
-    bucket: embedded
-  - source: eng-agentic
-    id: P6
-    bucket: embedded
-  - source: eng-agentic
-    id: P7
-    bucket: embedded
-  - source: eng-agentic
-    id: P8
-    bucket: embedded
-  - source: eng-universal
-    id: P2
-    bucket: standalone
-  - source: eng-universal
-    id: P3
-    bucket: embedded
-  - source: eng-universal
-    id: P4
-    bucket: standalone
-  - source: eng-universal
-    id: P6
-    bucket: embedded
-  - source: eng-universal
-    id: P9
-    bucket: embedded
-  - source: eng-universal
-    id: Rule A2
-    bucket: embedded
-  - source: eng-universal
-    id: Rule A6
-    bucket: embedded
-  - source: eng-universal
-    id: Rule B3
-    bucket: embedded
-  - source: eng-universal
-    id: Rule B7
-    bucket: embedded
-  - source: product
-    id: P1
-    bucket: embedded
-  - source: product
-    id: P4
-    bucket: embedded
-length_target: 320–400
-author: Anton Babushkin
-predecessor:
-  repo: internal/ai-thesis-research
-  skill: phase4-devils-advocate
-  relation: derivative
-kept_from_predecessor:
-  - SUSTAINED / OVERTURNED / PARTIAL verdict format
-  - Named-falsifying-condition discipline (no generic critiques accepted)
-  - Pre-mortem framing as prospective hindsight, not forward critique
-  - Time-boxed adversarial sweep with tier selection by complexity
-changed_from_predecessor:
-  - Replaced four investment-thesis attack patterns with eight MECE attack buckets covering PDE defect categories (B1–B8)
-  - Added Cynefin Step 0 to right-size review depth
-  - Dropped devil's-advocate role-play framing — replaced with framework-based questioning. Empirical: Nemeth meta-analysis shows assigned dissent < authentic dissent
-  - Added Confidence scoring (Gilad scale) per surfaced assumption (B3)
-  - Added operability + success-metrics bucket (B6) — was missing entirely
-  - Added cross-team dependency bucket (B4) — was partial in pre-mortem only
-  - Added ADR-pairing requirement to reversibility bucket (B5)
-  - Added "Known limits + revisit triggers" subsection
-  - APPROVE / REVISE / KILL recommendation replaces investment-thesis verdicts
-  - Common rationalisations table per Agentic P5
+  recently, or contains a one-way-door decision (architecture choice, schema
+  migration, public API, vendor lock-in, auth or production-data touch).
 ---
 
 # Plan review
@@ -107,7 +30,7 @@ Run plan-review when at least one trigger fires. Any single trigger is sufficien
 
 If a trigger is ambiguous, run it. The Quick tier is short; the cost of skipping a needed review is not.
 
-## When not to use
+## Do not use when
 
 - **Typo fixes, single-line changes, pure read-only exploration.** Review overhead exceeds value.
 - **Plans for work already in progress.** Use a kill-switch review instead — different question (should we stop?), different output.
@@ -305,21 +228,10 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 <!-- Named conditions the plan must satisfy before APPROVE. -->
 ```
 
-## Common rationalisations
-
-| Rationalisation | Rebuttal |
-|---|---|
-| "I already read it." | Reading is not review. The buckets force coverage of categories that an unstructured read regularly misses — operability, ADR pairing, cross-team dependency confirmation. The skill is short; run it. |
-| "It's a small plan, review is overkill." | The Quick tier is ~8 minutes. The cost of a missed scope drift on a small plan is the same cost as on a large one — full re-execution of work in the wrong place. |
-| "The LLM considered alternatives." | The LLM produced text that mentions alternatives. B5 demands the alternatives be named alongside the chosen approach with reversal cost — not mentioned in passing. Pattern-match is not analysis. |
-| "Quick mode is fine for this." | Tier is auto-selected by plan attributes for a reason. The Quick-instinct under deadline pressure is exactly when auto-selection earns its keep. Override with `--quick` only with a written reason. |
-| "Pre-mortem is theatre." | Klein's prospective-hindsight literature shows pre-mortem reliably surfaces failure modes that forward critique misses. If the pre-mortem produces only generic reasons, it has been run badly — the rule is "name the specific failure mode," not "imagine generic difficulties." |
-| "I don't have time for the full mode." | The plan attributes — appetite, one-way doors, dependencies, production data — are exactly the conditions under which review is most expensive to skip. The 30-minute cap exists because past that point the plan itself needs simplification before it can be reviewed at all. |
-| "We can revise mid-execution if we hit issues." | Revising mid-execution is the failure mode this skill exists to prevent. The cost of a SUSTAINED B2 caught before execution is rewriting a plan; the same finding caught mid-execution is rewriting code, tests, and partial deployments. |
-| "But this is a tiny change, do I really need a review?" | If the Step 1a fast-track gate fires, the review is ~20 lines and runs in seconds. The gate is calibrated for exactly this case (KTLO, fully reversible, single slice). If the gate doesn't fire on what you thought was a one-slice change, the change is not what you think it is — read what the gate flagged as missing. |
-
 ## Red flags
 
+- Reviewer notes "LLM considered alternatives" — the LLM produced text that mentions alternatives; B5 requires them named alongside the chosen approach with reversal cost. Pattern-match is not analysis.
+- Tier overridden to `--quick` without a written reason on a plan that auto-selects Full.
 - A verdict is given without a named falsifying condition.
 - B2 returns zero items on a plan whose appetite exceeds a single slice.
 - Pre-mortem reasons are all generic ("things might go wrong", "might be slow").
@@ -329,7 +241,7 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 - Owner runs the skill but discards REVISE recommendations without addressing them.
 - Review record filed without a final recommendation.
 
-## Verification / exit criteria
+## Exit criteria
 
 A single review run is complete when all of the following hold:
 
@@ -354,15 +266,13 @@ The skill carries deliberate limitations. Each one has a measurable trigger that
 | One skill covers all plan types — roadmap-specific moves not specialised | ≥5 reviews against roadmaps yield <30% bucket hit rate | Split off a separate `roadmap-review` skill |
 | Bucket structure was designed against PDE failure modes, not piloted | Any bucket has <10% SUSTAINED hit rate after 5 real runs | Prune or merge buckets |
 
-## References
+## Related
 
 - `rules/eng-principles-agentic.md` — P3, P4, P5, P6, P7, P8
 - `rules/eng-principles-universal.md` — P2, P3, P4, P6, P9, Rule A2, Rule A6, Rule B3, Rule B7
 - `rules/PRODUCT_RULES.md` — P1, P4
 - `references/confidence-meter.md` — Gilad scale used in B3
-- `phase4-devils-advocate` (internal/ai-thesis-research) — predecessor; verdict format and falsifying-condition discipline
 - Klein, Gary — "Performing a Project Premortem" (HBR 2007) — B8 source
-- Nemeth, Charlan — Authentic dissent vs. devil's advocate (peer-reviewed; reason for dropping role-play framing)
 - Snowden, Dave — Cynefin framework (B0 source)
 - Heilmeier, George — DARPA Catechism (structural reference for B1–B7 framework-based questioning)
 - Nygard, Michael — ADR alternatives discipline (B5 source)
