@@ -1,22 +1,20 @@
 # Shaper
 
-**Take an idea from "what if" to shipped — without losing the thread.**
+**Robust, scalable patterns for modern agentic engineering**
 
-> *Shape the work, build it well, prove it's done.*
+Vibe coding is fun on a small project. Over a longer one, your prompts drift — methodical and rigorous one day, rushed or forgetful the next - and the quality of the output drifts with them. Shaper encodes the engineering discipline that strong teams have relied on for decades into ready-to-go skills, so an agent applies it the same way on every project, every turn — instead of taking the shortcut.
 
-Shaper is a self-contained skill pack for the whole arc of product and engineering work: shaping a fuzzy idea into a bettable spec, designing the build, writing the code increment by increment, proving it does what the ticket promised, and shipping it as a clean PR.
-
-It encodes the discipline experienced teams apply at each decision point — the questions a good PM asks before committing, the rigour a staff engineer brings to a design doc, the checks a careful reviewer runs before merge — and packages that discipline so an AI agent follows it every time, instead of taking the shortcut.
+- 
 
 ```
   SHAPE              DESIGN            PLAN              BUILD             VERIFY            SHIP
- ┌──────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐
- │ triage   │ ───▶ │ design   │ ───▶ │ delivery │ ───▶ │ build    │ ───▶ │ verify   │ ───▶ │ prepare  │
- │ roadmap  │      │ doc +    │      │ shape +  │      │ debug    │      │ exec     │      │ + finish │
- │ initiative│      │ spikes   │      │ review   │      │ simplify │      │ review   │      │ PRs      │
- └──────────┘      └──────────┘      └──────────┘      └──────────┘      └──────────┘      └──────────┘
+ ┌────────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐      ┌──────────┐
+ │ triage     │ ───▶ │ design   │ ───▶ │ delivery │ ───▶ │ build    │ ───▶ │ verify   │ ───▶ │ prepare  │
+ │ roadmap    │      │ doc +    │      │ shape +  │      │ debug    │      │ exec     │      │ + finish │
+ │ initiative │      │ spikes   │      │ review   │      │ simplify │      │ review   │      │ PRs      │
+ └────────────┘      └──────────┘      └──────────┘      └──────────┘      └──────────┘      └──────────┘
   what's worth      how to build      ordered,          green, small      does it match     small PRs,
-  building, and     it soundly        verifiable        increments        the ticket?       routed for
+  building, and     it soundly        verifiable        increments        the spec?         routed for
   what's the bet                      task list                                              merge
 ```
 
