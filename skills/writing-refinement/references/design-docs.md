@@ -1,6 +1,6 @@
 # Engineering Design Docs / RFCs
 
-This file governs **how each section reads**, not which sections exist or their order. Inside the Shaper `design-doc` skill, that skill owns the section set, the gates, and the NFR taxonomy (`references/nfr-categories.md`); this file only refines the prose within whatever structure it mandates. Used standalone, treat the sections below as the conventional shape, not a gate.
+This file governs **how each section reads**, not which sections exist or their order. Inside the Shaper shape:design skill (design-doc track), that skill owns the section set, the gates, and the NFR taxonomy (`references/nfr-categories.md`); this file only refines the prose within whatever structure it mandates. Used standalone, treat the sections below as the conventional shape, not a gate.
 
 Map the five-phase workflow onto the design-doc sections. The reader should experience a story — where we are, what broke, what we will do — never a framework.
 
