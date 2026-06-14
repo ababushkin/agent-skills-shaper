@@ -6,12 +6,12 @@ Vibe coding is fun on a small project. Over a longer one, your prompts drift and
 
 Core disciplines it encodes:
 
-- Frames the problem before reaching for a solution
-- Pins down acceptance criteria before code is written
-- Lands work in small, independently verified slices
-- Builds the smallest thing that works — no speculative scope
-- Diagnoses root cause before rushing into a fix
-- Verifies the result with a separate agent, not the one that built it
+- Problem before solution
+- Acceptance criteria before code
+- Small, independently verified slices
+- The smallest thing that works
+- Root-cause diagnosis before any fix
+- Independent verification by a second agent
 
 
 ```
