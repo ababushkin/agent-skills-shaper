@@ -1,0 +1,137 @@
+{
+  "iteration": 6,
+  "model": "claude-sonnet-4-6",
+  "n_per_cell": 3,
+  "skill_change_vs_iter5": "prose reform — 69 lines cut (redundancy/verbosity), no behavioural content removed; SKILL.md 348→279 lines",
+  "grader": "isolated agent, blinded to condition, strict bucket-evidence rules (same protocol as iter-4/iter-5)",
+  "iter6": {
+    "with_skill": {
+      "pass_rate_mean": 0.9296296296296297,
+      "pass_rate_sd": 0.036641831050481225,
+      "run_means": [
+        0.9777777777777779,
+        0.9222222222222222,
+        0.888888888888889
+      ]
+    },
+    "without_skill": {
+      "pass_rate_mean": 0.19325396825396826,
+      "pass_rate_sd": 0.014120540219278748,
+      "run_means": [
+        0.19880952380952379,
+        0.17380952380952381,
+        0.20714285714285713
+      ]
+    },
+    "delta": 0.7363756613756615,
+    "per_eval": [
+      {
+        "eval": "eval-roadmap-without-triage",
+        "with_skill": {
+          "mean": 0.8148148148148148,
+          "sd": 0.052378280087892384
+        },
+        "without_skill": {
+          "mean": 0.0,
+          "sd": 0.0
+        }
+      },
+      {
+        "eval": "eval-prizecategoryselector-vue-removal",
+        "with_skill": {
+          "mean": 0.8333333333333334,
+          "sd": 0.13608276348795433
+        },
+        "without_skill": {
+          "mean": 0.3333333333333333,
+          "sd": 0.0
+        }
+      },
+      {
+        "eval": "eval-clean-gem-bump",
+        "with_skill": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "without_skill": {
+          "mean": 0.05555555555555556,
+          "sd": 0.07856742013183862
+        }
+      },
+      {
+        "eval": "eval-schema-migration-no-rollback",
+        "with_skill": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "without_skill": {
+          "mean": 0.29166666666666669,
+          "sd": 0.05892556509887895
+        }
+      },
+      {
+        "eval": "eval-redis-cache-solutionism",
+        "with_skill": {
+          "mean": 1.0,
+          "sd": 0.0
+        },
+        "without_skill": {
+          "mean": 0.2857142857142857,
+          "sd": 0.0
+        }
+      }
+    ]
+  },
+  "iter5_comparison": {
+    "with_skill": {
+      "pass_rate_mean": 0.9328042328042327,
+      "pass_rate_sd": 0.02047147314513555,
+      "run_means": [
+        0.9555555555555555,
+        0.9269841269841269,
+        0.9158730158730158
+      ]
+    },
+    "delta": 0.742063492063492,
+    "per_eval_with_skill": [
+      {"eval": "eval-roadmap-without-triage", "iter5_mean": 0.8148148148148149, "iter6_mean": 0.8148148148148148, "delta_pp": 0},
+      {"eval": "eval-prizecategoryselector-vue-removal", "iter5_mean": 0.9444444444444445, "iter6_mean": 0.8333333333333334, "delta_pp": -11},
+      {"eval": "eval-clean-gem-bump", "iter5_mean": 1.0, "iter6_mean": 1.0, "delta_pp": 0},
+      {"eval": "eval-schema-migration-no-rollback", "iter5_mean": 1.0, "iter6_mean": 1.0, "delta_pp": 0},
+      {"eval": "eval-redis-cache-solutionism", "iter5_mean": 0.9047619047619048, "iter6_mean": 1.0, "delta_pp": 10}
+    ]
+  },
+  "finding": "confirmed — reform does not degrade plan-review. Aggregate 93% ≥ 90% threshold. No repair loop needed.",
+  "raw_iter6": [
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "with_skill", "run": 1, "passed": 8, "total": 9, "pass_rate": 0.8888888888888888},
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "with_skill", "run": 2, "passed": 7, "total": 9, "pass_rate": 0.7777777777777778},
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "with_skill", "run": 3, "passed": 7, "total": 9, "pass_rate": 0.7777777777777778},
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "without_skill", "run": 1, "passed": 0, "total": 9, "pass_rate": 0.0},
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "without_skill", "run": 2, "passed": 0, "total": 9, "pass_rate": 0.0},
+    {"eval": "roadmap-without-triage", "eval_id": 1, "condition": "without_skill", "run": 3, "passed": 0, "total": 9, "pass_rate": 0.0},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "with_skill", "run": 1, "passed": 6, "total": 6, "pass_rate": 1.0},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "with_skill", "run": 2, "passed": 5, "total": 6, "pass_rate": 0.8333333333333334},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "with_skill", "run": 3, "passed": 4, "total": 6, "pass_rate": 0.6666666666666666},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "without_skill", "run": 1, "passed": 2, "total": 6, "pass_rate": 0.3333333333333333},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "without_skill", "run": 2, "passed": 2, "total": 6, "pass_rate": 0.3333333333333333},
+    {"eval": "prizecategoryselector-vue-removal", "eval_id": 2, "condition": "without_skill", "run": 3, "passed": 2, "total": 6, "pass_rate": 0.3333333333333333},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "with_skill", "run": 1, "passed": 6, "total": 6, "pass_rate": 1.0},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "with_skill", "run": 2, "passed": 6, "total": 6, "pass_rate": 1.0},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "with_skill", "run": 3, "passed": 6, "total": 6, "pass_rate": 1.0},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "without_skill", "run": 1, "passed": 0, "total": 6, "pass_rate": 0.0},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "without_skill", "run": 2, "passed": 0, "total": 6, "pass_rate": 0.0},
+    {"eval": "clean-gem-bump", "eval_id": 3, "condition": "without_skill", "run": 3, "passed": 1, "total": 6, "pass_rate": 0.16666666666666666},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "with_skill", "run": 1, "passed": 8, "total": 8, "pass_rate": 1.0},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "with_skill", "run": 2, "passed": 8, "total": 8, "pass_rate": 1.0},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "with_skill", "run": 3, "passed": 8, "total": 8, "pass_rate": 1.0},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "without_skill", "run": 1, "passed": 3, "total": 8, "pass_rate": 0.375},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "without_skill", "run": 2, "passed": 2, "total": 8, "pass_rate": 0.25},
+    {"eval": "schema-migration-no-rollback", "eval_id": 4, "condition": "without_skill", "run": 3, "passed": 2, "total": 8, "pass_rate": 0.25},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "with_skill", "run": 1, "passed": 7, "total": 7, "pass_rate": 1.0},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "with_skill", "run": 2, "passed": 7, "total": 7, "pass_rate": 1.0},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "with_skill", "run": 3, "passed": 7, "total": 7, "pass_rate": 1.0},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "without_skill", "run": 1, "passed": 2, "total": 7, "pass_rate": 0.2857142857142857},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "without_skill", "run": 2, "passed": 2, "total": 7, "pass_rate": 0.2857142857142857},
+    {"eval": "redis-cache-solutionism", "eval_id": 5, "condition": "without_skill", "run": 3, "passed": 2, "total": 7, "pass_rate": 0.2857142857142857}
+  ]
+}
