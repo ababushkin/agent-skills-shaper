@@ -16,7 +16,7 @@ Repo-specific notes that supplement the generic governance:
 
 - This repo pushes directly to **main**; open a PR only when the owner asks. An issue is not Done until the work is committed and pushed — local-only work doesn't count.
 - Update issue status at the moment of state change, not batched at session end. Blocked work stays In Progress with a comment naming the blocker.
-- Shape a new initiative with the `initiative-shape` skill; don't hand-create goal-directed projects. Initiative-shaped work (5+ issues, clear goal) slots into the *next* cycle; a bug or one-off (< 5 issues) goes on the backlog and into the ops slot if urgent.
+- Shape a new initiative with the `/shape:idea` skill; don't hand-create goal-directed projects. Initiative-shaped work (5+ issues, clear goal) slots into the *next* cycle; a bug or one-off (< 5 issues) goes on the backlog and into the ops slot if urgent.
 - If an issue names a delegate (`Delegates to` / `On pickup`), invoke that skill to break the node into build tasks before coding (ktlo issues carry no breakdown step).
 
 ## Git

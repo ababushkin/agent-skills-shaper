@@ -48,8 +48,8 @@ Install the plugin from GitHub:
 
 Restart Claude Code. That's it — you now have:
 
-- **18 skills**, auto-invoked when the task matches (e.g. say *"how should we build this?"* and `design-doc` fires).
-- **Slash commands** for the core skills, namespaced `/shape:` (e.g. `/shape:idea-triage`, `/shape:design-doc`).
+- **16 skills**, auto-invoked when the task matches (e.g. say *"how should we build this?"* and shape:design fires).
+- **Slash commands** for the core skills, namespaced `/shape:` (e.g. `/shape:idea`, `/shape:design`).
 - A **SessionStart hook** that loads the navigator skill so the agent always knows which step it's on.
 
 Prefer to drive it yourself? Type the slash command. Prefer the agent to choose? Just describe what you're doing — the skills trigger on natural phrases.
@@ -60,13 +60,13 @@ Prefer to drive it yourself? Type the slash command. Prefer the agent to choose?
 
 Start anywhere in the arc and follow the chain. A typical run looks like this:
 
-1. **An idea arrives.** *"A customer asked for bulk export."* → `idea-triage` scores it, classifies it, and routes it — to the idea bank if it's strong, to a quick spike if the bet is unproven.
-2. **It's worth doing.** → `roadmap-shape` and `initiative-shape` turn the idea into a committed initiative with a goal and measurable key results.
-3. **Time to design.** → `design-doc` lays out the approach, the trade-offs, and the operability plan. Unsure about a risky unknown first? `product-spike` or `backend-spike` answers the one question before you commit.
-4. **Plan the build.** → `delivery-shape` decomposes the initiative into an ordered, verifiable task list. `plan-review` reads it adversarially and catches what's missing *before* a line of code is written.
-5. **Build it.** → `build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `debugging` finds the root cause. Heavy? `simplify` trims it once it's green.
-6. **Prove it's done.** → `verify-implementation` checks the diff against the ticket's acceptance criteria; `execution-review` runs spec, security, and quality passes. A fail is a halt, not a suggestion.
-7. **Ship it.** → `pr-prepare` writes each PR body and routes it for merge or human review; `pr-finishing` submits the stack, one small PR per slice.
+1. **An idea arrives.** *"A customer asked for bulk export."* → `/shape:idea` scores it, classifies it, and routes it — to the idea bank if it's strong, to a design spike if the bet is unproven.
+2. **It's worth doing.** → `/shape:idea` turns it into a committed initiative with a goal and measurable key results.
+3. **Time to design.** → `/shape:design` lays out the approach, the trade-offs, and the operability plan on the design-doc track. Unsure about a risky unknown first? The product-spike or backend-spike tracks answer the one question before you commit.
+4. **Plan the build.** → `/shape:delivery` decomposes the initiative into an ordered, verifiable task list. `/plan-review` reads it adversarially and catches what's missing *before* a line of code is written.
+5. **Build it.** → `/build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `/debugging` finds the root cause. Heavy? `/simplify` trims it once it's green.
+6. **Prove it's done.** → `/verify-implementation` checks the diff against the ticket's acceptance criteria; `/execution-review` runs spec, security, and quality passes. A fail is a halt, not a suggestion.
+7. **Ship it.** → `/pr-prepare` writes each PR body and routes it for merge or human review; `/pr-finishing` submits the stack, one small PR per slice.
 
 You don't have to run the whole arc. Each skill stands alone — invoke just the one you need. But when work spans several steps, following the chain is what keeps the thread from breaking.
 
@@ -78,15 +78,9 @@ Not sure which skill applies? Ask, or run `/shape:using-this-pack` — the navig
 
 | Stage | Skill | What it does |
 |---|---|---|
-| **Shape** | [idea-triage](skills/idea-triage/SKILL.md) | Score, classify, and route an incoming idea — to the idea bank or a validation spike. |
-| | [app-calibrate](skills/app-calibrate/SKILL.md) | Capture app-specific context so triage Impact scores are grounded, not generic. |
-| | [backlog-manage](skills/backlog-manage/SKILL.md) | Curate the idea bank — promote, kill, re-score, track KTLO. |
-| | [roadmap-shape](skills/roadmap-shape/SKILL.md) | Build a Now/Next/Later roadmap with explicit portfolio mix and capacity. |
-| | [initiative-shape](skills/initiative-shape/SKILL.md) | Shape an idea into a committed initiative — goal, key results, appetite, kill condition. |
-| **Design** | [design-doc](skills/design-doc/SKILL.md) | Structure significant work before building: problem, approach, NFRs, operability. |
-| | [product-spike](skills/product-spike/SKILL.md) | Throwaway artefact to answer one product question before committing. |
-| | [backend-spike](skills/backend-spike/SKILL.md) | Time-boxed investigation of a backend correctness question, with rejected alternatives. |
-| **Plan** | [delivery-shape](skills/delivery-shape/SKILL.md) | Decompose an initiative into an ordered, verifiable delivery hierarchy. |
+| **Shape** | [shape:idea](skills/idea/SKILL.md) | Score, classify, and route incoming ideas. Covers idea triage, app calibration, backlog curation, roadmap building, and initiative shaping. |
+| **Design** | [shape:design](skills/shape:design/SKILL.md) | Structure significant work before building. Offers three tracks: design-doc (full design), product-spike (product unknowns), backend-spike (technical unknowns). |
+| **Plan** | [shape:delivery](skills/delivery/SKILL.md) | Decompose an initiative into an ordered, verifiable delivery hierarchy. |
 | | [plan-review](skills/plan-review/SKILL.md) | Adversarial review of a plan before approval — scope drift, one-way doors, missing operability. |
 | **Build** | [build](skills/build/SKILL.md) | Gated red/green/commit loop for one task — every increment lands verified, smallest first. |
 | | [debugging](skills/debugging/SKILL.md) | Find root cause before proposing fixes — hypothesis and evidence, not guess-and-check. |
@@ -134,7 +128,7 @@ Mechanical checks that fire on events and catch failure modes the agent has ever
 
 ### References
 
-Short files cited by skills, loaded on demand: [confidence-meter](references/confidence-meter.md), [ice-scoring](references/ice-scoring.md), [kano-classification](references/kano-classification.md), [portfolio-themes](references/portfolio-themes.md), [nfr-categories](references/nfr-categories.md), [dora-metrics](references/dora-metrics.md), [app-context-schema](references/app-context-schema.md).
+Short files cited by skills, loaded on demand: [confidence-meter](references/confidence-meter.md), [ice-scoring](references/ice-scoring.md), [kano-classification](references/kano-classification.md), [nfr-categories](references/nfr-categories.md), [app-context-schema](references/app-context-schema.md).
 
 ### Benchmarks
 
