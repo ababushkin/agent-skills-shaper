@@ -7,32 +7,6 @@ description: >
   built-it-badly. Use before any issue is transitioned to Done.
   Trigger phrases: "review this diff", "run execution review", "review before Done",
   "multi-persona review", "fan-out review", "check the diff against AC and security".
-pack: engineering
-lifecycle_stage: execution
-principles_implemented:
-  - source: eng-agentic
-    id: P4
-    bucket: embedded
-  - source: eng-agentic
-    id: P6
-    bucket: embedded
-  - source: eng-universal
-    id: P1
-    bucket: embedded
-length_target: 120–180
-author: Anton Babushkin
-predecessor:
-  repo: addyosmani/agent-skills
-  skill: agents/code-reviewer.md + agents/security-auditor.md (MIT)
-  relation: ported-and-extended
-kept_from_predecessor: >
-  Code-reviewer adversarial posture, severity vocabulary (Critical/Required/Suggested/Note),
-  five review axes from code-reviewer. Security-auditor scope: injection, secrets, sensitive-data
-  leakage. Both ported to the N02 finding-triple contract.
-changed_from_predecessor: >
-  Single-persona monolith replaced by a three-persona fan-out dispatched by this skill.
-  Spec-compliance persona is new (neither predecessor pack has it; test-engineer is the wrong
-  lens). Review order fixed: spec → security → quality. Output aggregated into one deduped verdict.
 ---
 
 # Execution Review
