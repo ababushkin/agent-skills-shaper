@@ -1,6 +1,6 @@
 # Benchmarks
 
-On a five-scenario benchmark of the [`plan-review`](../skills/plan-review/SKILL.md) skill on Claude Sonnet 4.6, with-skill runs catch **93%** of the issues a senior reviewer should catch. Baseline (the same model, same plan, no skill loaded) catches **19%**. Delta **+0.74**, stable across n=3.
+On a five-scenario benchmark of the [`plan-review`](../skills/plan-review/SKILL.md) skill on Claude Sonnet 4.6, with-skill runs catch **93%** of the issues a senior reviewer should catch. Baseline (the same model, same plan, no skill loaded) catches **19%**. Delta **+0.74**, stable across n=3 and confirmed stable after a 69-line prose reform (iter-6, 2026-06-14): aggregate unchanged at 93%.
 
 The number isn't the point on its own. The point is that without a skill, the model does what models do — it summarises the plan back. With the skill, it produces an explicit verdict that names the actual failure mode (no rollback, unverified scope claim, no problem statement). That difference is what calibration is for, and it's what this page tries to show with numbers and source links.
 
@@ -49,7 +49,8 @@ Iter-5, the latest run. Claude Sonnet 4.6 on both runner and grader. n=3 per cel
 | 3 — clean gem bump | 100% ± 0% | 11% ± 10% | **+89pp** |
 | 4 — schema migration, no rollback | 100% ± 0% | 25% ± 0% | **+75pp** |
 | 5 — redis cache, solutionism | 90% ± 8% | 33% ± 8% | **+57pp** |
-| **Aggregate** | **93% ± 2%** | **19% ± 5%** | **+0.74** |
+| **Aggregate (iter-5, pre-reform)** | **93% ± 2%** | **19% ± 5%** | **+0.74** |
+| **Aggregate (iter-6, post-reform)** | **93% ± 4%** | **19% ± 1%** | **+0.74** |
 
 Every scenario shows a large delta. The smallest (eval-5, +57pp) is still substantial. The biggest (eval-3, +89pp) is the calibration target the skill was tuned to handle correctly — not over-reviewing a 30-minute reversible change.
 
@@ -75,6 +76,7 @@ Five iterations.
 - **Iter-3**: added the Step 1a fast-track gate. Baseline appeared to jump to 92% — suspicious. Investigation showed the self-grader was reading adjacent `grading.json` files in the workspace, contaminating its judgement.
 - **Iter-4**: switched to an isolated, blinded grader with no workspace metadata access and strict literal-evidence rules. Baseline collapsed back to 36%. Aggregate delta **+0.54** — the first trustworthy number this benchmark produced.
 - **Iter-5**: closed the eval-3 gap (72% → 100%) by making `Cynefin domain:` and `Tier:` lines mandatory in the fast-track output template. Re-ran the full sweep on Sonnet 4.6 (≈30% cheaper than Opus 4.7). Aggregate delta **+0.74**, stable across n=3.
+- **Iter-6**: prose reform (N06) cut 69 lines from SKILL.md (348→279 lines). Same harness, same eval set, same models as iter-5. Aggregate **93% ± 4%** — identical to iter-5 (0pp delta). Reform confirmed: the cut prose was redundancy, not load-bearing guidance.
 
 Each iteration's analysis lives in [`benchmarks/plan-review/iteration-{1..5}/benchmark.md`](../benchmarks/plan-review/).
 
@@ -99,8 +101,8 @@ Each iteration's analysis lives in [`benchmarks/plan-review/iteration-{1..5}/ben
 | Artefact | Path |
 |---|---|
 | Eval definitions (5 scenarios, assertions) | [`skills/plan-review/evals/evals.json`](../skills/plan-review/evals/evals.json) |
-| Per-iteration analysis writeups | [`benchmarks/plan-review/iteration-{1..5}/benchmark.md`](../benchmarks/plan-review/) |
-| Per-iteration machine-readable results | `benchmarks/plan-review/iteration-{1..5}/benchmark.json` |
+| Per-iteration analysis writeups | [`benchmarks/plan-review/iteration-{1..6}/benchmark.md`](../benchmarks/plan-review/) |
+| Per-iteration machine-readable results | `benchmarks/plan-review/iteration-{1..6}/benchmark.json` |
 | Aggregator scripts (n=3 stats, iter comparison) | `benchmarks/plan-review/iteration-{3,4,5}/aggregate.py` |
 | Iter-4 grader prompt (isolated grader rules) | `benchmarks/plan-review/iteration-4/grader-prompt.md` |
 
