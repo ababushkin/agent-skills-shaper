@@ -4,12 +4,30 @@
 
 set -euo pipefail
 
-SETTINGS="$HOME/.claude/settings.json"
-HOOK_SCRIPT="$HOME/.claude/hooks/shape-session-start.sh"
+CLAUDE_DIR="${HOME}/.claude"
+COMMANDS_DIR="${CLAUDE_DIR}/commands"
+SKILLS_DIR="${CLAUDE_DIR}/skills"
+SETTINGS="$CLAUDE_DIR/settings.json"
+HOOK_SCRIPT="$CLAUDE_DIR/hooks/shape-session-start.sh"
 
 echo "Uninstalling shaper..."
 
-# 1. Remove the SessionStart hook entry from settings.json
+# 1. Remove command wrappers
+if [ -d "${COMMANDS_DIR}/shape" ]; then
+  rm -rf "${COMMANDS_DIR}/shape"
+  echo "  Removed ${COMMANDS_DIR}/shape"
+else
+  echo "  Commands dir not found (already removed?)"
+fi
+
+# 2. Remove skill symlinks
+for link in "${SKILLS_DIR}"/shape-*; do
+  [ -L "${link}" ] || continue
+  rm "${link}"
+  echo "  Removed $(basename "${link}")"
+done
+
+# 3. Remove the SessionStart hook entry from settings.json
 if [ -f "$SETTINGS" ]; then
   python3 - "$SETTINGS" <<'EOF'
 import json, sys
@@ -48,7 +66,7 @@ else:
 EOF
 fi
 
-# 2. Remove the hook script
+# 4. Remove the hook script
 if [ -f "$HOOK_SCRIPT" ]; then
   rm "$HOOK_SCRIPT"
   echo "  Removed $HOOK_SCRIPT"

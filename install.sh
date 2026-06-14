@@ -33,10 +33,13 @@ fi
 
 mkdir -p "${COMMANDS_DIR}/shape"
 
-for src in "${REPO_DIR}/.claude/commands/"*.md; do
-  fname="$(basename "$src")"
-  dest="${COMMANDS_DIR}/shape/${fname}"
-  sed "s|@../../|@${REPO_DIR}/|g" "$src" > "$dest"
+# Process top-level and subdirectory command files
+for src in "${REPO_DIR}/.claude/commands/"*.md "${REPO_DIR}/.claude/commands"/*/*.md; do
+  [ -f "$src" ] || continue
+  relpath="${src#${REPO_DIR}/.claude/commands/}"
+  dest="${COMMANDS_DIR}/shape/${relpath}"
+  mkdir -p "$(dirname "$dest")"
+  sed "s|@../../|@${REPO_DIR}/|g; s|@../../../|@${REPO_DIR}/|g" "$src" > "$dest"
   echo "Generated: ${dest}"
 done
 
