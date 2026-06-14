@@ -1,10 +1,8 @@
 # Shaper
 
-**Robust, scalable patterns for modern agentic engineering**
+**Robust, scalable skills for modern agentic engineering**
 
 Vibe coding is fun on a small project. Over a longer one, your prompts drift — methodical and rigorous one day, rushed or forgetful the next - and the quality of the output drifts with them. Shaper encodes the engineering discipline that strong teams have relied on for decades into ready-to-go skills, so an agent applies it the same way on every project, every turn — instead of taking the shortcut.
-
-- 
 
 ```
   SHAPE              DESIGN            PLAN              BUILD             VERIFY            SHIP
