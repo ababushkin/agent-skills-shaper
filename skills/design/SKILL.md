@@ -1,15 +1,6 @@
 ---
 name: design
-description: >
-  Single entry point for working through a technical or product unknown before
-  committing to a build. Routes to one of three tracks — design document,
-  backend spike, or product spike — based on the dominant unknown. Use whenever
-  the question is "how should we build X", "what's the right approach for Y",
-  "investigate this correctness question", or "validate this interaction before
-  designing it". Trigger phrases: "how do we build", "design this", "spike on",
-  "what's the right threshold for", "let's prototype this", "investigate the
-  approach for", "what's the architecture for", "validate the UX before
-  building".
+description: 'Work through a technical or product unknown before committing to a build. Routes to a design document, backend spike, or product spike based on the dominant unknown. Trigger phrases: "how do we build", "design this", "spike on", "what is the right threshold for", "what is the architecture for", "validate the UX before building".'
 ---
 
 # Shape: design
