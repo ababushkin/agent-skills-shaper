@@ -1,0 +1,62 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cb2641da5d62",
+  "session_id": "b21c4fab-181d-4398-b12c-faca99cca28f",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-15T03:35:31.648485Z",
+  "branch": "docs/writing-guidelines-task-ticket-deltas",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "skills/writing-refinement/SKILL.md",
+    "skills/writing-refinement/references/style-rules.md",
+    "skills/writing-refinement/references/tasks.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "07fac31ce546",
+  "token_usage": {
+    "input_tokens": 20794,
+    "cache_creation_tokens": 97038,
+    "cache_read_tokens": 854487,
+    "output_tokens": 8261,
+    "api_call_count": 16
+  },
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-15T03:35:31.639236Z",
+    "agent_lines": 35,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 35,
+    "total_lines_changed": 35,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 133,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 133
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 137,
+      "user_lines_removed": 0,
+      "agent_lines_added": 35,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 133,
+        ".gitignore": 4
+      }
+    }
+  ]
+}

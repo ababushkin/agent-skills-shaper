@@ -1,0 +1,91 @@
+incorporate changes in these writing guidelines to the writing guidelines in this repo: Writing Guidelines for AI Agents
+Use these rules for software engineering and product management writing.
+Core Rules
+Put the actor in the subject and the action in the verb. Prefer "The API caches responses" over "Caching is implemented by the API."
+Use concrete verbs. Replace nominalizations such as "implementation," "utilization," and "optimization" with "implement," "use," and "optimize."
+Make each goal, milestone, or task produce a visible work product: a shipped change, design doc, verified fix, report, migration, test, or decision.
+Start with known context and end with the new or important information.
+Cut filler, but keep assumptions, risks, constraints, dependencies, owners, dates, and success criteria.
+Write like a professional colleague. Prefer a clear story over a list of disconnected facts.
+Project Goals and OKRs
+Explain the gap between the current state, the desired state, and the cost of staying where you are.
+Use Situation, Complication, Question, Answer logic internally, but do not use those labels as headings.
+Make success measurable.
+Bad:
+"Improve the efficiency of our API and utilize better caching."
+Good:
+"Our API serves 1k RPS today. The Q3 launch requires 10k RPS, which will exceed current capacity. We will re-architect the load balancer to support 15k RPS."
+Bad:
+"Significantly improve dashboard speed."
+Good:
+"Reduce P95 dashboard load time from 4.5s to under 800ms using Edge Workers."
+Design Docs
+Problem: Define the current state and the cost of the status quo.
+Context: Anchor the reader in stable facts before introducing the change or conflict.
+Constraints: Group non-functional requirements by structure or impact.
+Alternatives: Compare distinct options and state the practical effect of each one.
+Recommended approach: Start with what the team already knows, then introduce the proposed change.
+Operability plan: Define verifiable rollback gates, monitoring signals, and ownership.
+Milestones and Deliverables
+Use milestones as summary achievements, not labels such as "Phase 1" or "Research."
+Group work into non-overlapping containers.
+Order groups by sequence, system structure, or impact.
+Bad:
+"Frontend; Data; Implementation."
+Good:
+"Built responsive React components; Migrated user records to a sharded Postgres cluster."
+Bad:
+"Security; Authentication; Login Page."
+Good:
+"Identity management; Data encryption at rest."
+Tasks, Stories, Bugs, and Refactors
+Every task needs a concrete "done when" state.
+Avoid blank tasks such as "Investigate latency" unless the output is named.
+Use active voice.
+Keep the opening story short. Put role, desired system behavior, and user value in one plain sentence; move implementation details into bullets.
+Use bullets for dense implementation facts such as files, functions, states, commands, slugs, model choices, logs, and failure modes.
+Split any task that requires more than three distinct implementation moves, unless those moves must ship atomically.
+Include rejected approaches when they prevent likely wrong turns.
+Name the observable proof for each success path and failure path.
+Bad:
+"Perform an investigation into the latency situation."
+Good:
+"Done when: The report identifies the three highest-latency queries in the /orders endpoint."
+Bad:
+"As a user, I want the utilization of an automated system."
+Good:
+"As a user, I want to reset my password through an email link so I can regain access in under 2 minutes."
+Ticket Shape
+Use this structure for implementation tickets:
+What: one short user story, then the exact behavior change.
+Where: files, functions, states, APIs, commands, and known line references.
+Why: the operational gap, incident, or user cost that makes the change necessary.
+Approach: the smallest design that closes the gap.
+Rejected approaches: alternatives the agent should not take and why.
+Completion: verifiable done states for success, fallback, and no-op cases.
+Tasks: small work units with one primary outcome each.
+Risks: concrete failure modes with mitigations or falsifiers.
+Prefer:
+"The recovery points are..." over "The seam lives..."
+"The orchestrator checks..." over "The missing move is..."
+"This prevents stranded branches..." over "This keeps reviewable work from being stranded..."
+Vocabulary
+Use exact technical terms when they are accurate. Replace metaphors only when they hide the cause.
+Prefer "essential" or "required" over vague intensifiers such as "vital."
+Replace "bottleneck" with the specific shortage, delay, queue, lock, or capacity limit when known.
+Prefer "plan" or "spec" over "blueprint" unless discussing an actual final design.
+Prefer "limit" or "maximum" over "ceiling."
+Prefer "use" over "utilization."
+Prefer "implement" over "implementation" when describing action.
+Prefer "communicate with," "connect to," or "call" over "interface with."
+Prefer "affect" over "impact" as a verb.
+Delete "basically," "actually," "quite," "it should be noted that," and similar throat-clearing.
+Replace "at this point in time" with "now."
+Agent Review Checklist
+Before returning an artifact, check:
+Does it move from problem to solution in a clear order?
+Do subtasks explain how to achieve the milestone or why the milestone matters?
+Did pruning preserve assumptions, risks, dependencies, constraints, and success criteria?
+Is every task's done state visible and verifiable?
+Do important terms or conclusions appear where readers will notice them?
+Does it sound like a capable colleague wrote it?
