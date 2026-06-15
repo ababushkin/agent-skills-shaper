@@ -42,7 +42,7 @@ Output shape:
 
 ## Number discipline
 
-Same rule as everywhere: if a plan or one-pager needs a number it doesn't have — current latency, today's error rate, the cost of the status quo — insert a bracketed placeholder the owner fills, or ask. Never invent the figure that makes the bet look good.
+Phase 1's never-invent-a-number rule applies in full here: a plan or one-pager leans on figures like current latency, today's error rate, or the cost of the status quo, and a fabricated one that makes the bet look good is the most damaging kind. When the figure is missing, bracket a placeholder for the owner or ask.
 
 ## Review additions
 

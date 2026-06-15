@@ -34,7 +34,7 @@ Group work into containers that state a **summary effect** — what was accompli
 
 | Bad (overlapping) | Good (exclusive) |
 |---|---|
-| "1. Security; 2. Authentication" | "1. Identity management (authn/authz); 2. Data encryption at rest" |
+| "1. Checkout flow; 2. Payment processing" | "1. Cart and checkout UI; 2. Payment capture and settlement" |
 
 **Ordering.** Pick one principle per list and state it implicitly through structure: time (sequential delivery), structure (frontend / backend / infra), or degree (highest-impact first).
 
@@ -45,3 +45,13 @@ Group work into containers that state a **summary effect** — what was accompli
 3. Key results, each with numbers.
 4. Milestones as achievement headings, MECE, in a declared order.
 5. Risks, assumptions, and dependencies — kept, even when pruning.
+
+## Plan / OKR review additions
+
+Beyond the universal Phase 5 gate, check:
+
+- Does the goal state both the current state and the success state, each with a number?
+- Does every key result carry a number, and does the surrounding prose name the cost of the status quo?
+- Are the milestones achievement headings (a result), not calendar or category labels?
+- Are the milestone groups MECE — no overlap, no gap — under one declared ordering principle?
+- Did risks, assumptions, and dependencies survive pruning?

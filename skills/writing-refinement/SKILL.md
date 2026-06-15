@@ -5,6 +5,8 @@ description: Refine plans, engineering design docs, OKRs, milestones, user stori
 
 # Writing Refinement
 
+## Purpose
+
 Turn loose thinking into a document that moves an idea exactly from one mind to another: logically sound, ruthlessly concise, and humanly readable.
 
 Work through the five phases **in order**. Each phase produces a checkable intermediate artifact — do not advance until the current phase's "Done when" holds. For a short document (a single ticket, a few OKRs) the intermediates can live in your head or a few scratch lines; for a design doc or plan, write them out before drafting prose.
@@ -14,15 +16,22 @@ Work through the five phases **in order**. Each phase produces a checkable inter
 Run this skill in one of two modes. Pick the mode first; the routing table and five phases apply to both.
 
 - **Author mode** — you are producing the document. Run Phases 1→5 forward.
-- **Review mode** — you are refining a document that already exists (another agent's draft, or your own from an earlier turn). The author who wrote it cannot see its prose failures: the meaning is in their head, so the page reads clearer to them than it is. You hold no such investment. **Load `references/style-rules.md` and the matching type reference *before* you read the draft** — form the standard first, then test the draft against it, so you judge the prose rather than rationalise it.
+- **Review mode** — you are refining a document that already exists (another agent's draft, or your own from an earlier turn). The trap is that prose reads clearer to whoever holds the meaning in their head than it does on the page; reading the draft first lets it set your standard. **Load `references/style-rules.md` and the matching type reference *before* you read the draft** — form the standard first, then test the draft against it, so you judge the prose rather than rationalise it.
 
 Review-mode output is a verdict plus line-level fixes, not a rewrite-in-place:
 
 - **Verdict:** `accept` / `accept with notes` / `reject`.
 - **Findings:** each numbered, with the exact quoted span, the rewrite, and the one rule it breaks.
-- **Verdict rule:** `reject` when a load-bearing span fails a Phase-1–3 rule (a goal, milestone, heading, or task that reads as a label or names no work product). `accept with notes` when only Phase-4 vocabulary/polish findings remain. `accept` only when no finding survives — and a clean `accept` with zero findings on a substantial draft is itself a signal the read was shallow, so re-scan before declaring it.
+- **Verdict rule:** `reject` when *any* load-bearing span fails a Phase-1–3 rule — a goal, milestone, heading, or task that reads as a label or names no work product, or a missing SCQA spine. One such failure is enough; these are the spans the document is built on. `accept with notes` when no Phase-1–3 failure survives and only Phase-4 vocabulary/polish findings remain — an isolated awkward sentence or a watchlist word is a note, not a rejection. `accept` only when no finding survives. A clean `accept` with zero findings on a draft longer than a few lines is itself a signal the read was shallow, so re-scan before declaring it.
 
-Review mode runs Phases 1–5 as **checks against the draft**, not as drafting steps: Phase 1 — does an SCQA spine exist and do R1/R2 carry a number or visualizable end product? Phases 2–3 — MECE groups, achievement headings, point-first sections, old-before-new? Phase 4 — the `style-rules.md` line sweep. Phase 5 — the final gate, reported as the verdict above.
+Review mode runs Phases 1–5 as **checks against the draft**, not as drafting steps — transpose each phase into the question it answers:
+
+- Phase 1 — does an SCQA spine exist, and do R1/R2 each carry a number or a visualizable end product? (For a task/bug, only the Answer need survive — see Phase 1.)
+- Phases 2–3 — are the groups MECE, the headings achievements, every section point-first, every sentence old-before-new?
+- Phase 4 — the `style-rules.md` line sweep.
+- Phase 5 — the final gate, reported as the verdict above.
+
+The matching type reference adds its own review checklist on top of these — read it before judging.
 
 For a heavier fresh-context review — an adversarial sub-agent dispatched automatically before a draft reaches the user — use the companion persona `agents/writing-editor/AGENT.md`, which adds the adversarial review posture and the author's-rationalisations table on top of these phases. The two share one source of rules: this skill's `references/`.
 
@@ -30,13 +39,13 @@ For a heavier fresh-context review — an adversarial sub-agent dispatched autom
 
 Identify what is being written, then read the matching reference file for its templates and bad/good examples:
 
-| Document type | Reference |
-|---|---|
-| Project plan, goals, OKRs, milestones | `references/plans-okrs.md` |
-| Engineering design doc / RFC | `references/design-docs.md` |
-| Tasks, user stories, bugs, refactors | `references/tasks.md` |
-| Plan-mode plan, idea one-pager, proposal | `references/plans-and-ideas.md` |
-| **Anything else** | **No type reference — run Phases 1–5 with `style-rules.md` only.** |
+| Document type                            | Reference                                                          |
+| ---------------------------------------- | ------------------------------------------------------------------ |
+| Project plan, goals, OKRs, milestones    | `references/plans-okrs.md`                                         |
+| Engineering design doc / RFC             | `references/design-docs.md`                                        |
+| Tasks, user stories, bugs, refactors     | `references/tasks.md`                                              |
+| Plan-mode plan, idea one-pager, proposal | `references/plans-and-ideas.md`                                    |
+| **Anything else**                        | **No type reference — run Phases 1–5 with `style-rules.md` only.** |
 
 Read `references/style-rules.md` in every case — it governs Phase 4 for all document types. The five phases are type-agnostic; only the templates and examples are type-specific. Never refuse a document for lacking a dedicated reference — fall through to the default row and run the same five phases.
 
@@ -49,9 +58,11 @@ Before writing any prose, define the document's logical boundary as a four-line 
 3. **Desired Result (R2)** — the success state, stated quantifiably or as a visualizable end product.
 4. **Question → Answer** — the specific question the complication raises, and a one-sentence answer. The answer is the document's Main Point.
 
-**Done when:** the SCQA block exists; R1 and R2 each contain a number or a concrete, visualizable end product; the Answer is one sentence.
+**Done when:** the SCQA block exists; R1 and R2 each contain a number or a concrete, visualizable end product (the *hand-product test* — the reader can picture a tangible result; it recurs in Phases 4 and 5 under the same name); the Answer is one sentence.
 
 **If the source material lacks a number the workflow requires, never invent one.** Insert a bracketed placeholder the owner must fill — "from [current P95: __ ms] to under 800ms" — or, in an interactive session, ask. A plausible fabricated metric is worse than a visible gap.
+
+**For a single task, bug, or refactor, collapse SCQA to its Answer.** These artefacts inherit the SCQA of the plan or ticket above them; re-deriving a Situation and Complication for each one is busywork. Keep only the Answer — the one-sentence statement of the work and its verifiable end product (the "Done when"). Do not reject a task or bug for lacking a Situation/Complication block. Full SCQA applies to documents that stand alone: plans, design docs, OKR sets, one-pagers.
 
 ## Phase 2 — Logical synthesis (the pyramid)
 
@@ -74,12 +85,7 @@ Organize the supporting ideas under the Answer:
 
 ## Phase 4 — Sentence-level pruning (clarity and precision)
 
-Apply `references/style-rules.md` line by line:
-
-1. **Characters as subjects, actions as verbs.** Make the doer (system, user, or developer) the grammatical subject and its activity a specific verb. "The load balancer drops requests above 1k RPS", not "Request dropping occurs at high utilization."
-2. **Reverse nominalizations.** Turn *utilization, implementation, optimization, investigation* back into *use, implement, optimize, investigate*.
-3. **Delete clutter.** Remove little qualifiers (*basically, actually, quite, a bit, virtually*), redundant pairs (*full and complete*), and throat-clearing (*It should be noted that…*). Sweep the vocabulary watchlist in `style-rules.md`.
-4. **Prune without amputating.** Concision must never remove essential dependencies, risks, assumptions, or constraints. If a "wordy" sentence carries an operational fact, compress it — don't cut it.
+Sweep `references/style-rules.md` over the draft line by line — that file owns the rules, examples, and watchlist. It covers characters-as-subjects, reversing nominalizations, deleting clutter and throat-clearing, the vocabulary watchlist, and the one rule that overrides the rest: **prune without amputating** — concision must never remove an essential dependency, risk, assumption, or constraint. If a "wordy" sentence carries an operational fact, compress it; don't cut it.
 
 **Done when:** zero watchlist words remain; no nominalizations where a verb works; every task or goal passes the hand-product test (the reader can visualize a tangible end product).
 
@@ -88,14 +94,16 @@ Apply `references/style-rules.md` line by line:
 Run the cheap mechanical checks first, then the judgment checks:
 
 **Mechanical:**
+
 - [ ] No framework vocabulary (SCQ, MECE, R1/R2, "Complication") appears in the output.
 - [ ] No watchlist words survive.
 - [ ] Every heading contains a verb or a result.
-- [ ] Every task has a "Done when" with a visualizable, verifiable end product.
-- [ ] Every task with more than three distinct moves is split, unless the moves must ship atomically.
-- [ ] The newest or most important technical term in each key sentence sits in its final clause (stress position).
+- [ ] The newest or most important technical term in each sentence sits in its final clause (stress position).
+- [ ] *(task/plan docs only)* Every task has a "Done when" with a visualizable, verifiable end product.
+- [ ] *(task/plan docs only)* Every task with more than three distinct moves is split, unless the moves must ship atomically.
 
 **Judgment:**
+
 - [ ] **Narrative:** the document flows from problem to solution as one story of "where we are" and "what we are doing", not a sterile list of data points.
 - [ ] **Logic:** sub-points answer "How?" or "Why?" about their parents.
 - [ ] **Completeness:** assumptions, risks, and dependencies survived the pruning.

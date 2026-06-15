@@ -25,7 +25,7 @@ Never assign an "investigation" without defining its end product. Every task car
 
 Keep a task small enough to verify in one pass, and front-load the story so the dense facts don't bury it.
 
-- **Split anything over three moves.** A task requiring more than three distinct implementation moves becomes two or more tasks — unless those moves must ship atomically (then say so).
+- **Split anything over three moves.** A move is a distinct, separately-verifiable change to one concern — touching a new file, a new layer, or a new behaviour. "Add a column to the orders table, backfill it, expose it in the API, and render it in the dashboard" is four moves (schema, data, API, UI); "rename a variable and update its three call sites" is one. A task over three moves becomes two or more tasks — unless the moves must ship atomically (then say so).
 - **Short opening story, then bullets.** State role, desired system behavior, and user value in one plain sentence. Move the dense implementation facts — files, functions, states, commands, slugs, model choices, logs, failure modes — into bullets below it.
 - **Name the rejected approaches that prevent a wrong turn.** List the alternative the assignee should *not* take, and why, only when it heads off a likely mistake. Skip it when no plausible wrong turn exists.
 - **Prove both paths.** Name the observable proof for the success path and for the failure path — what a reviewer sees when it works and when it falls back or no-ops.
