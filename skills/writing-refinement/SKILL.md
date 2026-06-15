@@ -44,7 +44,7 @@ Read `references/style-rules.md` in every case — it governs Phase 4 for all do
 
 Before writing any prose, define the document's logical boundary as a four-line SCQA block:
 
-1. **Situation** — a noncontroversial fact about the subject the reader will immediately accept as true.
+1. **Situation** — a noncontroversial fact about the subject, anchored in time or place, that the reader will immediately accept as true.
 2. **Complication** — what disturbed that stability. This reveals the Undesired Result (**R1**) and its palpable cost.
 3. **Desired Result (R2)** — the success state, stated quantifiably or as a visualizable end product.
 4. **Question → Answer** — the specific question the complication raises, and a one-sentence answer. The answer is the document's Main Point.
@@ -65,7 +65,7 @@ Organize the supporting ideas under the Answer:
 
 ## Phase 3 — Global coherence (the narrative flow)
 
-1. **Write the SCQ introduction.** Lead the reader from known (Situation) to unknown (Complication) to your solution (Answer) — as flowing prose. **Never use "Situation", "Complication", "Question", "SCQ", "MECE", "R1", or "R2" as headers or terms in the output document.** These are scaffolding; the reader must never see them.
+1. **Write the SCQ introduction.** Lead the reader from known (Situation) to unknown (Complication) to your solution (Answer) — as flowing prose. **Never use "Situation", "Complication", "Question", "SCQ", "MECE", "R1", or "R2" as headers or terms in the output document.** These are scaffolding; the reader must never see them. The introduction *reminds* the reader of facts they already accept before it reveals the problem — it brings in no new data or exhibit the reader must verify to accept the premise.
 2. **Open every unit with a point sentence.** Each section and paragraph starts with a short sentence stating its summary effect; complexity follows.
 3. **Headings are achievements, not labels.** "Migrated user records to a sharded Postgres cluster", not "Phase 2" or "Data". A heading should contain a verb or a result.
 4. **Old before new.** Start sentences with information the reader already has; place new or complex technical information at the end, where the stress position gives it emphasis.
