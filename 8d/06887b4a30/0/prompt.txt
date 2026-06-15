@@ -1,0 +1,9 @@
+load 36
+
+---
+
+1 - go 2 - yes 3 - yes 4 - only keep common rationalisations if its really going to help the agent make a better decision
+
+---
+
+looks like i can't proceed as some of my prs need to be re-stacked

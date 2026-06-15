@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "8d06887b4a30",
+  "strategy": "manual-commit",
+  "branch": "ABA-378",
+  "checkpoints_count": 0,
+  "files_touched": [
+    ".claude/commands/idea.md",
+    ".gitignore",
+    "skills/idea/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/8d/06887b4a30/0/metadata.json",
+      "transcript": "/8d/06887b4a30/0/full.jsonl",
+      "content_hash": "/8d/06887b4a30/0/content_hash.txt",
+      "prompt": "/8d/06887b4a30/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 62080,
+    "cache_creation_tokens": 210925,
+    "cache_read_tokens": 3418554,
+    "output_tokens": 35169,
+    "api_call_count": 68
+  }
+}
