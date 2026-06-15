@@ -1,0 +1,23 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cb2641da5d62",
+  "strategy": "manual-commit",
+  "branch": "docs/writing-guidelines-task-ticket-deltas",
+  "checkpoints_count": 0,
+  "files_touched": null,
+  "sessions": [
+    {
+      "metadata": "/cb/2641da5d62/0/metadata.json",
+      "transcript": "/cb/2641da5d62/0/full.jsonl",
+      "content_hash": "/cb/2641da5d62/0/content_hash.txt",
+      "prompt": "/cb/2641da5d62/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 46334,
+    "cache_creation_tokens": 163892,
+    "cache_read_tokens": 2107550,
+    "output_tokens": 21254,
+    "api_call_count": 44
+  }
+}

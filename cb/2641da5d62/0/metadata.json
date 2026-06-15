@@ -1,0 +1,35 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "cb2641da5d62",
+  "session_id": "35850593-52c3-4dd2-a8c8-5662649f2120",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-15T03:35:28.35456Z",
+  "branch": "docs/writing-guidelines-task-ticket-deltas",
+  "checkpoints_count": 0,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "",
+  "turn_id": "801ad57ce394",
+  "token_usage": {
+    "input_tokens": 46334,
+    "cache_creation_tokens": 163892,
+    "cache_read_tokens": 2107550,
+    "output_tokens": 21254,
+    "api_call_count": 44
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 168,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 133,
+        "skills/writing-refinement/SKILL.md": 1,
+        "skills/writing-refinement/references/style-rules.md": 10,
+        "skills/writing-refinement/references/tasks.md": 24
+      }
+    }
+  ]
+}
