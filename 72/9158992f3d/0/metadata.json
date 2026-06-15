@@ -1,0 +1,50 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "729158992f3d",
+  "session_id": "35850593-52c3-4dd2-a8c8-5662649f2120",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-15T06:09:34.208042Z",
+  "branch": "ABA-379",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "references/project-types.md",
+    "docs/designs/front-door-ia.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "793252ced75b",
+  "token_usage": {
+    "input_tokens": 81102,
+    "cache_creation_tokens": 347535,
+    "cache_read_tokens": 6262646,
+    "output_tokens": 55201,
+    "api_call_count": 115
+  },
+  "session_metrics": {
+    "turn_count": 3
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-15T06:09:34.182624Z",
+    "agent_lines": 364,
+    "agent_removed": 1,
+    "human_added": 5,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 369,
+    "total_lines_changed": 738,
+    "agent_percentage": 49.457994579945805,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}
