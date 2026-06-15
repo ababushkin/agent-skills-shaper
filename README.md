@@ -79,7 +79,7 @@ Not sure which skill applies? Ask, or run `/shape:using-this-pack` — the navig
 | Stage | Skill | What it does |
 |---|---|---|
 | **Shape** | [shape:idea](skills/idea/SKILL.md) | Score, classify, and route incoming ideas. Covers idea triage, app calibration, backlog curation, roadmap building, and initiative shaping. |
-| **Design** | [shape:design](skills/shape:design/SKILL.md) | Structure significant work before building. Offers three tracks: design-doc (full design), product-spike (product unknowns), backend-spike (technical unknowns). |
+| **Design** | [shape:design](skills/design/SKILL.md) | Structure significant work before building. Offers three tracks: design-doc (full design), product-spike (product unknowns), backend-spike (technical unknowns). |
 | **Plan** | [shape:delivery](skills/delivery/SKILL.md) | Decompose an initiative into an ordered, verifiable delivery hierarchy. |
 | | [plan-review](skills/plan-review/SKILL.md) | Adversarial review of a plan before approval — scope drift, one-way doors, missing operability. |
 | **Build** | [build](skills/build/SKILL.md) | Gated red/green/commit loop for one task — every increment lands verified, smallest first. |
