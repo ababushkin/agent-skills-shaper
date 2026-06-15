@@ -1,5 +1,5 @@
 ---
-description: Run shape:idea — interrogates an incoming idea through confidence gates, ICE scoring, and routing to idea bank or validation slot.
+description: "Run shape:idea — interrogates an incoming idea through confidence gates, ICE scoring, and routing to idea bank or validation slot."
 argument-hint: "[idea description]"
 ---
 

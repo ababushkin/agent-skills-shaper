@@ -1,11 +1,6 @@
 ---
 name: idea
-description: >
-  Intake gate for new ideas. Interrogates, scores, and routes an idea before any action
-  is taken. Use when an idea arrives in any form — request, observation, suggestion,
-  feedback — and needs a triage record. Trigger phrases: "we should build",
-  "a customer asked for", "I had an idea", "can we add", "what if we",
-  "competitor just launched".
+description: 'Intake gate for new ideas: interrogate, score, and route before any action. Use when an idea arrives in any form — request, observation, suggestion, feedback — and needs a triage record. Trigger phrases: "we should build", "a customer asked for", "I had an idea", "can we add", "what if we", "competitor just launched".'
 ---
 
 # Shape: idea
