@@ -92,6 +92,7 @@ Run the cheap mechanical checks first, then the judgment checks:
 - [ ] No watchlist words survive.
 - [ ] Every heading contains a verb or a result.
 - [ ] Every task has a "Done when" with a visualizable, verifiable end product.
+- [ ] Every task with more than three distinct moves is split, unless the moves must ship atomically.
 - [ ] The newest or most important technical term in each key sentence sits in its final clause (stress position).
 
 **Judgment:**

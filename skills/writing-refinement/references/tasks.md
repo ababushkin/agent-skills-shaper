@@ -21,6 +21,28 @@ Never assign an "investigation" without defining its end product. Every task car
 | "Improve test coverage." | "Add unit tests for the billing module. **Done when:** billing coverage exceeds 85% and CI passes." |
 | "Look into the flaky deploy." | "Reproduce the deploy failure. **Done when:** a ticket documents the failing step, its trigger condition, and a proposed fix." |
 
+## Sizing and shape
+
+Keep a task small enough to verify in one pass, and front-load the story so the dense facts don't bury it.
+
+- **Split anything over three moves.** A task requiring more than three distinct implementation moves becomes two or more tasks — unless those moves must ship atomically (then say so).
+- **Short opening story, then bullets.** State role, desired system behavior, and user value in one plain sentence. Move the dense implementation facts — files, functions, states, commands, slugs, model choices, logs, failure modes — into bullets below it.
+- **Name the rejected approaches that prevent a wrong turn.** List the alternative the assignee should *not* take, and why, only when it heads off a likely mistake. Skip it when no plausible wrong turn exists.
+- **Prove both paths.** Name the observable proof for the success path and for the failure path — what a reviewer sees when it works and when it falls back or no-ops.
+
+## Ticket shape
+
+For an implementation ticket, use a fixed skeleton so nothing load-bearing goes missing:
+
+- **What** — one short user story, then the exact behavior change.
+- **Where** — files, functions, states, APIs, commands, known line references.
+- **Why** — the operational gap, incident, or user cost that forces the change.
+- **Approach** — the smallest design that closes the gap.
+- **Rejected approaches** — alternatives the assignee should not take, and why.
+- **Completion** — verifiable done states for the success, fallback, and no-op cases.
+- **Tasks** — small work units, one primary outcome each.
+- **Risks** — concrete failure modes, each with a mitigation or a falsifier.
+
 ## Bugs
 
 State observed behavior, expected behavior, and reproduction — facts a developer can act on. The system or user is the subject of every sentence.
@@ -39,4 +61,6 @@ A refactor's end product is a measurable property of the code, not a feeling of 
 
 - Is the doer (user, system, developer) the grammatical subject?
 - Does the "Done when" describe something a reviewer can see or run?
+- Is any task with more than three distinct moves split, unless those moves must ship atomically?
+- Does every success and failure path name its observable proof?
 - Did the pruning preserve dependencies ("blocked by AUTH-142") and assumptions?
