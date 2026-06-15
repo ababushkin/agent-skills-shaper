@@ -9,6 +9,10 @@
 __pycache__/
 .worktrees/
 
+# drain-harness state (leaks into stacked PRs if tracked)
+.drain-base
+.drain-guard.json
+
 # execution-review cached runs
 fixtures/execution-review/_runs/*/
 
