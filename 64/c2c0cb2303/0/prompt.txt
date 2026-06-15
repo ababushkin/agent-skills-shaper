@@ -1,0 +1,17 @@
+review the /writing-refinement skill using /skill-creator:skill-creator and give me your verdict
+
+---
+
+yes
+
+---
+
+are there any elements in it that either 
+
+a) won't help an ai agent
+b) don't provide sufficient information for an agent to perform a consistent review
+c) contain any unnecessary duplication
+
+---
+
+make a task list and do these changes one by one
