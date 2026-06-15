@@ -50,7 +50,7 @@ Capture one of the six canonical project types before asking outcome questions. 
 
 > "Which type? `1` methodology skill pack | `2` personal product | `3` utility skill pack | `4` research/thesis | `5` equity research | `6` production / customer-facing."
 
-Read `references/initiative-types.md` for the selected type's Objective shape, default KR mix, and anti-patterns. If the user cannot pick one type, the idea likely contains two initiatives; flag and split before proceeding.
+Read `references/project-types.md` for the selected type's Objective shape, default KR mix, and anti-patterns. If the user cannot pick one type, the idea likely contains two initiatives; flag and split before proceeding.
 
 ### 4. Probe: outcome questions
 
@@ -165,7 +165,7 @@ The shape reads as a product OKR — a non-pack-author should be able to grade e
 - The Goal or initiative name describes a solution instead of a problem or outcome.
 - A KR is vague, output-count based, or cannot be graded from evidence.
 - The draft lacks a kill condition, issue appetite, project type, KR role tags, or commit/stretch tags.
-- The type-specific KR mix conflicts with `references/initiative-types.md`.
+- The type-specific KR mix conflicts with `references/project-types.md`.
 - The shape is about to be recorded or emitted before user confirmation.
 
 ## Exit criteria
@@ -177,7 +177,7 @@ The skill is complete when the Step 6b writing-editor pass returns `accept` or `
 - `shape:delivery`: downstream; shapes a confirmed initiative into deliverables, nodes, and tasks.
 - `writing-refinement`: prose skill the Goal and KRs are written and reviewed against (`references/plans-okrs.md`, `style-rules.md`).
 - `agents/writing-editor/AGENT.md`: the writing-editor persona dispatched at Step 6b.
-- `references/initiative-types.md`: six-type taxonomy, Objective shapes, default KR mixes, and anti-patterns.
+- `references/project-types.md`: six-type taxonomy, Objective shapes, default KR mixes, and anti-patterns.
 - `references/kr-quality-templates.md`: Layer 1 dimensions, Layer 2 templates, KR roles, and grader-backed KR patterns.
 - `references/task-sizing.md`: model-tier routing rubric.
 - Tracker capture and cycle model: owned by the Workflow pack when installed.

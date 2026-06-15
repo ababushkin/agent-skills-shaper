@@ -17,7 +17,7 @@ A single initiative can still cite one of these — but only when the initiative
 | Dimension | What it answers | When it's load-bearing |
 | -- | -- | -- |
 | **Correctness** | does the thing produce the intended output on the cases I care about | always, for any build |
-| **Outcome / behaviour change** | does the thing I built actually change what I do or how I work | most product-shaped initiatives (Types 2, 4, 5, 6 from `references/initiative-types.md`) |
+| **Outcome / behaviour change** | does the thing I built actually change what I do or how I work | most product-shaped initiatives (Types 2, 4, 5, 6 from `references/project-types.md`) |
 | **Maintenance / future-me cost** | can I come back in 30 days and still navigate this | always — solo means future-me pays the whole tax |
 | **Discipline / completion** | did the artefacts get finished, or did this half-ship | always — solo means nobody else will finish it |
 
@@ -137,7 +137,7 @@ The role tag is orthogonal to the `(commit)` / `(stretch)` tag. A brake can be e
 
 **Most initiatives have at most 1–2 bets.** A draft where every KR is a `bet` usually means the brakes were silently omitted — the initiative is pushing on three fronts at once with nothing named as load-bearing-to-protect. When you see an all-bet draft, ask: what already works that this push could break? That's a brake. What has to exist before the bet is even measurable? That's the foundation. (This is the soft check behind Step 6.5 rule 11 in `skills/initiative-shape/SKILL.md`.) The roles are not a quota — some honest shapes are 2 bets + 1 foundation, or 1 bet + 2 brakes; the rubric does not force one of each.
 
-The bet/brake split generalises Type 6's quality-pair pattern (`references/initiative-types.md`) to all six types: a bet paired with a brake is the same move as a value KR paired with a quality KR — name the thing you're pushing and the thing you must not break in the process. Per-type role defaults are suggestions, not mandates; each type's playbook in `references/initiative-types.md` annotates its default KR mix with the usual bet / brake / foundation split.
+The bet/brake split generalises Type 6's quality-pair pattern (`references/project-types.md`) to all six types: a bet paired with a brake is the same move as a value KR paired with a quality KR — name the thing you're pushing and the thing you must not break in the process. Per-type role defaults are suggestions, not mandates; each type's playbook in `references/project-types.md` annotates its default KR mix with the usual bet / brake / foundation split.
 
 ## The grader-backed KR pattern
 

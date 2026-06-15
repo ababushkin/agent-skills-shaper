@@ -213,7 +213,7 @@ A door's body follows the eleven-section anatomy (Title → Purpose → When to 
 
 **pr-prepare (163) and verify-implementation (123) → transfer** to the execution half. ADR 0004 reserves their successors (`exec:finish`, `exec:verify`); initiative A owns the skills, their gates (2 + 2), and their wrappers. They leave the shaping measured set; N08 sweeps only their shaping-side citations.
 
-**Reference disposition** (the map settles these too). Survive: app-context-schema, confidence-meter, ice-scoring, kano-classification, initiative-types, kr-quality-templates, task-sizing, nfr-categories, plus render-html's bundled pair. Orphaned, onto N08's deletion list: portfolio-themes (only roadmap-shape cites it) and dora-metrics (no skill cites it; README/CHANGELOG only).
+**Reference disposition** (the map settles these too). Survive: app-context-schema, confidence-meter, ice-scoring, kano-classification, project-types, kr-quality-templates, task-sizing, nfr-categories, plus render-html's bundled pair. Orphaned, onto N08's deletion list: portfolio-themes (only roadmap-shape cites it) and dora-metrics (no skill cites it; README/CHANGELOG only).
 
 ### 5. Gate inventory — every gate in the eight folded skills
 
