@@ -1,7 +1,7 @@
 {
   "name": "shape",
   "description": "Workflow skills for the full product-engineering arc: idea intake and shaping, pre-build design (design-doc, product-spike, and backend-spike tracks), delivery planning, execution end-to-end. Utilities: plan review, implementation verification, PR preparation.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": {
     "name": "Anton Babushkin"
   },
