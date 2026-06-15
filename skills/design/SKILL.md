@@ -1,5 +1,5 @@
 ---
-name: shape:design
+name: design
 description: >
   Single entry point for working through a technical or product unknown before
   committing to a build. Routes to one of three tracks — design document,
@@ -12,7 +12,7 @@ description: >
   building".
 ---
 
-# shape:design
+# Shape: design
 
 ## Purpose
 
