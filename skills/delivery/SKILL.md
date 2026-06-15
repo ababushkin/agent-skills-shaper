@@ -1,13 +1,6 @@
 ---
 name: delivery
-description: >
-  Decomposes committed work — an initiative, single task, or accepted design doc — into an
-  ordered, verifiable delivery hierarchy: deliverables → nodes → tasks. Use when committed
-  work exists and you need a deliverable → node → task hierarchy before build pickup.
-  Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative",
-  "break the initiative into deliverables", "shape the delivery", "delivery plan",
-  "plan the nodes and tasks", "break down committed work", "build delivery plan",
-  "what are the deliverables for this initiative".
+description: 'Decompose committed work into a verifiable delivery hierarchy: deliverables → nodes → tasks. Use when committed work exists and needs a delivery plan before build pickup. Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative", "break the initiative into deliverables", "shape the delivery", "delivery plan", "plan the nodes and tasks", "break down committed work", "build delivery plan", "what are the deliverables for this initiative".'
 ---
 
 # Delivery shape
