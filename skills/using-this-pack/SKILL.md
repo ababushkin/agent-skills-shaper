@@ -113,5 +113,5 @@ Skills at adjacent stages hand off directly: idea-triage records are read by bac
 - `rules/eng-principles-agentic.md` — agent-specific principles; load alongside universal for any agent-driven implementation
 - `skills/idea-triage/SKILL.md` — first product skill; intake gate for new ideas
 - `skills/app-calibrate/SKILL.md` — creates/updates baseline metrics file; run before idea-triage on improvement-type ideas
-- `skills/shape:design/SKILL.md` — entry point for all pre-implementation shaping (design doc, backend spike, product spike)
+- `skills/design/SKILL.md` — entry point for all pre-implementation shaping (design doc, backend spike, product spike)
 - `hooks/stop-the-line/HOOK.md` — fires on every PR; no manual invocation required

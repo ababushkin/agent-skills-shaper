@@ -3,6 +3,6 @@ description: "Run shape:design — single entry point for working through a tech
 argument-hint: "[problem description or question]"
 ---
 
-@../../skills/shape:design/SKILL.md
+@../../skills/design/SKILL.md
 
 Run the shape:design skill for the following work: $ARGUMENTS
