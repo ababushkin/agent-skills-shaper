@@ -1,5 +1,5 @@
 ---
-name: initiative-types
+name: project-types
 description: >
   Six-type taxonomy for classifying a Linear initiative by what success means for it.
   Used by /shape:project to set the Objective shape and the rubric the KRs are judged
