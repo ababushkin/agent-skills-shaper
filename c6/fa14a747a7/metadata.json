@@ -1,0 +1,25 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "c6fa14a747a7",
+  "strategy": "manual-commit",
+  "branch": "ABA-377",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "skills/delivery/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/c6/fa14a747a7/0/metadata.json",
+      "transcript": "/c6/fa14a747a7/0/full.jsonl",
+      "content_hash": "/c6/fa14a747a7/0/content_hash.txt",
+      "prompt": "/c6/fa14a747a7/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 30000,
+    "cache_creation_tokens": 111372,
+    "cache_read_tokens": 1088023,
+    "output_tokens": 13739,
+    "api_call_count": 25
+  }
+}

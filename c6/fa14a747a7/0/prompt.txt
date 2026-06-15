@@ -1,0 +1,21 @@
+i have a whole heap of stacked PRs against this repo. flag with me which ones i absolutely need to review and which ones can be safely merged as they are not that consequential
+
+---
+
+45 is too big to review, so sounds like i can close 45? double check your work and then if 45 is safe to be closed let me know
+
+---
+
+yes go ahead do that and i'll start my review
+
+---
+
+i want you to do construct an interactive review walkthrough for each PR step by step
+
+---
+
+yes do a quick verification, i'll start my review
+
+---
+
+mostly looks good, i left some small comments have a look at them, fix them then pause so i can compact this session and we'll load the next pr
