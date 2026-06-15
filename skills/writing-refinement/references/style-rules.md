@@ -54,6 +54,16 @@ Sweep the document for these and replace:
 | "It should be noted that…" / "It is important to…" | *(start directly)* | Throat-clearing adds nothing |
 | full and complete / each and every | full / each | Redundant pairs |
 
+## Keep the exact term; cut only the hiding metaphor
+
+Use the precise technical term whenever it is accurate — `mutex`, `P99`, `idempotent` earn their place. Replace a metaphor only when it hides the cause the reader needs. A figure of speech that names no mechanism leaves the reader guessing; the concrete noun states it.
+
+| Hides the cause | States it |
+|---|---|
+| "The seam lives in the orchestrator." | "The recovery points are in the orchestrator." |
+| "The missing move is the status check." | "The orchestrator checks the status." |
+| "This keeps reviewable work from being stranded." | "This prevents stranded branches." |
+
 ## The pruning safety rule
 
 Concision serves clarity, never the reverse. Before deleting a sentence, ask: does it carry a dependency, risk, assumption, or constraint? If yes, compress it into fewer words — do not remove it. A short document that omits the rollback plan is worse than a longer one that keeps it.
