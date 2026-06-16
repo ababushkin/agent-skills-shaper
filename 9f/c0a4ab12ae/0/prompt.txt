@@ -1,0 +1,7 @@
+PR 51 is a bit weird
+
+it has a lot of references to "verify-only" "shape-task" and other deprecated features that in drain-cycle i explicitly decided to opt out of
+
+also i find the way its integrated is a bit weird
+
+its created a kind of tight coupling between drain-cycle and this skill pack that i want to reconsile a bit

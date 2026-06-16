@@ -1,0 +1,46 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "9fc0a4ab12ae",
+  "session_id": "2d02965c-927c-49fa-a734-7e0c1d27a4aa",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T05:00:39.459169Z",
+  "branch": "ABA-372-envelope-verdicts",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "docs/design-docs/execution-workflow/design-doc.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "3e5594eb62c9",
+  "token_usage": {
+    "input_tokens": 19184,
+    "cache_creation_tokens": 68538,
+    "cache_read_tokens": 1201134,
+    "output_tokens": 22625,
+    "api_call_count": 20
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-16T05:00:39.451741Z",
+    "agent_lines": 5,
+    "agent_removed": 3,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 5,
+    "total_lines_changed": 8,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}
