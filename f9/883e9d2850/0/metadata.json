@@ -1,0 +1,103 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "f9883e9d2850",
+  "session_id": "9d3fc796-7754-4c5c-bec8-86338a20ba50",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T13:22:20.332037Z",
+  "branch": "main",
+  "checkpoints_count": 6,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "3754119a60f4",
+  "token_usage": {
+    "input_tokens": 38462,
+    "cache_creation_tokens": 177788,
+    "cache_read_tokens": 5289533,
+    "output_tokens": 60914,
+    "api_call_count": 70
+  },
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 212,
+      "user_lines_removed": 8,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135,
+        "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N01-card-vault-design-doc.md": 25,
+        "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N02-store-and-replay-token.md": 26,
+        "examples/delivery-plans/_tests/rule-a1-branch/D2-reuse-card-at-checkout/N03-prefill-saved-card.md": 26
+      },
+      "user_removed_per_file": {
+        "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N01-card-vault-design-doc.md": 2,
+        "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N02-store-and-replay-token.md": 3,
+        "examples/delivery-plans/_tests/rule-a1-branch/D2-reuse-card-at-checkout/N03-prefill-saved-card.md": 3
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 4,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 5,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 6,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 7,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}

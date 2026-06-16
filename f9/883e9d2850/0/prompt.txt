@@ -1,0 +1,24 @@
+lets review ~/src/workflow-hooks as i think many of the rules in there are no longer necessary as they are already well covered by the skills in this pack
+
+---
+
+yes, make the edits
+
+---
+
+the hooks change is happening in another session its fine to ignore it. hooks.json is causing issues. commit only the changes you've made and then push them
+
+---
+
+justify why linear-workflow has all the content it does and how it helps
+most of it seems completely useless to me
+
+---
+
+no i think the initiative model/etc is completely useless - that should be encoded in /shape:delivery so this has no place
+
+i think only the mechanics outside agent-skills-shaper will be helpful but ONLY in the most critical workflows, if there are none we should jsut delete this file
+
+---
+
+i've revised the linear-workflow (see latest version of file). have a look and see if there are any mcp instructions worth adding
