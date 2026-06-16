@@ -1,0 +1,58 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "02d1429de77e",
+  "session_id": "9d3fc796-7754-4c5c-bec8-86338a20ba50",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T13:31:12.306244Z",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N01-card-vault-design-doc.md",
+    "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N02-store-and-replay-token.md",
+    "examples/delivery-plans/_tests/rule-a1-branch/D2-reuse-card-at-checkout/N03-prefill-saved-card.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "c881b27f465b",
+  "token_usage": {
+    "input_tokens": 40766,
+    "cache_creation_tokens": 182455,
+    "cache_read_tokens": 5891083,
+    "output_tokens": 63177,
+    "api_call_count": 76
+  },
+  "session_metrics": {
+    "turn_count": 8
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-16T13:31:12.287291Z",
+    "agent_lines": 77,
+    "agent_removed": 8,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 77,
+    "total_lines_changed": 85,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 3,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 77,
+      "agent_lines_removed": 8,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}

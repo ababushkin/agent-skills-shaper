@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "02d1429de77e",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 3,
+  "files_touched": [
+    "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N01-card-vault-design-doc.md",
+    "examples/delivery-plans/_tests/rule-a1-branch/D1-tokenized-card-vault/N02-store-and-replay-token.md",
+    "examples/delivery-plans/_tests/rule-a1-branch/D2-reuse-card-at-checkout/N03-prefill-saved-card.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/02/d1429de77e/0/metadata.json",
+      "transcript": "/02/d1429de77e/0/full.jsonl",
+      "content_hash": "/02/d1429de77e/0/content_hash.txt",
+      "prompt": "/02/d1429de77e/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 40766,
+    "cache_creation_tokens": 182455,
+    "cache_read_tokens": 5891083,
+    "output_tokens": 63177,
+    "api_call_count": 76
+  }
+}
