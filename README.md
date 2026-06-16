@@ -61,7 +61,7 @@ Prefer to drive it yourself? Type the slash command. Prefer the agent to choose?
 Start anywhere in the arc and follow the chain. A typical run looks like this:
 
 1. **An idea arrives.** *"A customer asked for bulk export."* → `/shape:idea` scores it, classifies it, and routes it — to the idea bank if it's strong, to a design spike if the bet is unproven.
-2. **It's worth doing.** → `/shape:idea` turns it into a committed initiative with a goal and measurable key results.
+2. **It's worth doing.** → `/shape:project` turns it into a committed project with a well defined goal and clear measures of success that an agent can self-grade. Will automatically re-route to creating an individual task if a project is unnecessary.
 3. **Time to design.** → `/shape:design` lays out the approach, the trade-offs, and the operability plan on the design-doc track. Unsure about a risky unknown first? The product-spike or backend-spike tracks answer the one question before you commit.
 4. **Plan the build.** → `/shape:delivery` decomposes the initiative into an ordered, verifiable task list. `/plan-review` reads it adversarially and catches what's missing *before* a line of code is written.
 5. **Build it.** → `/build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `/debugging` finds the root cause. Heavy? `/simplify` trims it once it's green.
