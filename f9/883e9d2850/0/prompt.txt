@@ -22,3 +22,9 @@ i think only the mechanics outside agent-skills-shaper will be helpful but ONLY 
 ---
 
 i've revised the linear-workflow (see latest version of file). have a look and see if there are any mcp instructions worth adding
+
+---
+
+i want some of the linear metadata (eg team name etc) to live in a .linear_config file inside each repo, the governance pack should refer to that
+
+otherwise what you're writing sounds good lets plan these changes in
