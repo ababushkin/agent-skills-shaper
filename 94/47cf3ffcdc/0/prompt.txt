@@ -1,0 +1,5 @@
+run /writing-refinement over the execution design doc
+
+---
+
+ok i merged it, make sure you're on main and pulled in latest changes, then run the refinement skill again
