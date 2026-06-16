@@ -1,0 +1,7 @@
+{
+  "pr_urls": ["https://github.com/ababushkin/agent-skills-shaper/pull/51"],
+  "prep_verdict": {
+    "route": "auto-merge",
+    "reasoning": "markdown-only repo; no blocking review findings; all schema v2 fields verified consistent across skills and fixtures"
+  }
+}
