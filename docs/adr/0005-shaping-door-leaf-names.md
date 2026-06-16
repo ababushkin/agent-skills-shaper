@@ -4,7 +4,7 @@
 - **Date:** 2026-06-12
 - **Serves:** Initiative B / KR1 — the shaping library consolidates to four phase doors plus utilities, measured set ≤2,200 lines (N01–N08).
 - **Premise for:** N02–N06 (the door builds and utility pass bind these directory, wrapper, and verb names) and Initiative C (supervisor prompts cite the door verbs literally).
-- **Record of:** the naming decision in `docs/designs/front-door-ia.md` (N01). The IA doc carries the full alternatives analysis, absorption map, survivor manifest, and gate inventory; this ADR is the durable decision downstream skills bind to. ADR 0004 remains the record of the `shape:`/`exec:` prefix split.
+- **Record of:** the naming decision in `docs/design-docs/front-door-ia/design-doc.md` (N01). The IA doc carries the full alternatives analysis, absorption map, survivor manifest, and gate inventory; this ADR is the durable decision downstream skills bind to. ADR 0004 remains the record of the `shape:`/`exec:` prefix split.
 
 ## Context
 
@@ -42,4 +42,4 @@ One convention encodes the table: wrapper leaf = directory leaf = frontmatter `n
 
 ## Scope
 
-This ADR pins the four door leaves and confirms the three utility leaves. The absorption map, measured set, frontmatter cut, and gate inventory live in `docs/designs/front-door-ia.md`. Any change to a leaf name requires a follow-up ADR.
+This ADR pins the four door leaves and confirms the three utility leaves. The absorption map, measured set, frontmatter cut, and gate inventory live in `docs/design-docs/front-door-ia/design-doc.md`. Any change to a leaf name requires a follow-up ADR.

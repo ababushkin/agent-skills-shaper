@@ -3,13 +3,13 @@
 - **Status:** Accepted
 - **Date:** 2026-06-03
 - **Amends:** ADR 0001 (`delivery-shape`: a new skill, not an expansion). The "separate skill that delegates the per-node breakdown down" decision **stands**; this ADR changes only `delivery-shape`'s *input clause*.
-- **Decision driver:** the shaping-pipeline reconciliation (`docs/designs/shaping-pipeline.md`).
+- **Decision driver:** the shaping-pipeline reconciliation (since deleted; its surviving decisions moved into `delivery-shape` and the front-door-ia IA).
 
 ## Context
 
 ADR 0001 drew `delivery-shape`'s boundary around a **committed initiative** (goal + key results), with `serves_kr` as "the outcome spine at every layer." In practice the owner most often arrives with a raw idea — single or in bulk — and no committed initiative, and wants consistent, right-sized, review-friendly tickets regardless. Forcing every idea through `initiative-shape` first, purely to satisfy `delivery-shape`'s input gate, is friction that produces re-prompting and hand-finishing.
 
-Separately, the audience split (`docs/designs/shaping-pipeline.md`) settled that `delivery-shape` is the **product-facing** shaper a human reviews, and the renamed `execution-breakdown` is the **agent-facing** breakdown that runs at pickup. That split makes `delivery-shape`'s job "produce reviewable tickets," not "decompose a committed bet" — which is what motivates loosening the input.
+Separately, the audience split (from the since-deleted shaping-pipeline reconciliation) settled that `delivery-shape` is the **product-facing** shaper a human reviews, and the renamed `execution-breakdown` is the **agent-facing** breakdown that runs at pickup. That split makes `delivery-shape`'s job "produce reviewable tickets," not "decompose a committed bet" — which is what motivates loosening the input.
 
 ## Decision
 
@@ -33,4 +33,4 @@ Unchanged from ADR 0001: `delivery-shape` is a standalone skill; it owns node-ty
 
 ## Scope
 
-This ADR records the decision. The implementation (script + skill + contract changes, plus a goal-less example) is shaped as its own initiative with `docs/designs/shaping-pipeline.md` as the brief; three of its four open items (size gate, no-goal grouping detail, drain-cycle handoff signal) remain to confirm there, and the `drain-cycle` contract — not defined in this pack — must be located or defined as part of it.
+This ADR records the decision. The implementation (script + skill + contract changes, plus a goal-less example) is shaped as its own initiative (briefed by the since-deleted shaping-pipeline reconciliation); three of its four open items (size gate, no-goal grouping detail, drain-cycle handoff signal) remain to confirm, and the `drain-cycle` contract — not defined in this pack — must be located or defined as part of it.

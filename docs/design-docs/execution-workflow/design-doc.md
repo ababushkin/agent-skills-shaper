@@ -185,4 +185,4 @@ The envelope is the carrier. The `ac_checklist` field is the answer to the origi
 
 ## Review record
 
-Accepted through the `plan-review` exit gate (REVISE → conditions cleared). Review record: `docs/plan-reviews/execution-workflow/review.md`. Blocking conditions 1 (supervisor-binding audit) and 2 (ADR of record) closed by the Context audit + ADR 0004; clarity conditions 3–4 folded into the skill graph, the handoff table, and the persona-dispatch note above.
+Accepted through the `plan-review` exit gate (REVISE → conditions cleared). Blocking conditions 1 (supervisor-binding audit) and 2 (ADR of record) closed by the Context audit + ADR 0004; clarity conditions 3–4 folded into the skill graph, the handoff table, and the persona-dispatch note above.

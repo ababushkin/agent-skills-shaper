@@ -53,7 +53,7 @@ skill-creator's loop is: draft → test prompts → run skill against prompts �
 **Dependencies:** Task 6
 
 ### Task 8 — End-to-end verification on a real artefact
-**Description:** Run `/render-html` on a real artefact already in the repo (an existing `docs/designs/*.md` or `docs/tasks/*.md`, not a synthetic fixture). Validate against the full verification checklist from the approved plan in two browsers.
+**Description:** Run `/render-html` on a real artefact already in the repo (an existing `docs/design-docs/**/design-doc.md` or `docs/tasks/*.md`, not a synthetic fixture). Validate against the full verification checklist from the approved plan in two browsers.
 **Done when:** All checks pass: (a) output written alongside source, (b) opens in Chrome AND Safari via `file://` with zero network requests in DevTools Network tab, (c) no console errors/warnings, (d) every H2/H3 reachable via TOC, (e) every applicable pattern renders correctly, (f) file size < 500KB, (g) print preview hides the TOC and breaks pages reasonably, (h) re-rendering the same source produces a diff only in provenance/timestamp lines.
 **Model:** Balanced · risk reversible · review standard · axes M·M·H·L·L
 **Dependencies:** Task 7
