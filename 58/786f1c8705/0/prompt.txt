@@ -1,0 +1,21 @@
+i'd like to convert this design doc into an ADR - is that feasible/sensible?
+
+---
+
+yes clean up
+
+i'm actually looking at removing the whole envelope/execution state tracking from this project altogether and have it be done completely by drain-cycle so no dont' merge it yet
+
+---
+
+lets clean up any unnecessary files/directories in docs/
+
+---
+
+i'd rather have less things than more in docs
+so yes those can be deleted but also i don't see any reason to keep:
+
+- plan review documents -- these are ephermal and all final changes should land back into the design doc
+- there are lots of markdown files for skills that used to use markdown as the database but since then i've migrated away into linear (double check this if this is true)
+- ideas can be deleted too
+- all design docs should live in the same place, and all design decisions should be recorded into ADRs
