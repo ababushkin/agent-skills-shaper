@@ -1,0 +1,6 @@
+i've started deleting some directories - i don't find them useful
+what's the fixtures directory for?
+
+---
+
+yes
