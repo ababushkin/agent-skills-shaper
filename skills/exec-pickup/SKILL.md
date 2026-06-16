@@ -51,7 +51,7 @@ Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `iss
 
 ### 2. Gate: check for blockers
 
-If `blocked_by[]` is non-empty, merge `{"halt_reason": "blocked"}` into `.drain-handoff.json` at the worktree root (preserving any fields already present), then invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
+If `blocked_by[]` is non-empty, compute `flow` from `labels[]` using the same rule as step 4 (`"verify-only"` if `"verify"` is in labels, `"shape-task"` if a breakdown block exists in `body_md`, otherwise `"build"`). Merge `{"halt_reason": "blocked", "flow": "<computed>"}` into `.drain-handoff.json` at the worktree root (preserving any fields already present), then invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
 
 ### 3. Rebase onto the parent branch
 
@@ -118,7 +118,7 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 
 ```json
 {
-  "flow": "build",
+  "flow": "build | verify-only | shape-task",
   "halt_reason": "blocked"
 }
 ```
