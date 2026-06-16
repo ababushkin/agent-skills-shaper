@@ -1,0 +1,1 @@
+audit my install and uninstall scripts to make sure they're up to date

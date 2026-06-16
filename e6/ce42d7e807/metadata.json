@@ -1,0 +1,30 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "e6ce42d7e807",
+  "strategy": "manual-commit",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "install.sh",
+    "skills/writing-refinement/SKILL.md",
+    "skills/writing-refinement/references/design-docs.md",
+    "skills/writing-refinement/references/plans-and-ideas.md",
+    "skills/writing-refinement/references/plans-okrs.md",
+    "skills/writing-refinement/references/style-rules.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/e6/ce42d7e807/0/metadata.json",
+      "transcript": "/e6/ce42d7e807/0/full.jsonl",
+      "content_hash": "/e6/ce42d7e807/0/content_hash.txt",
+      "prompt": "/e6/ce42d7e807/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 18922,
+    "cache_creation_tokens": 47875,
+    "cache_read_tokens": 429741,
+    "output_tokens": 5867,
+    "api_call_count": 10
+  }
+}

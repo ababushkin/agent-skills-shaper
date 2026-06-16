@@ -1,0 +1,97 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "e6ce42d7e807",
+  "session_id": "423a1a63-1d92-4bad-babf-f419c8e20b56",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T04:33:39.563901Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "install.sh",
+    "skills/writing-refinement/SKILL.md",
+    "skills/writing-refinement/references/design-docs.md",
+    "skills/writing-refinement/references/plans-and-ideas.md",
+    "skills/writing-refinement/references/plans-okrs.md",
+    "skills/writing-refinement/references/style-rules.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "f293754dc553",
+  "token_usage": {
+    "input_tokens": 18922,
+    "cache_creation_tokens": 47875,
+    "cache_read_tokens": 429741,
+    "output_tokens": 5867,
+    "api_call_count": 10
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "prompt-skill-claude-code-commit-commands:commit-2026-06-16T04:33:25.904371Z",
+      "event_type": "prompt_invocation",
+      "skill": {
+        "name": "commit-commands:commit"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "prompt_slash_command",
+        "confidence": "explicit"
+      },
+      "turn_id": "f293754dc553",
+      "timestamp": "2026-06-16T04:33:25.904371Z",
+      "native": {
+        "command": "/commit-commands:commit"
+      },
+      "collapse": {
+        "target": "user_message",
+        "label": "/commit-commands:commit",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-16T04:33:39.557915Z",
+    "agent_lines": 0,
+    "agent_removed": 8,
+    "human_added": 0,
+    "human_modified": 3,
+    "human_removed": 18,
+    "total_committed": 12,
+    "total_lines_changed": 30,
+    "agent_percentage": 26.666666666666668,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 224,
+      "user_lines_removed": 21,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135,
+        "skills/writing-refinement/SKILL.md": 46,
+        "skills/writing-refinement/references/plans-and-ideas.md": 4,
+        "skills/writing-refinement/references/style-rules.md": 39
+      },
+      "user_removed_per_file": {
+        "skills/writing-refinement/SKILL.md": 12,
+        "skills/writing-refinement/references/plans-and-ideas.md": 4,
+        "skills/writing-refinement/references/style-rules.md": 5
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 101,
+      "agent_lines_removed": 29,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}
