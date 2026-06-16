@@ -20,9 +20,9 @@ Current behaviour: ad hoc steps, ad hoc names, AC drops between issue and review
 
 ## Context
 
-D1 has landed: ADR 0003 pins the persona contract (file format + `file:line · class · severity` finding triples + the Claude-Code-Agent / inline-sequential dispatch branches); N03's `execution-review` skill consumes that contract. N01 ships the fixture corpus + grader. D2's bet (KR1 — ≥4/5 drained issues reach Done with a merged PR and full review trail) lives in N05–N08, all blocked by this design doc.
+D1 has landed: ADR 0003 pins the persona contract (file format + `file:line · class · severity` finding triples + the Claude-Code-Agent / inline-sequential dispatch branches); N03's `execution-review` skill consumes that contract. N01 ships the fixture corpus + grader. D2's KR1 target (≥4/5 drained issues reach Done with a merged PR and full review trail) lives in N05–N08, all blocked by this design doc.
 
-The verb namespace is a one-way door. `drain_cycle/prompt.py` and any sibling supervisor prompt in initiative C will name these verbs literally; once workers' muscle memory and external prompts bind, a rename costs a coordinated migration across every drainer. Shaping verbs (`shape:*`) are already established — this doc names execution verbs only, but reserves both halves of the namespace in a single table so initiative B's consolidation has one source of truth.
+The verb namespace is a one-way door. `drain_cycle/prompt.py` and any sibling supervisor prompt in initiative C will name these verbs literally; once workers' habits and external prompts bind, a rename costs a coordinated migration across every drainer. Shaping verbs (`shape:*`) are already established — this doc names execution verbs only, but reserves both halves of the namespace in a single table so initiative B's consolidation has one source of truth.
 
 **Supervisor-binding audit (performed before pinning, per the N04 to-verify assumption).** A read of current `drain_cycle/prompt.py` (and a grep of the rest of the drain-cycle source tree) shows the supervisor today emits exactly two execution-side verbs literally:
 
@@ -57,25 +57,25 @@ Predecessor packs are tracker-blind: `addyosmani/agent-skills` (`/spec`, `/plan`
 **Alt 1 — Bare verbs (`/pickup`, `/build`, `/review`, `/finish`).**
 
 *Description.* No namespace prefix on execution verbs; only shaping keeps `shape:*`.
-*Blast radius if wrong.* Hostile to slash-command discovery (autocomplete shows shaping and execution interleaved), and `/review` collides with several installed packs the owner already uses (`code-review`, `crit`, the built-in `review` command). Rename later means rewriting `drain_cycle/prompt.py`, every initiative-C supervisor prompt, and any reference in installed plugins.
+*Cost if wrong.* Hostile to slash-command discovery (autocomplete shows shaping and execution interleaved), and `/review` collides with several installed packs the owner already uses (`code-review`, `crit`, the built-in `review` command). Rename later means rewriting `drain_cycle/prompt.py`, every initiative-C supervisor prompt, and any reference in installed plugins.
 *Reversal cost.* High — once the supervisor in initiative C binds, every downstream worker has to be re-keyed.
 
 **Alt 2 — `exec:*` prefix on every execution verb (`exec:pickup`, `exec:build`, `exec:review`, `exec:verify`, `exec:finish`).**
 
 *Description.* Mirrors the established `shape:*` discipline on the execution half. Two clean halves of one namespace.
-*Blast radius if wrong.* Low. Verbose at the slash-command surface but unambiguous; autocomplete groups every execution verb. Recovers if a single verb name turns out wrong by renaming inside one prefix without touching the rest.
+*Cost if wrong.* Low. Verbose at the slash-command surface but unambiguous; autocomplete groups every execution verb. Recovers if a single verb name turns out wrong by renaming inside one prefix without touching the rest.
 *Reversal cost.* Low per verb, because the prefix anchors the others.
 
 **Alt 3 — `drain:*` prefix (`drain:pickup`, `drain:build`, …).**
 
 *Description.* Names the workflow that owns the verbs.
-*Blast radius if wrong.* Couples the verb namespace to one supervisor (`drain-cycle`). Initiative C's premise is that the workflow lives in the *pack*, not in the supervisor; binding the verb to the supervisor's name re-creates the very coupling the initiative exists to remove.
+*Cost if wrong.* Couples the verb namespace to one supervisor (`drain-cycle`). Initiative C's premise is that the workflow lives in the *pack*, not in the supervisor; binding the verb to the supervisor's name re-creates the very coupling the initiative exists to remove.
 *Reversal cost.* High — same problem as Alt 1 plus a semantic miscue.
 
 **Alt 4 (do nothing) — leave the execution skills nameless.**
 
 *Description.* Each D2 skill chooses its own leaf name; no shared prefix.
-*Blast radius if wrong.* The front door and the supervisor prompt both end up referencing each skill by an ad-hoc string. No collision detection. No grouping at the slash-command surface. The initiative-B consolidation has no namespace to consolidate to.
+*Cost if wrong.* The front door and the supervisor prompt both end up referencing each skill by an ad-hoc string. No collision detection. No grouping at the slash-command surface. The initiative-B consolidation has no namespace to consolidate to.
 *Reversal cost.* High — picking the namespace later means renaming after binding.
 
 ## Recommended approach
@@ -178,7 +178,7 @@ The envelope is the carrier. The `ac_checklist` field is the answer to the origi
 
 | Q | Owner | Resolution gate |
 |---|---|---|
-| **Q1 (RESOLVED by the supervisor-binding audit above).** Does `drain_cycle/prompt.py`'s current flow need to migrate to `exec:*`, or can it be adapted in-place? | initiative-C owner | **Resolved.** The audit found two live bindings: `/code-review-and-quality` (4 string locations) → swap to `exec:review`; `/shape:task` (verify-flow directive) → folds into `exec:pickup`'s breakdown. The inlined completion-sequence prose is where `exec:verify`/`exec:finish` land *additively*. Cutover is a bounded edit to `prompt.py`, scheduled at the initiative-C pointer-swap (N10); no coordinated cross-drainer migration. The earlier-assumed `/shape:verify-implementation`/`/shape:pr-prepare`/`/shape:pr-respond` verbs are not in current source. |
+| **Q1 (RESOLVED by the supervisor-binding audit above).** Does `drain_cycle/prompt.py`'s current flow need to migrate to `exec:*`, or can it be adapted in-place? | initiative-C owner | **Resolved.** The exact cutover: the two live bindings map cleanly — `/code-review-and-quality` → `exec:review`, `/shape:task` → `exec:pickup`'s breakdown — and `exec:verify`/`exec:finish` land additively on the inlined completion prose. One bounded `prompt.py` edit at the initiative-C pointer-swap (N10). |
 | **Q2.** Should `exec:verify` and `exec:review` collapse into one skill (both consume AC)? The two *provisional* rows in the handoff-contract table depend on this. | N05 skeleton task | Resolved when the front-door skill is first authored. If the two collapse cleanly without inlining a procedure, do so and merge the two table rows; otherwise keep separate. |
 | **Q3.** Does the envelope need a versioned schema field from day one, or can drift detection wait for N09 to find a real case? | N05 skeleton task | Resolved at N05 authoring. Default: no version field; add only if N09 surfaces drift in the first 5 drains. |
 | **Q4.** Are there worker surfaces beyond Claude Code, codex, and kimi that need explicit treatment in the dispatch branch? | initiative-C owner | Resolved before initiative C cutover; not blocking D2. |
