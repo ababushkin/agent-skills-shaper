@@ -46,7 +46,7 @@ If a trigger is ambiguous, run it. The Quick tier is short; the cost of skipping
 
 ## Outputs
 
-A review record at `docs/plan-reviews/<plan-slug>/review.md`, plus an inline summary in the conversation containing the APPROVE / REVISE / KILL recommendation and the named conditions for any non-APPROVE verdict.
+An inline review record in the conversation, structured per the artefact template below and ending with the APPROVE / REVISE / KILL recommendation plus named conditions for any non-APPROVE verdict. The review is conversation-only — no file is written; any change the owner accepts lands back in the reviewed plan or design doc itself.
 
 ## Tier selection — auto, not user-pick
 
@@ -171,8 +171,8 @@ APPROVE is blocked by any unresolved SUSTAINED verdict on a falsifying condition
 
 When the carve-out applies, write the verdict as `APPROVE — recommend: <named action>` and record the SUSTAINED bucket finding under Conditions for visibility.
 
-**Step 13 — File review record**
-Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact template below. Include the inline summary in the conversation alongside.
+**Step 13 — Present review record**
+Present the review in the conversation using the artefact template below. The review is inline-only — do not write a file. Any change the owner accepts lands back in the reviewed plan or design doc, not in a separate review record.
 
 ## Artefact template
 
@@ -239,7 +239,7 @@ Write the review to `docs/plan-reviews/<plan-slug>/review.md` using the artefact
 - Confidence scores are missing on B3 items.
 - Operability section absent on a Full-tier plan.
 - Owner runs the skill but discards REVISE recommendations without addressing them.
-- Review record filed without a final recommendation.
+- Review presented without a final recommendation.
 
 ## Exit criteria
 
@@ -251,7 +251,7 @@ A single review run is complete when all of the following hold:
 4. Every verdict has a named falsifying condition.
 5. Every B3 item carries a Confidence score (Gilad scale).
 6. APPROVE is issued only when zero unresolved SUSTAINED verdicts remain.
-7. The review record exists at `docs/plan-reviews/<plan-slug>/review.md`.
+7. The review record is presented inline in the conversation, structured per the artefact template and ending with a recommendation.
 
 ## Known limits + revisit triggers
 
@@ -260,7 +260,6 @@ The skill carries deliberate limitations. Each one has a measurable trigger that
 | Limit | Revisit trigger | Action |
 |---|---|---|
 | Tier auto-select rules may not match the owner's risk model | Override rate exceeds 20% over the first 10 runs | Revisit the auto-select attribute set |
-| Review files at `docs/plan-reviews/` assume a downstream reader | No references to `docs/plan-reviews/` appear in subsequent work after one month | Migrate to inline-only output or a Slack rollup |
 | Full mode has a 30-minute cap | Full runs exceed 30 minutes on >25% of cases | Split the skill or expand the cap |
 | Review runs in main context — same context as the plan author = same blindspots | Evals show the review adopts plan-author framing (false-OVERTURN rate >10%) | Extract review to a sub-agent with isolated context |
 | One skill covers all plan types — roadmap-specific moves not specialised | ≥5 reviews against roadmaps yield <30% bucket hit rate | Split off a separate `roadmap-review` skill |
