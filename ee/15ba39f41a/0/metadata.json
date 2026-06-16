@@ -1,0 +1,109 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "ee15ba39f41a",
+  "session_id": "2d02965c-927c-49fa-a734-7e0c1d27a4aa",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-16T11:35:14.429628Z",
+  "branch": "main",
+  "checkpoints_count": 1,
+  "files_touched": [],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "a1f3ef80fbc5",
+  "checkpoint_transcript_start": 650,
+  "transcript_lines_at_start": 650,
+  "token_usage": {
+    "input_tokens": 166,
+    "cache_creation_tokens": 15000,
+    "cache_read_tokens": 2231569,
+    "output_tokens": 6658,
+    "api_call_count": 10
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01MjNZDuWEk5BdPMMCQgybBU",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape:writing-refinement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a1f3ef80fbc5",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 222,
+        "end": 223,
+        "entry_ids": [
+          "75b06c71-e92a-4d18-a408-84e096fc4051"
+        ],
+        "tool_use_id": "toolu_01MjNZDuWEk5BdPMMCQgybBU"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01MjNZDuWEk5BdPMMCQgybBU"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape:writing-refinement",
+        "default_collapsed": true
+      }
+    },
+    {
+      "id": "claude-skill-toolu_01FAfuqtDgiGqbbJ2xA4ZfZa",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape-writing-refinement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "a1f3ef80fbc5",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 226,
+        "end": 227,
+        "entry_ids": [
+          "9a51f0b0-c8e5-42d7-abd1-f60c9467cc17"
+        ],
+        "tool_use_id": "toolu_01FAfuqtDgiGqbbJ2xA4ZfZa"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01FAfuqtDgiGqbbJ2xA4ZfZa"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape-writing-refinement",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 6
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 0,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}
