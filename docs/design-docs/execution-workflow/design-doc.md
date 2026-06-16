@@ -135,10 +135,12 @@ Each arrow is a named delegation in the front-door skill's workflow section. `ex
 | `exec:debug` | the failing-check output + the current envelope | a written root-cause note (gate) + handed control back to `exec:build` |
 | `exec:simplify` | the green diff + envelope | a before/after rationale appended to `build-log.md` |
 | `exec:review` *(provisional — see Q2)* | working-tree diff + `pickup-envelope.json` (so personas see `ac_checklist`) | the deduped GO/NO-GO verdict + finding triples per ADR 0003 |
-| `exec:verify` *(provisional — see Q2)* | `ac_checklist` + diff | a structured pass/fail per AC item; any fail loops back into `exec:build` |
-| `exec:finish` | envelope + review verdict + verify result | PR body (What/Why/Focus), review-summary comment, Linear status move |
+| `exec:verify` *(provisional — see Q2)* | `ac_checklist` + diff | a structured pass/fail per AC item; any fail loops back into `exec:build`; on the final pass, `outcome_verdict: {result, failed_ac[]}` written back into the envelope |
+| `exec:finish` | envelope + review verdict + verify result | PR body (What/Why/Focus), review-summary comment, Linear status move, and `prep_verdict: {route, reasoning}` written back into the envelope |
 
-The envelope is the carrier. The `ac_checklist` field is the answer to the original failure mode: the spec-compliance persona consumes it directly, so *built-the-wrong-thing* is reviewable. The two rows marked *provisional* are settled at N05 authoring if `exec:verify` and `exec:review` collapse (Q2); if they collapse, those two rows merge into one.
+The envelope is the carrier. The `ac_checklist` field is the answer to the original failure mode: the spec-compliance persona consumes it directly, so *built-the-wrong-thing* is reviewable. As the run progresses the envelope accumulates two verdict fields — `outcome_verdict` (from `exec:verify`) and `prep_verdict` (from `exec:finish`) — so a downstream supervisor can grade the run from the one pack-owned file the pack already writes, without the pack having to know the supervisor's own exit-record format. The two rows marked *provisional* are settled at N05 authoring if `exec:verify` and `exec:review` collapse (Q2); if they collapse, those two rows merge into one.
+
+> **Boundary note.** The envelope is where verdicts land; mapping them into any supervisor-side exit record (e.g. drain-cycle's `.drain-handoff.json`) is the supervisor's job, not the pack's. The pack does not name, write, or version that file, and carries no routing `flow` field — verification is universal (drain-cycle ADR 0002), so there is no route to record.
 
 **Persona-dispatch integration.** `exec:review` is N03's already-shipped `execution-review` skill, renamed to live under the `exec:` prefix. **The rename is owned at N05 authoring time** (N05 publishes the front door and the verb namespace together); N04 reserves the name, N05 performs the rename. ADR 0003's dispatch branches are the skill's responsibility, not the front door's — the front door delegates by name and is dispatch-agnostic.
 
