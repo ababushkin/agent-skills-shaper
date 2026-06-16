@@ -48,7 +48,7 @@ Group work into containers that state a **summary effect** — what was accompli
 
 ## Plan / OKR review additions
 
-Beyond the universal Phase 5 gate, check:
+Beyond the universal Phase 6 gate, check:
 
 - Does the goal state both the current state and the success state, each with a number?
 - Does every key result carry a number, and does the surrounding prose name the cost of the status quo?

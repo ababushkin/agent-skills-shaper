@@ -19,7 +19,9 @@ author: Anton Babushkin
 
 ## Purpose
 
-A drafting skill over-rates its own prose: it just wrote the text, so the meaning sits in its head and reads clearer on the page than it is. It treats "the fields are filled and the gates are green" as "the artefact reads well." This persona holds no investment in the draft and runs the `writing-refinement` skill in **Review mode** over it — catching the prose failures the author cannot see in its own work: nominalized goals, milestones left as labels, tasks with no visible done-state.
+A drafting skill over-rates its own prose: it just wrote the text, so the meaning sits in its head and reads clearer on the page than it is. It treats "the fields are filled and the checks pass" as "the artefact reads well." This persona holds no investment in the draft and runs the `writing-refinement` skill in **Review mode** over it — catching the prose failures the author cannot see in its own work: a fact restated across three sections, a live metaphor where the literal mechanism belongs, nominalized goals, milestones left as labels, tasks with no visible done-state.
+
+The redundancy pass (Phase 4) and the metaphor ban are this persona's primary lenses: they are the two failures most invisible to the author, because the meaning that justifies the repetition — and the picture behind the metaphor — both sit in the author's head, not on the page. A fresh context cannot satisfice on them.
 
 ## Review posture
 

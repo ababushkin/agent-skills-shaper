@@ -2,7 +2,7 @@
 
 This file governs **how each section reads**, not which sections exist or their order. Inside the Shaper shape:design skill (design-doc track), that skill owns the section set, the gates, and the NFR taxonomy (`references/nfr-categories.md`); this file only refines the prose within whatever structure it mandates. Used standalone, treat the sections below as the conventional shape, not a gate.
 
-Map the five-phase workflow onto the design-doc sections. The reader should experience a story — where we are, what broke, what we will do — never a framework.
+Map the six-phase workflow onto the design-doc sections. The reader should experience a story — where we are, what broke, what we will do — never a framework.
 
 ## Section-by-section guidance
 
@@ -29,7 +29,7 @@ Every gate gets a verifiable "Done when": "Done when canary error rate holds und
 
 ## Design-doc review additions
 
-Beyond the universal Phase 5 gate, check:
+Beyond the universal Phase 6 gate, check:
 
 - Does the Problem section state the cost of the status quo in numbers?
 - Is the recommendation stated in one sentence before the detail begins?

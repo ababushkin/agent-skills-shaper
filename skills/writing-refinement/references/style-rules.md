@@ -1,6 +1,6 @@
 # Style Rules (all document types)
 
-Apply these during Phase 4. The goal is the shortest path to the reader's mind without losing operational facts.
+Apply these during Phase 5. The goal is the shortest path to the reader's mind without losing operational facts.
 
 ## Sentence mechanics
 
@@ -54,15 +54,49 @@ Sweep the document for these and replace:
 | "It should be noted that…" / "It is important to…" | *(start directly)* | Throat-clearing adds nothing |
 | full and complete / each and every | full / each | Redundant pairs |
 
-## Keep the exact term; cut only the hiding metaphor
+## Plain English by default — replace live metaphors, keep conventional terms
 
-Use the precise technical term whenever it is accurate — `mutex`, `P99`, `idempotent` earn their place. Replace a metaphor only when it hides the cause the reader needs. A figure of speech that names no mechanism leaves the reader guessing; the concrete noun states it.
+Write the literal mechanism. This is a technical document, not a story: use no metaphor, analogy, or figurative jargon unless the author explicitly asked for one. Default to the plain word for the thing.
 
-| Hides the cause | States it |
+Two kinds of word look alike and must be told apart:
+
+- A **conventional technical term** is the field's normal name for the thing. It is a dead metaphor — no reader still hears the picture. Keep it; there is no plainer word. `thread`, `stream`, `tree`, `branch`, `queue`, `cache`, `handshake`, `mutex`, `P99`, `idempotent` all earn their place.
+- A **live decorative metaphor** is a sport, war, building, finance, or nature word standing in for an abstract idea the author could have named directly. Replace it with the literal mechanism.
+
+**The test:** is this the only ordinary name for the thing (keep), or did the writer reach for a colourful word when a plain one exists (replace)? When unsure, ask whether a new engineer would search the codebase for this word. They would search `mutex` and `queue`; they would not search `north-star` or `blast radius`.
+
+A word used literally is not a metaphor. "The staging config **drifted** from prod" is literal — the values genuinely diverged over time; keep it. "Scope **drift**" standing in for "the scope grew" is decorative; write "the scope grew".
+
+| Live metaphor (replace) | Literal mechanism (write this) |
 |---|---|
 | "The seam lives in the orchestrator." | "The recovery points are in the orchestrator." |
-| "The missing move is the status check." | "The orchestrator checks the status." |
-| "This keeps reviewable work from being stranded." | "This prevents stranded branches." |
+| "This change has a large blast radius." | "This change touches the auth, billing, and session modules." |
+| "Edge caching is our north-star." | "The goal is to serve 95% of reads from the edge cache." |
+| "Rate limiting is the brake on runaway cost." | "Rate limiting caps cost by rejecting requests above 1k RPS." |
+| "We surface the error to the user." | "We show the error to the user." |
+| "This is a risky bet." | "This approach may not work, because [reason]." |
+
+### Decorative-jargon ban-list
+
+Flag each of these and replace with the literal mechanism. The right replacement depends on what the word stands in for, so name the actual thing rather than swap one vague word for another.
+
+| Banned (decorative) | Usually means — write that instead |
+|---|---|
+| bet | approach / option / the assumption being tested |
+| gate | check / required condition (name the condition) |
+| brake | limit / what stops X (name the limiter) |
+| cap (figurative) | upper limit / maximum (a literal `rate cap` is fine) |
+| blast radius | the modules or systems a change touches (list them) |
+| north-star | goal / objective / target metric (state it) |
+| keystone | the part the rest depends on (name the dependency) |
+| spine | the structure or main path (name it) |
+| seam | the boundary / integration point / recovery point |
+| shepherd (as verb) | guide / route / move through |
+| drift (figurative) | grew / diverged / went stale (literal config drift is fine) |
+| lever | control / input / what we change to affect X |
+| surface (as verb) | show / expose / report / return |
+
+Do not over-correct conventional terms — these are the field's normal names and have no plainer word: thread, stream, tree, branch, queue, cache, handshake, mutex, fork, pipeline, backpressure, throttle.
 
 ## The pruning safety rule
 
