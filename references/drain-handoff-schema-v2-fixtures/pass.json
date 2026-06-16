@@ -1,0 +1,15 @@
+{
+  "pr_urls": ["https://github.com/ababushkin/agent-skills-shaper/pull/99"],
+  "final_linear_state": "Done",
+  "exit_code": 0,
+  "flow": "build",
+  "outcome_verdict": {
+    "result": "pass",
+    "failed_ac": []
+  },
+  "prep_verdict": {
+    "route": "auto-merge",
+    "reasoning": "all AC items met; no blocking review findings; CI green"
+  },
+  "halt_reason": null
+}

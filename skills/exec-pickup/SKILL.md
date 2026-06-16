@@ -38,6 +38,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 ## Outputs
 
 - **`pickup-envelope.json`** at the worktree root — the handoff carrier for every downstream step
+- **`.drain-handoff.json`** updated at the worktree root — `flow` written on entry; `halt_reason: "blocked"` written before any blocked halt
 - An ordered task list from `exec:breakdown`, each task carrying a `done_when` clause
 - Delegations to `exec:build`, `exec:review`, `exec:verify`, and `exec:finish`
 - On blocked: a Linear comment naming the blocker; issue left In Progress
@@ -50,15 +51,23 @@ Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `iss
 
 ### 2. Gate: check for blockers
 
-If `blocked_by[]` is non-empty, invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
+If `blocked_by[]` is non-empty, merge `{"halt_reason": "blocked"}` into `.drain-handoff.json` at the worktree root (preserving any fields already present), then invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
 
 ### 3. Rebase onto the parent branch
 
 Determine the parent branch — `main` by default, or the parent branch in the stack if this work stacks on another issue — and rebase the worktree branch onto it before any build begins. Building on a stale base produces conflicts at finish; rebase at pickup, on fresh context, instead. Record the chosen parent in `parent_branch`.
 
-### 4. Write the envelope
+### 4. Write the envelope and record flow
 
 Write `pickup-envelope.json` (see Artefact template) to the worktree root. This file is the contract — every downstream skill reads it; none re-reads the Linear issue.
+
+Determine the `flow` value from `labels[]`:
+
+- If `labels[]` contains `"verify"` → `"verify-only"`.
+- Otherwise if `body_md` contains an existing task-breakdown block → `"shape-task"`.
+- Otherwise → `"build"`.
+
+Merge `{"flow": "<value>"}` into `.drain-handoff.json` at the worktree root, preserving any fields the supervisor already wrote. This records the routing decision on entry so the supervisor can grade it without re-parsing the issue.
 
 ### 5. Gate: invoke `exec:breakdown`
 
@@ -82,6 +91,8 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 
 ## Artefact template
 
+`pickup-envelope.json` (in-flight carrier between skills):
+
 ```json
 {
   "issue_id": "<id>",
@@ -95,18 +106,39 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 }
 ```
 
+`.drain-handoff.json` after step 4 (exit record for the supervisor):
+
+```json
+{
+  "flow": "build | verify-only | shape-task"
+}
+```
+
+`.drain-handoff.json` after a blocked halt (step 2 fires):
+
+```json
+{
+  "flow": "build",
+  "halt_reason": "blocked"
+}
+```
+
 ## Red flags
 
 - The workflow contains a procedure that is not a named delegation.
 - `pickup-envelope.json` is missing from the worktree root before `exec:build` starts.
+- `.drain-handoff.json` does not contain `flow` after step 4 completes.
 - A breakdown task has no `done_when` clause.
 - The issue transitions to Done before `exec:finish` is invoked.
 - `exec:review` returns `NO-GO` and the next step is `exec:verify` without looping back to `exec:build`.
 - `ac_checklist` is empty on an issue that has acceptance criteria.
+- A blocked halt occurs without `halt_reason: "blocked"` written to `.drain-handoff.json`.
 
 ## Exit criteria
 
 - `pickup-envelope.json` exists at the worktree root with all fields populated.
+- `.drain-handoff.json` contains `flow` at the worktree root after step 4.
+- On a blocked exit: `.drain-handoff.json` contains `halt_reason: "blocked"` and the issue remains In Progress.
 - Every breakdown task has a `done_when` clause.
 - `exec:review` returned `GO` before `exec:verify` was invoked.
 - `exec:finish` was invoked and posted the review-summary comment and transitioned the issue.

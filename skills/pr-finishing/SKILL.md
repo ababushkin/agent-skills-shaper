@@ -45,7 +45,7 @@ Example `.drain-handoff.json`:
 
 - One PR per slice.
 - Each PR body uses the same What / Why / Focus template.
-- If .drain-handoff.json exists, update it with pr_urls.
+- If `.drain-handoff.json` exists, `pr_urls` and `prep_verdict` are merged into it per schema v2.
 - If Linear is available and an issue ID is known, post a review-summary comment.
 - If Linear is unavailable, include the review summary in the final response instead.
 
@@ -131,9 +131,19 @@ Before posting any final trail, verify every PR URL is reachable:
 
 If any PR is missing or unreachable, stop and report the problem. Do not post the Linear comment yet.
 
-If .drain-handoff.json exists, update it with pr_urls:
+If `.drain-handoff.json` exists, merge `pr_urls` and `prep_verdict` into it:
 
-`{ "pr_urls": [ { "title": "<PR title>", "url": "<https://...>" } ] }`
+```json
+{
+  "pr_urls": ["<https://...>"],
+  "prep_verdict": {
+    "route": "auto-merge | human-review",
+    "reasoning": "<one sentence: why this route>"
+  }
+}
+```
+
+Set `route` to `"auto-merge"` when PRs were submitted with no blocking review findings pending human resolution. Set `route` to `"human-review"` when outstanding findings require explicit sign-off before merging — this route implies `halt_reason: "human-review-requested"` on exit.
 
 ### 8. Post final trail
 
@@ -161,6 +171,6 @@ The skill is complete only when:
 2. Each slice has exactly one PR.
 3. Each PR body contains What, Why, and Focus.
 4. Every PR URL was verified reachable.
-5. Existing .drain-handoff.json, if present, was updated with pr_urls.
+5. Existing `.drain-handoff.json`, if present, was updated with `pr_urls` and `prep_verdict` per schema v2 (`references/drain-handoff-schema-v2.md`).
 6. Graphite precondition failures halted instead of falling back silently.
 7. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.

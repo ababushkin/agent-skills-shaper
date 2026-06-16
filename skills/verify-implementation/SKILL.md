@@ -28,7 +28,7 @@ A fail verdict is a halt, not a suggestion: the issue does not transition to Don
 
 1. **AC list** (required) — the delivery-shape Completion section (`## Completion`, `Done when:` list) or, if absent, any bullet list under a heading containing "acceptance criteria", "AC", "done when", or "definition of done". No AC list → a structural fail verdict.
 2. **Diff** (required) — `git diff HEAD`, a PR diff, or a commit range. An empty diff means the implementation is absent.
-3. **Run log entry** (optional) — if present, the verdict is appended to its `outcome_verdict` field; otherwise emitted standalone.
+3. **`.drain-handoff.json`** (optional) — if present at the worktree root, `outcome_verdict` is merged into it per schema v2; otherwise the verdict is emitted standalone in the conversation.
 
 ## Outputs
 
@@ -93,7 +93,18 @@ There is no partial-pass state. Every unmet AC item is a finding; every finding 
 
 ### 6. Emit the verdict
 
-Write the verdict as a fenced JSON block. Set `invoked_at` to the current ISO 8601 timestamp. If a run log entry was provided, note that its `outcome_verdict` field should be updated with this object. On fail, follow with the human-readable findings list.
+Write the verdict as a fenced JSON block. Set `invoked_at` to the current ISO 8601 timestamp. On fail, follow with the human-readable findings list.
+
+If `.drain-handoff.json` is present at the worktree root, merge `outcome_verdict` into it:
+
+```json
+"outcome_verdict": {
+  "result": "pass | fail",
+  "failed_ac": ["<verbatim ac_item text for each unmet finding>"]
+}
+```
+
+`failed_ac` mirrors the `ac_item` values from the findings list (empty array on pass). The merge preserves all other fields already in the file — write only the `outcome_verdict` key.
 
 ## Red flags
 
@@ -115,7 +126,7 @@ The skill is complete when:
 4. A pass verdict has `"findings": []`.
 5. A fail verdict has one finding per unmet AC item, each with `ac_item`, `gap`, `evidence`.
 6. The verdict was emitted as a fenced JSON block; on fail, a findings list followed.
-7. If a run log entry was provided, the verdict was noted for appending to `outcome_verdict`.
+7. If `.drain-handoff.json` is present, `outcome_verdict` was merged into it with `result` and `failed_ac` per schema v2 (`references/drain-handoff-schema-v2.md`).
 
 ## Related
 
