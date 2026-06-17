@@ -45,7 +45,8 @@ Example `.drain-handoff.json`:
 
 - One PR per slice.
 - Each PR body uses the same What / Why / Focus template.
-- If .drain-handoff.json exists, update it with pr_urls.
+- Write the `finish` section of `exec-state.json` with `pr_urls` (append-section; prior sections survive).
+- If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write).
 - If Linear is available and an issue ID is known, post a review-summary comment.
 - If Linear is unavailable, include the review summary in the final response instead.
 
@@ -131,7 +132,21 @@ Before posting any final trail, verify every PR URL is reachable:
 
 If any PR is missing or unreachable, stop and report the problem. Do not post the Linear comment yet.
 
-If .drain-handoff.json exists, update it with pr_urls:
+Write the `finish` section of `exec-state.json` with the submitted PR URLs. Open `exec-state.json` if it exists (preserving any prior sections), set the `finish` key, and write the file back:
+
+```json
+{
+  "finish": {
+    "pr_urls": [
+      { "title": "<PR title>", "url": "<https://...>" }
+    ]
+  }
+}
+```
+
+If `exec-state.json` does not yet exist, create it with only the `finish` section.
+
+If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write for cross-repo migration compatibility):
 
 `{ "pr_urls": [ { "title": "<PR title>", "url": "<https://...>" } ] }`
 
@@ -161,6 +176,7 @@ The skill is complete only when:
 2. Each slice has exactly one PR.
 3. Each PR body contains What, Why, and Focus.
 4. Every PR URL was verified reachable.
-5. Existing .drain-handoff.json, if present, was updated with pr_urls.
-6. Graphite precondition failures halted instead of falling back silently.
-7. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
+5. `exec-state.json` exists with a `finish.pr_urls` section after finishing.
+6. If the legacy `.drain-handoff.json` existed, it was also updated with `pr_urls` (dual-write).
+7. Graphite precondition failures halted instead of falling back silently.
+8. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
