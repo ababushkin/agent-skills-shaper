@@ -12,7 +12,6 @@ description: Finish an already-green, sliced development branch by submitting on
 - Work is complete and tests pass.
 - Changes are committed as independently reviewable slices, one logical change per commit.
 - The operator asks to finish, submit, create stacked PRs, or submit the stack.
-- Optional: a drain-cycle handoff file exists at `.drain-handoff.json`.
 - Optional: a Linear issue ID is available for the final trail comment.
 
 Do not use this skill to hide failing tests, submit a known-broken branch, or re-slice a squashed multi-change commit after the fact.
@@ -20,13 +19,13 @@ Do not use this skill to hide failing tests, submit a known-broken branch, or re
 ## Inputs
 
 - Feature branch with one logical change per commit.
-- Optional base branch, `<base>` (default `main`). When the work is stacked on another branch rather than `main` — e.g. a drain-cycle worktree chained off a prior issue's branch — the caller passes that branch as the base. Resolution order: an explicit base in the invocation, else a `base` key in `.drain-handoff.json`, else `main`.
-- Optional `.drain-handoff.json` containing an `issue` and `slices`.
-- Optional Linear issue ID from the branch name, handoff file, user request, or available Linear plugin.
+- Optional base branch, `<base>` (default `main`). When the work is stacked on another branch rather than `main` — e.g. a drain-cycle worktree chained off a prior issue's branch — the caller passes that branch as the base. Resolution order: an explicit base in the invocation, else `main`.
+- Optional `pickup-envelope.json` containing an `issue` and `slices`.
+- Optional Linear issue ID from the branch name, envelope file, user request, or available Linear plugin.
 - Optional Graphite CLI, `gt`.
 - GitHub CLI, `gh`, for PR creation and verification.
 
-Example `.drain-handoff.json`:
+Example `pickup-envelope.json`:
 
 ```json
 {
@@ -45,8 +44,7 @@ Example `.drain-handoff.json`:
 
 - One PR per slice.
 - Each PR body uses the same What / Why / Focus template.
-- Write the `finish` section of `exec-state.json` with `pr_urls` (append-section; prior sections survive).
-- If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write).
+- Write `pr_urls` into `exec-state.json` so the supervisor's Done gate can read them.
 - If Linear is available and an issue ID is known, post a review-summary comment.
 - If Linear is unavailable, include the review summary in the final response instead.
 
@@ -54,7 +52,7 @@ Example `.drain-handoff.json`:
 
 Start with one sentence:
 
-> This branch closes <issue> by delivering <summary>.
+> This branch closes <issue> by delivering <summary>.
 
 If no issue ID is known, derive the summary from the branch name and commit subjects.
 
@@ -66,7 +64,7 @@ If tests fail, stop. Report the failing command and relevant output. Do not subm
 
 ### 3. Determine slices
 
-If .drain-handoff.json exists, read its slices array.
+If `pickup-envelope.json` exists, read its slices array.
 
 If it does not exist, derive slices from git, ranging from the resolved base (default `main`):
 
@@ -85,8 +83,8 @@ Check Graphite preconditions in order:
 Use these rules:
 
 - If all checks pass, use the Graphite path.
-- If gt is absent, use the plain-git path.
-- If gt exists but auth or repo initialization fails, stop and show the exact error. Do not silently fall back to git.
+- If gt is absent, use the plain-git path.
+- If gt exists but auth or repo initialization fails, stop and show the exact error. Do not silently fall back to git.
 
 ### 5. Graphite path
 
@@ -101,23 +99,23 @@ Submit the stack:
 
 `gt stack submit --no-interactive`
 
-After submission, set or correct each PR body with gh pr edit.
+After submission, set or correct each PR body with gh pr edit.
 
-Wrap each gt call in a bounded recovery loop:
+Wrap each gt call in a bounded recovery loop:
 
 - On success: continue.
-- On stale parent or out-of-sync error: run gt repo sync, retry once.
+- On stale parent or out-of-sync error: run gt repo sync, retry once.
 - On dirty working tree: stash, retry once, then restore the stash.
 - On auth or repo initialization error: stop immediately.
 - On any second failure: stop and report the exact error.
 
 ### 6. Plain-git path
 
-Use this only when gt is absent.
+Use this only when gt is absent.
 
 For each slice, oldest first:
 
-- Create a branch from the slice parent named <issue-or-branch>/<slug>-<n>.
+- Create a branch from the slice parent named <issue-or-branch>/<slug>-<n>.
 - Cherry-pick the slice commit.
 - Create the PR using the shared body template.
 - Push the branch and create the PR with gh pr create. Target the oldest slice's PR at `<base>` (`gh pr create --base <base>`); each later slice targets the prior slice's branch.
@@ -132,23 +130,17 @@ Before posting any final trail, verify every PR URL is reachable:
 
 If any PR is missing or unreachable, stop and report the problem. Do not post the Linear comment yet.
 
-Write the `finish` section of `exec-state.json` with the submitted PR URLs. Open `exec-state.json` if it exists (preserving any prior sections), set the `finish` key, and write the file back:
+Write `pr_urls` into `exec-state.json`. Open `exec-state.json` if it exists (preserving any prior content), set the `pr_urls` key, and write the file back:
 
 ```json
 {
-  "finish": {
-    "pr_urls": [
-      { "title": "<PR title>", "url": "<https://...>" }
-    ]
-  }
+  "pr_urls": [
+    { "title": "<PR title>", "url": "<https://...>" }
+  ]
 }
 ```
 
-If `exec-state.json` does not yet exist, create it with only the `finish` section.
-
-If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write for cross-repo migration compatibility):
-
-`{ "pr_urls": [ { "title": "<PR title>", "url": "<https://...>" } ] }`
+If `exec-state.json` does not yet exist, create it.
 
 ### 8. Post final trail
 
@@ -176,7 +168,6 @@ The skill is complete only when:
 2. Each slice has exactly one PR.
 3. Each PR body contains What, Why, and Focus.
 4. Every PR URL was verified reachable.
-5. `exec-state.json` exists with a `finish.pr_urls` section after finishing.
-6. If the legacy `.drain-handoff.json` existed, it was also updated with `pr_urls` (dual-write).
-7. Graphite precondition failures halted instead of falling back silently.
-8. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
+5. `exec-state.json` exists with a `pr_urls` list after finishing.
+6. Graphite precondition failures halted instead of falling back silently.
+7. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
