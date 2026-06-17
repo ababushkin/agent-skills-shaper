@@ -13,7 +13,7 @@ description: >
 
 ## Purpose
 
-Take a freshly-picked Linear issue all the way to a finished PR with a full review trail. This skill reads the issue, writes a handoff envelope, and then delegates each step — breakdown, build, review, verify, finish — to its owning `exec:*` skill by name. It inlines no procedure; the named delegation is the whole of each step. The issue's acceptance criteria travel inside `pickup-envelope.json` from pickup to the spec-compliance persona in `exec:review`, re-typed by no one and lost by no one.
+Take a freshly-picked Linear issue all the way to a finished PR with a full review trail. This skill reads the issue, writes the `pickup` section of `exec-state.json`, and then delegates each step — breakdown, build, review, verify, finish — to its owning `exec:*` skill by name. It inlines no procedure; the named delegation is the whole of each step. The issue's acceptance criteria travel inside `exec-state.json` (pickup section) from pickup to the spec-compliance persona in `exec:review`, re-typed by no one and lost by no one.
 
 ## When to use
 
@@ -37,7 +37,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 
 ## Outputs
 
-- **`pickup-envelope.json`** at the worktree root — the handoff carrier for every downstream step
+- **`exec-state.json`** at the worktree root — the handoff carrier; the `pickup` section is written by this skill and read by every downstream step
 - An ordered task list from `exec:breakdown`, each task carrying a `done_when` clause
 - Delegations to `exec:build`, `exec:review`, `exec:verify`, and `exec:finish`
 - On blocked: a Linear comment naming the blocker; issue left In Progress
@@ -56,49 +56,51 @@ If `blocked_by[]` is non-empty, invoke `shape:stop-the-line`: post a comment nam
 
 Determine the parent branch — `main` by default, or the parent branch in the stack if this work stacks on another issue — and rebase the worktree branch onto it before any build begins. Building on a stale base produces conflicts at finish; rebase at pickup, on fresh context, instead. Record the chosen parent in `parent_branch`.
 
-### 4. Write the envelope
+### 4. Write the pickup section
 
-Write `pickup-envelope.json` (see Artefact template) to the worktree root. This file is the contract — every downstream skill reads it; none re-reads the Linear issue.
+Write the `pickup` section of `exec-state.json` to the worktree root (see Artefact template). If `exec-state.json` already exists, open it, set the `pickup` key, and write back — preserving any prior sections. This file is the contract — every downstream skill reads it; none re-reads the Linear issue.
 
 ### 5. Gate: invoke `exec:breakdown`
 
-Delegate to `exec:breakdown`, passing the envelope. It returns an ordered task list, each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, and `axes` (RC·SC·HS·SR·OR). If it returns no tasks or any task lacks `done_when`, halt and comment naming the gap.
+Delegate to `exec:breakdown`, passing the `exec-state.json` path. It returns an ordered task list, each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, and `axes` (RC·SC·HS·SR·OR). If it returns no tasks or any task lacks `done_when`, halt and comment naming the gap.
 
 ### 6. Build each slice with `exec:build`
 
-For each task in order, delegate to `exec:build` with the task and the envelope path. `exec:build` owns the RED → GREEN → commit loop, including `exec:debug` on a stuck red loop and `exec:simplify` on green. Do not advance until the task's `done_when` is satisfied and a commit exists.
+For each task in order, delegate to `exec:build` with the task and the `exec-state.json` path. `exec:build` owns the RED → GREEN → commit loop, including `exec:debug` on a stuck red loop and `exec:simplify` on green. Do not advance until the task's `done_when` is satisfied and a commit exists.
 
 ### 7. Gate: invoke `exec:review`
 
-After all slices are committed, delegate to `exec:review` with the working-tree diff and the envelope path (so the spec-compliance persona reads `ac_checklist` directly). On `NO-GO`, loop back into `exec:build` on the failing findings. Do not proceed until the verdict is `GO`.
+After all slices are committed, delegate to `exec:review` with the working-tree diff and the `exec-state.json` path (so the spec-compliance persona reads `ac_checklist` from the pickup section directly). On `NO-GO`, loop back into `exec:build` on the failing findings. Do not proceed until the verdict is `GO`.
 
 ### 8. Gate: invoke `exec:verify`
 
-Delegate to `exec:verify` with the envelope's `ac_checklist` and the diff. A fail loops back into `exec:build`; a pass is the green light for finishing.
+Delegate to `exec:verify` with the `ac_checklist` from `exec-state.json`'s pickup section and the diff. A fail loops back into `exec:build`; a pass is the green light for finishing.
 
 ### 9. Invoke `exec:finish`
 
-Delegate to `exec:finish` with the envelope, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition.
+Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition.
 
 ## Artefact template
 
 ```json
 {
-  "issue_id": "<id>",
-  "branch": "<branch>",
-  "parent_branch": "<main | parent branch in the stack>",
-  "worktree_path": "<path>",
-  "ac_checklist": ["<verbatim AC item>", "…"],
-  "body_md": "<full issue body>",
-  "labels": ["<label>", "…"],
-  "blocked_by": []
+  "pickup": {
+    "issue_id": "<id>",
+    "branch": "<branch>",
+    "parent_branch": "<main | parent branch in the stack>",
+    "worktree_path": "<path>",
+    "ac_checklist": ["<verbatim AC item>", "…"],
+    "body_md": "<full issue body>",
+    "labels": ["<label>", "…"],
+    "blocked_by": []
+  }
 }
 ```
 
 ## Red flags
 
 - The workflow contains a procedure that is not a named delegation.
-- `pickup-envelope.json` is missing from the worktree root before `exec:build` starts.
+- `exec-state.json` is missing from the worktree root before `exec:build` starts.
 - A breakdown task has no `done_when` clause.
 - The issue transitions to Done before `exec:finish` is invoked.
 - `exec:review` returns `NO-GO` and the next step is `exec:verify` without looping back to `exec:build`.
@@ -106,7 +108,7 @@ Delegate to `exec:finish` with the envelope, the review verdict, and the verify 
 
 ## Exit criteria
 
-- `pickup-envelope.json` exists at the worktree root with all fields populated.
+- `exec-state.json` exists at the worktree root with a `pickup` section containing all fields populated.
 - Every breakdown task has a `done_when` clause.
 - `exec:review` returned `GO` before `exec:verify` was invoked.
 - `exec:finish` was invoked and posted the review-summary comment and transitioned the issue.
