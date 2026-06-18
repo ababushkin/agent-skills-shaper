@@ -1,5 +1,5 @@
 ---
-name: simplify
+name: exec:simplify
 description: >
   Reduce complexity after code is green. Use after build passes but the implementation is
   heavier than it needs to be — simplify for clarity while preserving exact behaviour,
@@ -15,7 +15,7 @@ The post-green pass that strips accidental complexity from working code while pr
 
 ## When to use
 
-- After `build` completes and all tests pass.
+- After `exec:build` completes and all tests pass.
 - The implementation feels heavier than it needs to be — unnecessary nesting, duplication, unclear names.
 - A review flags readability or complexity in a working diff.
 
@@ -25,7 +25,7 @@ The post-green pass that strips accidental complexity from working code while pr
 - You don't understand it yet — comprehend first (Chesterton's Fence); if you don't know why it's written this way, don't change it.
 - It's a hot path where "simpler" would be slower — benchmark before trading performance for clarity.
 - You're about to rewrite the module, or it's throwaway code — simplifying it wastes effort.
-- Adding a feature or fixing a bug — open `build`; this skill changes no behaviour.
+- Adding a feature or fixing a bug — open `exec:build`; this skill changes no behaviour.
 
 ## Inputs
 
@@ -43,7 +43,7 @@ The post-green pass that strips accidental complexity from working code while pr
 
 ### 1. Gate: confirm working state
 
-Run the verification command from `build`. Confirm exit 0. Do not simplify broken code — fix it first. Record `Verification: <command>`.
+Run the verification command from `exec:build`. Confirm exit 0. Do not simplify broken code — fix it first. Record `Verification: <command>`.
 
 ### 2. Gate: understand before touching (Chesterton's Fence)
 
@@ -111,4 +111,4 @@ Evidence:
 
 ## Related
 
-- `skills/build/SKILL.md` — source of the working code; simplify is its post-green exit point.
+- `skills/exec-build/SKILL.md` — source of the working code; `exec:simplify` is its post-green exit point.

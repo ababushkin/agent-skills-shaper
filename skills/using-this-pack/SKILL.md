@@ -86,8 +86,12 @@ These apply across every skill in the pack. They are not optional.
 | `exec:pickup` | "Pick up this issue", "Start this task", "Drain this ticket" | Shipped PR with review-summary comment on the Linear issue |
 | `plan-review` | "Review this plan", "Before I approve", "What's missing here" | Review record with APPROVE / REVISE / KILL recommendation |
 | `render-html` | "Render this doc as HTML", "Make this reviewable", "Share this for review" | Self-contained HTML file next to the source |
-| `execution-review` | "Review this diff", "Run execution review", "Review before Done" | GO/NO-GO verdict with deduped findings |
-| `verify-implementation` | "Verify this is done", "Check AC before marking Done" | Pass/fail verdict per AC item |
+| `exec:build` | "Build this task", "Implement this slice", "Start building" | Slice committed, verification command exits 0, slice manifest extended |
+| `exec:debug` | "Why is this failing", "Tried everything", "Escalate from build" | Root-cause note ready for `exec:build` or architectural escalation |
+| `exec:simplify` | "Clean this up", "Simplify this", "Post-green pass" | Simplified diff with before/after rationale, behaviour unchanged |
+| `exec:review` | "Review this diff", "Run execution review", "Review before Done" | GO/NO-GO verdict with deduped findings |
+| `exec:verify` | "Verify this is done", "Check AC before marking Done" | Pass/fail verdict per AC item |
+| `exec:finish` | "Finish this branch", "Submit the stack", "Ship this" | One PR per slice with diff-driven body and routing verdict |
 
 ## Related
 

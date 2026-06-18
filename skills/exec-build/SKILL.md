@@ -1,5 +1,5 @@
 ---
-name: build
+name: exec:build
 description: >
   Gated RED/GREEN/commit loop for a single broken-down task. Use when picking up any
   build task from a delivery plan or issue — whether the repo has a test runner or only
@@ -12,7 +12,7 @@ description: >
 
 ## Purpose
 
-The gated implementation loop for a single task: a failing check before any code, the minimal change that clears it, then a commit — repeated per slice. The one thing that must hold: no cycle starts without a failing check first. A cycle with no RED is implementation with no proof; three consecutive reds without a named blocker is the signal to escalate to `debugging`.
+The gated implementation loop for a single task: a failing check before any code, the minimal change that clears it, then a commit — repeated per slice. The one thing that must hold: no cycle starts without a failing check first. A cycle with no RED is implementation with no proof; three consecutive reds without a named blocker is the signal to escalate to `exec:debug`.
 
 ## When to use
 
@@ -24,7 +24,7 @@ The gated implementation loop for a single task: a failing check before any code
 
 - No task, no criterion — there is nothing to turn RED. Run `delivery-shape` or write the AC first.
 - Greenfield scaffolding with no verifiable behaviour yet — that's setup, not a build task; pick up the loop at the first verifiable slice.
-- Diagnosing a failing system you did not build — open `debugging`; the RED/GREEN loop is for increment, not diagnosis.
+- Diagnosing a failing system you did not build — open `exec:debug`; the RED/GREEN loop is for increment, not diagnosis.
 - Making a design decision — open `design-doc`; building before the design gate is a one-way door without a key.
 
 ## Inputs
@@ -36,9 +36,9 @@ The gated implementation loop for a single task: a failing check before any code
 
 - Working-tree changes that satisfy the task's `Done when:` criterion.
 - One commit per slice, each passing the verification command.
-- `.drain-handoff.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `pr-finishing`.
-- On three consecutive failures without narrowing: an escalation note naming the blocker, ready to hand off to `debugging`.
-- After all slices are green: ready for an optional `simplify` pass.
+- `.drain-handoff.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `exec:finish`.
+- On three consecutive failures without narrowing: an escalation note naming the blocker, ready to hand off to `exec:debug`.
+- After all slices are green: ready for an optional `exec:simplify` pass.
 
 ## Workflow
 
@@ -80,15 +80,15 @@ After committing, append this slice's record to `.drain-handoff.json` in the wor
 }
 ```
 
-This file is the input contract for `pr-finishing`. Without it, pr-finishing falls back to `git log` and loses the commit-body context for each PR's Why.
+This file is the input contract for `exec:finish`. Without it, `exec:finish` falls back to `git log` and loses the commit-body context for each PR's Why.
 
 ### 6. Repeat for remaining slices
 
-Return to step 2. Each slice extends the task in exactly one direction and is independently verifiable. A slice that needs the next slice to pass its own check is a fragment — merge the two and re-split at a verifiable boundary. When all slices are green, open `simplify` for an optional post-green clarity pass.
+Return to step 2. Each slice extends the task in exactly one direction and is independently verifiable. A slice that needs the next slice to pass its own check is a fragment — merge the two and re-split at a verifiable boundary. When all slices are green, open `exec:simplify` for an optional post-green clarity pass.
 
 ### 7. Gate: three reds, name the blocker
 
-If the command fails across three consecutive implementation attempts without progress — same error, no narrowing — stop. Do not retry. Record the check command and its output verbatim, the three attempts and why each failed, and the hypothesis about what is blocking (dependency, missing context, wrong assumption). Hand off to `debugging` with this record as context. A fourth attempt without the blocker named is noise that contaminates the commit trail.
+If the command fails across three consecutive implementation attempts without progress — same error, no narrowing — stop. Do not retry. Record the check command and its output verbatim, the three attempts and why each failed, and the hypothesis about what is blocking (dependency, missing context, wrong assumption). Hand off to `exec:debug` with this record as context. A fourth attempt without the blocker named is noise that contaminates the commit trail.
 
 ## Artefact template
 
@@ -104,10 +104,10 @@ Verification: <command>          # step 1 — recorded before any code
 [COMMIT] <conventional-commit subject> — exits zero post-commit
 
 # If escalating:
-[BLOCKED] <blocker hypothesis> → hand off to debugging
+[BLOCKED] <blocker hypothesis> → hand off to exec:debug
 
 # After all slices are green:
-[DONE] All slices complete → optional: open simplify for a post-green clarity pass
+[DONE] All slices complete → optional: open exec:simplify for a post-green clarity pass
 ```
 
 ## Red flags
@@ -115,7 +115,7 @@ Verification: <command>          # step 1 — recorded before any code
 - Implementation written before a failing check exists.
 - A check passes on its first run (immediate green = not testing missing behaviour).
 - A failing check deleted, skipped, or `// @ts-ignore`'d to make the build proceed.
-- Three or more consecutive reds without progress and no escalation to `debugging`.
+- Three or more consecutive reds without progress and no escalation to `exec:debug`.
 - A commit containing multiple slices, or one that leaves the command failing.
 - The verification form improvised mid-slice rather than selected at step 1.
 - The refactor step added behaviour, or a commit message describes implementation, not outcome.
@@ -126,10 +126,10 @@ Verification: <command>          # step 1 — recorded before any code
 1. The verification form was selected and recorded before any code.
 2. Each slice produced a failing check, a minimal implementation that cleared it, and a commit — in that order, no skipped steps.
 3. Each commit passes the command and its message names an observable outcome.
-4. After three failed attempts without narrowing, a blocker record exists and `debugging` was invoked with it — no further attempts without that hand-off.
+4. After three failed attempts without narrowing, a blocker record exists and `exec:debug` was invoked with it — no further attempts without that hand-off.
 5. The final working tree satisfies the `Done when:` criterion, confirmed by running the command and observing exit 0.
 
 ## Related
 
-- `skills/debugging/SKILL.md` — escalation target when three consecutive reds fail to narrow to green; receives the blocker record.
-- `skills/simplify/SKILL.md` — exit point for the post-green clarity pass after all slices are green.
+- `skills/exec-debug/SKILL.md` — escalation target when three consecutive reds fail to narrow to green; receives the blocker record.
+- `skills/exec-simplify/SKILL.md` — exit point for the post-green clarity pass after all slices are green.

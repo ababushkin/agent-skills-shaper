@@ -64,6 +64,8 @@ Write the `pickup` section of `exec-state.json` to the worktree root (see Artefa
 
 Delegate to `exec:breakdown`, passing the `exec-state.json` path. It returns an ordered task list, each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, and `axes` (RC·SC·HS·SR·OR). If it returns no tasks or any task lacks `done_when`, halt and comment naming the gap.
 
+`exec:breakdown` is the only verb in this graph that is not yet authored — its construction is tracked separately (Linear ABA-406). Until it lands, this gate halts when the delegation cannot resolve; the operator either ports the breakdown in by hand or waits for ABA-406.
+
 ### 6. Build each slice with `exec:build`
 
 For each task in order, delegate to `exec:build` with the task and the `exec-state.json` path. `exec:build` owns the RED → GREEN → commit loop, including `exec:debug` on a stuck red loop and `exec:simplify` on green. Do not advance until the task's `done_when` is satisfied and a commit exists.
@@ -116,6 +118,10 @@ Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, a
 
 ## Related
 
-- `skills/execution-review/SKILL.md` — `exec:review` (persona fan-out, ADR 0003 dispatch)
-- `skills/verify-implementation/SKILL.md` — `exec:verify`
-- `skills/pr-prepare/SKILL.md` — `exec:finish`
+- `skills/exec-build/SKILL.md` — `exec:build` (RED/GREEN/commit loop per slice)
+- `skills/exec-debug/SKILL.md` — `exec:debug` (root-cause escalation from `exec:build`)
+- `skills/exec-simplify/SKILL.md` — `exec:simplify` (post-green clarity pass)
+- `skills/exec-review/SKILL.md` — `exec:review` (persona fan-out, ADR 0003 dispatch)
+- `skills/exec-verify/SKILL.md` — `exec:verify` (AC verdict before Done)
+- `skills/exec-finish/SKILL.md` — `exec:finish` (stack creation + `pr-prepare` per PR)
+- `skills/pr-prepare/SKILL.md` — `pr-prepare` (sub-skill of `exec:finish`; also independently usable)

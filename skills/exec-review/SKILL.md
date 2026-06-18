@@ -1,5 +1,5 @@
 ---
-name: execution-review
+name: exec:review
 description: >
   Multi-persona execution review — dispatches spec-compliance, security-auditor, and
   code-quality personas over a working-tree diff and aggregates a single deduped GO/NO-GO
@@ -25,7 +25,7 @@ A single lens misses defect classes it is not oriented to find. This skill dispa
 
 - **Threat modelling or full security audit** — execution-review's security-auditor persona catches structural patterns; it does not replace a dedicated security audit on high-risk surfaces.
 - **Style or formatting review** — use the `code-simplify` skill for readability-only pass.
-- **Plan or spec review** — use `plan-review` or `verify-implementation` for AC verification outside a diff.
+- **Plan or spec review** — use `plan-review` or `exec:verify` for AC verification outside a diff.
 
 ## Inputs
 

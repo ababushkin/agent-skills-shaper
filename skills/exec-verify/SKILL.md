@@ -1,5 +1,5 @@
 ---
-name: verify-implementation
+name: exec:verify
 description: Outcome verifier — reads the ticket AC checklist and the working-tree diff, then produces a structured pass/fail verdict with one finding per unmet AC item. Use after an implementation is claimed complete and before an issue is transitioned to Done. Trigger phrases: "verify this is done", "check the implementation against AC", "is this ready to close", "did the diff satisfy the ticket", "run the outcome verifier", "verify implementation", "check AC before marking Done".
 ---
 

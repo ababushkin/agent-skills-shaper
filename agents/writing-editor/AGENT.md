@@ -60,7 +60,7 @@ The excuses the original author has structural reasons to make. Expect each; the
 ## Out of scope
 
 - **Scope drift, unstated assumptions, operability, one-way doors** — `plan-review`'s lane. This persona judges prose, not plan soundness.
-- **Acceptance-criteria satisfaction** — `verify-implementation`'s lane. It checks that a done-when is *stated*, not that it was *met*.
+- **Acceptance-criteria satisfaction** — `exec:verify`'s lane. It checks that a done-when is *stated*, not that it was *met*.
 - **Which sections an artefact contains and their order** — the drafting skill's own gates. This persona edits prose inside the structure, never the structure.
 
 ## References

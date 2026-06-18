@@ -3,6 +3,6 @@ description: Run exec:review — multi-persona execution review dispatching spec
 argument-hint: "[diff range or path to diff, optional: path to exec-state.json]"
 ---
 
-@../../../skills/execution-review/SKILL.md
+@../../../skills/exec-review/SKILL.md
 
 Run the exec:review skill. $ARGUMENTS

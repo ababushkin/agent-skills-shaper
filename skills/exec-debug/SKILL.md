@@ -1,5 +1,5 @@
 ---
-name: debugging
+name: exec:debug
 description: >
   Find root cause before proposing fixes. Use when stuck on a failing test, build, or
   system behaviour — hypothesis and evidence instead of guess-and-check. Trigger phrases:
@@ -15,28 +15,28 @@ Diagnose broken builds and unexpected behaviour by root cause, not by guessing. 
 
 ## When to use
 
-- After three consecutive build failures without narrowing the error (escalation from `build`).
+- After three consecutive build failures without narrowing the error (escalation from `exec:build`).
 - A test fails and the cause is unclear, before attempting any fix.
 - Production bugs, unexpected behaviour, performance problems, integration failures.
 - Under time pressure, when "just try changing X" seems obvious, or after multiple failed fix attempts.
 
 ## Do not use when
 
-- Cause and fix are both clear — open `build` and write the failing test directly; this skill is for diagnosis, not implementation.
-- Adding a feature or refactoring — open `build`; this skill adds no behaviour.
+- Cause and fix are both clear — open `exec:build` and write the failing test directly; this skill is for diagnosis, not implementation.
+- Adding a feature or refactoring — open `exec:build`; this skill adds no behaviour.
 - The cause points at the design — open `design-doc`; debugging assumes the design is sound.
 
 ## Inputs
 
 - The failing check: the command that goes RED, and its output verbatim.
 - Evidence of failure: stack traces, error messages, system state at failure time.
-- Prior fix attempts and why they failed (when escalated from `build`).
+- Prior fix attempts and why they failed (when escalated from `exec:build`).
 
 ## Outputs
 
 - A root-cause note (see Artefact template): what is broken, where, why, with supporting evidence.
 - A blocker hypothesis when the cause is still unknown after investigation — the narrowest statement of what must be resolved before a fix.
-- A hand-off state: diagnosis ready for `build` to implement the fix, or for `design-doc` if the cause is architectural.
+- A hand-off state: diagnosis ready for `exec:build` to implement the fix, or for `design-doc` if the cause is architectural.
 
 ## Workflow
 
@@ -100,10 +100,10 @@ Ready for: build (implement fix) | design-doc (architectural escalation)
 
 1. Phases 1–3 complete and a root-cause note written.
 2. The note names the symptom and its location, the root cause (not a symptom), the evidence, and the blocker if the cause is unknown.
-3. The note is specific enough for `build` to implement the fix, or architectural escalation is triggered.
+3. The note is specific enough for `exec:build` to implement the fix, or architectural escalation is triggered.
 4. After three failed fixes, the note names the architectural issue rather than a new fix hypothesis.
 
 ## Related
 
-- `skills/build/SKILL.md` — escalates here after three RED loops without narrowing; receives the root-cause note as input.
+- `skills/exec-build/SKILL.md` — escalates here after three RED loops without narrowing; receives the root-cause note as input.
 - `skills/design/SKILL.md` — escalation target when the cause is architectural.
