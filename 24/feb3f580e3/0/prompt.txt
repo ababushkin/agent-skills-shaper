@@ -1,0 +1,45 @@
+load 36
+
+---
+
+1 - go 2 - yes 3 - yes 4 - only keep common rationalisations if its really going to help the agent make a better decision
+
+---
+
+looks like i can't proceed as some of my prs need to be re-stacked
+
+---
+
+no for now just re-stack https://app.graphite.com/github/pr/ababushkin/agent-skills-shaper/36
+
+---
+
+what's the correct way to review prs in graphite? top down or bottom up? i'm confused when i open the interface
+
+---
+
+36 says it needs a restack and 37 shows it has conflicts, i already merged 35
+
+---
+
+i've merged 36 - file a ticket that i want idea refinement to focus more on refining the idea, not necessarily applying a scoring framework on how valuable it is. inspired by agent-skills:idea-refine and agent-skills:interview-me
+
+---
+
+ok now restack 37
+
+---
+
+restack 38
+
+---
+
+merged, restack 39
+
+---
+
+why did i have to keep restacking like this? is there way to prevent it or is it an instrinc problem with how graphite works?
+
+---
+
+ok got it, i left one comment against pr 39 review it and take action
