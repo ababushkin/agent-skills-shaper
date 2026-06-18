@@ -1,6 +1,6 @@
 # ADR 0005 — Shaping door leaf names (`shape:idea` / `shape:project` / `shape:design` / `shape:delivery`)
 
-- **Status:** Accepted
+- **Status:** Accepted (wrapper surface superseded in part by ADR 0006 — the leaf names stand; the `.claude/commands/*.md` wrappers are withdrawn for core skills)
 - **Date:** 2026-06-12
 - **Serves:** Initiative B / KR1 — the shaping library consolidates to four phase doors plus utilities, measured set ≤2,200 lines (N01–N08).
 - **Premise for:** N02–N06 (the door builds and utility pass bind these directory, wrapper, and verb names) and Initiative C (supervisor prompts cite the door verbs literally).

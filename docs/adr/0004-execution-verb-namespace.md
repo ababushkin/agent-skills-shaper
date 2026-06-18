@@ -1,6 +1,6 @@
 # ADR 0004 — Execution verb namespace (`exec:*`)
 
-- **Status:** Accepted
+- **Status:** Accepted (wrapper surface superseded in part by ADR 0006 — the `exec:*` verb names stand; they are no longer published as typed slash commands)
 - **Date:** 2026-06-10
 - **Serves:** Initiative D2 / KR1 — drained issues reach Done with a merged PR and full review trail (N04–N08).
 - **Premise for:** Initiative B (verb consolidation consumes this namespace table) and Initiative C (the drain-cycle supervisor binds the front-door verb literally).

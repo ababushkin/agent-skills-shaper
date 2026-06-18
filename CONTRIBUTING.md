@@ -84,8 +84,8 @@ cd agent-skills-shaper
 
 This wires up:
 
-1. Slash commands in `~/.claude/commands/shape/`
-2. Auto-invocable skill symlinks in `~/.claude/skills/shape-<name>`
+1. Auto-invocable skill symlinks in `~/.claude/skills/shape-<name>` — the primary invocation surface for every workflow
+2. Utility slash commands in `~/.claude/commands/shape/` — only the two hook runners (`stop-the-line`, `task-annotation-check`)
 3. `@`-refs to the rule files in `~/.claude/CLAUDE.md`
 
 Re-run `./install.sh` after a `git pull` or after adding a new skill — it's idempotent and prunes stale symlinks.

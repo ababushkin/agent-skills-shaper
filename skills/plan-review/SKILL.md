@@ -35,7 +35,7 @@ If a trigger is ambiguous, run it. The Quick tier is short; the cost of skipping
 - **Typo fixes, single-line changes, pure read-only exploration.** Review overhead exceeds value.
 - **Plans for work already in progress.** Use a kill-switch review instead — different question (should we stop?), different output.
 - **Plans already reviewed and revised in the current session.** Re-review only if material new evidence arrived.
-- **The plan itself doesn't exist yet.** Use `/shape:design` or `/shape:idea` to produce a plan first.
+- **The plan itself doesn't exist yet.** Use **shape:design** or **shape:idea** to produce a plan first.
 
 ## Inputs
 
