@@ -1,0 +1,13 @@
+are there any instructions in skills/delivery that overlap with skills/exec:breakdown ?
+
+---
+
+i just want to make sure that delivery-shape doesn't produce anything that exec-breakdown would produce so that it doesn't cause a clash and confuse the agent implementing the task
+
+---
+
+the only thing though is that we need to make sure the execution-model is selected during delivery-shaping (i.e. should this task be implemented using sonnet or opus? etc)
+
+---
+
+that sounds good, lets work that into a plan for me to review
