@@ -1,6 +1,6 @@
 # Product rules
 
-These are the product principles and operational rules for the Shaper pack. They cover roadmap structure, prioritisation, commitment, and learning. The `/shape:idea` skill handles problem-framing and roadmap mechanics at the point of intake.
+These are the product principles and operational rules for the Shaper pack. They cover roadmap structure, prioritisation, commitment, and learning. The **shape:idea** skill handles problem-framing and roadmap mechanics at the point of intake.
 
 ---
 

@@ -30,7 +30,9 @@ hooks/
 references/         Standalone reference files cited by skills
 docs/               Anatomy specs and authoring guidance (skill-anatomy.md, hook-anatomy.md, …)
 .claude-plugin/     plugin.json — manifest for marketplace install
-.claude/commands/   Slash-command wrappers
+.claude/commands/   Slash-command wrappers — utility hooks only (stop-the-line,
+                    task-annotation-check). Workflow skills are invoked by name,
+                    not via wrappers.
 ```
 
 Skills live at `skills/<name>/SKILL.md`. Hooks at `hooks/<name>/HOOK.md`. References at `references/<name>.md`. Rule files (`PRODUCT_RULES.md`, `eng-principles-*.md`) live at `rules/<name>.md`.

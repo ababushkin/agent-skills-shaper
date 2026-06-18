@@ -48,11 +48,11 @@ Install the plugin from GitHub:
 
 Restart Claude Code. That's it — you now have:
 
-- **16 skills**, auto-invoked when the task matches (e.g. say *"how should we build this?"* and shape:design fires).
-- **Slash commands** for the core skills, namespaced `/shape:` (e.g. `/shape:idea`, `/shape:design`).
+- **17 skills**, auto-invoked when the task matches (e.g. say *"how should we build this?"* and shape:design fires). Each also invokes by name when you want to drive a step yourself.
 - A **SessionStart hook** that loads the navigator skill so the agent always knows which step it's on.
+- **Two utility slash commands** — `/shape:stop-the-line` and `/shape:task-annotation-check` — that run the diff-scan and task-annotation hooks on demand.
 
-Prefer to drive it yourself? Type the slash command. Prefer the agent to choose? Just describe what you're doing — the skills trigger on natural phrases.
+Prefer the agent to choose? Just describe what you're doing — the skills trigger on natural phrases. Prefer to drive a step yourself? Name the skill (e.g. *"run shape:delivery"*).
 
 ---
 
@@ -60,18 +60,18 @@ Prefer to drive it yourself? Type the slash command. Prefer the agent to choose?
 
 Start anywhere in the arc and follow the chain. A typical run looks like this:
 
-1. **An idea arrives.** *"A customer asked for bulk export."* → `/shape:idea` scores it, classifies it, and routes it — to the idea bank if it's strong, to a design spike if the bet is unproven.
-2. **It's worth doing.** → `/shape:project` turns it into a committed project with a well defined goal and clear measures of success that an agent can self-grade. Will automatically re-route to creating an individual task if a project is unnecessary.
-3. **Time to design.** → `/shape:design` lays out the approach, the trade-offs, and the operability plan on the design-doc track. Unsure about a risky unknown first? The product-spike or backend-spike tracks answer the one question before you commit.
-4. **Plan the build.** → `/shape:delivery` decomposes the initiative into an ordered, verifiable task list. `/plan-review` reads it adversarially and catches what's missing *before* a line of code is written.
-5. **Break it down.** → `/exec:breakdown` turns the picked-up issue's AC into an ordered task list — every task with one `done_when` clause, scored on the 5-axis routing rubric.
-6. **Build it.** → `/exec:build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `/exec:debug` finds the root cause. Heavy? `/exec:simplify` trims it once it's green.
-7. **Prove it's done.** → `/exec:verify` checks the diff against the ticket's acceptance criteria; `/exec:review` runs spec, security, and quality passes. A fail is a halt, not a suggestion.
-8. **Ship it.** → `/exec:finish` submits the stack, one small PR per slice, and delegates to `pr-prepare` to write each PR's reviewer body and route it for merge or human review.
+1. **An idea arrives.** *"A customer asked for bulk export."* → **shape:idea** scores it, classifies it, and routes it — to the idea bank if it's strong, to a design spike if the bet is unproven.
+2. **It's worth doing.** → **shape:project** turns it into a committed project with a well defined goal and clear measures of success that an agent can self-grade. Will automatically re-route to creating an individual task if a project is unnecessary.
+3. **Time to design.** → **shape:design** lays out the approach, the trade-offs, and the operability plan on the design-doc track. Unsure about a risky unknown first? The product-spike or backend-spike tracks answer the one question before you commit.
+4. **Plan the build.** → **shape:delivery** decomposes the initiative into an ordered, verifiable task list. **shape:plan-review** reads it adversarially and catches what's missing *before* a line of code is written.
+5. **Break it down.** → **exec:breakdown** turns the picked-up issue's AC into an ordered task list — every task with one `done_when` clause, scored on the 5-axis routing rubric.
+6. **Build it.** → **exec:build** runs a gated red/green/commit loop, one small increment at a time. Stuck? **exec:debug** finds the root cause. Heavy? **exec:simplify** trims it once it's green.
+7. **Prove it's done.** → **exec:verify** checks the diff against the ticket's acceptance criteria; **exec:review** runs spec, security, and quality passes. A fail is a halt, not a suggestion.
+8. **Ship it.** → **exec:finish** submits the stack, one small PR per slice, and delegates to **shape:pr-prepare** to write each PR's reviewer body and route it for merge or human review.
 
 You don't have to run the whole arc. Each skill stands alone — invoke just the one you need. But when work spans several steps, following the chain is what keeps the thread from breaking.
 
-Not sure which skill applies? Ask, or run `/shape:using-this-pack` — the navigator maps your task to the right step.
+Not sure which skill applies? Ask, or invoke **shape:using-this-pack** — the navigator maps your task to the right step.
 
 ---
 
@@ -146,7 +146,7 @@ cd agent-skills-shaper
 ./install.sh
 ```
 
-The script writes slash-command wrappers, symlinks each skill into `~/.claude/skills/shape-<name>`, and installs the SessionStart hook. Re-run after a `git pull` — it's idempotent and prunes stale symlinks.
+The script symlinks each skill into `~/.claude/skills/shape-<name>`, writes the two utility hook wrappers, and installs the SessionStart hook. Re-run after a `git pull` — it's idempotent and prunes stale symlinks.
 
 ### Other agents (Cursor, Gemini CLI, Windsurf, …)
 
