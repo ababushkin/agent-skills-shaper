@@ -1,0 +1,69 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "24feb3f580e3",
+  "session_id": "b64ff34e-6ecf-4c34-9473-450c97255c45",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-18T11:52:50.19275Z",
+  "branch": "chore/drop-command-wrapper-surface",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "CLAUDE.md",
+    "CONTRIBUTING.md",
+    "README.md",
+    "docs/adr/0004-execution-verb-namespace.md",
+    "docs/adr/0005-shaping-door-leaf-names.md",
+    "docs/adr/0006-drop-command-wrapper-surface.md",
+    "install.sh",
+    "references/project-types.md",
+    "rules/PRODUCT_RULES.md",
+    "skills/design/SKILL.md",
+    "skills/plan-review/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "3ca9a6a3c953",
+  "token_usage": {
+    "input_tokens": 38690,
+    "cache_creation_tokens": 111581,
+    "cache_read_tokens": 2940692,
+    "output_tokens": 36017,
+    "api_call_count": 42
+  },
+  "session_metrics": {
+    "turn_count": 2
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-18T11:52:50.179506Z",
+    "agent_lines": 73,
+    "agent_removed": 38,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 73,
+    "total_lines_changed": 215,
+    "agent_percentage": 51.627906976744185,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 73,
+      "agent_lines_removed": 150,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}
