@@ -12,7 +12,7 @@ Every workflow shipped on two installed surfaces:
 1. **Auto-invocable skill** — `skills/<name>/SKILL.md`, installed as `~/.claude/skills/shape-<name>`, model-triggered or invoked by name via the Skill tool.
 2. **Slash-command wrapper** — `.claude/commands/<name>.md`, a thin file that `@`-imports the same `SKILL.md` and invokes it, installed as `/shape:<name>` (and `/exec:<name>`).
 
-Because the pack is loaded as a Claude Code plugin, each wrapper is also registered twice — once bare (`delivery`) and once plugin-namespaced (`shape:delivery`). The net effect in the skill picker: one workflow (e.g. delivery) appears three times — `shape-delivery` (the skill), `delivery` (bare command), and `shape:delivery` (namespaced command). Across 14 workflows that is ~42 entries for 14 capabilities. Operators read this as duplication or a caching fault.
+Because the pack is loaded as a Claude Code plugin, each wrapper is also registered twice — once bare (`delivery`) and once plugin-namespaced (`shape:delivery`). The net effect in the skill picker: one workflow (e.g. delivery) appears three times — `shape-delivery` (the skill), `delivery` (bare command), and `shape:delivery` (namespaced command). Across 15 workflows that is ~45 entries for 15 capabilities. Operators read this as duplication or a caching fault.
 
 The wrappers add no behaviour the skill does not already provide. The skill is the source of prose; the wrapper only forwards `$ARGUMENTS` into it. The duplication is pure surface, not capability.
 
@@ -24,7 +24,7 @@ Two wrappers are different: `stop-the-line` and `task-annotation-check` point at
 
 **Keep exactly two wrappers** — `.claude/commands/stop-the-line.md` and `.claude/commands/task-annotation-check.md` — as the on-demand entry point for their hooks. `plugin.json` retains its `commands` key for these; `install.sh` still generates wrappers, but now only for the two that remain.
 
-Deleted wrappers: `idea`, `project`, `design`, `delivery`, `plan-review`, `pr-prepare`, `render-html`, and `exec/{build,debug,finish,pickup,review,simplify,verify}`.
+Deleted wrappers: `idea`, `project`, `design`, `delivery`, `plan-review`, `pr-prepare`, `render-html`, and `exec/{breakdown,build,debug,finish,pickup,review,simplify,verify}`.
 
 ## Consequences
 

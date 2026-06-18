@@ -62,9 +62,7 @@ Write the `pickup` section of `exec-state.json` to the worktree root (see Artefa
 
 ### 5. Gate: invoke `exec:breakdown`
 
-Delegate to `exec:breakdown`, passing the `exec-state.json` path. It returns an ordered task list, each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, and `axes` (RC·SC·HS·SR·OR). If it returns no tasks or any task lacks `done_when`, halt and comment naming the gap.
-
-`exec:breakdown` is the only verb in this graph that is not yet authored — its construction is tracked separately (Linear ABA-406). Until it lands, this gate halts when the delegation cannot resolve; the operator either ports the breakdown in by hand or waits for ABA-406.
+Delegate to `exec:breakdown`, passing the `exec-state.json` path. It writes the `breakdown` section back to that file containing an ordered `tasks[]` array — each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, `axes` (RC·SC·HS·SR·OR), and `ac_refs` linking it back to the pickup AC items. If it writes no tasks or any task lacks `done_when`, halt and comment naming the gap.
 
 ### 6. Build each slice with `exec:build`
 
@@ -118,6 +116,7 @@ Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, a
 
 ## Related
 
+- `skills/exec-breakdown/SKILL.md` — `exec:breakdown` (turns the pickup AC into the ordered task list consumed by `exec:build`)
 - `skills/exec-build/SKILL.md` — `exec:build` (RED/GREEN/commit loop per slice)
 - `skills/exec-debug/SKILL.md` — `exec:debug` (root-cause escalation from `exec:build`)
 - `skills/exec-simplify/SKILL.md` — `exec:simplify` (post-green clarity pass)
