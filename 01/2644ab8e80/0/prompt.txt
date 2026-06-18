@@ -1,0 +1,42 @@
+perform a deep review of this project against https://github.com/github/spec-kit/tree/main
+
+which one is better?
+
+---
+
+are there any ideas from spec-kit that shaper should adopt?
+
+consider your answer carefully
+
+---
+
+compare shaper against this PDF ~/Downloads/Day_1_v3.pdf
+
+perform a gap analysis
+
+---
+
+yes
+
+---
+
+it really should just be one skill: Review, which then fans out and reviews:
+
+- The artefacts themselves (hence the code review, simplification steps, security, etc, i.e. did the agent build it in the best way?)
+- The acceptance criteria (i.e. did the agent build the right thing?)
+
+---
+
+consolidation first
+
+---
+
+i already have an exec:review skill planned (see ABA-405)
+
+---
+
+yes
+
+---
+
+yes
