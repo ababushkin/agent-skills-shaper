@@ -12,6 +12,7 @@ __pycache__/
 # drain-harness state (leaks into stacked PRs if tracked)
 .drain-base
 .drain-guard.json
+exec-state.json
 
 # execution-review cached runs
 fixtures/execution-review/_runs/*/
