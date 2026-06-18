@@ -64,9 +64,10 @@ Start anywhere in the arc and follow the chain. A typical run looks like this:
 2. **It's worth doing.** → `/shape:project` turns it into a committed project with a well defined goal and clear measures of success that an agent can self-grade. Will automatically re-route to creating an individual task if a project is unnecessary.
 3. **Time to design.** → `/shape:design` lays out the approach, the trade-offs, and the operability plan on the design-doc track. Unsure about a risky unknown first? The product-spike or backend-spike tracks answer the one question before you commit.
 4. **Plan the build.** → `/shape:delivery` decomposes the initiative into an ordered, verifiable task list. `/plan-review` reads it adversarially and catches what's missing *before* a line of code is written.
-5. **Build it.** → `/exec:build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `/exec:debug` finds the root cause. Heavy? `/exec:simplify` trims it once it's green.
-6. **Prove it's done.** → `/exec:verify` checks the diff against the ticket's acceptance criteria; `/exec:review` runs spec, security, and quality passes. A fail is a halt, not a suggestion.
-7. **Ship it.** → `/exec:finish` submits the stack, one small PR per slice, and delegates to `pr-prepare` to write each PR's reviewer body and route it for merge or human review.
+5. **Break it down.** → `/exec:breakdown` turns the picked-up issue's AC into an ordered task list — every task with one `done_when` clause, scored on the 5-axis routing rubric.
+6. **Build it.** → `/exec:build` runs a gated red/green/commit loop, one small increment at a time. Stuck? `/exec:debug` finds the root cause. Heavy? `/exec:simplify` trims it once it's green.
+7. **Prove it's done.** → `/exec:verify` checks the diff against the ticket's acceptance criteria; `/exec:review` runs spec, security, and quality passes. A fail is a halt, not a suggestion.
+8. **Ship it.** → `/exec:finish` submits the stack, one small PR per slice, and delegates to `pr-prepare` to write each PR's reviewer body and route it for merge or human review.
 
 You don't have to run the whole arc. Each skill stands alone — invoke just the one you need. But when work spans several steps, following the chain is what keeps the thread from breaking.
 
@@ -82,6 +83,7 @@ Not sure which skill applies? Ask, or run `/shape:using-this-pack` — the navig
 | **Design** | [shape:design](skills/design/SKILL.md) | Structure significant work before building. Offers three tracks: design-doc (full design), product-spike (product unknowns), backend-spike (technical unknowns). |
 | **Plan** | [shape:delivery](skills/delivery/SKILL.md) | Decompose an initiative into an ordered, verifiable delivery hierarchy. |
 | | [plan-review](skills/plan-review/SKILL.md) | Adversarial review of a plan before approval — scope drift, one-way doors, missing operability. |
+| **Break down** | [exec:breakdown](skills/exec-breakdown/SKILL.md) | Turn a picked-up issue's AC into an ordered task list — one `done_when` per task, scored on the 5-axis routing rubric. |
 | **Build** | [exec:build](skills/exec-build/SKILL.md) | Gated red/green/commit loop for one task — every increment lands verified, smallest first. |
 | | [exec:debug](skills/exec-debug/SKILL.md) | Find root cause before proposing fixes — hypothesis and evidence, not guess-and-check. |
 | | [exec:simplify](skills/exec-simplify/SKILL.md) | Reduce complexity after code is green, preserving exact behaviour. |
