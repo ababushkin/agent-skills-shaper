@@ -57,13 +57,9 @@ Follow `docs/hook-anatomy.md`. Hooks have deterministic pass/fail criteria. Fail
 
 ---
 
-## Commit style
-
-Conventional-commit-ish prefixes: `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`. Push directly to main; PRs only when the owner asks. Subject line ≤ 70 chars; details in the body if needed.
-
 ---
 
 ## Key constraints
 
 - No stack-prescriptive content in skill prose. Skills are stack-agnostic.
-- Voice must match the existing skills — direct, principle-named, no generic AI filler. Read two existing SKILL.md files before authoring a new one.
+- Voice must match the existing skills. Read two existing SKILL.md files before authoring a new one.
