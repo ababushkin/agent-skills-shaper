@@ -28,6 +28,7 @@ Task arrives
     ├── Shaped initiative — break it into tasks?            → delivery
     │
     └── Linear issue in hand — pick it up and ship it?     → exec:pickup
+            ├── Need to turn AC into an ordered task list?  → exec:breakdown
             ├── Stuck on a failing test or behaviour?       → exec:debug
             ├── Need to review diff before Done?            → exec:review
             ├── Need to verify AC before closing?          → exec:verify
@@ -86,6 +87,7 @@ These apply across every skill in the pack. They are not optional.
 | `exec:pickup` | "Pick up this issue", "Start this task", "Drain this ticket" | Shipped PR with review-summary comment on the Linear issue |
 | `plan-review` | "Review this plan", "Before I approve", "What's missing here" | Review record with APPROVE / REVISE / KILL recommendation |
 | `render-html` | "Render this doc as HTML", "Make this reviewable", "Share this for review" | Self-contained HTML file next to the source |
+| `exec:breakdown` | "Break this issue down", "Size and route the tasks", "Turn this AC into tasks" | Ordered task list in `exec-state.json`, each task with one `done_when`, a model tier, and a 5-axis score |
 | `exec:build` | "Build this task", "Implement this slice", "Start building" | Slice committed, verification command exits 0, slice manifest extended |
 | `exec:debug` | "Why is this failing", "Tried everything", "Escalate from build" | Root-cause note ready for `exec:build` or architectural escalation |
 | `exec:simplify` | "Clean this up", "Simplify this", "Post-green pass" | Simplified diff with before/after rationale, behaviour unchanged |
