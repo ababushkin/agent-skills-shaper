@@ -28,11 +28,11 @@ Task arrives
     ├── Shaped initiative — break it into tasks?            → delivery
     │
     └── Linear issue in hand — pick it up and ship it?     → exec:pickup
-            ├── Stuck on a failing test or behaviour?       → debugging
-            ├── Need to review diff before Done?            → execution-review
-            ├── Need to verify AC before closing?          → verify-implementation
+            ├── Stuck on a failing test or behaviour?       → exec:debug
+            ├── Need to review diff before Done?            → exec:review
+            ├── Need to verify AC before closing?          → exec:verify
             ├── Need to render an artefact for review?     → render-html
-            └── Implementation is heavy — simplify it?     → simplify
+            └── Implementation is heavy — simplify it?     → exec:simplify
 ```
 
 Rules and references are not skills — they are loaded as context.
