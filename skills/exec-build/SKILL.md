@@ -36,7 +36,7 @@ The gated implementation loop for a single task: a failing check before any code
 
 - Working-tree changes that satisfy the task's `Done when:` criterion.
 - One commit per slice, each passing the verification command.
-- `.drain-handoff.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `exec:finish`.
+- The `build` section of `exec-state.json` in the worktree root — accumulated slice manifest (sha, title, why per slice), consumed by `exec:finish`.
 - On three consecutive failures without narrowing: an escalation note naming the blocker, ready to hand off to `exec:debug`.
 - After all slices are green: ready for an optional `exec:simplify` pass.
 
@@ -69,18 +69,19 @@ With all checks green, improve readability: remove duplication, rename, extract 
 
 Commit the slice before starting the next. The message names the slice outcome, not the implementation detail: `feat: add <observable outcome>`, not `feat: implement helper`. Conventional-commit prefix, subject ≤ 70 chars, no co-author trailers. Each commit must leave the command green — a commit that breaks the check is a fragment, not a slice.
 
-After committing, append this slice's record to `.drain-handoff.json` in the worktree root (create it if absent):
+After committing, append this slice's record to the `build` section of `exec-state.json` in the worktree root. Open the file (preserving the `pickup` and `breakdown` sections earlier phases wrote), append this slice to `build.slices`, and write it back — create the `build` section on the first commit:
 
 ```json
 {
-  "issue": "<issue-id from branch name or delivery plan>",
-  "slices": [
-    { "sha": "<40-char SHA of this commit>", "title": "<commit subject>", "why": "<commit body, or empty>" }
-  ]
+  "build": {
+    "slices": [
+      { "sha": "<40-char SHA of this commit>", "title": "<commit subject>", "why": "<commit body, or empty>" }
+    ]
+  }
 }
 ```
 
-This file is the input contract for `exec:finish`. Without it, `exec:finish` falls back to `git log` and loses the commit-body context for each PR's Why.
+This section is the input contract for `exec:finish`. Without it, `exec:finish` falls back to `git log` and loses the commit-body context for each PR's Why.
 
 ### 6. Repeat for remaining slices
 
@@ -92,7 +93,7 @@ If the command fails across three consecutive implementation attempts without pr
 
 ## Artefact template
 
-One file artefact (`.drain-handoff.json`, grown one entry per commit) plus an inline run log:
+One file artefact (the `build` section of `exec-state.json`, grown one entry per commit) plus an inline run log:
 
 ```
 Verification: <command>          # step 1 — recorded before any code

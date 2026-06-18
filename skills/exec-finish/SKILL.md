@@ -24,7 +24,7 @@ The stack-creation step writes a minimal placeholder body so the PR exists and i
 - Work is complete and tests pass.
 - Changes are committed as independently reviewable slices, one logical change per commit.
 - The operator asks to finish, submit, create stacked PRs, or submit the stack.
-- Optional: a drain-cycle handoff file exists at `.drain-handoff.json`.
+- Optional: an `exec-state.json` carrier exists in the worktree root with a `build` section.
 - Optional: a Linear issue ID is available for the final trail comment.
 
 Do not use this skill to hide failing tests, submit a known-broken branch, or re-slice a squashed multi-change commit after the fact.
@@ -32,24 +32,26 @@ Do not use this skill to hide failing tests, submit a known-broken branch, or re
 ## Inputs
 
 - Feature branch with one logical change per commit.
-- Optional base branch, `<base>` (default `main`). When the work is stacked on another branch rather than `main` — e.g. a drain-cycle worktree chained off a prior issue's branch — the caller passes that branch as the base. Resolution order: an explicit base in the invocation, else a `base` key in `.drain-handoff.json`, else `main`.
-- Optional `.drain-handoff.json` containing an `issue` and `slices`.
-- Optional Linear issue ID from the branch name, handoff file, user request, or available Linear plugin.
+- Optional base branch, `<base>` (default `main`). When the work is stacked on another branch rather than `main` — e.g. a drain-cycle worktree chained off a prior issue's branch — the caller passes that branch as the base. Resolution order: an explicit base in the invocation, else `pickup.parent_branch` in `exec-state.json`, else `main`.
+- Optional `exec-state.json` whose `pickup` section carries the `issue_id` and whose `build` section carries the `slices`.
+- Optional Linear issue ID from the branch name, the `pickup` section of `exec-state.json`, user request, or available Linear plugin.
 - Optional Graphite CLI, `gt`.
 - GitHub CLI, `gh`, for PR creation and verification.
 
-Example `.drain-handoff.json`:
+Example `exec-state.json` sections this skill reads:
 
 ```json
 {
-  "issue": "ABC-123",
-  "slices": [
-    {
-      "sha": "<40-char SHA>",
-      "title": "<PR title>",
-      "why": "<optional motivation>"
-    }
-  ]
+  "pickup": { "issue_id": "ABC-123", "parent_branch": "main" },
+  "build": {
+    "slices": [
+      {
+        "sha": "<40-char SHA>",
+        "title": "<PR title>",
+        "why": "<optional motivation>"
+      }
+    ]
+  }
 }
 ```
 
@@ -59,7 +61,6 @@ Example `.drain-handoff.json`:
 - Each PR body, written by `pr-prepare`, follows the What / Why / Focus template with diff-level detail.
 - Each PR carries a `prep_verdict` from `pr-prepare` recording the routing decision.
 - Write the `finish` section of `exec-state.json` with `pr_urls` (append-section; prior sections survive).
-- If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write).
 - If Linear is available and an issue ID is known, post a review-summary comment.
 - If Linear is unavailable, include the review summary in the final response instead.
 
@@ -79,7 +80,7 @@ If tests fail, stop. Report the failing command and relevant output. Do not subm
 
 ### 3. Determine slices
 
-If .drain-handoff.json exists, read its slices array.
+If `exec-state.json` carries a `build.slices` array, use those slices.
 
 If it does not exist, derive slices from git, ranging from the resolved base (default `main`):
 
@@ -156,10 +157,6 @@ Write the `finish` section of `exec-state.json` with the submitted PR URLs. Open
 
 If `exec-state.json` does not yet exist, create it with only the `finish` section.
 
-If the legacy `.drain-handoff.json` exists, also update it with `pr_urls` (dual-write for cross-repo migration compatibility):
-
-`{ "pr_urls": [ { "title": "<PR title>", "url": "<https://...>" } ] }`
-
 ### 8. Delegate per-PR preparation to `pr-prepare`
 
 For each created PR, in order, invoke `pr-prepare` with the PR's URL. `pr-prepare` reads the diff, writes the diff-driven What / Why / Focus body, confirms it through a re-read, applies the auto-merge carve-out, and emits a `prep_verdict` per PR. Collect each verdict alongside the PR URL.
@@ -201,9 +198,8 @@ The skill is complete only when:
 4. A `prep_verdict` is recorded for every PR; the review-summary surfaces each route.
 5. Every PR URL was verified reachable.
 6. `exec-state.json` exists with a `finish.pr_urls` section after finishing.
-7. If the legacy `.drain-handoff.json` existed, it was also updated with `pr_urls` (dual-write).
-8. Graphite precondition failures halted instead of falling back silently.
-9. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
+7. Graphite precondition failures halted instead of falling back silently.
+8. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
 
 ## Related
 
