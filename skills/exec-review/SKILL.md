@@ -23,7 +23,7 @@ A single lens misses defect classes it is not oriented to find. This skill dispa
 
 ## When not to use
 
-- **Threat modelling or full security audit** — execution-review's security-auditor persona catches structural patterns; it does not replace a dedicated security audit on high-risk surfaces.
+- **Threat modelling or full security audit** — exec:review's security-auditor persona catches structural patterns; it does not replace a dedicated security audit on high-risk surfaces.
 - **Style or formatting review** — use the `code-simplify` skill for readability-only pass.
 - **Plan or spec review** — use `plan-review` or `exec:verify` for AC verification outside a diff.
 
