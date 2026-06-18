@@ -1,6 +1,6 @@
 ---
 name: delivery
-description: 'Decompose committed work into a verifiable delivery hierarchy: deliverables → nodes → tasks. Use when committed work exists and needs a delivery plan before build pickup. Trigger phrases: "turn this initiative into a delivery plan", "decompose this initiative", "break the initiative into deliverables", "shape the delivery", "delivery plan", "plan the nodes and tasks", "break down committed work", "build delivery plan", "what are the deliverables for this initiative".'
+description: 'Decompose committed work into a verifiable delivery hierarchy. Trigger phrases: "plan this project", "breakdown the design into tasks", "plan this initiative"'
 ---
 
 # Delivery shape
@@ -155,7 +155,7 @@ Write the body against the `writing-refinement` skill (`skills/writing-refinemen
 
 Completion form varies by node type — see `docs/delivery-shape-contract.md`.
 
-For story nodes, the first sentence of `## What` uses the Cohn form:
+For story nodes, the first sentence of `## What` uses the following form:
 
 ```text
 As <role>, I want <capability>, so that <benefit>.
@@ -241,7 +241,7 @@ The root `README.md` must include the hand-count manifest from `docs/delivery-sh
 
 Run `bin/walk-delivery-plan <plan>` and `bin/check-plan-framing <plan>`. Fix failures; do not relax the gate.
 
-Then sub-agent a writing review using the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the emitted node and task bodies. Apply rewrites; on `reject`, repair and re-run once, then carry remaining notes forward as `accept with notes`.
+Then sub-agent a writing review using the `writing-editor` persona (`agents/writing-editor/AGENT.md`) over the emitted node and task bodies. Apply rewrites; on `reject`, repair and re-run once, then carry remaining notes forward as `accept with notes`. Follow all of the writing guidelines and delete anything redundant/duplicate or unnecessary.
 
 ## Red flags
 
