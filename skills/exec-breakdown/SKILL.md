@@ -189,8 +189,9 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
 - A `done_when` clause is two clauses joined by "and" — a hidden multi-task.
 - An AC item from `pickup.ac_checklist` is not referenced by any task's `ac_refs`.
 - A task's `ac_refs` is empty, or contains AC text not verbatim from the pickup section.
+- An ingested task's `model_tier`, `review_flag`, or `axes` differ from the delivery annotation — ingest copies verbatim; any difference is a re-score.
 - The first derive-path task is setup or scaffolding instead of the riskiest seam.
-- `model_tier` set by intuition instead of derived from the 5-axis score.
+- `model_tier` set by intuition on the derive path instead of derived from the 5-axis score.
 - A `breakdown` section was written while any step-11 check failed.
 - The `pickup` section was edited to "make the breakdown easier" — the pickup contract is immutable.
 
@@ -199,7 +200,8 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
 - `exec-state.json` contains a `breakdown.tasks` array of at least one task, in dependency order.
 - Every task has `id`, `done_when` (one verifiable clause), `model_tier`, `axes`, and `ac_refs`.
 - Every AC item from `pickup.ac_checklist` is covered by at least one task.
-- Every `model_tier` and `review_flag` is derived from a recorded axis score, not freely chosen.
+- On the ingest path: every task's `model_tier`, `review_flag`, and `axes` match the delivery annotation verbatim.
+- On the derive path: every `model_tier` and `review_flag` is derived from a recorded axis score, not freely chosen.
 - On any structural failure, the skill halted rather than emitting a partial section.
 
 ## Related
