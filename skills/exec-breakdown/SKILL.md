@@ -144,7 +144,7 @@ Do not invent a sixth axis. Do not score "effort" — this rubric is risk-weight
 
 Before writing, run these checks. Any failure halts the skill; do not emit a partial section.
 
-- Every task has `id`, `title`, `done_when`, `ac_refs`, `model_tier`, `review_flag`, `axes`, `blocks_on`.
+- Every task has `id`, `title`, `done_when`, `ac_refs`, `model_tier`, `review_flag`, `axes`, `blocks_on`, `skeleton`, `acceptance`.
 - Any task missing `done_when` is a halt — a task without it cannot turn RED.
 - Every `ac_refs` entry matches a `pickup.ac_checklist` item verbatim.
 - Every entry in `pickup.ac_checklist` appears in at least one task's `ac_refs`.
@@ -171,7 +171,9 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
         "model_tier": "Balanced",
         "review_flag": "standard",
         "axes": { "RC": "M", "SC": "M", "HS": "L", "SR": "L", "OR": "L" },
-        "blocks_on": []
+        "blocks_on": [],
+        "skeleton": true,
+        "acceptance": false
       },
       {
         "id": "T2",
@@ -181,7 +183,9 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
         "model_tier": "Balanced",
         "review_flag": "standard",
         "axes": { "RC": "M", "SC": "L", "HS": "L", "SR": "L", "OR": "L" },
-        "blocks_on": []
+        "blocks_on": [],
+        "skeleton": false,
+        "acceptance": true
       }
     ]
   }
@@ -194,7 +198,7 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
 - A `done_when` clause is two clauses joined by "and" — a hidden multi-task.
 - An AC item from `pickup.ac_checklist` is not referenced by any task's `ac_refs`.
 - A task's `ac_refs` is empty, or contains AC text not verbatim from the pickup section.
-- An ingested task's `model_tier`, `review_flag`, or `axes` differ from the delivery annotation — ingest copies verbatim; any difference is a re-score.
+- An ingested task's `model_tier`, `review_flag`, `axes`, `blocks_on`, `skeleton`, or `acceptance` differ from the delivery annotation — ingest copies all these fields verbatim; any difference is a re-score.
 - The first derive-path task is setup or scaffolding instead of the riskiest seam.
 - `model_tier` set by intuition on the derive path instead of derived from the 5-axis score.
 - A `breakdown` section was written while any step-11 check failed.
@@ -203,7 +207,7 @@ The on-disk artefact is the `breakdown` section of `exec-state.json`:
 ## Exit criteria
 
 - `exec-state.json` contains a `breakdown.tasks` array of at least one task, in dependency order.
-- Every task has `id`, `done_when` (one verifiable clause), `model_tier`, `axes`, and `ac_refs`.
+- Every task has `id`, `title`, `done_when` (one verifiable clause), `ac_refs`, `model_tier`, `review_flag`, `axes`, `blocks_on`, `skeleton`, and `acceptance`.
 - Every AC item from `pickup.ac_checklist` is covered by at least one task.
 - On the ingest path: every task's `model_tier`, `review_flag`, and `axes` match the delivery annotation verbatim.
 - On the derive path: every `model_tier` and `review_flag` is derived from a recorded axis score, not freely chosen.
