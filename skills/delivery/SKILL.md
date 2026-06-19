@@ -7,7 +7,7 @@ description: 'Decompose committed work into a verifiable delivery hierarchy. Tri
 
 ## Purpose
 
-Take committed work and create a delivery plan that's easy for humans to review and for agents to action.
+Take committed work and create a delivery plan that's easy for humans to review and for agents to action. The per-task list this skill emits — each task carrying a `Done when:` clause and a `Model:` annotation — is the authoritative execution list that `exec:breakdown` ingests at pickup.
 
 The input may be an initiative, a single task, or an accepted design doc. The hierarchy has three layers: deliverables, nodes, and tasks. Deliverables serve a stated outcome source. Nodes are typed units of work such as stories, spikes, ADRs, experiments, design docs, or KTLO work. Tasks are the verifiable checklist inside a node.
 
@@ -281,3 +281,4 @@ The skill is complete when:
 - `bin/walk-delivery-plan` — deterministic reader and manifest checker.
 - `bin/check-plan-framing` — node/task framing gate.
 - `references/task-sizing.md` — 5-axis model-routing rubric.
+- `skills/exec-breakdown/SKILL.md` — `exec:breakdown` (ingests the per-task list at pickup; copies each task's `Done when:` and `Model:` verbatim into the build manifest).
