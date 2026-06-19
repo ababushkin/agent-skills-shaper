@@ -38,7 +38,7 @@ Both paths run through the same verify gate before writing. One invariant holds 
 
 ## Outputs
 
-- The `breakdown` section of `exec-state.json`, append-only — prior sections survive:
+- The `breakdown` section of `exec-state.json`, append-only — prior sections survive. Both paths produce the same JSON shape; on the ingest path `model_tier`, `review_flag`, and `axes` are copied verbatim from the delivery annotation, not computed.
 
 ```json
 {
@@ -52,7 +52,9 @@ Both paths run through the same verify gate before writing. One invariant holds 
         "model_tier": "Fast | Balanced | Frontier",
         "review_flag": "standard | elevated",
         "axes": { "RC": "L", "SC": "L", "HS": "L", "SR": "L", "OR": "L" },
-        "blocks_on": []
+        "blocks_on": [],
+        "skeleton": false,
+        "acceptance": false
       }
     ]
   }
@@ -69,7 +71,7 @@ Open `exec-state.json` and load the `pickup` section. Confirm `body_md` is non-e
 
 ### 2. Route on `has_plan_tasks`
 
-If `pickup.has_plan_tasks` is `true`, follow the **Ingest path** (steps 3–5). If `false`, follow the **Derive path** (steps 6–10). Both paths converge at the shared verify gate (step 11).
+If `pickup.has_plan_tasks` is `true`, follow the **Ingest path** (steps 3–5). If `false`, follow the **Derive path** (steps 6–10). Both paths converge at the shared verify gate (step 11), then proceed to step 12.
 
 ---
 
@@ -83,12 +85,14 @@ For each line in `pickup.plan_tasks[]`, extract:
 - `done_when` — the clause after `Done when:`, **verbatim**
 - `model_tier`, `review_flag`, `axes` — from the `Model:` annotation, **verbatim**
 - `blocks_on` — any `blocks_on:` clause, or `[]` if absent
+- `skeleton`, `acceptance` — boolean flags if present in the annotation, else `false`
+- `id` — assign sequentially (`T1`, `T2`, …) in plan order; do not copy from the plan task
 
 Do not re-score and do not re-route. Delivery's routing is authoritative. If a line lacks `Done when:` or `Model:`, halt — the plan task is malformed.
 
 ### 4. Map each task to `ac_refs`
 
-Map each parsed task to at least one item in `pickup.ac_checklist`. Record the verbatim AC text in `ac_refs`. A task with no mapping is scope drift — halt; do not invent an AC item.
+Map each parsed task to at least one item in `pickup.ac_checklist`. Record the verbatim AC text in `ac_refs`. A task with no mapping is scope drift — halt; do not invent an AC item. AC coverage is re-checked at step 11.
 
 ### 5. Preserve order
 
@@ -140,7 +144,8 @@ Do not invent a sixth axis. Do not score "effort" — this rubric is risk-weight
 
 Before writing, run these checks. Any failure halts the skill; do not emit a partial section.
 
-- Every task has `id`, `title`, `done_when`, `ac_refs`, `model_tier`, `review_flag`, `axes`.
+- Every task has `id`, `title`, `done_when`, `ac_refs`, `model_tier`, `review_flag`, `axes`, `blocks_on`.
+- Any task missing `done_when` is a halt — a task without it cannot turn RED.
 - Every `ac_refs` entry matches a `pickup.ac_checklist` item verbatim.
 - Every entry in `pickup.ac_checklist` appears in at least one task's `ac_refs`.
 - Task IDs are unique and ordered `T1, T2, …`.
