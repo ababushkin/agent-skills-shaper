@@ -274,9 +274,40 @@ issue-class artefact carries an explicit on-pickup instruction naming its `deleg
 the picking-up agent follows (consumer side enforced by the Workflow pack's on-start step). The
 **adapter** binding nodes to a concrete tracker therefore **must surface each node's `delegates_to`
 on the emitted artefact**; a `ktlo` node surfaces "no breakdown step." `delegates_to` is **required
-on every node** — the walk-script enforces presence (exit 2 if missing). This is the one delegation
-obligation the contract places on the adapter, and it stays tool-agnostic: which skill, not which
-tracker.
+on every node** — the walk-script enforces presence (exit 2 if missing). All delegation obligations
+this contract places on the adapter stay tool-agnostic: which skill, not which tracker.
+
+### Build vs non-build node classification
+
+The contract divides node `type`s into two classes. The adapter must project this classification
+onto every emitted tracker artefact:
+
+| Class | Types |
+|-------|-------|
+| **Build** | `story`, `capability`, `ktlo`, `migration`, `deprecation` |
+| **Non-build** | `experiment`, `design-doc`, `spike`, `adr`, `incident`, `slo`, `compliance` |
+
+Build nodes deliver via a PR — `ktlo` via maintenance work (governed by an ops slot, not
+acceptance criteria), `migration` and `deprecation` via phased implementation PRs that carry
+rollback plans and cutover criteria. Non-build nodes produce a finding, design doc, decision record, or
+postmortem — not a PR, and not a candidate for `exec:pickup`. The adapter has two additional
+obligations for non-build nodes:
+
+1. **Label** — emit `node:<type>` as a tracker label on every non-build issue (e.g.,
+   `node:experiment`, `node:design-doc`). Re-emit whenever the node's `type:` front-matter
+   changes so the label stays in sync with the plan.
+
+2. **Body banner** — prefix the issue body with:
+   ```
+   🛑 Non-build node — <type>. Produces a <completion.form>, not a PR. Run via <delegates_to> — human-run.
+   ```
+   where `<type>`, `<completion.form>`, and `<delegates_to>` come from the node's front-matter.
+
+These two signals let downstream tooling — cycle selectors, `exec:pickup` guards — identify
+non-build work without re-parsing the plan file-set. A drain-cycle selector must exclude any
+issue carrying a `node:experiment | node:design-doc | node:spike | node:adr | node:incident | node:slo | node:compliance`
+label, and must also skip any issue whose tracker `blockedBy` relation contains an open
+(non-Done) issue, regardless of node type.
 
 ---
 
