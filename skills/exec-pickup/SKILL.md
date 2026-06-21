@@ -27,6 +27,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 - **Only finishing an already-built PR** — use `exec:finish` directly.
 - **Shaping or planning** — use `shape:delivery`, `shape:initiative`, or `shape:plan-review`.
 - **Exploratory spikes or design work** — use `shape:design`; this skill assumes the work is broken down and ready to build.
+- **Non-build node** (`experiment`, `design-doc`, `spike`, `adr`, `incident`, `slo`, `compliance`) — these produce a finding, design doc, decision, or obligation artefact, not a PR; run via the delegate skill named in the issue body.
 
 ## Inputs
 
@@ -40,6 +41,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 - **`exec-state.json`** at the worktree root — the handoff carrier; the `pickup` section is written by this skill and read by every downstream step
 - An ordered task list from `exec:breakdown`, each task carrying a `done_when` clause
 - Delegations to `exec:build`, `exec:review`, `exec:verify`, and `exec:finish`
+- On non-build node: a Linear comment naming the node type and delegate skill; issue left In Progress
 - On blocked: a Linear comment naming the blocker; issue left In Progress
 
 ## Workflow
@@ -48,35 +50,39 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 
 Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `issue_id`, `body_md`, `ac_checklist[]` (every Done-when / acceptance line, verbatim), `labels[]`, and `blocked_by[]`. If the issue cannot be read, halt with a comment naming the failure.
 
-### 2. Gate: check for blockers
+### 2. Gate: check for non-build node type
+
+If `labels[]` contains any of `node:experiment`, `node:design-doc`, `node:spike`, `node:adr`, `node:incident`, `node:slo`, or `node:compliance`, invoke `shape:stop-the-line`: post a comment naming the node type and the delegate skill (from the `🛑 Non-build node` banner in the body, or the type's known `delegates_to`; see the node-type vocabulary in `docs/delivery-shape-contract.md`), leave the status In Progress, and halt.
+
+### 3. Gate: check for blockers
 
 If `blocked_by[]` is non-empty, invoke `shape:stop-the-line`: post a comment naming each blocker, leave the status In Progress, and halt. Do not proceed to breakdown.
 
-### 3. Rebase onto the parent branch
+### 4. Rebase onto the parent branch
 
 Determine the parent branch — `main` by default, or the parent branch in the stack if this work stacks on another issue — and rebase the worktree branch onto it before any build begins. Building on a stale base produces conflicts at finish; rebase at pickup, on fresh context, instead. Record the chosen parent in `parent_branch`.
 
-### 4. Write the pickup section
+### 5. Write the pickup section
 
 Write the `pickup` section of `exec-state.json` to the worktree root (see Artefact template). If `exec-state.json` already exists, open it, set the `pickup` key, and write back — preserving any prior sections. This file is the contract — every downstream skill reads it; none re-reads the Linear issue.
 
-### 5. Gate: invoke `exec:breakdown`
+### 6. Gate: invoke `exec:breakdown`
 
 Delegate to `exec:breakdown`, passing the `exec-state.json` path. It writes the `breakdown` section back to that file containing an ordered `tasks[]` array — each task carrying `id`, `done_when` (one verifiable clause), `model_tier`, `axes` (RC·SC·HS·SR·OR), and `ac_refs` linking it back to the pickup AC items. If it writes no tasks or any task lacks `done_when`, halt and comment naming the gap.
 
-### 6. Build each slice with `exec:build`
+### 7. Build each slice with `exec:build`
 
 For each task in order, delegate to `exec:build` with the task and the `exec-state.json` path. `exec:build` owns the RED → GREEN → commit loop, including `exec:debug` on a stuck red loop and `exec:simplify` on green. Do not advance until the task's `done_when` is satisfied and a commit exists.
 
-### 7. Gate: invoke `exec:review`
+### 8. Gate: invoke `exec:review`
 
 After all slices are committed, delegate to `exec:review` with the working-tree diff and the `exec-state.json` path (so the spec-compliance persona reads `ac_checklist` from the pickup section directly). On `NO-GO`, loop back into `exec:build` on the failing findings. Do not proceed until the verdict is `GO`.
 
-### 8. Gate: invoke `exec:verify`
+### 9. Gate: invoke `exec:verify`
 
 Delegate to `exec:verify` with the `ac_checklist` from `exec-state.json`'s pickup section and the diff. A fail loops back into `exec:build`; a pass is the green light for finishing.
 
-### 9. Invoke `exec:finish`
+### 10. Invoke `exec:finish`
 
 Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition.
 
@@ -100,6 +106,7 @@ Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, a
 ## Red flags
 
 - The workflow contains a procedure that is not a named delegation.
+- A non-build node label (`node:experiment | node:design-doc | node:spike | node:adr | node:incident | node:slo | node:compliance`) is present and exec:pickup does not halt at the node-type gate.
 - `exec-state.json` is missing from the worktree root before `exec:build` starts.
 - A breakdown task has no `done_when` clause.
 - The issue transitions to Done before `exec:finish` is invoked.
