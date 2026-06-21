@@ -13,6 +13,8 @@ __pycache__/
 .drain-base
 .drain-guard.json
 exec-state.json
+docs/delivery-plans
+docs/spikes
 
 # execution-review cached runs
 fixtures/execution-review/_runs/*/
