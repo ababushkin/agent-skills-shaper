@@ -48,7 +48,7 @@ Take a freshly-picked Linear issue all the way to a finished PR with a full revi
 
 ### 1. Gate: read the issue
 
-Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `issue_id`, `body_md`, `ac_checklist[]` (every Done-when / acceptance line, verbatim), `labels[]`, and `blocked_by[]`. If the issue cannot be read, halt with a comment naming the failure.
+Load the issue from Linear (`mcp__claude_ai_Linear__get_issue`) and extract `issue_id`, `body_md`, `ac_checklist[]` (every Done-when / acceptance line, verbatim), `labels[]`, and `blocked_by[]`. Then scan `body_md` for delivery task lines — any `- [ ]` or `- [x]` line that also contains `Done when:` and `Model:`. Capture those lines verbatim into `plan_tasks[]` and set `has_plan_tasks: true`; if none exist, set `plan_tasks: []` and `has_plan_tasks: false`. If the issue cannot be read, halt with a comment naming the failure.
 
 ### 2. Gate: check for non-build node type
 
@@ -97,6 +97,8 @@ Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, a
     "worktree_path": "<path>",
     "ac_checklist": ["<verbatim AC item>", "…"],
     "body_md": "<full issue body>",
+    "plan_tasks": ["<verbatim task line>", "…"],
+    "has_plan_tasks": true,
     "labels": ["<label>", "…"],
     "blocked_by": []
   }
