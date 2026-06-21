@@ -99,7 +99,7 @@ completion:
   form:       <completion-criterion form>          # the type-appropriate form (see vocabulary)
   criterion:  <the observable criterion, by form>
   verifies_parent: <parent-layer-id> | (absent)   # when acceptance: true — which parent's criterion this node closes
-delegates_to: <rule or skill that owns this node type's discipline>   # REQUIRED on every node — fires at pickup, not at emission
+delegates_to: <consumer at pickup — exec:breakdown (ingest) for build nodes; the owning rule for non-build nodes>
 ```
 
 The five tags the contract is required to pin down:
@@ -179,7 +179,7 @@ Shaper-native, so the rule beside them is the durable fallback a future agent ca
 | `type` | Completion-criterion form | `## Completion` section holds | Delegates to | Demonstrated by |
 |--------|---------------------------|-------------------------------|--------------|-----------------|
 | `spike` | decision + stop condition | `**Decision:** <question>` + `**Stop condition:** <when to stop>` | `eng-principles-universal.md` Rule C5 (time-box; written decision at the box) | `N01` |
-| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | At-pickup task breakdown (per node type) | `N02`, `N04`, `N05`, `N06`, `N08` |
+| `story` | acceptance criteria, in a grounded story form | `- **Done when:** <verifiable state>` list (≥1 item) | `exec:breakdown (ingest)` | `N02`, `N04`, `N05`, `N06`, `N08` |
 | `design-doc` | an accepted design doc (problem / alternatives / decision / NFRs / operability) | prose naming what the accepted design doc covers | `design-doc`; `eng-principles-universal.md` Rule A1 (design-doc trigger) | N01 of the `_tests/rule-a1-branch/` fixture (not the worked example — see below) |
 | `adr` | an accepted decision record (Context / Decision / Consequences) | `**Decision:** <accepted decision>` + context/consequences summary + ADR reference | `eng-principles-universal.md` Rule A3 (ADR) + D3 (living ADRs); `documentation-and-adrs` *(skill where available)* | `N03` |
 | `experiment` | hypothesis + success metric (confirmed / falsified) | `**Hypothesis:** <…>` + `**Success metric:** <…>` + falsification condition | `product-spike` (experiment discipline) | `N07` |
@@ -262,20 +262,9 @@ with a citation.
 
 ## Delegation — timing & surfacing
 
-`delegates_to` names the discipline that owns a node, but it fires **at issue-pickup (build time),
-not during plan emission.** `delivery-shape` emits the hierarchy and stops; the delegate (e.g.
-`execution-breakdown` for a `story`) runs when the issue-class artefact is picked up to be
-built. Rationale: small batches + certainty-decays-with-horizon — expanding every node's
-fine-grained tasks at plan time front-loads detail that decays before the node is reached
-(agentic P8).
+`delegates_to` names the discipline that owns a node at pickup. `delivery-shape` emits the hierarchy and stops; the named consumer runs when the issue-class artefact is picked up to be built. For `story` build nodes, that consumer is `exec:breakdown (ingest)`, which parses the node's task list into the ordered task manifest. Rationale: small batches + certainty-decays-with-horizon — expanding every node's fine-grained tasks at plan time front-loads detail that decays before the node is reached (agentic P8).
 
-There is no programmatic skill-to-skill trigger. "Fires automatically" means the **emitted
-issue-class artefact carries an explicit on-pickup instruction naming its `delegates_to`**, which
-the picking-up agent follows (consumer side enforced by the Workflow pack's on-start step). The
-**adapter** binding nodes to a concrete tracker therefore **must surface each node's `delegates_to`
-on the emitted artefact**; a `ktlo` node surfaces "no breakdown step." `delegates_to` is **required
-on every node** — the walk-script enforces presence (exit 2 if missing). All delegation obligations
-this contract places on the adapter stay tool-agnostic: which skill, not which tracker.
+There is no programmatic skill-to-skill trigger. The emitted issue-class artefact carries an on-pickup instruction naming its `delegates_to`; the picking-up agent follows it. The **adapter** binding nodes to a concrete tracker therefore **must surface each node's `delegates_to` on the emitted artefact**; a `ktlo` node surfaces "no breakdown step." `delegates_to` is not enforced by the walk-script; it is a human-read pickup signal. All delegation obligations this contract places on the adapter stay tool-agnostic: which skill, not which tracker.
 
 ### Build vs non-build node classification
 

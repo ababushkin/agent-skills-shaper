@@ -10,7 +10,7 @@ skeleton: true
 external_window: none
 completion:
   form: acceptance-criteria
-delegates_to: at-pickup task breakdown (per-node task breakdown)
+delegates_to: exec:breakdown (ingest)
 ---
 
 # N02 — Store and replay a card token
