@@ -1,0 +1,95 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "29c7d04c5f5a",
+  "session_id": "9be56ee7-2780-4eb2-a5c3-84c4854188d4",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-22T10:51:40.46458Z",
+  "branch": "anton/aba-429-scripted-plan-to-linear-filing",
+  "checkpoints_count": 1,
+  "files_touched": [
+    "bin/_delivery_plan.py",
+    "bin/plan-to-linear-manifest",
+    "bin/walk-delivery-plan"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "6d947e371946",
+  "token_usage": {
+    "input_tokens": 26166,
+    "cache_creation_tokens": 213258,
+    "cache_read_tokens": 3325052,
+    "output_tokens": 46977,
+    "api_call_count": 31
+  },
+  "skill_events_version": 1,
+  "skill_events": [
+    {
+      "id": "claude-skill-toolu_01PreEqZXSPCTLCfy4TbpPC9",
+      "event_type": "tool_invocation",
+      "skill": {
+        "name": "shape-writing-refinement"
+      },
+      "source": {
+        "agent": "claude-code",
+        "signal": "skill_tool_use",
+        "confidence": "explicit"
+      },
+      "turn_id": "6d947e371946",
+      "transcript_anchor": {
+        "unit": "line",
+        "start": 239,
+        "end": 240,
+        "entry_ids": [
+          "ec2ef5b6-5eca-4a43-a7b8-c795fc0b3ae3"
+        ],
+        "tool_use_id": "toolu_01PreEqZXSPCTLCfy4TbpPC9"
+      },
+      "native": {
+        "tool_name": "Skill",
+        "tool_use_id": "toolu_01PreEqZXSPCTLCfy4TbpPC9"
+      },
+      "collapse": {
+        "target": "tool_pair",
+        "label": "Skill: shape-writing-refinement",
+        "default_collapsed": true
+      }
+    }
+  ],
+  "session_metrics": {
+    "turn_count": 1
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-22T10:51:40.442046Z",
+    "agent_lines": 504,
+    "agent_removed": 202,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 504,
+    "total_lines_changed": 706,
+    "agent_percentage": 100,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    },
+    {
+      "checkpoint_number": 2,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 659,
+      "agent_lines_removed": 202,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}

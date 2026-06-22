@@ -1,0 +1,69 @@
+Work on Linear issue ABA-429:
+
+<issue identifier="ABA-429">
+<title>Scripted plan→Linear filing: create-linear-issues-from-plan + plan-to-linear-manifest</title>
+<description>
+Tooling/process fix. Self-contained — a builder can pick this up cold.
+
+## Problem
+
+Filing a `shape-delivery` plan into Linear drops labels. When the role-based-review-panel plan was filed (project "exec:review covers senior-team review disciplines", <issue id="0a94c9c5-b80e-4af9-a2cf-d07999712700" href="https://linear.app/ababushkin/issue/ABA-421/n01-eval-scorer-label-constrained-judge">ABA-421</issue>–428), every issue was created with **no labels** — `skeleton`/`acceptance`, `model`, and `repo` were all missing and had to be backfilled by hand afterwards.
+
+**Root cause:** no owned procedure for "file a delivery plan into Linear." `shape-delivery` is deliberately tool-agnostic and stops at the file-set + the two gate scripts; the filing step was improvised from the minimal `linear-workflow` "Creating a project" recipe (title/team/project/state), which never mentions labels — so the labels were **derived by hand**, which is exactly where the error entered.
+
+**Key realisation:** the labels are deterministically derivable from the plan MD, and `bin/walk-delivery-plan` already parses almost everything needed (`read_front_matter` reads `skeleton`/`serves_kr`/`maps_to`/`type`/`title`/`id`/`completion.form`; `read_tasks` reads task lines + the `skeleton` tag; `walk` emits the milestone→issue→sub-issue tree as JSON). So the fix is a **script that derives the labels**, not a prose skill telling an agent to derive them by hand.
+
+## Approach — hybrid: script derives, thin agent step applies
+
+**Helper script** `bin/plan-to-linear-manifest <plan-dir> --repo <repo>` (stdlib-only, reusing the `walk-delivery-plan` parser) emits a filing manifest (JSON): `project{name,description}`, `milestones[{id,title,serves_kr}]`, `issues[{id,title,body_path,milestone,labels[],blocked_by[node-id]}]`.
+
+Label derivation (the part that was hand-done and wrong):
+
+| Label | Derived from | Parser status |
+| -- | -- | -- |
+| `skeleton` / `acceptance` | node frontmatter `skeleton: true` / `acceptance: true` | `skeleton` parsed; **add** `acceptance` |
+| `<model>` (`opus`/`sonnet`/`haiku`) | **max** task tier from the node's `Model:` lines (Frontier→opus, Balanced→sonnet, Fast→haiku) | **add** `Model:` **parse** |
+| `high` | any task with `review elevated` | **add** (same `Model:` parse) |
+| `<repo>` | `--repo` arg | n/a |
+| milestone + `serves_kr` | frontmatter + parent deliverable | already parsed |
+| `blocked_by` | the prose `Blocked by: Nxx` callouts | **add callout parse** |
+
+**Skill** `create-linear-issues-from-plan` (the user-facing command — the part that actually creates the issues): run `plan-to-linear-manifest` → create project → milestones → issues **in dependency order** via the Linear MCP, applying the manifest's labels **verbatim** → resolve `blocked_by` node-ids to created identifiers → **finish-gate**: read the project back and diff it against the manifest (labels, counts), fail loudly on any mismatch. Thin, because derivation moved to the script — no hand-judgement of labels remains.
+
+**Why not a pure end-to-end script:** Linear writes from a script need an API client + auth, which duplicates `~/src/drain-cycle`'s `linear.py` and couples this (stdlib-only, tool-agnostic) pack to Linear. The hybrid keeps the derivation core tracker-generic and leaves only the MCP writes to the agent — mirroring the contract's "structure here, binding in the adapter" split.
+
+## Dependencies — none new, no API key
+
+* Stdlib-only Python, like the existing `bin/` tools (`walk-delivery-plan`, `grade-execution-review`). No new packages.
+* **No API key/secret added to the repo.** Linear writes go through the Linear MCP tools the agent already uses (`claude_ai_Linear`), authenticated over the existing MCP connection.
+* This is the reason for the hybrid: a pure end-to-end script would need a Linear API key in the repo.
+
+## Files
+
+* **Create** `bin/plan-to-linear-manifest` (stdlib Python; reuses the `walk-delivery-plan` parser).
+* **Edit** `bin/walk-delivery-plan` — extract `read_front_matter`/`read_tasks` into a shared helper and add `acceptance` + per-task `Model:`/`review` parsing (or put the new parsing in the new script and import the helper). Keep existing behaviour/exit codes unchanged.
+* **Create** `skills/create-linear-issues-from-plan/SKILL.md` (thin — run script, apply via MCP, finish-gate; authored to `docs/skill-anatomy.md`, then a `writing-refinement` pass).
+* **Edit** `skills/shape-delivery/SKILL.md` — Related + a one-line "filing" pointer to `create-linear-issues-from-plan`.
+
+## Verification
+
+* **Regression against known-good state:** `bin/plan-to-linear-manifest docs/delivery-plans/role-based-review-panel --repo agent-skills-shaper` emits a manifest whose per-issue labels exactly reproduce what is now on <issue id="0a94c9c5-b80e-4af9-a2cf-d07999712700" href="https://linear.app/ababushkin/issue/ABA-421/n01-eval-scorer-label-constrained-judge">ABA-421</issue>–428 — e.g. N01 → `skeleton, high, opus`; N03 → `high, opus`; N08 → `acceptance, opus`; all carry `agent-skills-shaper`. Any divergence is a derivation bug.
+* `plan-to-linear-manifest` is stdlib-only and exits non-zero on a plan where a label can't be derived.
+* `walk-delivery-plan`'s existing output and exit codes are unchanged after the parser refactor (manifest still MATCHes on the same plan).
+* `shape-delivery` SKILL names `create-linear-issues-from-plan` as the filing step.
+
+## Tasks
+
+- [ ] Build `bin/plan-to-linear-manifest` + extract/extend the `walk-delivery-plan` parser (`acceptance`, per-task `Model:` tier, `review`, blocked-by). Done when: it emits a manifest whose labels reproduce <issue id="0a94c9c5-b80e-4af9-a2cf-d07999712700" href="https://linear.app/ababushkin/issue/ABA-421/n01-eval-scorer-label-constrained-judge">ABA-421</issue>–428. Model: Balanced
+- [ ] Build the `create-linear-issues-from-plan` skill (run helper → create via MCP → finish-gate) + wire into `shape-delivery`. Done when: filing the role-based-review-panel plan reproduces its project/milestones/issues with correct labels, and `shape-delivery` names the skill. Model: Balanced
+
+---
+
+Source plan: `~/.claude/plans/generic-churning-quail.md` (reviewed via crit, 5 rounds, approved).
+</description>
+<team name="Personal"/>
+<label>model › sonnet</label>
+<label>repo › agent-skills-shaper</label>
+<project name="Ops - bugs, maintenance, emergent">Container for non-initiative work. Not an initiative; no Goal or Key Results. Bugs, KTLO, compliance, one-offs. Pulled into each cycle's ops slot at planning.</project>
+<issue-relations><related><issue-ref identifier="ABA-421" title="N01 — Eval scorer: label-constrained judge"/></related></issue-relations>
+</issue>
