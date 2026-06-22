@@ -67,6 +67,8 @@ bin/walk-delivery-plan <plan>
 bin/check-plan-framing <plan>
 ```
 
+To file a passing full-tier plan into Linear with its labels intact, hand it to `create-linear-issues-from-plan` — do not improvise the filing, which is where labels get dropped.
+
 ## Workflow
 
 ### 1. Restate the work
@@ -282,3 +284,4 @@ The skill is complete when:
 - `bin/check-plan-framing` — node/task framing gate.
 - `references/task-sizing.md` — 5-axis model-routing rubric.
 - `skills/exec-breakdown/SKILL.md` — `exec:breakdown` (ingests the per-task list at pickup; copies each task's `Done when:` and `Model:` verbatim into the build manifest).
+- `skills/create-linear-issues-from-plan/SKILL.md` — files a passing full-tier plan into Linear; derives labels with `bin/plan-to-linear-manifest` and applies them verbatim.
