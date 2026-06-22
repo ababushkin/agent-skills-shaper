@@ -1,0 +1,105 @@
+#!/usr/bin/env python3
+"""check-active-marker-contract — assert exec:review documents the `_active`
+step/persona marker write.
+
+The live-execution swimlanes view reads a pack-written `_active` pointer from
+`exec-state.json` to show the active review persona on every worker, not just
+Claude Code. The renderer is display-only; the pack is the sole writer. This
+grader pins the writer half of that contract in `skills/exec-review/SKILL.md`,
+so a future edit cannot silently drop the marker write and leave the view blind
+on non-Claude workers.
+
+Checks (all required; each names what is missing on failure):
+
+  1. Carrier — the skill names `_active` and `exec-state.json` together, so the
+     marker lands in the pack-owned execution-state artifact, not a new file.
+  2. Schema — the documented pointer carries both a `step` and a `persona`
+     field, the shape the renderer reads.
+  3. Persona-entry write — the marker write is tied to persona dispatch, so the
+     active persona is recorded at the moment it becomes true.
+  4. Atomic single-writer rule — the write is atomic (temp-file + rename) and
+     `persona` is a single string under last-write-wins, so a parallel persona
+     fan-out cannot corrupt the pointer.
+
+Usage:
+    bin/check-active-marker-contract [SKILL_MD]
+
+Exits 0 when every check passes, 1 otherwise (with the failing checks on
+stderr). SKILL_MD defaults to skills/exec-review/SKILL.md relative to the repo
+root.
+"""
+from __future__ import annotations
+
+import re
+import sys
+from pathlib import Path
+
+_DEFAULT_SKILL = "skills/exec-review/SKILL.md"
+
+
+def _repo_root() -> Path:
+    return Path(__file__).resolve().parent.parent
+
+
+def check(text: str) -> list[str]:
+    """Return a list of failure messages; empty means the contract holds."""
+    failures: list[str] = []
+    lower = text.lower()
+
+    if "_active" not in text or "exec-state.json" not in text:
+        failures.append(
+            "carrier: the skill must name the `_active` pointer and "
+            "`exec-state.json` (the marker's carrier)."
+        )
+
+    # The schema fields the renderer reads, named near the `_active` pointer.
+    if not re.search(r"_active.*persona", text, re.DOTALL) or '"step"' not in text:
+        failures.append(
+            'schema: the documented `_active` pointer must carry both a '
+            '`"step"` and a `persona` field.'
+        )
+
+    if "persona" not in lower or not re.search(
+        r"persona[^\n]*\b(entry|enter|dispatch|before)\b|\b(entry|enter|dispatch|before)\b[^\n]*persona",
+        lower,
+    ):
+        failures.append(
+            "persona-entry write: the marker write must be tied to persona "
+            "entry/dispatch, so the active persona is recorded when it is true."
+        )
+
+    has_atomic = "atomic" in lower or "rename" in lower
+    has_last_writer = "last-write" in lower or "last write" in lower or "last-writer" in lower
+    if not (has_atomic and has_last_writer):
+        failures.append(
+            "atomic single-writer rule: the write must be atomic (temp-file + "
+            "rename) with a single-string `persona` under last-write-wins."
+        )
+
+    return failures
+
+
+def main(argv: list[str]) -> int:
+    skill_path = Path(argv[1]) if len(argv) > 1 else _repo_root() / _DEFAULT_SKILL
+    try:
+        text = skill_path.read_text()
+    except OSError as exc:
+        sys.stderr.write(f"check-active-marker-contract: cannot read {skill_path}: {exc}\n")
+        return 1
+
+    failures = check(text)
+    if failures:
+        sys.stderr.write(
+            f"check-active-marker-contract: {skill_path} is missing the "
+            f"`_active` marker-write contract:\n"
+        )
+        for f in failures:
+            sys.stderr.write(f"  - {f}\n")
+        return 1
+
+    print(f"check-active-marker-contract: OK ({skill_path})")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
