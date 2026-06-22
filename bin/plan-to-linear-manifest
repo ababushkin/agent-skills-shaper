@@ -1,0 +1,223 @@
+#!/usr/bin/env python3
+"""plan-to-linear-manifest — derive a Linear filing manifest from a delivery plan.
+
+Reads a delivery-plan file-set (the same layout `walk-delivery-plan` gates) and
+emits a filing manifest: the project, its milestones, and one issue per node
+with its labels **derived**, not hand-picked. The labels are the part that was
+done by hand — and done wrong — when the role-based-review-panel plan was first
+filed; deriving them from the plan MD is the whole point of this script.
+
+The manifest is the input to the `create-linear-issues-from-plan` skill, which
+creates the project / milestones / issues through the Linear MCP and applies
+these labels verbatim. Derivation lives here (deterministic, tracker-generic);
+only the tracker writes live in the skill.
+
+Label derivation per node:
+
+    skeleton / acceptance   node front-matter `skeleton: true` / `acceptance: true`
+    <model>                 max task `Model:` tier (Frontier→opus, Balanced→sonnet,
+                            Fast→haiku) — a node is as heavy as its heaviest task
+    high                    any task carries `review elevated`
+    <repo>                  the --repo argument
+    blocked_by              the node ids named in the `Blocked by:` callout
+
+Usage:
+    plan-to-linear-manifest <plan-dir> --repo <repo>
+                            [--project <name>] [--project-description <text>]
+
+Exit codes:
+    0   manifest emitted
+    2   a node could not be parsed, or a required label could not be derived
+    64  usage error
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from _delivery_plan import (  # noqa: E402  (path set above)
+    MODEL_RANK,
+    PlanError,
+    parse_blocked_by,
+    parse_task_routing,
+    read_front_matter,
+    read_tasks,
+    walk,
+)
+
+DELIVERY_PLAN_PREFIX_RE = re.compile(r"^Delivery plan\s*[—–\-:]\s*", re.IGNORECASE)
+
+
+# --- project derivation ------------------------------------------------------
+
+def _strip_plan_prefix(title: str) -> str:
+    return DELIVERY_PLAN_PREFIX_RE.sub("", title).strip()
+
+
+def _first_paragraph(lines: list[str], after_h1: bool = True) -> str | None:
+    """Join the first prose paragraph of the README into one line.
+
+    Skips the H1, then collects the first run of consecutive non-empty lines
+    that are not headings, blockquotes, or table rows.
+    """
+    started = not after_h1
+    para: list[str] = []
+    for line in lines:
+        if not started:
+            if line.startswith("# "):
+                started = True
+            continue
+        stripped = line.strip()
+        if not para and (not stripped or stripped.startswith(("#", ">", "|", "```"))):
+            continue
+        if para and (not stripped or stripped.startswith(("#", ">", "|", "```"))):
+            break
+        para.append(stripped)
+    return " ".join(para) if para else None
+
+
+def read_project(root: Path, name_override: str | None, desc_override: str | None) -> dict:
+    """Derive the project name + description from the plan README.
+
+    Both fields are overridable. The README H1 (minus a leading "Delivery
+    plan — " prefix) is the default name; the first prose paragraph is the
+    default description.
+    """
+    name = name_override
+    description = desc_override
+    if name is None or description is None:
+        readme = root / "README.md"
+        if not readme.exists():
+            raise PlanError(
+                f"{root}: no README.md to derive the project from — "
+                "pass --project and --project-description"
+            )
+        lines = readme.read_text(encoding="utf-8").splitlines()
+        if name is None:
+            h1 = next((l[2:].strip() for l in lines if l.startswith("# ")), None)
+            if not h1:
+                raise PlanError(f"{readme}: no H1 to derive the project name — pass --project")
+            name = _strip_plan_prefix(h1)
+        if description is None:
+            description = _first_paragraph(lines)
+            if not description:
+                raise PlanError(
+                    f"{readme}: no prose paragraph to derive the project description — "
+                    "pass --project-description"
+                )
+    return {"name": name, "description": description}
+
+
+# --- label derivation --------------------------------------------------------
+
+def derive_labels(node_path: Path, fm: dict, repo: str) -> list[str]:
+    """Derive the issue's labels from its front-matter and its task lines."""
+    tasks = read_tasks(node_path)
+    models = [r["model"] for r in (parse_task_routing(t["text"]) for t in tasks) if r["model"]]
+    if not models:
+        raise PlanError(
+            f"{node_path}: no task carries a `Model:` tier — cannot derive the model label"
+        )
+    model = max(models, key=lambda m: MODEL_RANK[m])
+    high = any(parse_task_routing(t["text"])["review_elevated"] for t in tasks)
+
+    labels: list[str] = []
+    if fm.get("skeleton", "").lower() == "true":
+        labels.append("skeleton")
+    if fm.get("acceptance", "").lower() == "true":
+        labels.append("acceptance")
+    if high:
+        labels.append("high")
+    labels.append(model)
+    labels.append(repo)
+    return labels
+
+
+# --- manifest ----------------------------------------------------------------
+
+def build_manifest(root: Path, repo: str, project: dict) -> dict:
+    milestones_raw = walk(root)
+
+    node_ids = {i["id"] for m in milestones_raw for i in m["issues"]}
+
+    milestones = [
+        {
+            "id": m["id"],
+            "name": f"{m['id']} — {m['title']} ({m['serves_kr']})",
+            "serves_kr": m["serves_kr"],
+        }
+        for m in milestones_raw
+    ]
+
+    issues: list[dict] = []
+    for m in milestones_raw:
+        for issue in m["issues"]:
+            node_path = root / issue["path"]
+            fm = read_front_matter(node_path)
+            labels = derive_labels(node_path, fm, repo)
+            blocked_by = parse_blocked_by(node_path)
+            unknown = [b for b in blocked_by if b not in node_ids]
+            if unknown:
+                raise PlanError(
+                    f"{node_path}: `Blocked by:` names unknown node id(s) {unknown}"
+                )
+            issues.append({
+                "id": issue["id"],
+                "title": f"{issue['id']} — {issue['title']}",
+                "body_path": str(node_path),
+                "milestone": m["id"],
+                "labels": labels,
+                "blocked_by": blocked_by,
+            })
+
+    return {
+        "source": str(root),
+        "repo": repo,
+        "project": project,
+        "milestones": milestones,
+        "issues": issues,
+    }
+
+
+# --- entrypoint --------------------------------------------------------------
+
+def main(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="plan-to-linear-manifest",
+        description="Derive a Linear filing manifest from a delivery plan.",
+        add_help=True,
+    )
+    parser.add_argument("plan_dir")
+    parser.add_argument("--repo", required=True, help="repo label applied to every issue")
+    parser.add_argument("--project", dest="project", default=None,
+                        help="override the derived project name")
+    parser.add_argument("--project-description", dest="project_description", default=None,
+                        help="override the derived project description")
+    try:
+        args = parser.parse_args(argv[1:])
+    except SystemExit:
+        return 64
+
+    root = Path(args.plan_dir)
+    if not root.is_dir():
+        sys.stderr.write(f"error: {root} is not a directory\n")
+        return 64
+
+    try:
+        project = read_project(root, args.project, args.project_description)
+        manifest = build_manifest(root, args.repo, project)
+    except PlanError as exc:
+        sys.stderr.write(f"PARSE ERROR: {exc}\n")
+        return 2
+
+    print(json.dumps(manifest, indent=2))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main(sys.argv))
