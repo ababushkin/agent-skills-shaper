@@ -54,6 +54,15 @@ Each persona receives:
 - The working-tree diff as its primary input
 - The issue statement and AC list (spec-compliance uses these; the other two may reference them for context)
 
+**2a. Mark the active persona (display marker).**
+On entry to each persona — before applying it to the diff — write the `_active` pointer into `exec-state.json` at the worktree root, so the live swimlanes view shows the active review persona on every worker, not just Claude Code:
+
+```json
+{"_active": {"step": "review", "persona": "spec-compliance"}}
+```
+
+Set only the `_active` key, preserving the phase sections (`pickup`, `breakdown`, `build`, …); write a temp file and rename it over `exec-state.json` so the update is atomic. `persona` is a single string under last-write-wins: on Claude Code's parallel dispatch each persona sub-agent writes its own name on entry and the most-recent write is the one shown; on a non-Claude worker running inline-sequentially, write the pointer before each persona in turn. The write is one local file per persona — the pointer is sub-1 KB — with no network call. The renderer reads this pointer for display only — it never gates the run, so a missed or stale write degrades the view, never the work.
+
 **3. [GATE] Collect and deduplicate findings.**
 Gather the raw finding triples from all three personas. Deduplicate on the match key `(file · defect_class · severity)` — if two personas surface the same triple, count it once. A finding that appears in two personas is not more severe; it is one finding with corroboration.
 
