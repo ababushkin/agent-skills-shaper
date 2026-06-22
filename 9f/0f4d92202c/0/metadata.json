@@ -1,0 +1,48 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "9f0f4d92202c",
+  "session_id": "75ba791c-ecd7-4ab8-8616-94534d7f1f99",
+  "strategy": "manual-commit",
+  "created_at": "2026-06-22T11:15:13.556873Z",
+  "branch": "anton/aba-429-scripted-plan-to-linear-filing",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "skills/file-delivery-plan-to-linear/SKILL.md",
+    "bin/plan-to-linear-manifest",
+    "skills/delivery/SKILL.md"
+  ],
+  "agent": "Claude Code",
+  "model": "claude-opus-4-8[1m]",
+  "turn_id": "fba7ce65c0e8",
+  "token_usage": {
+    "input_tokens": 26782,
+    "cache_creation_tokens": 133796,
+    "cache_read_tokens": 2039001,
+    "output_tokens": 19336,
+    "api_call_count": 29
+  },
+  "initial_attribution": {
+    "calculated_at": "2026-06-22T11:15:13.548135Z",
+    "agent_lines": 383,
+    "agent_removed": 0,
+    "human_added": 0,
+    "human_modified": 0,
+    "human_removed": 0,
+    "total_committed": 383,
+    "total_lines_changed": 535,
+    "agent_percentage": 71.58878504672897,
+    "metric_version": 2
+  },
+  "prompt_attributions": [
+    {
+      "checkpoint_number": 1,
+      "user_lines_added": 135,
+      "user_lines_removed": 0,
+      "agent_lines_added": 0,
+      "agent_lines_removed": 0,
+      "user_added_per_file": {
+        ".claude/settings.local.json": 135
+      }
+    }
+  ]
+}

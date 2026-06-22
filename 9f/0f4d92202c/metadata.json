@@ -1,0 +1,27 @@
+{
+  "cli_version": "0.7.5",
+  "checkpoint_id": "9f0f4d92202c",
+  "strategy": "manual-commit",
+  "branch": "anton/aba-429-scripted-plan-to-linear-filing",
+  "checkpoints_count": 0,
+  "files_touched": [
+    "bin/plan-to-linear-manifest",
+    "skills/delivery/SKILL.md",
+    "skills/file-delivery-plan-to-linear/SKILL.md"
+  ],
+  "sessions": [
+    {
+      "metadata": "/9f/0f4d92202c/0/metadata.json",
+      "transcript": "/9f/0f4d92202c/0/full.jsonl",
+      "content_hash": "/9f/0f4d92202c/0/content_hash.txt",
+      "prompt": "/9f/0f4d92202c/0/prompt.txt"
+    }
+  ],
+  "token_usage": {
+    "input_tokens": 26782,
+    "cache_creation_tokens": 133796,
+    "cache_read_tokens": 2039001,
+    "output_tokens": 19336,
+    "api_call_count": 29
+  }
+}

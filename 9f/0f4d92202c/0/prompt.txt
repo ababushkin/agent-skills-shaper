@@ -1,0 +1,5 @@
+some notes about PR 65
+
+there is a lot of mention about "labels" that are not necessary - yes this feature was built because labels weren't being applied correctly, but at the end of the day the work is to create a tool that can more reliably create a project and all of its subsequent issues in linear through the delivery-shape skill
+
+review and fix
