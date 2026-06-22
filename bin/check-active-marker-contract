@@ -76,6 +76,16 @@ def check(text: str) -> list[str]:
             "rename) with a single-string `persona` under last-write-wins."
         )
 
+    # Write cost (NFR-5): one sub-1 KB local file per transition, no network.
+    has_size_bound = bool(re.search(r"(sub-?1\s*kb|<\s*1\s*kb|\b1\s*kb)", lower))
+    has_single_write = bool(re.search(r"\b(one|single)\b[^\n]*\bfile\b", lower))
+    has_no_network = "no network" in lower or "no added network" in lower
+    if not (has_size_bound and has_single_write and has_no_network):
+        failures.append(
+            "write cost (NFR-5): the skill must state the marker write is a "
+            "single sub-1 KB local file per transition with no network call."
+        )
+
     return failures
 
 
