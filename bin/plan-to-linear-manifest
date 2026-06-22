@@ -2,14 +2,16 @@
 """plan-to-linear-manifest — derive a Linear filing manifest from a delivery plan.
 
 Reads a delivery-plan file-set (the same layout `walk-delivery-plan` gates) and
-emits a filing manifest: the project, its milestones, and one issue per node
-with its labels **derived**, not hand-picked. The labels are the part that was
-done by hand — and done wrong — when the role-based-review-panel plan was first
-filed; deriving them from the plan MD is the whole point of this script.
+emits the whole filing manifest: the project, its milestones, and one issue per
+node with every field — title, milestone, labels, and blocked_by — **derived**,
+not hand-picked. Deriving every field is what makes the filing reproducible from
+the plan MD. Labels are the field that was hand-copied and dropped when the
+role-based-review-panel plan was first filed; deriving them here removes that
+class of error.
 
-The manifest is the input to the `create-linear-issues-from-plan` skill, which
+The manifest is the input to the `file-delivery-plan-to-linear` skill, which
 creates the project / milestones / issues through the Linear MCP and applies
-these labels verbatim. Derivation lives here (deterministic, tracker-generic);
+these fields verbatim. Derivation lives here (deterministic, tracker-generic);
 only the tracker writes live in the skill.
 
 Label derivation per node:
