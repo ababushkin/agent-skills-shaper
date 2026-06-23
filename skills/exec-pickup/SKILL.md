@@ -84,7 +84,7 @@ Delegate to `exec:verify` with the `ac_checklist` from `exec-state.json`'s picku
 
 ### 10. Invoke `exec:finish`
 
-Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition.
+Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, and the verify result. `exec:finish` owns the PR body, review-summary comment, and Linear status transition. It re-checks the carrier's `review` (`GO`) and `verify` (`PASS`) sections before the Done transition and halts if either is missing — so the verdicts written in steps 8 and 9 must be in `exec-state.json`, not only in the conversation.
 
 ## Artefact template
 
@@ -119,7 +119,8 @@ Delegate to `exec:finish` with the `exec-state.json` path, the review verdict, a
 
 - `exec-state.json` exists at the worktree root with a `pickup` section containing all fields populated.
 - Every breakdown task has a `done_when` clause.
-- `exec:review` returned `GO` before `exec:verify` was invoked.
+- `exec:review` returned `GO` before `exec:verify` was invoked, and wrote its `review` section to `exec-state.json`.
+- `exec:verify` returned a pass and wrote its `verify` section to `exec-state.json`.
 - `exec:finish` was invoked and posted the review-summary comment and transitioned the issue.
 - A dry run on one real issue reaches the PR step without a human re-prompt between steps.
 

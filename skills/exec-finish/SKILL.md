@@ -78,6 +78,15 @@ Run the repo's required tests before creating any PRs.
 
 If tests fail, stop. Report the failing command and relevant output. Do not submit PRs.
 
+### 2a. Gate: verdicts present and passing
+
+When an `exec-state.json` carrier exists, the issue may not transition to Done until it carries a passing `review` section (`verdict: "GO"`) **and** a passing `verify` section (`verdict: "PASS"`). These are written by `exec:review` and `exec:verify` upstream.
+
+- A missing `review` or `verify` section means the step was skipped or its write was lost — stop, name which section is absent, and do not transition the issue. A Done with no recorded verdict is the silent-Done failure this gate exists to prevent.
+- A `review` verdict of `NO-GO` or a `verify` verdict of `FAIL` means the work is not done — stop and loop back to `exec:build` on the findings rather than finishing.
+
+A standalone `exec:finish` on an already-reviewed PR with no carrier skips this gate.
+
 ### 3. Determine slices
 
 If `exec-state.json` carries a `build.slices` array, use those slices.
@@ -187,19 +196,21 @@ The durable body is written by `pr-prepare` in step 8 — `exec:finish` writes o
 - A PR's `prep_verdict` is missing from the review-summary comment.
 - `pr-prepare` returned `auto-merge` on a PR with a schema migration, auth change, breaking API, new dependency, production-data touch, or one-way-door decision — investigate the verdict before trusting it.
 - The final trail was posted before every PR was prepared and verified.
+- The issue transitioned to Done while the `exec-state.json` carrier lacked a `review: GO` or `verify: PASS` section — the verdict gate was skipped.
 
 ## Exit criteria
 
 The skill is complete only when:
 
 1. Tests passed before PR creation.
-2. Each slice has exactly one PR.
-3. `pr-prepare` ran on every PR and wrote a confirmed What / Why / Focus body.
-4. A `prep_verdict` is recorded for every PR; the review-summary surfaces each route.
-5. Every PR URL was verified reachable.
-6. `exec-state.json` exists with a `finish.pr_urls` section after finishing.
-7. Graphite precondition failures halted instead of falling back silently.
-8. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
+2. When a carrier existed, its `review` section read `GO` and its `verify` section read `PASS` before the issue transitioned to Done.
+3. Each slice has exactly one PR.
+4. `pr-prepare` ran on every PR and wrote a confirmed What / Why / Focus body.
+5. A `prep_verdict` is recorded for every PR; the review-summary surfaces each route.
+6. Every PR URL was verified reachable.
+7. `exec-state.json` exists with a `finish.pr_urls` section after finishing.
+8. Graphite precondition failures halted instead of falling back silently.
+9. The final review summary was posted to Linear when available, or reported to the operator when Linear is unavailable.
 
 ## Related
 
