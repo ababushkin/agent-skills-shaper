@@ -28,7 +28,7 @@ A fail verdict is a halt, not a suggestion: the issue does not transition to Don
 
 1. **AC list** (required) — the delivery-shape Completion section (`## Completion`, `Done when:` list) or, if absent, any bullet list under a heading containing "acceptance criteria", "AC", "done when", or "definition of done". No AC list → a structural fail verdict.
 2. **Diff** (required) — `git diff HEAD`, a PR diff, or a commit range. An empty diff means the implementation is absent.
-3. **Run log entry** (optional) — if present, the verdict is appended to its `outcome_verdict` field; otherwise emitted standalone.
+3. **`exec-state.json` carrier** (optional) — if an `exec-state.json` exists in the worktree root, the verdict is also written to its `verify` section so the supervisor can read it back; otherwise emitted standalone.
 
 ## Outputs
 
@@ -93,7 +93,22 @@ There is no partial-pass state. Every unmet AC item is a finding; every finding 
 
 ### 6. Emit the verdict
 
-Write the verdict as a fenced JSON block. Set `invoked_at` to the current ISO 8601 timestamp. If a run log entry was provided, note that its `outcome_verdict` field should be updated with this object. On fail, follow with the human-readable findings list.
+Write the verdict as a fenced JSON block. Set `invoked_at` to the current ISO 8601 timestamp. On fail, follow with the human-readable findings list.
+
+If an `exec-state.json` exists in the worktree root, also write the `verify` section so the supervisor reads the verdict back into the run log. Open the file (preserving the `pickup`, `breakdown`, and `build` sections earlier phases wrote), set the `verify` key, and rename a temp file over `exec-state.json` so the update is atomic:
+
+```json
+{
+  "verify": {
+    "verdict": "PASS | FAIL",
+    "ac_results": [
+      { "item": "<verbatim AC item text>", "result": "PASS | FAIL" }
+    ]
+  }
+}
+```
+
+One `ac_results` entry per AC item checked in step 3: `FAIL` for each item that produced a finding, `PASS` for the rest. The supervisor maps a `FAIL` verdict to a fail outcome with the failing `item` texts as findings; a missing section reads as no verdict.
 
 ## Red flags
 
@@ -115,7 +130,7 @@ The skill is complete when:
 4. A pass verdict has `"findings": []`.
 5. A fail verdict has one finding per unmet AC item, each with `ac_item`, `gap`, `evidence`.
 6. The verdict was emitted as a fenced JSON block; on fail, a findings list followed.
-7. If a run log entry was provided, the verdict was noted for appending to `outcome_verdict`.
+7. If an `exec-state.json` carrier existed, its `verify` section was written (`verdict`, `ac_results`) with sibling sections preserved.
 
 ## Related
 

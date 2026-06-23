@@ -42,6 +42,8 @@ A review-summary block with:
 - **Findings** (deduped, ordered spec → security → quality): each on one line — `<file> <class> <severity>`
 - **Next step**: one sentence on what the implementing agent must do
 
+When an `exec-state.json` carrier exists in the worktree root, the same verdict and findings are also written to its `review` section so the supervisor reads it back into the run log.
+
 ## Workflow
 
 **1. Load context.**
@@ -72,6 +74,20 @@ Gather the raw finding triples from all three personas. Deduplicate on the match
 
 **5. Emit the review-summary block.**
 Use the template below. Report findings in order: spec-compliance findings first, then security-auditor, then code-quality. Within each group, Critical before Required before Suggested.
+
+**5a. Write the `review` section to `exec-state.json`.**
+If an `exec-state.json` exists in the worktree root, write the verdict to its `review` section. Open the file (preserving the `_active` pointer and the phase sections earlier steps wrote), set the `review` key, and rename a temp file over `exec-state.json` so the update is atomic:
+
+```json
+{
+  "review": {
+    "verdict": "GO | NO-GO",
+    "findings": ["<file> · <defect_class> · <severity>"]
+  }
+}
+```
+
+`findings` is the deduped list from step 3, one string per finding in the same order as the summary block — empty on a clean GO. The supervisor maps the verdict to a go/no-go result; a missing section reads as no verdict. The summary block below is the human-readable view of the same verdict.
 
 ## Artefact template
 
@@ -120,7 +136,8 @@ The skill has run correctly when:
 2. The finding list is deduplicated on `(file · defect_class · severity)`.
 3. The verdict is NO-GO if any Critical or Required finding is present.
 4. The review-summary block names the file and defect class for every finding.
-5. `bin/grade-execution-review fixtures/execution-review --persona fan-out` exits 0 with ≥9/10 recall.
+5. When an `exec-state.json` carrier existed, its `review` section was written (`verdict`, `findings`) with the `_active` pointer and sibling sections preserved.
+6. `bin/grade-execution-review fixtures/execution-review --persona fan-out` exits 0 with ≥9/10 recall.
 
 ## References
 
