@@ -67,6 +67,8 @@ bin/walk-delivery-plan <plan>
 bin/check-plan-framing <plan>
 ```
 
+To file a passing full-tier plan into Linear, hand it to `file-delivery-plan-to-linear` — it creates the project, milestones, and issues from the plan. Do not improvise the filing; improvised filing is where fields get dropped.
+
 ## Workflow
 
 ### 1. Restate the work
@@ -282,3 +284,4 @@ The skill is complete when:
 - `bin/check-plan-framing` — node/task framing gate.
 - `references/task-sizing.md` — 5-axis model-routing rubric.
 - `skills/exec-breakdown/SKILL.md` — `exec:breakdown` (ingests the per-task list at pickup; copies each task's `Done when:` and `Model:` verbatim into the build manifest).
+- `skills/file-delivery-plan-to-linear/SKILL.md` — files a passing full-tier plan into Linear: project, milestones, and one issue per node, every field derived by `bin/plan-to-linear-manifest`.
